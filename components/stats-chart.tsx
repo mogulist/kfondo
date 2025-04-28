@@ -84,7 +84,6 @@ const formatXAxisTick = (
   intervalMinutes: number
 ) => {
   const parts = value.split(" - ");
-  if (isMobile) return parts[0];
   const time = parts[0];
   const [hours, minutes] = time.split(":");
   if (parseInt(minutes, 10) % intervalMinutes === 0) {
@@ -103,7 +102,6 @@ export function StatsChart({ yearStats }: StatsChartProps) {
   return (
     <div className="flex flex-col gap-12">
       {yearStats.map((stats) => {
-        // granFondo와 medioFondo 중 더 많은 데이터 포인트 기준으로 간격 결정
         const maxLen = Math.max(
           stats.granFondoDistribution.length,
           stats.medioFondoDistribution.length
@@ -124,13 +122,19 @@ export function StatsChart({ yearStats }: StatsChartProps) {
             >
               <div
                 className={`${
-                  isMobile ? "h-[250px]" : "h-full"
+                  isMobile ? "h-[350px]" : "h-full"
                 } w-full border-r-0 sm:border-r sm:pr-4 border-border/30`}
               >
                 <h3 className="text-lg font-medium mb-4">
                   그란폰도 ({stats.year}년)
                 </h3>
-                <div className="h-[calc(100%-2rem)] w-full">
+                <div
+                  className={`h-[calc(100%-2rem)] w-full${
+                    isMobile
+                      ? " overflow-x-auto overscroll-contain touch-pan-x"
+                      : ""
+                  }`}
+                >
                   <ChartContainer
                     config={{
                       participants: {
@@ -195,13 +199,19 @@ export function StatsChart({ yearStats }: StatsChartProps) {
 
               <div
                 className={`${
-                  isMobile ? "h-[250px]" : "h-full"
+                  isMobile ? "h-[350px]" : "h-full"
                 } w-full sm:pl-4`}
               >
                 <h3 className="text-lg font-medium mb-4">
                   메디오폰도 ({stats.year}년)
                 </h3>
-                <div className="h-[calc(100%-2rem)] w-full">
+                <div
+                  className={`h-[calc(100%-2rem)] w-full${
+                    isMobile
+                      ? " overflow-x-auto overscroll-contain touch-pan-x"
+                      : ""
+                  }`}
+                >
                   <ChartContainer
                     config={{
                       participants: {
