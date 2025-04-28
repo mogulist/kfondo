@@ -34,7 +34,7 @@ export default function EventPage({ params }: EventPageProps) {
         <div className="space-y-12">
           <section className="space-y-4">
             <h2 className="text-2xl font-semibold">연도별 참가자 추세</h2>
-            <div className="h-[400px] md:h-[500px] w-full">
+            <div className="h-[700px] md:h-[500px] w-full">
               <ParticipantTrend eventData={eventData} />
             </div>
           </section>

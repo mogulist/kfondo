@@ -1,14 +1,13 @@
 "use client"
 
-import type React from "react"
-
 import type { EventYearData } from "@/lib/types"
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, XAxis, YAxis } from "recharts"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { useEffect, useRef, useState } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { ChartContainer, ChartTooltip } from "@/components/ui/chart"
+import { useRef, useState } from "react"
 import { useMobile } from "@/hooks/use-mobile"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { BarChartIcon, TableIcon } from "lucide-react"
 
 interface ParticipantTrendProps {
   eventData: EventYearData[]
@@ -33,286 +32,316 @@ const CustomLegend = (props: any) => {
   )
 }
 
+// 커스텀 툴팁 컴포넌트
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    const registered = payload[0].value
+    const participants = payload[1].value
+    const participationRate = ((participants / registered) * 100).toFixed(1)
+
+    return (
+      <div className="bg-background border border-border rounded-md shadow-md p-3 text-sm">
+        <p className="font-medium mb-1">{`${label}년`}</p>
+        <p className="text-xs mb-1">{`등록자: ${registered}명`}</p>
+        <p className="text-xs mb-1">{`참가자: ${participants}명`}</p>
+        <p className="text-xs font-medium">{`참가율: ${participationRate}%`}</p>
+      </div>
+    )
+  }
+
+  return null
+}
+
 export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
   const isMobile = useMobile()
   const isTablet = useMobile(1024) // 1024px 미만을 태블릿으로 간주
-  const [currentYearIndex, setCurrentYearIndex] = useState(0)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [touchStart, setTouchStart] = useState<number | null>(null)
-  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [viewType, setViewType] = useState<"chart" | "table">("chart")
 
   const data = eventData.map((d) => ({
     year: d.year,
     granFondoRegistered: d.granFondoRegistered,
     granFondoParticipants: d.granFondoParticipants,
+    granFondoRate: ((d.granFondoParticipants / d.granFondoRegistered) * 100).toFixed(1),
     medioFondoRegistered: d.medioFondoRegistered,
     medioFondoParticipants: d.medioFondoParticipants,
+    medioFondoRate: ((d.medioFondoParticipants / d.medioFondoRegistered) * 100).toFixed(1),
   }))
 
   // 연도 데이터를 내림차순으로 정렬 (최신 연도가 먼저 오도록)
   const sortedData = [...data].sort((a, b) => b.year - a.year)
 
-  // 모바일에서 한 번에 보여줄 연도 수
-  const yearsPerView = isMobile ? 2 : sortedData.length
-
-  // 현재 보여줄 데이터 슬라이스
-  const currentData = sortedData.slice(currentYearIndex, currentYearIndex + yearsPerView)
-
-  // 최대 인덱스 계산 (마지막 페이지가 꽉 차지 않아도 됨)
-  const maxIndex = Math.max(0, sortedData.length - yearsPerView)
-
-  // 초기 위치를 최신 연도로 설정
-  useEffect(() => {
-    setCurrentYearIndex(0) // 최신 연도부터 시작 (내림차순 정렬했으므로)
-  }, [eventData])
-
-  // 이전/다음 연도 이동 함수
-  const goToPrevYears = () => {
-    setCurrentYearIndex((prev) => Math.min(prev + 1, maxIndex))
-  }
-
-  const goToNextYears = () => {
-    setCurrentYearIndex((prev) => Math.max(prev - 1, 0))
-  }
-
-  // 터치 이벤트 핸들러
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX)
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX)
-  }
-
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return
-
-    const distance = touchStart - touchEnd
-    const isLeftSwipe = distance > 50
-    const isRightSwipe = distance < -50
-
-    if (isLeftSwipe && currentYearIndex < maxIndex) {
-      goToPrevYears() // 왼쪽으로 스와이프하면 이전 연도(더 오래된 연도)로
-    }
-
-    if (isRightSwipe && currentYearIndex > 0) {
-      goToNextYears() // 오른쪽으로 스와이프하면 다음 연도(더 최신 연도)로
-    }
-
-    setTouchStart(null)
-    setTouchEnd(null)
-  }
+  // 모바일에서의 차트 너비 계산
+  const chartWidth = isMobile ? 100 : 120 // 각 연도별 차트의 너비 (간격 좁힘)
+  const totalWidth = sortedData.length * chartWidth // 전체 스크롤 영역 너비
 
   return (
     <div className="h-full w-full">
-      <div className={`${isTablet ? "flex flex-col gap-8" : "grid grid-cols-2 gap-12"} h-full`}>
-        <div className={`${isMobile ? "h-[200px]" : "h-full"} w-full border-r-0 sm:border-r sm:pr-4 border-border/30`}>
+      <div className="flex justify-end mb-4">
+        <Tabs
+          defaultValue="chart"
+          className="w-[180px]"
+          onValueChange={(value) => setViewType(value as "chart" | "table")}
+        >
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="chart">
+              <BarChartIcon className="h-4 w-4 mr-1" />
+              <span>차트</span>
+            </TabsTrigger>
+            <TabsTrigger value="table">
+              <TableIcon className="h-4 w-4 mr-1" />
+              <span>테이블</span>
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
+
+      <div className={`${isTablet ? "flex flex-col gap-12" : "grid grid-cols-2 gap-12"} h-full`}>
+        <div className={`${isMobile ? "h-[350px]" : "h-full"} w-full border-r-0 sm:border-r sm:pr-4 border-border/30`}>
           <h3 className="text-lg font-medium mb-2">그란폰도</h3>
-          <div
-            ref={containerRef}
-            className="relative h-[calc(100%-2rem)]"
-            onTouchStart={isMobile ? handleTouchStart : undefined}
-            onTouchMove={isMobile ? handleTouchMove : undefined}
-            onTouchEnd={isMobile ? handleTouchEnd : undefined}
-          >
-            {isMobile && (
-              <div className="absolute top-1/2 -translate-y-1/2 left-0 z-10">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-full bg-background/80 shadow-sm"
-                  onClick={goToNextYears}
-                  disabled={currentYearIndex === 0}
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                  <span className="sr-only">이전 연도</span>
-                </Button>
-              </div>
-            )}
 
-            {isMobile && (
-              <div className="absolute top-1/2 -translate-y-1/2 right-0 z-10">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-full bg-background/80 shadow-sm"
-                  onClick={goToPrevYears}
-                  disabled={currentYearIndex >= maxIndex}
-                >
-                  <ChevronRight className="h-4 w-4" />
-                  <span className="sr-only">다음 연도</span>
-                </Button>
+          {viewType === "chart" ? (
+            isMobile ? (
+              <div
+                ref={scrollRef}
+                className="relative h-[calc(100%-2rem)] overflow-x-auto pb-6 hide-scrollbar"
+                style={{ overscrollBehavior: "contain" }}
+              >
+                <div style={{ width: `${totalWidth}px`, height: "100%" }}>
+                  <ChartContainer
+                    config={{
+                      registered: {
+                        label: "등록자",
+                        color: "hsl(215, 90%, 80%)",
+                      },
+                      participants: {
+                        label: "참가자",
+                        color: "hsl(215, 90%, 50%)",
+                      },
+                    }}
+                    className="h-full"
+                  >
+                    <BarChart
+                      data={sortedData.map((d) => ({
+                        year: d.year,
+                        registered: d.granFondoRegistered,
+                        participants: d.granFondoParticipants,
+                      }))}
+                      margin={{
+                        top: 10,
+                        right: 5,
+                        left: 5,
+                        bottom: 60,
+                      }}
+                      barSize={30}
+                      barGap={2} // 막대 간 간격 좁힘
+                      width={totalWidth}
+                      height={300}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="year" tickFormatter={(value) => `${value}년`} height={50} />
+                      <YAxis type="number" domain={[0, "dataMax + 100"]} />
+                      <ChartTooltip content={<CustomTooltip />} />
+                      <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
+                      <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
+                      <Legend content={CustomLegend} verticalAlign="bottom" height={50} />
+                    </BarChart>
+                  </ChartContainer>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 text-center text-xs text-muted-foreground">
+                  ← 좌우로 스크롤하여 더 많은 연도 확인 →
+                </div>
               </div>
-            )}
-
-            <ChartContainer
-              config={{
-                registered: {
-                  label: "등록자",
-                  color: "hsl(215, 90%, 80%)",
-                },
-                participants: {
-                  label: "참가자",
-                  color: "hsl(215, 90%, 50%)",
-                },
-              }}
-              className="h-full"
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={
-                    isMobile
-                      ? currentData.map((d) => ({
-                          year: d.year,
-                          registered: d.granFondoRegistered,
-                          participants: d.granFondoParticipants,
-                        }))
-                      : data.map((d) => ({
-                          year: d.year,
-                          registered: d.granFondoRegistered,
-                          participants: d.granFondoParticipants,
-                        }))
-                  }
-                  margin={{
-                    top: 10,
-                    right: isMobile ? 20 : 30,
-                    left: isMobile ? 0 : 0,
-                    bottom: isMobile ? 60 : 40,
+            ) : (
+              <div className="h-[calc(100%-2rem)]">
+                <ChartContainer
+                  config={{
+                    registered: {
+                      label: "등록자",
+                      color: "hsl(215, 90%, 80%)",
+                    },
+                    participants: {
+                      label: "참가자",
+                      color: "hsl(215, 90%, 50%)",
+                    },
                   }}
-                  barSize={isMobile ? 20 : 20}
+                  className="h-full"
                 >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="year"
-                    tick={{ fontSize: isMobile ? 12 : 12 }}
-                    tickFormatter={(value) => `${value}년`}
-                  />
-                  <YAxis tick={{ fontSize: isMobile ? 10 : 12 }} width={isMobile ? 30 : 40} />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
-                  <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
-                  <Legend content={CustomLegend} verticalAlign="bottom" height={isMobile ? 50 : 36} />
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-
-            {isMobile && (
-              <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 pb-1">
-                {Array.from({ length: Math.ceil(sortedData.length / yearsPerView) }).map((_, i) => (
-                  <div
-                    key={i}
-                    className={`h-1.5 w-6 rounded-full ${
-                      i === currentYearIndex / yearsPerView ? "bg-primary" : "bg-muted"
-                    }`}
-                  />
-                ))}
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={data.map((d) => ({
+                        year: d.year,
+                        registered: d.granFondoRegistered,
+                        participants: d.granFondoParticipants,
+                      }))}
+                      margin={{
+                        top: 10,
+                        right: 30,
+                        left: 0,
+                        bottom: 40,
+                      }}
+                      barSize={20}
+                      barGap={2} // 막대 간 간격 좁힘
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="year" tick={{ fontSize: 12 }} tickFormatter={(value) => `${value}년`} />
+                      <YAxis tick={{ fontSize: 12 }} width={40} />
+                      <ChartTooltip content={<CustomTooltip />} />
+                      <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
+                      <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
+                      <Legend content={CustomLegend} verticalAlign="bottom" height={36} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
               </div>
-            )}
-          </div>
+            )
+          ) : (
+            <div className="h-[calc(100%-2rem)] overflow-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[80px]">연도</TableHead>
+                    <TableHead>등록자</TableHead>
+                    <TableHead>참가자</TableHead>
+                    <TableHead className="text-right">참가율</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {sortedData.map((item) => (
+                    <TableRow key={item.year}>
+                      <TableCell className="font-medium">{item.year}년</TableCell>
+                      <TableCell>{item.granFondoRegistered}명</TableCell>
+                      <TableCell>{item.granFondoParticipants}명</TableCell>
+                      <TableCell className="text-right">{item.granFondoRate}%</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
         </div>
 
-        <div className={`${isMobile ? "h-[200px]" : "h-full"} w-full sm:pl-4`}>
+        <div className={`${isMobile ? "h-[350px]" : "h-full"} w-full sm:pl-4`}>
           <h3 className="text-lg font-medium mb-2">메디오폰도</h3>
-          <div
-            className="relative h-[calc(100%-2rem)]"
-            onTouchStart={isMobile ? handleTouchStart : undefined}
-            onTouchMove={isMobile ? handleTouchMove : undefined}
-            onTouchEnd={isMobile ? handleTouchEnd : undefined}
-          >
-            {isMobile && (
-              <div className="absolute top-1/2 -translate-y-1/2 left-0 z-10">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-full bg-background/80 shadow-sm"
-                  onClick={goToNextYears}
-                  disabled={currentYearIndex === 0}
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                  <span className="sr-only">이전 연도</span>
-                </Button>
-              </div>
-            )}
 
-            {isMobile && (
-              <div className="absolute top-1/2 -translate-y-1/2 right-0 z-10">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-full bg-background/80 shadow-sm"
-                  onClick={goToPrevYears}
-                  disabled={currentYearIndex >= maxIndex}
-                >
-                  <ChevronRight className="h-4 w-4" />
-                  <span className="sr-only">다음 연도</span>
-                </Button>
+          {viewType === "chart" ? (
+            isMobile ? (
+              <div
+                className="relative h-[calc(100%-2rem)] overflow-x-auto pb-6 hide-scrollbar"
+                style={{ overscrollBehavior: "contain" }}
+              >
+                <div style={{ width: `${totalWidth}px`, height: "100%" }}>
+                  <ChartContainer
+                    config={{
+                      registered: {
+                        label: "등록자",
+                        color: "hsl(150, 80%, 80%)",
+                      },
+                      participants: {
+                        label: "참가자",
+                        color: "hsl(150, 80%, 40%)",
+                      },
+                    }}
+                    className="h-full"
+                  >
+                    <BarChart
+                      data={sortedData.map((d) => ({
+                        year: d.year,
+                        registered: d.medioFondoRegistered,
+                        participants: d.medioFondoParticipants,
+                      }))}
+                      margin={{
+                        top: 10,
+                        right: 5,
+                        left: 5,
+                        bottom: 60,
+                      }}
+                      barSize={30}
+                      barGap={2} // 막대 간 간격 좁힘
+                      width={totalWidth}
+                      height={300}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="year" tickFormatter={(value) => `${value}년`} height={50} />
+                      <YAxis type="number" domain={[0, "dataMax + 100"]} />
+                      <ChartTooltip content={<CustomTooltip />} />
+                      <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
+                      <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
+                      <Legend content={CustomLegend} verticalAlign="bottom" height={50} />
+                    </BarChart>
+                  </ChartContainer>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 text-center text-xs text-muted-foreground">
+                  ← 좌우로 스크롤하여 더 많은 연도 확인 →
+                </div>
               </div>
-            )}
-
-            <ChartContainer
-              config={{
-                registered: {
-                  label: "등록자",
-                  color: "hsl(150, 80%, 80%)",
-                },
-                participants: {
-                  label: "참가자",
-                  color: "hsl(150, 80%, 40%)",
-                },
-              }}
-              className="h-full"
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={
-                    isMobile
-                      ? currentData.map((d) => ({
-                          year: d.year,
-                          registered: d.medioFondoRegistered,
-                          participants: d.medioFondoParticipants,
-                        }))
-                      : data.map((d) => ({
-                          year: d.year,
-                          registered: d.medioFondoRegistered,
-                          participants: d.medioFondoParticipants,
-                        }))
-                  }
-                  margin={{
-                    top: 10,
-                    right: isMobile ? 20 : 30,
-                    left: isMobile ? 0 : 0,
-                    bottom: isMobile ? 60 : 40,
+            ) : (
+              <div className="h-[calc(100%-2rem)]">
+                <ChartContainer
+                  config={{
+                    registered: {
+                      label: "등록자",
+                      color: "hsl(150, 80%, 80%)",
+                    },
+                    participants: {
+                      label: "참가자",
+                      color: "hsl(150, 80%, 40%)",
+                    },
                   }}
-                  barSize={isMobile ? 20 : 20}
+                  className="h-full"
                 >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="year"
-                    tick={{ fontSize: isMobile ? 12 : 12 }}
-                    tickFormatter={(value) => `${value}년`}
-                  />
-                  <YAxis tick={{ fontSize: isMobile ? 10 : 12 }} width={isMobile ? 30 : 40} />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
-                  <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
-                  <Legend content={CustomLegend} verticalAlign="bottom" height={isMobile ? 50 : 36} />
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-
-            {isMobile && (
-              <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 pb-1">
-                {Array.from({ length: Math.ceil(sortedData.length / yearsPerView) }).map((_, i) => (
-                  <div
-                    key={i}
-                    className={`h-1.5 w-6 rounded-full ${
-                      i === currentYearIndex / yearsPerView ? "bg-primary" : "bg-muted"
-                    }`}
-                  />
-                ))}
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={data.map((d) => ({
+                        year: d.year,
+                        registered: d.medioFondoRegistered,
+                        participants: d.medioFondoParticipants,
+                      }))}
+                      margin={{
+                        top: 10,
+                        right: 30,
+                        left: 0,
+                        bottom: 40,
+                      }}
+                      barSize={20}
+                      barGap={2} // 막대 간 간격 좁힘
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="year" tick={{ fontSize: 12 }} tickFormatter={(value) => `${value}년`} />
+                      <YAxis tick={{ fontSize: 12 }} width={40} />
+                      <ChartTooltip content={<CustomTooltip />} />
+                      <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
+                      <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
+                      <Legend content={CustomLegend} verticalAlign="bottom" height={36} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
               </div>
-            )}
-          </div>
+            )
+          ) : (
+            <div className="h-[calc(100%-2rem)] overflow-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[80px]">연도</TableHead>
+                    <TableHead>등록자</TableHead>
+                    <TableHead>참가자</TableHead>
+                    <TableHead className="text-right">참가율</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {sortedData.map((item) => (
+                    <TableRow key={item.year}>
+                      <TableCell className="font-medium">{item.year}년</TableCell>
+                      <TableCell>{item.medioFondoRegistered}명</TableCell>
+                      <TableCell>{item.medioFondoParticipants}명</TableCell>
+                      <TableCell className="text-right">{item.medioFondoRate}%</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
         </div>
       </div>
     </div>
