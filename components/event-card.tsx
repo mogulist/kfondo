@@ -27,22 +27,17 @@ export function EventCard({ event }: EventCardProps) {
 
   return (
     <CardWrapper>
-      <motion.div
-        whileHover={isReady ? { y: -5 } : undefined}
-        transition={{ type: "spring", stiffness: 300 }}
-        className={isReady ? "" : "opacity-75"}
-      >
+      <motion.div whileHover={isReady ? { y: -5 } : undefined} transition={{ type: "spring", stiffness: 300 }}>
         <Card className={`overflow-hidden h-auto ${isReady ? "cursor-pointer" : ""}`}>
           <CardContent className="p-0 h-full">
             <div
-              className={`h-full flex flex-col bg-gradient-to-br from-slate-800 to-slate-950 text-white ${
-                hasLatestEventInfo ? "pb-4" : ""
-              } relative`}
+              className={`h-full flex flex-col text-white ${hasLatestEventInfo ? "pb-4" : ""} relative`}
               style={{
-                backgroundImage: event.color
-                  ? `linear-gradient(to bottom right, ${event.color.from}, ${event.color.to})`
-                  : undefined,
-                opacity: isReady ? 1 : 0.85,
+                backgroundImage: isReady
+                  ? event.color
+                    ? `linear-gradient(to bottom right, ${event.color.from}, ${event.color.to})`
+                    : undefined
+                  : "linear-gradient(to bottom right, #94a3b8, #64748b)",
               }}
             >
               {!isReady && (

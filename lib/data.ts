@@ -7,8 +7,8 @@ export const events: Event[] = [
     location: "홍천",
     years: [2022, 2023, 2024, 2025],
     color: {
-      from: "#2563eb",
-      to: "#1e40af",
+      from: "#f43f5e", // 선명한 핑크
+      to: "#e11d48", // 진한 핑크
     },
     latestEvent: {
       date: "2025.4.19",
