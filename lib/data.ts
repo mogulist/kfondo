@@ -26,7 +26,7 @@ export const events: Event[] = [
   {
     id: "yangyang",
     location: "양양",
-    years: [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    years: [2024, 2025],
     color: {
       from: "#0ea5e9",
       to: "#0369a1",
@@ -42,6 +42,7 @@ export const events: Event[] = [
         elevation: 630,
       },
     },
+    status: "ready",
   },
   {
     id: "samcheok",
@@ -85,32 +86,155 @@ export const events: Event[] = [
   },
 ]
 
+// 홍천 그란폰도 실제 데이터
+const hongcheonRealData: Record<
+  number,
+  {
+    granFondoRegistered: number
+    granFondoParticipants: number
+    granFondoDNF: number
+    medioFondoRegistered: number
+    medioFondoParticipants: number
+    medioFondoDNF: number
+  }
+> = {
+  2025: {
+    granFondoRegistered: 1876,
+    granFondoParticipants: 1202,
+    granFondoDNF: 82,
+    medioFondoRegistered: 1204,
+    medioFondoParticipants: 1051,
+    medioFondoDNF: 27,
+  },
+  2024: {
+    granFondoRegistered: 1986,
+    granFondoParticipants: 1607,
+    granFondoDNF: 67,
+    medioFondoRegistered: 1178,
+    medioFondoParticipants: 1026,
+    medioFondoDNF: 38,
+  },
+  2023: {
+    granFondoRegistered: 2580,
+    granFondoParticipants: 2230,
+    granFondoDNF: 144,
+    medioFondoRegistered: 1350,
+    medioFondoParticipants: 1204,
+    medioFondoDNF: 38,
+  },
+  2022: {
+    granFondoRegistered: 3228,
+    granFondoParticipants: 730,
+    granFondoDNF: 113,
+    medioFondoRegistered: 772,
+    medioFondoParticipants: 161,
+    medioFondoDNF: 23,
+  },
+}
+
+// 양양 그란폰도 실제 데이터
+const yangyangRealData: Record<
+  number,
+  {
+    granFondoRegistered: number
+    granFondoParticipants: number
+    granFondoDNF: number
+    medioFondoRegistered: number
+    medioFondoParticipants: number
+    medioFondoDNF: number
+  }
+> = {
+  2025: {
+    granFondoRegistered: 1241,
+    granFondoParticipants: 1011,
+    granFondoDNF: 190,
+    medioFondoRegistered: 809,
+    medioFondoParticipants: 672,
+    medioFondoDNF: 76,
+  },
+  2024: {
+    granFondoRegistered: 1200,
+    granFondoParticipants: 975,
+    granFondoDNF: 172,
+    medioFondoRegistered: 700,
+    medioFondoParticipants: 576,
+    medioFondoDNF: 143,
+  },
+}
+
 // 연도별 참가자 데이터 생성 함수
 export function getEventData(eventId: string): EventYearData[] {
   const event = events.find((e) => e.id === eventId)
   if (!event) return []
 
+  // 홍천 그란폰도의 경우 실제 데이터 사용
+  if (eventId === "hongcheon") {
+    return event.years.map((year) => {
+      const yearData = hongcheonRealData[year]
+
+      if (!yearData) {
+        return {
+          year,
+          granFondoRegistered: 0,
+          granFondoParticipants: 0,
+          medioFondoRegistered: 0,
+          medioFondoParticipants: 0,
+          granFondoDNF: 0,
+          medioFondoDNF: 0,
+        }
+      }
+
+      return {
+        year,
+        granFondoRegistered: yearData.granFondoRegistered,
+        granFondoParticipants: yearData.granFondoParticipants,
+        medioFondoRegistered: yearData.medioFondoRegistered,
+        medioFondoParticipants: yearData.medioFondoParticipants,
+        granFondoDNF: yearData.granFondoDNF,
+        medioFondoDNF: yearData.medioFondoDNF,
+      }
+    })
+  }
+
+  // 양양 그란폰도의 경우 실제 데이터 사용
+  if (eventId === "yangyang") {
+    return event.years.map((year) => {
+      const yearData = yangyangRealData[year]
+
+      if (!yearData) {
+        return {
+          year,
+          granFondoRegistered: 0,
+          granFondoParticipants: 0,
+          medioFondoRegistered: 0,
+          medioFondoParticipants: 0,
+          granFondoDNF: 0,
+          medioFondoDNF: 0,
+        }
+      }
+
+      return {
+        year,
+        granFondoRegistered: yearData.granFondoRegistered,
+        granFondoParticipants: yearData.granFondoParticipants,
+        medioFondoRegistered: yearData.medioFondoRegistered,
+        medioFondoParticipants: yearData.medioFondoParticipants,
+        granFondoDNF: yearData.granFondoDNF,
+        medioFondoDNF: yearData.medioFondoDNF,
+      }
+    })
+  }
+
+  // 다른 이벤트는 가상 데이터 생성
   return event.years.map((year) => {
-    // 실제로는 웹스크래핑 데이터를 사용하겠지만, 여기서는 가상 데이터 생성
-    const baseGranRegistered = 400 + Math.floor(Math.random() * 200)
-    const baseMedioRegistered = 250 + Math.floor(Math.random() * 150)
-
-    // 연도가 최근일수록 참가자가 더 많은 경향
-    const yearFactor = (year - 2018) * 20
-
-    // 등록자 중 약 85-95%가 실제 참가
-    const granParticipationRate = 0.85 + Math.random() * 0.1
-    const medioParticipationRate = 0.85 + Math.random() * 0.1
-
-    const granFondoRegistered = baseGranRegistered + yearFactor
-    const medioFondoRegistered = baseMedioRegistered + yearFactor
-
     return {
       year,
-      granFondoRegistered,
-      granFondoParticipants: Math.floor(granFondoRegistered * granParticipationRate),
-      medioFondoRegistered,
-      medioFondoParticipants: Math.floor(medioFondoRegistered * medioParticipationRate),
+      granFondoRegistered: 0,
+      granFondoParticipants: 0,
+      medioFondoRegistered: 0,
+      medioFondoParticipants: 0,
+      granFondoDNF: 0,
+      medioFondoDNF: 0,
     }
   })
 }

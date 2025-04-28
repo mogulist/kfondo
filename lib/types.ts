@@ -26,6 +26,8 @@ export interface EventYearData {
   granFondoParticipants: number
   medioFondoRegistered: number
   medioFondoParticipants: number
+  granFondoDNF?: number
+  medioFondoDNF?: number
 }
 
 export interface TimeDistribution {

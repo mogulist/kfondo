@@ -37,14 +37,18 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const registered = payload[0].value
     const participants = payload[1].value
+    const dnf = payload.length > 2 ? payload[2].value : 0
     const participationRate = ((participants / registered) * 100).toFixed(1)
+    const completionRate = dnf > 0 ? (((participants - dnf) / participants) * 100).toFixed(1) : "100.0"
 
     return (
       <div className="bg-background border border-border rounded-md shadow-md p-3 text-sm">
         <p className="font-medium mb-1">{`${label}년`}</p>
         <p className="text-xs mb-1">{`등록자: ${registered}명`}</p>
         <p className="text-xs mb-1">{`참가자: ${participants}명`}</p>
+        {dnf > 0 && <p className="text-xs mb-1">{`DNF: ${dnf}명`}</p>}
         <p className="text-xs font-medium">{`참가율: ${participationRate}%`}</p>
+        <p className="text-xs font-medium">{`완주율: ${completionRate}%`}</p>
       </div>
     )
   }
@@ -62,10 +66,18 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
     year: d.year,
     granFondoRegistered: d.granFondoRegistered,
     granFondoParticipants: d.granFondoParticipants,
+    granFondoDNF: d.granFondoDNF || 0,
     granFondoRate: ((d.granFondoParticipants / d.granFondoRegistered) * 100).toFixed(1),
+    granFondoCompletionRate: d.granFondoDNF
+      ? (((d.granFondoParticipants - d.granFondoDNF) / d.granFondoParticipants) * 100).toFixed(1)
+      : "100.0",
     medioFondoRegistered: d.medioFondoRegistered,
     medioFondoParticipants: d.medioFondoParticipants,
+    medioFondoDNF: d.medioFondoDNF || 0,
     medioFondoRate: ((d.medioFondoParticipants / d.medioFondoRegistered) * 100).toFixed(1),
+    medioFondoCompletionRate: d.medioFondoDNF
+      ? (((d.medioFondoParticipants - d.medioFondoDNF) / d.medioFondoParticipants) * 100).toFixed(1)
+      : "100.0",
   }))
 
   // 연도 데이터를 내림차순으로 정렬 (최신 연도가 먼저 오도록)
@@ -118,6 +130,10 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                         label: "참가자",
                         color: "hsl(215, 90%, 50%)",
                       },
+                      dnf: {
+                        label: "DNF",
+                        color: "hsl(0, 80%, 60%)",
+                      },
                     }}
                     className="h-full"
                   >
@@ -126,6 +142,7 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                         year: d.year,
                         registered: d.granFondoRegistered,
                         participants: d.granFondoParticipants,
+                        dnf: d.granFondoDNF,
                       }))}
                       margin={{
                         top: 10,
@@ -144,6 +161,7 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                       <ChartTooltip content={<CustomTooltip />} />
                       <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
                       <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
+                      <Bar name="DNF" dataKey="dnf" fill="var(--color-dnf)" />
                       <Legend content={CustomLegend} verticalAlign="bottom" height={50} />
                     </BarChart>
                   </ChartContainer>
@@ -164,6 +182,10 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                       label: "참가자",
                       color: "hsl(215, 90%, 50%)",
                     },
+                    dnf: {
+                      label: "DNF",
+                      color: "hsl(0, 80%, 60%)",
+                    },
                   }}
                   className="h-full"
                 >
@@ -173,6 +195,7 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                         year: d.year,
                         registered: d.granFondoRegistered,
                         participants: d.granFondoParticipants,
+                        dnf: d.granFondoDNF,
                       }))}
                       margin={{
                         top: 10,
@@ -189,6 +212,7 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                       <ChartTooltip content={<CustomTooltip />} />
                       <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
                       <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
+                      <Bar name="DNF" dataKey="dnf" fill="var(--color-dnf)" />
                       <Legend content={CustomLegend} verticalAlign="bottom" height={36} />
                     </BarChart>
                   </ResponsiveContainer>
@@ -203,7 +227,9 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                     <TableHead className="w-[80px]">연도</TableHead>
                     <TableHead>등록자</TableHead>
                     <TableHead>참가자</TableHead>
+                    <TableHead>DNF</TableHead>
                     <TableHead className="text-right">참가율</TableHead>
+                    <TableHead className="text-right">완주율</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -212,7 +238,9 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                       <TableCell className="font-medium">{item.year}년</TableCell>
                       <TableCell>{item.granFondoRegistered}명</TableCell>
                       <TableCell>{item.granFondoParticipants}명</TableCell>
+                      <TableCell>{item.granFondoDNF}명</TableCell>
                       <TableCell className="text-right">{item.granFondoRate}%</TableCell>
+                      <TableCell className="text-right">{item.granFondoCompletionRate}%</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -241,6 +269,10 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                         label: "참가자",
                         color: "hsl(150, 80%, 40%)",
                       },
+                      dnf: {
+                        label: "DNF",
+                        color: "hsl(0, 80%, 60%)",
+                      },
                     }}
                     className="h-full"
                   >
@@ -249,6 +281,7 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                         year: d.year,
                         registered: d.medioFondoRegistered,
                         participants: d.medioFondoParticipants,
+                        dnf: d.medioFondoDNF,
                       }))}
                       margin={{
                         top: 10,
@@ -267,6 +300,7 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                       <ChartTooltip content={<CustomTooltip />} />
                       <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
                       <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
+                      <Bar name="DNF" dataKey="dnf" fill="var(--color-dnf)" />
                       <Legend content={CustomLegend} verticalAlign="bottom" height={50} />
                     </BarChart>
                   </ChartContainer>
@@ -287,6 +321,10 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                       label: "참가자",
                       color: "hsl(150, 80%, 40%)",
                     },
+                    dnf: {
+                      label: "DNF",
+                      color: "hsl(0, 80%, 60%)",
+                    },
                   }}
                   className="h-full"
                 >
@@ -296,6 +334,7 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                         year: d.year,
                         registered: d.medioFondoRegistered,
                         participants: d.medioFondoParticipants,
+                        dnf: d.medioFondoDNF,
                       }))}
                       margin={{
                         top: 10,
@@ -312,6 +351,7 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                       <ChartTooltip content={<CustomTooltip />} />
                       <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
                       <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
+                      <Bar name="DNF" dataKey="dnf" fill="var(--color-dnf)" />
                       <Legend content={CustomLegend} verticalAlign="bottom" height={36} />
                     </BarChart>
                   </ResponsiveContainer>
@@ -326,7 +366,9 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                     <TableHead className="w-[80px]">연도</TableHead>
                     <TableHead>등록자</TableHead>
                     <TableHead>참가자</TableHead>
+                    <TableHead>DNF</TableHead>
                     <TableHead className="text-right">참가율</TableHead>
+                    <TableHead className="text-right">완주율</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -335,7 +377,9 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                       <TableCell className="font-medium">{item.year}년</TableCell>
                       <TableCell>{item.medioFondoRegistered}명</TableCell>
                       <TableCell>{item.medioFondoParticipants}명</TableCell>
+                      <TableCell>{item.medioFondoDNF}명</TableCell>
                       <TableCell className="text-right">{item.medioFondoRate}%</TableCell>
+                      <TableCell className="text-right">{item.medioFondoCompletionRate}%</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
