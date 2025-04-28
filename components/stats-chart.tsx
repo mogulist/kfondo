@@ -3,9 +3,11 @@
 import { getEventYearStats } from "@/lib/data"
 import { useSearchParams } from "next/navigation"
 import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, XAxis, YAxis } from "recharts"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { ChartContainer, ChartTooltip } from "@/components/ui/chart"
 import { motion } from "framer-motion"
 import { useMobile } from "@/hooks/use-mobile"
+import { useEffect, useState } from "react"
+import type { EventYearStats } from "@/lib/types"
 
 interface StatsChartProps {
   eventId: string
@@ -30,13 +32,74 @@ const CustomLegend = (props: any) => {
   )
 }
 
+// 커스텀 툴팁 컴포넌트
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    const timeRange = label // 시간 범위
+    const participants = payload[0].value // 참가자 수
+    const percentile = payload[0].payload.percentile // 백분위
+
+    return (
+      <div className="bg-background border border-border rounded-md shadow-md p-3 text-sm">
+        <p className="font-medium mb-2 text-foreground">{`시간 범위: ${timeRange}`}</p>
+        <div className="space-y-1">
+          <p className="text-sm text-foreground">{`참가자: ${participants}명`}</p>
+          <p className="text-sm text-foreground">{`상위: ${percentile}%`}</p>
+        </div>
+      </div>
+    )
+  }
+
+  return null
+}
+
+// X축 레이블 포맷팅 함수 추가
+const formatXAxisTick = (value: string, isMobile: boolean) => {
+  const parts = value.split(" - ")
+  if (isMobile) {
+    return parts[0]
+  }
+
+  // 모바일이 아닌 경우 5분 간격이면 일부 레이블만 표시
+  const time = parts[0]
+  const [hours, minutes] = time.split(":")
+
+  // 15분 간격으로만 레이블 표시 (5분, 20분, 35분, 50분은 빈 문자열 반환)
+  if (["00", "15", "30", "45"].includes(minutes)) {
+    return time
+  }
+  return ""
+}
+
 export function StatsChart({ eventId }: StatsChartProps) {
   const searchParams = useSearchParams()
   const yearParam = searchParams.get("year")
   const isMobile = useMobile()
   const isTablet = useMobile(1024) // 1024px 미만을 태블릿으로 간주
 
-  const stats = getEventYearStats(eventId, yearParam ? Number.parseInt(yearParam) : undefined)
+  const [stats, setStats] = useState<EventYearStats | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchStats() {
+      setLoading(true)
+      try {
+        const yearData = yearParam ? Number.parseInt(yearParam) : undefined
+        const statsData = await getEventYearStats(eventId, yearData)
+        setStats(statsData)
+      } catch (error) {
+        console.error("Error fetching stats:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchStats()
+  }, [eventId, yearParam])
+
+  if (loading) {
+    return <div className="flex h-full items-center justify-center">데이터를 불러오는 중...</div>
+  }
 
   if (!stats) {
     return <div className="flex h-full items-center justify-center">데이터가 없습니다.</div>
@@ -80,20 +143,11 @@ export function StatsChart({ eventId }: StatsChartProps) {
                     textAnchor="end"
                     height={isMobile ? 80 : 70}
                     tick={{ fontSize: isMobile ? 8 : 12 }}
-                    tickFormatter={(value) => (isMobile ? value.split(" - ")[0] : value.replace(" - ", "\n"))}
+                    tickFormatter={(value) => formatXAxisTick(value, isMobile)}
+                    interval={0}
                   />
                   <YAxis tick={{ fontSize: isMobile ? 10 : 12 }} width={isMobile ? 30 : 40} />
-                  <ChartTooltip
-                    content={
-                      <ChartTooltipContent
-                        formatter={(value, name, props) => {
-                          const { payload } = props
-                          const percentile = payload.percentile
-                          return [`${value}명`, `${name} (상위 ${percentile}%)`]
-                        }}
-                      />
-                    }
-                  />
+                  <ChartTooltip content={<CustomTooltip />} />
                   <Area
                     type="monotone"
                     name="참가자 수"
@@ -138,20 +192,11 @@ export function StatsChart({ eventId }: StatsChartProps) {
                     textAnchor="end"
                     height={isMobile ? 80 : 70}
                     tick={{ fontSize: isMobile ? 8 : 12 }}
-                    tickFormatter={(value) => (isMobile ? value.split(" - ")[0] : value.replace(" - ", "\n"))}
+                    tickFormatter={(value) => formatXAxisTick(value, isMobile)}
+                    interval={0}
                   />
                   <YAxis tick={{ fontSize: isMobile ? 10 : 12 }} width={isMobile ? 30 : 40} />
-                  <ChartTooltip
-                    content={
-                      <ChartTooltipContent
-                        formatter={(value, name, props) => {
-                          const { payload } = props
-                          const percentile = payload.percentile
-                          return [`${value}명`, `${name} (상위 ${percentile}%)`]
-                        }}
-                      />
-                    }
-                  />
+                  <ChartTooltip content={<CustomTooltip />} />
                   <Area
                     type="monotone"
                     name="참가자 수"

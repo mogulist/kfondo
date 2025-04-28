@@ -1,4 +1,5 @@
 import type { Event, EventYearData, EventYearStats } from "./types"
+import { parseCSV, generateTimeDistributionFromRecords, type RaceRecord } from "./csv-parser"
 
 // 그란폰도 이벤트 목록
 export const events: Event[] = [
@@ -162,6 +163,38 @@ const yangyangRealData: Record<
   },
 }
 
+// CSV 데이터 캐시
+const csvDataCache: Record<string, RaceRecord[]> = {}
+
+// CSV 파일에서 데이터 로드
+async function loadCSVData(eventId: string, year: number): Promise<RaceRecord[]> {
+  const cacheKey = `${eventId}_${year}`
+
+  // 캐시에 데이터가 있으면 반환
+  if (csvDataCache[cacheKey]) {
+    return csvDataCache[cacheKey]
+  }
+
+  try {
+    const response = await fetch(`/data/${eventId}_${year}.csv`)
+    if (!response.ok) {
+      console.error(`Failed to load CSV data for ${eventId} ${year}: ${response.statusText}`)
+      return []
+    }
+
+    const csvText = await response.text()
+    const records = await parseCSV(csvText)
+
+    // 캐시에 저장
+    csvDataCache[cacheKey] = records
+
+    return records
+  } catch (error) {
+    console.error(`Error loading CSV data for ${eventId} ${year}:`, error)
+    return []
+  }
+}
+
 // 연도별 참가자 데이터 생성 함수
 export function getEventData(eventId: string): EventYearData[] {
   const event = events.find((e) => e.id === eventId)
@@ -239,30 +272,7 @@ export function getEventData(eventId: string): EventYearData[] {
   })
 }
 
-// 특정 연도의 기록 분포 데이터 생성 함수
-export function getEventYearStats(eventId: string, year?: number): EventYearStats | null {
-  const event = events.find((e) => e.id === eventId)
-  if (!event) return null
-
-  // 연도가 지정되지 않은 경우 가장 최근 연도 사용
-  const targetYear = year || Math.max(...event.years)
-
-  if (!event.years.includes(targetYear)) return null
-
-  // 그란폰도 기록 분포 (가상 데이터)
-  const granFondoDistribution = generateTimeDistribution(4, 8, 30)
-
-  // 메디오폰도 기록 분포 (가상 데이터)
-  const medioFondoDistribution = generateTimeDistribution(2.5, 5, 25)
-
-  return {
-    year: targetYear,
-    granFondoDistribution,
-    medioFondoDistribution,
-  }
-}
-
-// 시간 분포 데이터 생성 함수
+// 시간 분포 데이터 생성 함수 (가상 데이터용)
 function generateTimeDistribution(minHours: number, maxHours: number, intervalMinutes: number) {
   const distribution = []
   const totalParticipants = 500 + Math.floor(Math.random() * 300)
@@ -270,6 +280,10 @@ function generateTimeDistribution(minHours: number, maxHours: number, intervalMi
   // 정규 분포와 유사하게 참가자 분포 생성
   const intervals = Math.ceil(((maxHours - minHours) * 60) / intervalMinutes)
   const midPoint = intervals / 2
+
+  // 실제 데이터 범위 (정규 분포의 중심을 기준으로)
+  const actualMinHours = minHours + 0.25 // 실제 데이터는 최소 시간보다 15분 뒤에 시작
+  const actualMaxHours = maxHours - 0.25 // 실제 데이터는 최대 시간보다 15분 전에 끝남
 
   let cumulativeParticipants = 0
 
@@ -285,14 +299,22 @@ function generateTimeDistribution(minHours: number, maxHours: number, intervalMi
     const timeRange = `${startHour}:${startMin.toString().padStart(2, "0")} - ${endHour}:${endMin.toString().padStart(2, "0")}`
 
     // 정규 분포 계산 (더 부드러운 곡선을 위해 표준편차 조정)
-    const distanceFromMid = (i - midPoint) / (midPoint / 2.5)
-    const normalValue = Math.exp(-0.5 * Math.pow(distanceFromMid, 2))
+    const currentHour = startMinutes / 60
 
-    // 총 참가자 수에 정규분포 값을 곱하여 해당 구간의 참가자 수 계산
-    let participants = Math.round(totalParticipants * normalValue * 0.25)
+    // 실제 데이터 범위 밖의 시간대는 참가자 수를 0 또는 매우 적게 설정
+    let participants = 0
 
-    // 최소 참가자 수 보장 (그래프가 0으로 떨어지지 않도록)
-    participants = Math.max(participants, 3)
+    if (currentHour >= actualMinHours && currentHour <= actualMaxHours) {
+      const normalizedPosition = (i - midPoint) / (midPoint / 2.5)
+      const normalValue = Math.exp(-0.5 * Math.pow(normalizedPosition, 2))
+      participants = Math.round(totalParticipants * normalValue * 0.25)
+
+      // 최소 참가자 수 보장 (그래프가 0으로 떨어지지 않도록)
+      participants = Math.max(participants, 3)
+    } else {
+      // 실제 데이터 범위 밖의 시간대는 매우 적은 참가자 수 (0~2명)
+      participants = Math.floor(Math.random() * 3)
+    }
 
     cumulativeParticipants += participants
 
@@ -307,4 +329,47 @@ function generateTimeDistribution(minHours: number, maxHours: number, intervalMi
   }
 
   return distribution
+}
+
+// 특정 연도의 기록 분포 데이터 생성 함수
+export async function getEventYearStats(eventId: string, year?: number): Promise<EventYearStats | null> {
+  const event = events.find((e) => e.id === eventId)
+  if (!event) return null
+
+  // 연도가 지정되지 않은 경우 가장 최근 연도 사용
+  const targetYear = year || Math.max(...event.years)
+
+  if (!event.years.includes(targetYear)) return null
+
+  // CSV 파일에서 데이터 로드 시도
+  try {
+    const records = await loadCSVData(eventId, targetYear)
+
+    if (records.length > 0) {
+      // CSV 데이터가 있으면 실제 데이터로 분포 생성
+      const granFondoDistribution = generateTimeDistributionFromRecords(records, "그란폰도", 5) // 5분 간격으로 변경
+      const medioFondoDistribution = generateTimeDistributionFromRecords(records, "메디오폰도", 5) // 5분 간격으로 변경
+
+      return {
+        year: targetYear,
+        granFondoDistribution,
+        medioFondoDistribution,
+      }
+    }
+  } catch (error) {
+    console.error(`Error generating stats from CSV for ${eventId} ${targetYear}:`, error)
+  }
+
+  // CSV 데이터가 없거나 오류 발생 시 가상 데이터 생성
+  // 그란폰도 기록 분포 (가상 데이터)
+  const granFondoDistribution = generateTimeDistribution(3.5, 8.5, 5) // 5분 간격으로 변경
+
+  // 메디오폰도 기록 분포 (가상 데이터)
+  const medioFondoDistribution = generateTimeDistribution(2, 5.5, 5) // 5분 간격으로 변경
+
+  return {
+    year: targetYear,
+    granFondoDistribution,
+    medioFondoDistribution,
+  }
 }
