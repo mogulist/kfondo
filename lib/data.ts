@@ -5,55 +5,82 @@ export const events: Event[] = [
   {
     id: "hongcheon",
     location: "홍천",
-    years: [2018, 2019, 2021, 2022, 2023],
+    years: [2022, 2023, 2024, 2025],
     color: {
       from: "#2563eb",
       to: "#1e40af",
     },
+    latestEvent: {
+      date: "2025.4.19",
+      granFondo: {
+        distance: 122,
+        elevation: 1594,
+      },
+      medioFondo: {
+        distance: 79,
+        elevation: 1144,
+      },
+    },
+    status: "ready",
   },
   {
     id: "yangyang",
     location: "양양",
-    years: [2019, 2020, 2021, 2022, 2023],
+    years: [2019, 2020, 2021, 2022, 2023, 2024, 2025],
     color: {
       from: "#0ea5e9",
       to: "#0369a1",
+    },
+    latestEvent: {
+      date: "2025.4.26",
+      granFondo: {
+        distance: 151,
+        elevation: 2380,
+      },
+      medioFondo: {
+        distance: 68,
+        elevation: 630,
+      },
     },
   },
   {
     id: "samcheok",
     location: "삼척",
-    years: [2020, 2021, 2022, 2023],
+    years: [2020, 2021, 2022, 2023, 2024],
     color: {
       from: "#10b981",
       to: "#047857",
     },
+    latestEvent: {
+      date: "2024",
+      granFondo: {
+        distance: 128,
+        elevation: 1668,
+      },
+      medioFondo: {
+        distance: 102,
+        elevation: 1201,
+      },
+    },
   },
   {
-    id: "pyeongchang",
-    location: "평창",
-    years: [2019, 2020, 2021, 2022, 2023],
+    id: "seorak",
+    location: "설악",
+    years: [2020, 2021, 2022, 2023, 2024],
     color: {
       from: "#8b5cf6",
       to: "#6d28d9",
     },
-  },
-  {
-    id: "jeju",
-    location: "제주",
-    years: [2018, 2019, 2020, 2021, 2022, 2023],
-    color: {
-      from: "#f59e0b",
-      to: "#d97706",
-    },
-  },
-  {
-    id: "geoje",
-    location: "거제",
-    years: [2019, 2020, 2021, 2022, 2023],
-    color: {
-      from: "#ef4444",
-      to: "#b91c1c",
+    latestEvent: {
+      date: "2024.5.18",
+      granFondo: {
+        distance: 208,
+        elevation: 3800,
+      },
+      medioFondo: {
+        distance: 105,
+        elevation: 1700,
+      },
     },
   },
 ]

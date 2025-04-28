@@ -1,34 +1,107 @@
 "use client"
 
+import type React from "react"
+
 import { Card, CardContent } from "@/components/ui/card"
 import type { Event } from "@/lib/types"
 import { motion } from "framer-motion"
 import Link from "next/link"
+import { Calendar, Mountain, ArrowUpRight } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
 
 interface EventCardProps {
   event: Event
 }
 
 export function EventCard({ event }: EventCardProps) {
+  const hasLatestEventInfo = !!event.latestEvent
+  const isReady = event.status === "ready"
+
+  // 상세 페이지로 이동 가능한지 여부에 따라 다른 컴포넌트 사용
+  const CardWrapper = ({ children }: { children: React.ReactNode }) => {
+    if (isReady) {
+      return <Link href={`/${event.id}`}>{children}</Link>
+    }
+    return <div>{children}</div>
+  }
+
   return (
-    <Link href={`/${event.id}`}>
-      <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
-        <Card className="overflow-hidden h-64 cursor-pointer">
+    <CardWrapper>
+      <motion.div
+        whileHover={isReady ? { y: -5 } : undefined}
+        transition={{ type: "spring", stiffness: 300 }}
+        className={isReady ? "" : "opacity-75"}
+      >
+        <Card className={`overflow-hidden h-auto ${isReady ? "cursor-pointer" : ""}`}>
           <CardContent className="p-0 h-full">
             <div
-              className="h-full flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-950 text-white"
+              className={`h-full flex flex-col bg-gradient-to-br from-slate-800 to-slate-950 text-white ${
+                hasLatestEventInfo ? "pb-4" : ""
+              } relative`}
               style={{
                 backgroundImage: event.color
                   ? `linear-gradient(to bottom right, ${event.color.from}, ${event.color.to})`
                   : undefined,
+                opacity: isReady ? 1 : 0.85,
               }}
             >
-              <h2 className="text-4xl font-bold tracking-tight">{event.location}</h2>
-              <div className="absolute bottom-4 right-4 text-sm opacity-80">{event.years.length}년 데이터</div>
+              {!isReady && (
+                <div className="absolute top-3 right-3 z-10">
+                  <Badge variant="outline" className="bg-background/30 text-white border-white/20 text-xs">
+                    준비중
+                  </Badge>
+                </div>
+              )}
+
+              <div className="flex-1 flex items-center justify-center py-8">
+                <h2 className="text-4xl font-bold tracking-tight">{event.location}</h2>
+              </div>
+
+              {hasLatestEventInfo && (
+                <div className="border-t border-white/20 pt-4 px-4 text-sm space-y-2">
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <Calendar className="h-4 w-4" />
+                      <span>{event.latestEvent.date}</span>
+                    </div>
+                    <div className="text-xs opacity-80">{event.years.length}년 데이터</div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div className="bg-white/10 p-2 rounded text-xs">
+                      <div className="font-medium">그란폰도</div>
+                      <div className="flex items-center gap-1 mt-1">
+                        <ArrowUpRight className="h-3.5 w-3.5" />
+                        <span>{event.latestEvent.granFondo.distance}km</span>
+                      </div>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <Mountain className="h-3.5 w-3.5" />
+                        <span>{event.latestEvent.granFondo.elevation}m</span>
+                      </div>
+                    </div>
+
+                    <div className="bg-white/10 p-2 rounded text-xs">
+                      <div className="font-medium">메디오폰도</div>
+                      <div className="flex items-center gap-1 mt-1">
+                        <ArrowUpRight className="h-3.5 w-3.5" />
+                        <span>{event.latestEvent.medioFondo.distance}km</span>
+                      </div>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <Mountain className="h-3.5 w-3.5" />
+                        <span>{event.latestEvent.medioFondo.elevation}m</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {!hasLatestEventInfo && (
+                <div className="absolute bottom-4 right-4 text-sm opacity-80">{event.years.length}년 데이터</div>
+              )}
             </div>
           </CardContent>
         </Card>
       </motion.div>
-    </Link>
+    </CardWrapper>
   )
 }

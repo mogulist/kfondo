@@ -6,6 +6,18 @@ export interface Event {
     from: string
     to: string
   }
+  latestEvent?: {
+    date: string
+    granFondo: {
+      distance: number
+      elevation: number
+    }
+    medioFondo: {
+      distance: number
+      elevation: number
+    }
+  }
+  status?: "ready"
 }
 
 export interface EventYearData {
