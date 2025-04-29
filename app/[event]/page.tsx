@@ -1,6 +1,6 @@
 import { ParticipantTrend } from "@/components/participant-trend";
 import { StatsChart } from "@/components/stats-chart";
-import { events, getEventData } from "@/lib/data";
+import { events, getEventData, realDataMap } from "@/lib/data";
 import { notFound } from "next/navigation";
 import path from "path";
 import fs from "fs";
@@ -9,7 +9,6 @@ import {
   type RaceRecord,
 } from "@/lib/csv-parser";
 import type { EventYearStats } from "@/lib/types";
-import { hongcheonRealData, yangyangRealData } from "@/lib/data";
 
 interface EventPageProps {
   params: {
@@ -28,12 +27,12 @@ export default async function EventPage({ params }: EventPageProps) {
 
   const eventData = getEventData(eventId);
 
-  // 홍천/양양 실제 기록 분포 차트 제공
+  // 실제 기록 분포 차트 제공 (확장성 개선)
   let yearStats: EventYearStats[] = [];
-  if (eventId === "hongcheon" || eventId === "yangyang") {
+  const realData = realDataMap[eventId];
+
+  if (realData) {
     const dataDir = path.join(process.cwd(), "data");
-    const realData =
-      eventId === "hongcheon" ? hongcheonRealData : yangyangRealData;
     const yearsWithData = event.years.filter((year) => {
       const filePath = path.join(dataDir, `${eventId}_${year}.json`);
       return fs.existsSync(filePath);

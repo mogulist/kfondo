@@ -391,7 +391,7 @@ export async function getEventYearStats(
     );
   }
 
-  // CSV 데이터가 없거나 오류 발생 시 null 반환
+  // 데이터가 없거나 오류 발생 시 null 반환
   return null;
 }
 
@@ -412,3 +412,22 @@ export async function getAllEventYearStats(
     .filter((stat): stat is EventYearStats => stat !== null)
     .sort((a, b) => b.year - a.year); // 최신 연도순으로 정렬
 }
+
+export const realDataMap: Record<
+  string,
+  Record<
+    number,
+    {
+      granFondoRegistered: number;
+      granFondoParticipants: number;
+      granFondoDNF: number;
+      medioFondoRegistered: number;
+      medioFondoParticipants: number;
+      medioFondoDNF: number;
+    }
+  >
+> = {
+  hongcheon: hongcheonRealData,
+  yangyang: yangyangRealData,
+  // 추후 이벤트 추가 시 여기에만 추가
+};
