@@ -9,7 +9,7 @@ import {
   type RaceRecord,
 } from "@/lib/csv-parser";
 import type { EventYearStats } from "@/lib/types";
-import { hongcheonRealData } from "@/lib/data";
+import { hongcheonRealData, yangyangRealData } from "@/lib/data";
 
 interface EventPageProps {
   params: {
@@ -28,19 +28,18 @@ export default async function EventPage({ params }: EventPageProps) {
 
   const eventData = getEventData(eventId);
 
-  // 홍천만 실제 기록 분포 차트 제공
+  // 홍천/양양 실제 기록 분포 차트 제공
   let yearStats: EventYearStats[] = [];
-  if (eventId === "hongcheon") {
-    // years 배열 기준으로 실제 데이터 파일이 있는 연도만 추림
+  if (eventId === "hongcheon" || eventId === "yangyang") {
     const dataDir = path.join(process.cwd(), "data");
+    const realData =
+      eventId === "hongcheon" ? hongcheonRealData : yangyangRealData;
     const yearsWithData = event.years.filter((year) => {
-      const filePath = path.join(dataDir, `hongcheon_${year}.json`);
+      const filePath = path.join(dataDir, `${eventId}_${year}.json`);
       return fs.existsSync(filePath);
     });
-
-    // 각 연도별로 실제 기록 데이터 읽어서 분포 데이터로 가공
     yearStats = yearsWithData.map((year) => {
-      const filePath = path.join(dataDir, `hongcheon_${year}.json`);
+      const filePath = path.join(dataDir, `${eventId}_${year}.json`);
       const raw = fs.readFileSync(filePath, "utf-8");
       const records: RaceRecord[] = JSON.parse(raw).map((r: any) => ({
         bibNo: String(r.BIB_NO),
@@ -57,18 +56,17 @@ export default async function EventPage({ params }: EventPageProps) {
           "그란폰도",
           2, // 2분 간격
           year,
-          hongcheonRealData[year].granFondoParticipants
+          realData[year]?.granFondoParticipants
         ),
         medioFondoDistribution: generateTimeDistributionFromRecords(
           records,
           "메디오폰도",
           2, // 2분 간격
           year,
-          hongcheonRealData[year].medioFondoParticipants
+          realData[year]?.medioFondoParticipants
         ),
       };
     });
-    // 최신 연도부터 내림차순 정렬
     yearStats.sort((a, b) => b.year - a.year);
   }
 
