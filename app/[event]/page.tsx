@@ -85,10 +85,10 @@ export default async function EventPage({ params }: EventPageProps) {
           </p>
         </div>
 
-        <div className="space-y-12">
+        <div className="space-y-16 md:space-y-20">
           <section className="space-y-4">
             <h2 className="text-2xl font-semibold">연도별 참가자 추세</h2>
-            <div className="h-[700px] md:h-[500px] w-full">
+            <div className="w-full">
               <ParticipantTrend eventData={eventData} />
             </div>
           </section>
