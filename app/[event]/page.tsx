@@ -9,10 +9,49 @@ import {
   type RaceRecord,
 } from "@/lib/csv-parser";
 import type { EventYearStats } from "@/lib/types";
+import type { Metadata } from "next";
 
 interface EventPageProps {
   params: {
     event: string;
+  };
+}
+
+// 동적 메타데이터 생성
+export async function generateMetadata({ params }: EventPageProps): Promise<Metadata> {
+  const { event: eventId } = params;
+  const event = events.find((e) => e.id === eventId);
+
+  if (!event) {
+    return {
+      title: "페이지를 찾을 수 없습니다 | FondoScope",
+      description: "요청하신 페이지를 찾을 수 없습니다.",
+    };
+  }
+
+  return {
+    title: event.meta.title,
+    description: event.meta.description,
+    openGraph: {
+      title: event.meta.title,
+      description: event.meta.description,
+      // 이미지가 준비되면 주석 해제
+      // images: [
+      //   {
+      //     url: event.meta.image,
+      //     width: 1200,
+      //     height: 630,
+      //     alt: `${event.location} 그란폰도`,
+      //   },
+      // ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: event.meta.title,
+      description: event.meta.description,
+      // 이미지가 준비되면 주석 해제
+      // images: [event.meta.image],
+    },
   };
 }
 
