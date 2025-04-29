@@ -108,18 +108,17 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
         </Tabs>
       </div>
 
-      <div className={`${isTablet ? "flex flex-col gap-12" : "grid grid-cols-2 gap-12"} h-full`}>
-        <div className={`${isMobile ? "h-[350px]" : "h-full"} w-full border-r-0 sm:border-r sm:pr-4 border-border/30`}>
+      <div className={`${isTablet ? "flex flex-col space-y-6" : "grid grid-cols-2 gap-8"} px-4`}>
+        <div className="w-full">
           <h3 className="text-lg font-medium mb-2">그란폰도</h3>
-
           {viewType === "chart" ? (
             isMobile ? (
               <div
                 ref={scrollRef}
-                className="relative h-[calc(100%-2rem)] overflow-x-auto pb-6 hide-scrollbar"
+                className="relative overflow-x-auto pb-6 hide-scrollbar"
                 style={{ overscrollBehavior: "contain" }}
               >
-                <div style={{ width: `${totalWidth}px`, height: "100%" }}>
+                <div style={{ width: `${totalWidth}px` }}>
                   <ChartContainer
                     config={{
                       registered: {
@@ -135,7 +134,6 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                         color: "hsl(0, 80%, 60%)",
                       },
                     }}
-                    className="h-full"
                   >
                     <BarChart
                       data={sortedData.map((d) => ({
@@ -145,24 +143,24 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                         dnf: d.granFondoDNF,
                       }))}
                       margin={{
-                        top: 10,
-                        right: 5,
-                        left: 5,
-                        bottom: 60,
+                        top: 20,
+                        right: 16,
+                        left: 16,
+                        bottom: 20,
                       }}
                       barSize={30}
-                      barGap={2} // 막대 간 간격 좁힘
+                      barGap={2}
                       width={totalWidth}
-                      height={300}
+                      height={320}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="year" tickFormatter={(value) => `${value}년`} height={50} />
-                      <YAxis type="number" domain={[0, "dataMax + 100"]} />
+                      <XAxis dataKey="year" tickFormatter={(value) => `${value}년`} height={35} />
+                      <YAxis type="number" domain={[0, "dataMax + 100"]} width={45} />
                       <ChartTooltip content={<CustomTooltip />} />
                       <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
                       <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
                       <Bar name="DNF" dataKey="dnf" fill="var(--color-dnf)" />
-                      <Legend content={CustomLegend} verticalAlign="bottom" height={50} />
+                      <Legend content={CustomLegend} verticalAlign="bottom" height={36} />
                     </BarChart>
                   </ChartContainer>
                 </div>
@@ -171,7 +169,7 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                 </div>
               </div>
             ) : (
-              <div className="h-[calc(100%-2rem)]">
+              <div>
                 <ChartContainer
                   config={{
                     registered: {
@@ -187,9 +185,8 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                       color: "hsl(0, 80%, 60%)",
                     },
                   }}
-                  className="h-full"
                 >
-                  <ResponsiveContainer width="100%" height="100%">
+                  <ResponsiveContainer width="100%" height={320}>
                     <BarChart
                       data={data.map((d) => ({
                         year: d.year,
@@ -198,17 +195,17 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                         dnf: d.granFondoDNF,
                       }))}
                       margin={{
-                        top: 10,
-                        right: 30,
-                        left: 0,
-                        bottom: 40,
+                        top: 20,
+                        right: 16,
+                        left: 16,
+                        bottom: 20,
                       }}
                       barSize={20}
-                      barGap={2} // 막대 간 간격 좁힘
+                      barGap={2}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="year" tick={{ fontSize: 12 }} tickFormatter={(value) => `${value}년`} />
-                      <YAxis tick={{ fontSize: 12 }} width={40} />
+                      <XAxis dataKey="year" tick={{ fontSize: 12 }} tickFormatter={(value) => `${value}년`} height={35} />
+                      <YAxis tick={{ fontSize: 12 }} width={45} />
                       <ChartTooltip content={<CustomTooltip />} />
                       <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
                       <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
@@ -220,7 +217,7 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
               </div>
             )
           ) : (
-            <div className="h-[calc(100%-2rem)] overflow-auto">
+            <div className="h-[250px] overflow-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -249,16 +246,16 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
           )}
         </div>
 
-        <div className={`${isMobile ? "h-[350px]" : "h-full"} w-full sm:pl-4`}>
+        <div className="w-full">
           <h3 className="text-lg font-medium mb-2">메디오폰도</h3>
-
           {viewType === "chart" ? (
             isMobile ? (
               <div
-                className="relative h-[calc(100%-2rem)] overflow-x-auto pb-6 hide-scrollbar"
+                ref={scrollRef}
+                className="relative overflow-x-auto pb-6 hide-scrollbar"
                 style={{ overscrollBehavior: "contain" }}
               >
-                <div style={{ width: `${totalWidth}px`, height: "100%" }}>
+                <div style={{ width: `${totalWidth}px` }}>
                   <ChartContainer
                     config={{
                       registered: {
@@ -274,7 +271,6 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                         color: "hsl(0, 80%, 60%)",
                       },
                     }}
-                    className="h-full"
                   >
                     <BarChart
                       data={sortedData.map((d) => ({
@@ -284,24 +280,24 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                         dnf: d.medioFondoDNF,
                       }))}
                       margin={{
-                        top: 10,
-                        right: 5,
-                        left: 5,
-                        bottom: 60,
+                        top: 20,
+                        right: 16,
+                        left: 16,
+                        bottom: 20,
                       }}
                       barSize={30}
-                      barGap={2} // 막대 간 간격 좁힘
+                      barGap={2}
                       width={totalWidth}
-                      height={300}
+                      height={320}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="year" tickFormatter={(value) => `${value}년`} height={50} />
-                      <YAxis type="number" domain={[0, "dataMax + 100"]} />
+                      <XAxis dataKey="year" tickFormatter={(value) => `${value}년`} height={35} />
+                      <YAxis type="number" domain={[0, "dataMax + 100"]} width={45} />
                       <ChartTooltip content={<CustomTooltip />} />
                       <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
                       <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
                       <Bar name="DNF" dataKey="dnf" fill="var(--color-dnf)" />
-                      <Legend content={CustomLegend} verticalAlign="bottom" height={50} />
+                      <Legend content={CustomLegend} verticalAlign="bottom" height={36} />
                     </BarChart>
                   </ChartContainer>
                 </div>
@@ -310,7 +306,7 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                 </div>
               </div>
             ) : (
-              <div className="h-[calc(100%-2rem)]">
+              <div>
                 <ChartContainer
                   config={{
                     registered: {
@@ -326,9 +322,8 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                       color: "hsl(0, 80%, 60%)",
                     },
                   }}
-                  className="h-full"
                 >
-                  <ResponsiveContainer width="100%" height="100%">
+                  <ResponsiveContainer width="100%" height={320}>
                     <BarChart
                       data={data.map((d) => ({
                         year: d.year,
@@ -337,17 +332,17 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
                         dnf: d.medioFondoDNF,
                       }))}
                       margin={{
-                        top: 10,
-                        right: 30,
-                        left: 0,
-                        bottom: 40,
+                        top: 20,
+                        right: 16,
+                        left: 16,
+                        bottom: 20,
                       }}
                       barSize={20}
-                      barGap={2} // 막대 간 간격 좁힘
+                      barGap={2}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="year" tick={{ fontSize: 12 }} tickFormatter={(value) => `${value}년`} />
-                      <YAxis tick={{ fontSize: 12 }} width={40} />
+                      <XAxis dataKey="year" tick={{ fontSize: 12 }} tickFormatter={(value) => `${value}년`} height={35} />
+                      <YAxis tick={{ fontSize: 12 }} width={45} />
                       <ChartTooltip content={<CustomTooltip />} />
                       <Bar name="등록자" dataKey="registered" fill="var(--color-registered)" />
                       <Bar name="참가자" dataKey="participants" fill="var(--color-participants)" />
@@ -359,7 +354,7 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
               </div>
             )
           ) : (
-            <div className="h-[calc(100%-2rem)] overflow-auto">
+            <div className="h-[250px] overflow-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
