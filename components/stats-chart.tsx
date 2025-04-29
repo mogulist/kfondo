@@ -151,7 +151,7 @@ export function StatsChart({ yearStats }: StatsChartProps) {
                           top: 10,
                           right: isMobile ? 10 : 30,
                           left: isMobile ? 0 : 0,
-                          bottom: isMobile ? 70 : 30,
+                          bottom: isMobile ? 10 : 30,
                         }}
                       >
                         <CartesianGrid strokeDasharray="3 3" />
@@ -160,7 +160,7 @@ export function StatsChart({ yearStats }: StatsChartProps) {
                           angle={-45}
                           textAnchor="end"
                           height={isMobile ? 80 : 70}
-                          tick={{ fontSize: isMobile ? 8 : 12 }}
+                          tick={{ fontSize: isMobile ? 11 : 12 }}
                           tickFormatter={(value) =>
                             formatXAxisTick(value, isMobile, intervalMinutes)
                           }
@@ -169,13 +169,13 @@ export function StatsChart({ yearStats }: StatsChartProps) {
                           label={{
                             value: "기록",
                             position: "insideBottom",
-                            offset: 15,
+                            offset: 20,
                             style: { textAnchor: "middle" },
                           }}
                         />
                         <YAxis
-                          tick={{ fontSize: isMobile ? 10 : 12 }}
-                          width={isMobile ? 30 : 40}
+                          tick={{ fontSize: isMobile ? 11 : 12 }}
+                          width={isMobile ? 40 : 40}
                           label={{
                             value: "인원",
                             angle: -90,
@@ -228,7 +228,7 @@ export function StatsChart({ yearStats }: StatsChartProps) {
                           top: 10,
                           right: isMobile ? 10 : 30,
                           left: isMobile ? 0 : 0,
-                          bottom: isMobile ? 70 : 30,
+                          bottom: isMobile ? 10 : 30,
                         }}
                       >
                         <CartesianGrid strokeDasharray="3 3" />
@@ -237,7 +237,7 @@ export function StatsChart({ yearStats }: StatsChartProps) {
                           angle={-45}
                           textAnchor="end"
                           height={isMobile ? 80 : 70}
-                          tick={{ fontSize: isMobile ? 8 : 12 }}
+                          tick={{ fontSize: isMobile ? 11 : 12 }}
                           tickFormatter={(value) =>
                             formatXAxisTick(value, isMobile, intervalMinutes)
                           }
@@ -246,13 +246,13 @@ export function StatsChart({ yearStats }: StatsChartProps) {
                           label={{
                             value: "기록",
                             position: "insideBottom",
-                            offset: 15,
+                            offset: 20,
                             style: { textAnchor: "middle" },
                           }}
                         />
                         <YAxis
-                          tick={{ fontSize: isMobile ? 10 : 12 }}
-                          width={isMobile ? 30 : 40}
+                          tick={{ fontSize: isMobile ? 11 : 12 }}
+                          width={isMobile ? 40 : 40}
                           label={{
                             value: "인원",
                             angle: -90,
