@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://fondoscope.com
+
+# Sitemaps
+Sitemap: https://fondoscope.com/sitemap.xml 
