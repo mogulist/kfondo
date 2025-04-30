@@ -29,7 +29,8 @@ export const events: Event[] = [
     status: "ready",
     meta: {
       title: "홍천 그란폰도 | FondoScope",
-      description: "홍천 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2022년부터 2025년까지의 데이터를 제공합니다.",
+      description:
+        "홍천 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2022년부터 2025년까지의 데이터를 제공합니다.",
       image: "/images/hongcheon-og.jpg", // 홍천 그란폰도 대표 이미지
     },
   },
@@ -55,8 +56,35 @@ export const events: Event[] = [
     status: "ready",
     meta: {
       title: "양양 그란폰도 | FondoScope",
-      description: "양양 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2024년부터 2025년까지의 데이터를 제공합니다.",
+      description:
+        "양양 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2024년부터 2025년까지의 데이터를 제공합니다.",
       image: "/images/yangyang-og.jpg", // 양양 그란폰도 대표 이미지
+    },
+  },
+  {
+    id: "yeongsan",
+    location: "영산강",
+    years: [2023, 2024, 2025],
+    color: {
+      from: "#0ea5e9",
+      to: "#0369a1",
+    },
+    latestEvent: {
+      date: "2025.4.26",
+      granFondo: {
+        distance: 121,
+        elevation: 1000,
+      },
+      medioFondo: {
+        distance: 104,
+        elevation: 757,
+      },
+    },
+    meta: {
+      title: "영산 그란폰도 | FondoScope",
+      description:
+        "영산 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2023년부터 2025년까지의 데이터를 제공합니다.",
+      image: "/images/yeongsan-og.jpg", // 영산 그란폰도 대표 이미지
     },
   },
   {
@@ -80,7 +108,8 @@ export const events: Event[] = [
     },
     meta: {
       title: "삼척 그란폰도 | FondoScope",
-      description: "삼척 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
+      description:
+        "삼척 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
       image: "/images/samcheok-og.jpg", // 삼척 그란폰도 대표 이미지
     },
   },
@@ -105,7 +134,8 @@ export const events: Event[] = [
     },
     meta: {
       title: "설악 그란폰도 | FondoScope",
-      description: "설악 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
+      description:
+        "설악 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
       image: "/images/seorak-og.jpg", // 설악 그란폰도 대표 이미지
     },
   },
