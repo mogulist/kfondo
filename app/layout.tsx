@@ -3,6 +3,7 @@ import "@/app/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -88,6 +89,7 @@ export default function RootLayout({
               </div>
             </header>
             {children}
+            <Analytics />
             <footer className="border-t mt-12">
               <div className="container mx-auto px-4 py-8">
                 <p className="text-center text-sm text-muted-foreground">
