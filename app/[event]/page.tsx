@@ -1,5 +1,6 @@
 import { ParticipantTrend } from "@/components/participant-trend";
 import { StatsChart } from "@/components/stats-chart";
+import { DisqusComments } from "@/components/disqus-comments";
 import { events, getEventData, realDataMap } from "@/lib/data";
 import { notFound } from "next/navigation";
 import path from "path";
@@ -134,6 +135,14 @@ export default async function EventPage({ params }: EventPageProps) {
             <div className="w-full">
               <StatsChart yearStats={yearStats} />
             </div>
+          </section>
+
+          <section className="space-y-4">
+            <h2 className="text-2xl font-semibold">댓글</h2>
+            <DisqusComments 
+              eventId={eventId} 
+              eventTitle={`${event.location} 그란폰도`} 
+            />
           </section>
         </div>
       </div>
