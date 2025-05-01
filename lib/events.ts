@@ -92,6 +92,7 @@ export const events: Event[] = [
       from: "#0ea5e9",
       to: "#0369a1",
     },
+    status: "ready",
     latestEvent: {
       date: "2025.4.26",
       granFondo: {
