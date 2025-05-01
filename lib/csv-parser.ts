@@ -1,13 +1,13 @@
 // CSV 파일을 파싱하는 유틸리티 함수
 
-export interface RaceRecord {
+export type RaceRecord = {
   bibNo: string;
   gender: string;
   event: string;
   time: string;
   status: string;
-  timeInSeconds?: number; // 시간을 초 단위로 변환한 값
-}
+  timeInSeconds?: number;
+};
 
 // HH:MM:SS 형식의 시간 문자열을 초 단위로 변환하는 함수
 export function timeToSeconds(timeStr: string): number {
@@ -21,37 +21,6 @@ export function timeToSeconds(timeStr: string): number {
   const seconds = Number.parseInt(parts[2], 10);
 
   return hours * 3600 + minutes * 60 + seconds;
-}
-
-// CSV 문자열을 파싱하여 레코드 배열로 변환하는 함수
-export async function parseCSV(csvText: string): Promise<RaceRecord[]> {
-  const lines = csvText.trim().split("\n");
-  if (lines.length <= 1) return [];
-
-  const headers = lines[0].split(",");
-  const records: RaceRecord[] = [];
-
-  for (let i = 1; i < lines.length; i++) {
-    const values = lines[i].split(",");
-    if (values.length !== headers.length) continue;
-
-    const record: RaceRecord = {
-      bibNo: values[0],
-      gender: values[1],
-      event: values[2],
-      time: values[3],
-      status: values[4],
-    };
-
-    // 시간을 초 단위로 변환
-    if (record.time && record.status !== "DNF" && record.status !== "DNS") {
-      record.timeInSeconds = timeToSeconds(record.time);
-    }
-
-    records.push(record);
-  }
-
-  return records;
 }
 
 // 레코드 배열에서 시간 분포 데이터를 생성하는 함수

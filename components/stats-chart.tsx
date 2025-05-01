@@ -1,7 +1,5 @@
 "use client";
 
-import { getEventYearStats } from "@/lib/data";
-import { useSearchParams } from "next/navigation";
 import {
   Area,
   AreaChart,
@@ -14,7 +12,6 @@ import {
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { motion } from "framer-motion";
 import { useMobile } from "@/hooks/use-mobile";
-import { useEffect, useState } from "react";
 import type { EventYearStats } from "@/lib/types";
 
 interface StatsChartProps {

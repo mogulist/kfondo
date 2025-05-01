@@ -23,6 +23,9 @@ export interface Event {
     description: string;
     image: string;
   };
+  registered: {
+    [year: number]: GranMedio;
+  };
 }
 
 export interface EventYearData {

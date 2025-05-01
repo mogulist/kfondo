@@ -12,11 +12,11 @@ import {
 import type { EventYearStats } from "@/lib/types";
 import type { Metadata } from "next";
 
-interface EventPageProps {
+type EventPageProps = {
   params: {
     event: string;
   };
-}
+};
 
 // 동적 메타데이터 생성
 export async function generateMetadata({
