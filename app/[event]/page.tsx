@@ -1,8 +1,8 @@
 import { ParticipantTrend } from "@/components/participant-trend";
 import { StatsChart } from "@/components/stats-chart";
 import { DisqusComments } from "@/components/disqus-comments";
-import { events, getEventData, realDataMap } from "@/lib/data";
-import { notFound } from "next/navigation";
+import { events } from "@/lib/events";
+import { calculateParticipants, calculateDNF } from "@/lib/participants";
 import path from "path";
 import fs from "fs";
 import {
@@ -11,6 +11,7 @@ import {
 } from "@/lib/csv-parser";
 import type { EventYearStats } from "@/lib/types";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 type EventPageProps = {
   params: {
@@ -67,49 +68,58 @@ export default async function EventPage({ params }: EventPageProps) {
     notFound();
   }
 
-  const eventData = getEventData(eventId);
+  // 연도별 데이터 생성
+  const eventData = event.years.map((year) => ({
+    year,
+    registered: event.registered[year] || { granfondo: 0, mediofondo: 0 },
+    participants: calculateParticipants(eventId, year),
+    dnf: calculateDNF(eventId, year),
+  }));
 
   // 실제 기록 분포 차트 제공 (확장성 개선)
   let yearStats: EventYearStats[] = [];
-  const realData = realDataMap[eventId];
+  const dataDir = path.join(process.cwd(), "data");
+  const yearsWithData = event.years.filter((year) => {
+    const filePath = path.join(dataDir, `${eventId}_${year}.json`);
+    return fs.existsSync(filePath);
+  });
 
-  if (realData) {
-    const dataDir = path.join(process.cwd(), "data");
-    const yearsWithData = event.years.filter((year) => {
-      const filePath = path.join(dataDir, `${eventId}_${year}.json`);
-      return fs.existsSync(filePath);
-    });
-    yearStats = yearsWithData.map((year) => {
-      const filePath = path.join(dataDir, `${eventId}_${year}.json`);
-      const raw = fs.readFileSync(filePath, "utf-8");
-      const records: RaceRecord[] = JSON.parse(raw).map((r: any) => ({
-        bibNo: String(r.BIB_NO),
-        gender: r.Gender,
-        event: r.Event,
-        time: r.Time,
-        status: r.Status,
-        timeInSeconds: r.Time ? timeToSeconds(r.Time) : undefined,
-      }));
-      return {
+  yearStats = yearsWithData.map((year) => {
+    const filePath = path.join(dataDir, `${eventId}_${year}.json`);
+    const raw = fs.readFileSync(filePath, "utf-8");
+    const records: RaceRecord[] = JSON.parse(raw).map((r: any) => ({
+      bibNo: String(r.BIB_NO),
+      gender: r.Gender,
+      event: r.Event,
+      time: r.Time,
+      status: r.Status,
+      timeInSeconds: r.Time ? timeToSeconds(r.Time) : undefined,
+    }));
+
+    const yearData = eventData.find((d) => d.year === year);
+    if (!yearData) {
+      throw new Error(`No data found for year ${year}`);
+    }
+
+    return {
+      year,
+      granFondoDistribution: generateTimeDistributionFromRecords(
+        records,
+        "그란폰도",
+        2, // 2분 간격
         year,
-        granFondoDistribution: generateTimeDistributionFromRecords(
-          records,
-          "그란폰도",
-          2, // 2분 간격
-          year,
-          realData[year]?.participants?.granfondo
-        ),
-        medioFondoDistribution: generateTimeDistributionFromRecords(
-          records,
-          "메디오폰도",
-          2, // 2분 간격
-          year,
-          realData[year]?.participants?.mediofondo
-        ),
-      };
-    });
-    yearStats.sort((a, b) => b.year - a.year);
-  }
+        yearData.participants.granfondo
+      ),
+      medioFondoDistribution: generateTimeDistributionFromRecords(
+        records,
+        "메디오폰도",
+        2, // 2분 간격
+        year,
+        yearData.participants.mediofondo
+      ),
+    };
+  });
+  yearStats.sort((a, b) => b.year - a.year);
 
   return (
     <main className="container mx-auto px-4 py-12">
