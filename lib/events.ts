@@ -122,6 +122,55 @@ export const events: Event[] = [
     },
   },
   {
+    id: "seorak",
+    location: "설악",
+    years: [2022, 2023, 2024],
+    color: {
+      from: "#8b5cf6",
+      to: "#6d28d9",
+    },
+    status: "ready",
+    latestEvent: {
+      date: "2024.5.18",
+      granFondo: {
+        distance: 208,
+        elevation: 3800,
+      },
+      medioFondo: {
+        distance: 105,
+        elevation: 1700,
+      },
+    },
+    meta: {
+      title: "설악 그란폰도 | FondoScope",
+      description:
+        "설악 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
+      image: "/images/seorak-og.jpg", // 설악 그란폰도 대표 이미지
+    },
+    registered: {
+      2024: {
+        granfondo: 3370,
+        mediofondo: 2470,
+      },
+      2023: {
+        granfondo: 2926,
+        mediofondo: 2995,
+      },
+      2022: {
+        granfondo: 2125,
+        mediofondo: 2175,
+      },
+      2021: {
+        granfondo: 0,
+        mediofondo: 0,
+      },
+      2020: {
+        granfondo: 0,
+        mediofondo: 0,
+      },
+    },
+  },
+  {
     id: "samcheok",
     location: "삼척",
     years: [2020, 2021, 2022, 2023, 2024],
@@ -145,54 +194,6 @@ export const events: Event[] = [
       description:
         "삼척 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
       image: "/images/samcheok-og.jpg", // 삼척 그란폰도 대표 이미지
-    },
-    registered: {
-      2024: {
-        granfondo: 0,
-        mediofondo: 0,
-      },
-      2023: {
-        granfondo: 0,
-        mediofondo: 0,
-      },
-      2022: {
-        granfondo: 0,
-        mediofondo: 0,
-      },
-      2021: {
-        granfondo: 0,
-        mediofondo: 0,
-      },
-      2020: {
-        granfondo: 0,
-        mediofondo: 0,
-      },
-    },
-  },
-  {
-    id: "seorak",
-    location: "설악",
-    years: [2020, 2021, 2022, 2023, 2024],
-    color: {
-      from: "#8b5cf6",
-      to: "#6d28d9",
-    },
-    latestEvent: {
-      date: "2024.5.18",
-      granFondo: {
-        distance: 208,
-        elevation: 3800,
-      },
-      medioFondo: {
-        distance: 105,
-        elevation: 1700,
-      },
-    },
-    meta: {
-      title: "설악 그란폰도 | FondoScope",
-      description:
-        "설악 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
-      image: "/images/seorak-og.jpg", // 설악 그란폰도 대표 이미지
     },
     registered: {
       2024: {
