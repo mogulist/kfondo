@@ -89,8 +89,8 @@ export const events: Event[] = [
     location: "영산강",
     years: [2023, 2024, 2025],
     color: {
-      from: "#0ea5e9",
-      to: "#0369a1",
+      from: "#a855f7", // 보라색 계열 (예: purple-500)
+      to: "#6d28d9", // 더 진한 보라색 (예: purple-700)
     },
     status: "ready",
     latestEvent: {

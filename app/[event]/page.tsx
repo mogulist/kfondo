@@ -5,10 +5,9 @@ import { events } from "@/lib/events";
 import { calculateParticipants, calculateDNF } from "@/lib/participants";
 import path from "path";
 import fs from "fs";
-import {
-  generateTimeDistributionFromRecords,
-  type RaceRecord,
-} from "@/lib/csv-parser";
+import { generateTimeDistributionFromRecords } from "@/lib/record-stats";
+import type { RaceRecord } from "@/lib/types";
+import { timeToSeconds } from "@/lib/utils";
 import type { EventYearStats } from "@/lib/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -19,47 +18,6 @@ type EventPageProps = {
   };
 };
 
-// 동적 메타데이터 생성
-export async function generateMetadata({
-  params,
-}: EventPageProps): Promise<Metadata> {
-  const { event: eventId } = await params;
-  const event = events.find((e) => e.id === eventId);
-
-  if (!event) {
-    return {
-      title: "페이지를 찾을 수 없습니다 | FondoScope",
-      description: "요청하신 페이지를 찾을 수 없습니다.",
-    };
-  }
-
-  return {
-    title: event.meta.title,
-    description: event.meta.description,
-    openGraph: {
-      title: event.meta.title,
-      description: event.meta.description,
-      // 이미지가 준비되면 주석 해제
-      // images: [
-      //   {
-      //     url: event.meta.image,
-      //     width: 1200,
-      //     height: 630,
-      //     alt: `${event.location} 그란폰도`,
-      //   },
-      // ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: event.meta.title,
-      description: event.meta.description,
-      // 이미지가 준비되면 주석 해제
-      // images: [event.meta.image],
-    },
-  };
-}
-
-// 서버 컴포넌트 (SSG)
 export default async function EventPage({ params }: EventPageProps) {
   const { event: eventId } = await params;
   const event = events.find((e) => e.id === eventId);
@@ -162,13 +120,42 @@ export default async function EventPage({ params }: EventPageProps) {
   );
 }
 
-// 시간 문자열을 초로 변환 (csv-parser.ts와 동일)
-function timeToSeconds(timeStr: string): number {
-  if (!timeStr || timeStr === "DNF" || timeStr === "DNS") return 0;
-  const parts = timeStr.split(":");
-  if (parts.length !== 3) return 0;
-  const hours = Number.parseInt(parts[0], 10);
-  const minutes = Number.parseInt(parts[1], 10);
-  const seconds = Number.parseInt(parts[2], 10);
-  return hours * 3600 + minutes * 60 + seconds;
+// 동적 메타데이터 생성
+export async function generateMetadata({
+  params,
+}: EventPageProps): Promise<Metadata> {
+  const { event: eventId } = await params;
+  const event = events.find((e) => e.id === eventId);
+
+  if (!event) {
+    return {
+      title: "페이지를 찾을 수 없습니다 | FondoScope",
+      description: "요청하신 페이지를 찾을 수 없습니다.",
+    };
+  }
+
+  return {
+    title: event.meta.title,
+    description: event.meta.description,
+    openGraph: {
+      title: event.meta.title,
+      description: event.meta.description,
+      // 이미지가 준비되면 주석 해제
+      // images: [
+      //   {
+      //     url: event.meta.image,
+      //     width: 1200,
+      //     height: 630,
+      //     alt: `${event.location} 그란폰도`,
+      //   },
+      // ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: event.meta.title,
+      description: event.meta.description,
+      // 이미지가 준비되면 주석 해제
+      // images: [event.meta.image],
+    },
+  };
 }

@@ -1,4 +1,4 @@
-export interface Event {
+export type Event = {
   id: string;
   location: string;
   years: number[];
@@ -26,9 +26,9 @@ export interface Event {
   registered: {
     [year: number]: GranMedio;
   };
-}
+};
 
-export interface EventYearData {
+export type EventYearData = {
   year: number;
   granFondoRegistered: number;
   granFondoParticipants: number;
@@ -36,7 +36,7 @@ export interface EventYearData {
   medioFondoParticipants: number;
   granFondoDNF?: number;
   medioFondoDNF?: number;
-}
+};
 
 export type GranMedio = {
   granfondo: number;
@@ -57,14 +57,23 @@ export type EventYear = {
   dnf: GranMedio;
 };
 
-export interface TimeDistribution {
+export type TimeDistribution = {
   timeRange: string;
   participants: number;
   percentile: number;
-}
+};
 
-export interface EventYearStats {
+export type EventYearStats = {
   year: number;
   granFondoDistribution: TimeDistribution[];
   medioFondoDistribution: TimeDistribution[];
-}
+};
+
+export type RaceRecord = {
+  bibNo: string;
+  gender: string;
+  event: string;
+  time: string;
+  status: string;
+  timeInSeconds?: number;
+};

@@ -1,29 +1,6 @@
-// CSV 파일을 파싱하는 유틸리티 함수
-
-export type RaceRecord = {
-  bibNo: string;
-  gender: string;
-  event: string;
-  time: string;
-  status: string;
-  timeInSeconds?: number;
-};
-
-// HH:MM:SS 형식의 시간 문자열을 초 단위로 변환하는 함수
-export function timeToSeconds(timeStr: string): number {
-  if (!timeStr || timeStr === "DNF" || timeStr === "DNS") return 0;
-
-  const parts = timeStr.split(":");
-  if (parts.length !== 3) return 0;
-
-  const hours = Number.parseInt(parts[0], 10);
-  const minutes = Number.parseInt(parts[1], 10);
-  const seconds = Number.parseInt(parts[2], 10);
-
-  return hours * 3600 + minutes * 60 + seconds;
-}
-
 // 레코드 배열에서 시간 분포 데이터를 생성하는 함수
+import type { RaceRecord } from "./types";
+
 export function generateTimeDistributionFromRecords(
   records: RaceRecord[],
   eventType: string,
@@ -58,6 +35,12 @@ export function generateTimeDistributionFromRecords(
   const paddingTime = 5 * 60; // 5분의 여유 공간
   minTime = Math.max(0, minTime - paddingTime);
   maxTime = maxTime + paddingTime;
+
+  // minTime을 항상 짝수분(0,2,4,...)으로 보정
+  const minMinutes = Math.floor(minTime / 60);
+  if (minMinutes % 2 !== 0) {
+    minTime += 60; // 1분 추가해서 짝수분으로 맞춤
+  }
 
   // 시간을 시간 단위로 변환
   const minHours = minTime / 3600;
