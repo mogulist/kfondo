@@ -1,4 +1,9 @@
-import type { Event, EventYearData, EventYearStats } from "./types";
+import type {
+  Event,
+  EventYearStats,
+  EventYear,
+  EventYearInitial,
+} from "./types";
 import {
   parseCSV,
   generateTimeDistributionFromRecords,
@@ -141,82 +146,6 @@ export const events: Event[] = [
   },
 ];
 
-// 홍천 그란폰도 실제 데이터
-export const hongcheonRealData: Record<
-  number,
-  {
-    granFondoRegistered: number;
-    granFondoParticipants: number;
-    granFondoDNF: number;
-    medioFondoRegistered: number;
-    medioFondoParticipants: number;
-    medioFondoDNF: number;
-  }
-> = {
-  2025: {
-    granFondoRegistered: 1876,
-    granFondoParticipants: 1202,
-    granFondoDNF: 82,
-    medioFondoRegistered: 1204,
-    medioFondoParticipants: 1051,
-    medioFondoDNF: 27,
-  },
-  2024: {
-    granFondoRegistered: 1986,
-    granFondoParticipants: 1607,
-    granFondoDNF: 67,
-    medioFondoRegistered: 1178,
-    medioFondoParticipants: 1026,
-    medioFondoDNF: 38,
-  },
-  2023: {
-    granFondoRegistered: 2580,
-    granFondoParticipants: 2230,
-    granFondoDNF: 144,
-    medioFondoRegistered: 1350,
-    medioFondoParticipants: 1204,
-    medioFondoDNF: 38,
-  },
-  2022: {
-    granFondoRegistered: 3228,
-    granFondoParticipants: 730,
-    granFondoDNF: 113,
-    medioFondoRegistered: 772,
-    medioFondoParticipants: 161,
-    medioFondoDNF: 23,
-  },
-};
-
-// 양양 그란폰도 실제 데이터
-export const yangyangRealData: Record<
-  number,
-  {
-    granFondoRegistered: number;
-    granFondoParticipants: number;
-    granFondoDNF: number;
-    medioFondoRegistered: number;
-    medioFondoParticipants: number;
-    medioFondoDNF: number;
-  }
-> = {
-  2025: {
-    granFondoRegistered: 1241,
-    granFondoParticipants: 1011,
-    granFondoDNF: 190,
-    medioFondoRegistered: 809,
-    medioFondoParticipants: 672,
-    medioFondoDNF: 76,
-  },
-  2024: {
-    granFondoRegistered: 1200,
-    granFondoParticipants: 975,
-    granFondoDNF: 172,
-    medioFondoRegistered: 700,
-    medioFondoParticipants: 576,
-    medioFondoDNF: 143,
-  },
-};
-
 // CSV 데이터 캐시
 const csvDataCache: Record<string, RaceRecord[]> = {};
 
@@ -255,79 +184,32 @@ async function loadCSVData(
 }
 
 // 연도별 참가자 데이터 생성 함수
-export function getEventData(eventId: string): EventYearData[] {
+export function getEventData(eventId: string): EventYear[] {
   const event = events.find((e) => e.id === eventId);
   if (!event) return [];
 
-  // 홍천 그란폰도의 경우 실제 데이터 사용
-  if (eventId === "hongcheon") {
-    return event.years.map((year) => {
-      const yearData = hongcheonRealData[year];
-
-      if (!yearData) {
-        return {
-          year,
-          granFondoRegistered: 0,
-          granFondoParticipants: 0,
-          medioFondoRegistered: 0,
-          medioFondoParticipants: 0,
-          granFondoDNF: 0,
-          medioFondoDNF: 0,
-        };
-      }
-
-      return {
-        year,
-        granFondoRegistered: yearData.granFondoRegistered,
-        granFondoParticipants: yearData.granFondoParticipants,
-        medioFondoRegistered: yearData.medioFondoRegistered,
-        medioFondoParticipants: yearData.medioFondoParticipants,
-        granFondoDNF: yearData.granFondoDNF,
-        medioFondoDNF: yearData.medioFondoDNF,
-      };
-    });
-  }
-
-  // 양양 그란폰도의 경우 실제 데이터 사용
-  if (eventId === "yangyang") {
-    return event.years.map((year) => {
-      const yearData = yangyangRealData[year];
-
-      if (!yearData) {
-        return {
-          year,
-          granFondoRegistered: 0,
-          granFondoParticipants: 0,
-          medioFondoRegistered: 0,
-          medioFondoParticipants: 0,
-          granFondoDNF: 0,
-          medioFondoDNF: 0,
-        };
-      }
-
-      return {
-        year,
-        granFondoRegistered: yearData.granFondoRegistered,
-        granFondoParticipants: yearData.granFondoParticipants,
-        medioFondoRegistered: yearData.medioFondoRegistered,
-        medioFondoParticipants: yearData.medioFondoParticipants,
-        granFondoDNF: yearData.granFondoDNF,
-        medioFondoDNF: yearData.medioFondoDNF,
-      };
-    });
-  }
-
-  // 다른 이벤트는 가상 데이터 생성
   return event.years.map((year) => {
-    return {
-      year,
-      granFondoRegistered: 0,
-      granFondoParticipants: 0,
-      medioFondoRegistered: 0,
-      medioFondoParticipants: 0,
-      granFondoDNF: 0,
-      medioFondoDNF: 0,
-    };
+    const yearlyData = realDataMap[eventId].find((d) => d.year === year);
+
+    if (!yearlyData) {
+      return {
+        year,
+        registered: {
+          granfondo: 0,
+          mediofondo: 0,
+        },
+        participants: {
+          granfondo: 0,
+          mediofondo: 0,
+        },
+        dnf: {
+          granfondo: 0,
+          mediofondo: 0,
+        },
+      };
+    }
+
+    return yearlyData;
   });
 }
 
@@ -463,21 +345,124 @@ export async function getAllEventYearStats(
     .sort((a, b) => b.year - a.year); // 최신 연도순으로 정렬
 }
 
-export const realDataMap: Record<
-  string,
-  Record<
-    number,
-    {
-      granFondoRegistered: number;
-      granFondoParticipants: number;
-      granFondoDNF: number;
-      medioFondoRegistered: number;
-      medioFondoParticipants: number;
-      medioFondoDNF: number;
-    }
-  >
-> = {
-  hongcheon: hongcheonRealData,
-  yangyang: yangyangRealData,
+// 홍천 그란폰도 실제 데이터
+const hongcheonBase: EventYear[] = [
+  {
+    year: 2025,
+    registered: {
+      granfondo: 1876,
+      mediofondo: 1204,
+    },
+    participants: {
+      granfondo: 1202,
+      mediofondo: 1051,
+    },
+    dnf: {
+      granfondo: 82,
+      mediofondo: 27,
+    },
+  },
+  {
+    year: 2024,
+    registered: {
+      granfondo: 1986,
+      mediofondo: 1178,
+    },
+    participants: {
+      granfondo: 1607,
+      mediofondo: 1026,
+    },
+    dnf: {
+      granfondo: 67,
+      mediofondo: 38,
+    },
+  },
+  {
+    year: 2023,
+    registered: {
+      granfondo: 2580,
+      mediofondo: 1350,
+    },
+    participants: {
+      granfondo: 2230,
+      mediofondo: 1204,
+    },
+    dnf: {
+      granfondo: 144,
+      mediofondo: 38,
+    },
+  },
+  {
+    year: 2022,
+    registered: {
+      granfondo: 3228,
+      mediofondo: 772,
+    },
+    participants: {
+      granfondo: 730,
+      mediofondo: 161,
+    },
+    dnf: {
+      granfondo: 113,
+      mediofondo: 23,
+    },
+  },
+];
+
+// 양양 그란폰도 실제 데이터
+const yangyangBase: EventYear[] = [
+  {
+    year: 2025,
+    registered: {
+      granfondo: 1241,
+      mediofondo: 809,
+    },
+    participants: {
+      granfondo: 1011,
+      mediofondo: 672,
+    },
+    dnf: {
+      granfondo: 190,
+      mediofondo: 76,
+    },
+  },
+  {
+    year: 2024,
+    registered: {
+      granfondo: 1200,
+      mediofondo: 700,
+    },
+    participants: {
+      granfondo: 975,
+      mediofondo: 576,
+    },
+    dnf: {
+      granfondo: 172,
+      mediofondo: 143,
+    },
+  },
+];
+
+const yeongsanBase: EventYearInitial[] = [
+  {
+    year: 2025,
+    registered: {
+      granfondo: 1241,
+      mediofondo: 809,
+    },
+  },
+  {
+    year: 2024,
+    registered: {
+      granfondo: 1200,
+      mediofondo: 700,
+    },
+  },
+];
+
+export const realDataMap: Record<string, EventYear[]> = {
+  hongcheon: hongcheonBase,
+  yangyang: yangyangBase,
+  // yeongsan: yeongsanBase,
   // 추후 이벤트 추가 시 여기에만 추가
 };

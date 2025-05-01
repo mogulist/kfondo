@@ -1,6 +1,6 @@
 "use client";
 
-import type { EventYearData } from "@/lib/types";
+import type { EventYear } from "@/lib/types";
 import {
   Bar,
   BarChart,
@@ -25,7 +25,7 @@ import {
 import { BarChartIcon, TableIcon } from "lucide-react";
 
 interface ParticipantTrendProps {
-  eventData: EventYearData[];
+  eventData: EventYear[];
 }
 
 // 커스텀 범례 렌더러
@@ -91,31 +91,31 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
 
   const data = eventData.map((d) => ({
     year: d.year,
-    granFondoRegistered: d.granFondoRegistered,
-    granFondoParticipants: d.granFondoParticipants,
-    granFondoDNF: d.granFondoDNF || 0,
+    granFondoRegistered: d.registered.granfondo,
+    granFondoParticipants: d.participants.granfondo,
+    granFondoDNF: d.dnf.granfondo,
     granFondoRate: (
-      (d.granFondoParticipants / d.granFondoRegistered) *
+      (d.participants.granfondo / d.registered.granfondo) *
       100
     ).toFixed(1),
-    granFondoCompletionRate: d.granFondoDNF
+    granFondoCompletionRate: d.dnf.granfondo
       ? (
-          ((d.granFondoParticipants - d.granFondoDNF) /
-            d.granFondoParticipants) *
+          ((d.participants.granfondo - d.dnf.granfondo) /
+            d.participants.granfondo) *
           100
         ).toFixed(1)
       : "100.0",
-    medioFondoRegistered: d.medioFondoRegistered,
-    medioFondoParticipants: d.medioFondoParticipants,
-    medioFondoDNF: d.medioFondoDNF || 0,
+    medioFondoRegistered: d.registered.mediofondo,
+    medioFondoParticipants: d.participants.mediofondo,
+    medioFondoDNF: d.dnf.mediofondo,
     medioFondoRate: (
-      (d.medioFondoParticipants / d.medioFondoRegistered) *
+      (d.participants.mediofondo / d.registered.mediofondo) *
       100
     ).toFixed(1),
-    medioFondoCompletionRate: d.medioFondoDNF
+    medioFondoCompletionRate: d.dnf.mediofondo
       ? (
-          ((d.medioFondoParticipants - d.medioFondoDNF) /
-            d.medioFondoParticipants) *
+          ((d.participants.mediofondo - d.dnf.mediofondo) /
+            d.participants.mediofondo) *
           100
         ).toFixed(1)
       : "100.0",

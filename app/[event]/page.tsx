@@ -19,8 +19,10 @@ interface EventPageProps {
 }
 
 // 동적 메타데이터 생성
-export async function generateMetadata({ params }: EventPageProps): Promise<Metadata> {
-  const { event: eventId } = params;
+export async function generateMetadata({
+  params,
+}: EventPageProps): Promise<Metadata> {
+  const { event: eventId } = await params;
   const event = events.find((e) => e.id === eventId);
 
   if (!event) {
@@ -95,14 +97,14 @@ export default async function EventPage({ params }: EventPageProps) {
           "그란폰도",
           2, // 2분 간격
           year,
-          realData[year]?.granFondoParticipants
+          realData[year]?.participants?.granfondo
         ),
         medioFondoDistribution: generateTimeDistributionFromRecords(
           records,
           "메디오폰도",
           2, // 2분 간격
           year,
-          realData[year]?.medioFondoParticipants
+          realData[year]?.participants?.mediofondo
         ),
       };
     });
@@ -139,9 +141,9 @@ export default async function EventPage({ params }: EventPageProps) {
 
           <section className="space-y-4">
             <h2 className="text-2xl font-semibold">댓글</h2>
-            <DisqusComments 
-              eventId={eventId} 
-              eventTitle={`${event.location} 그란폰도`} 
+            <DisqusComments
+              eventId={eventId}
+              eventTitle={`${event.location} 그란폰도`}
             />
           </section>
         </div>
