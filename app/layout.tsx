@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -50,6 +51,9 @@ export const metadata: Metadata = {
   },
   verification: {
     google: "K_bu_gyZtuD8AhOPED0z9esyUAghuqnGV94sC0HoZx4",
+  },
+  other: {
+    "naver-site-verification": "aa1c7da5641edfb88b4d8bef8bd3fce9ad6b9fc7",
   },
 };
 
