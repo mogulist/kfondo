@@ -1,5 +1,5 @@
 import { EventCard } from "@/components/event-card";
-import { events } from "@/lib/events";
+import { events } from "@/events.config";
 
 export default function Home() {
   return (

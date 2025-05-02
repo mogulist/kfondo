@@ -1,7 +1,7 @@
 import { ParticipantTrend } from "@/components/participant-trend";
 import { StatsChart } from "@/components/stats-chart";
 import { DisqusComments } from "@/components/disqus-comments";
-import { events } from "@/lib/events";
+import { events } from "@/events.config";
 import { calculateParticipants, calculateDNF } from "@/lib/participants";
 import path from "path";
 import fs from "fs";

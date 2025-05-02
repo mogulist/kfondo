@@ -1,4 +1,4 @@
-import { events, getEventData } from "../../lib/events";
+import { events, getEventData } from "../../events.config";
 import { calculateParticipants, calculateDNF } from "../../lib/participants";
 import { GranMedio } from "../../lib/types";
 

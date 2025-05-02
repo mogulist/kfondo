@@ -1,4 +1,9 @@
-import type { Event, EventYear, EventYearInitial, GranMedio } from "./types";
+import type {
+  Event,
+  EventYear,
+  EventYearInitial,
+  GranMedio,
+} from "./lib/types";
 
 // 그란폰도 이벤트 목록
 export const events: Event[] = [
@@ -126,8 +131,8 @@ export const events: Event[] = [
     location: "설악",
     years: [2022, 2023, 2024],
     color: {
-      from: "#8b5cf6",
-      to: "#6d28d9",
+      from: "#0d9488", // teal-600
+      to: "#0f766e", // teal-700
     },
     status: "ready",
     latestEvent: {
@@ -170,10 +175,49 @@ export const events: Event[] = [
       },
     },
   },
+  // 공룡나라는 컷오프가 많은데 컷오프된 사람들 기록을 따로 "컷오프"로 분류했다
+  // 그리고 메디오가 없다
+  // 특이한 경우라 뭔가 더 기능을 추가해야 한다
+  // {
+  //   id: "dino",
+  //   location: "공룡나라",
+  //   years: [2024, 2025],
+  //   color: {
+  //     from: "#8b5cf6",
+  //     to: "#6d28d9",
+  //   },
+  //   latestEvent: {
+  //     date: "2025.3.29",
+  //     granFondo: {
+  //       distance: 119,
+  //       elevation: 1320,
+  //     },
+  //     medioFondo: {
+  //       distance: 0,
+  //       elevation: 0,
+  //     },
+  //   },
+  //   meta: {
+  //     title: "공룡나라 그란폰도 | FondoScope",
+  //     description:
+  //       "공룡나라 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2024년부터 2025년까지의 데이터를 제공합니다.",
+  //     image: "/images/dino-og.jpg", // 공룡나라 그란폰도 대표 이미지
+  //   },
+  //   registered: {
+  //     2025: {
+  //       granfondo: 0,
+  //       mediofondo: 0,
+  //     },
+  //     2024: {
+  //       granfondo: 0,
+  //       mediofondo: 0,
+  //     },
+  //   },
+  // },
   {
     id: "samcheok",
     location: "삼척",
-    years: [2020, 2021, 2022, 2023, 2024],
+    years: [2022, 2023, 2024],
     color: {
       from: "#10b981",
       to: "#047857",
@@ -205,14 +249,6 @@ export const events: Event[] = [
         mediofondo: 0,
       },
       2022: {
-        granfondo: 0,
-        mediofondo: 0,
-      },
-      2021: {
-        granfondo: 0,
-        mediofondo: 0,
-      },
-      2020: {
         granfondo: 0,
         mediofondo: 0,
       },
