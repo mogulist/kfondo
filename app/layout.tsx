@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     maximumScale: 1,
   },
   verification: {
-    google: "google-site-verification-code", // Google Search Console 인증 코드를 추가해야 합니다
+    google: "K_bu_gyZtuD8AhOPED0z9esyUAghuqnGV94sC0HoZx4",
   },
 };
 
