@@ -175,45 +175,80 @@ export const events: Event[] = [
       },
     },
   },
-  // 공룡나라는 컷오프가 많은데 컷오프된 사람들 기록을 따로 "컷오프"로 분류했다
-  // 그리고 메디오가 없다
-  // 특이한 경우라 뭔가 더 기능을 추가해야 한다
-  // {
-  //   id: "dino",
-  //   location: "공룡나라",
-  //   years: [2024, 2025],
-  //   color: {
-  //     from: "#8b5cf6",
-  //     to: "#6d28d9",
-  //   },
-  //   latestEvent: {
-  //     date: "2025.3.29",
-  //     granFondo: {
-  //       distance: 119,
-  //       elevation: 1320,
-  //     },
-  //     medioFondo: {
-  //       distance: 0,
-  //       elevation: 0,
-  //     },
-  //   },
-  //   meta: {
-  //     title: "공룡나라 그란폰도 | FondoScope",
-  //     description:
-  //       "공룡나라 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2024년부터 2025년까지의 데이터를 제공합니다.",
-  //     image: "/images/dino-og.jpg", // 공룡나라 그란폰도 대표 이미지
-  //   },
-  //   registered: {
-  //     2025: {
-  //       granfondo: 0,
-  //       mediofondo: 0,
-  //     },
-  //     2024: {
-  //       granfondo: 0,
-  //       mediofondo: 0,
-  //     },
-  //   },
-  // },
+  {
+    id: "mungyeong",
+    status: "ready",
+    location: "문경새재",
+    years: [2023, 2024],
+    color: {
+      from: "#22c55e", // green-500
+      to: "#15803d", // green-700
+    },
+    latestEvent: {
+      date: "2024.9.1",
+      granFondo: {
+        distance: 152.5,
+        elevation: 2025,
+      },
+      medioFondo: {
+        distance: 110.4,
+        elevation: 1817,
+      },
+    },
+    meta: {
+      title: "문경새재 그란폰도 | FondoScope",
+      description:
+        "문경새재 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2023년부터 2024년까지의 데이터를 제공합니다.",
+      image: "/images/mungyeong-og.jpg", // 문경 그란폰도 대표 이미지
+    },
+    registered: {
+      2024: {
+        granfondo: 1099,
+        mediofondo: 1429,
+      },
+      2023: {
+        granfondo: 1196,
+        mediofondo: 1110,
+      },
+    },
+  },
+  {
+    id: "jeongeup",
+    status: "ready",
+    location: "정읍내장산",
+    years: [2023, 2024],
+    color: {
+      from: "#f59e42", // orange-400
+      to: "#ea580c", // orange-600
+    },
+    latestEvent: {
+      date: "2025.5.26",
+      granFondo: {
+        distance: 139,
+        elevation: 2076,
+      },
+      medioFondo: {
+        distance: 96,
+        elevation: 1489,
+      },
+    },
+    meta: {
+      title: "정읍내장산 그란폰도 | FondoScope",
+      description:
+        "정읍내장산 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2023년부터 2024년까지의 데이터를 제공합니다.",
+      image: "/images/jeongeup-og.jpg", // 문경 그란폰도 대표 이미지
+    },
+    registered: {
+      2024: {
+        granfondo: 809,
+        mediofondo: 630,
+      },
+      2023: {
+        granfondo: 731,
+        mediofondo: 426,
+      },
+    },
+  },
   {
     id: "samcheok",
     location: "삼척",
@@ -254,4 +289,43 @@ export const events: Event[] = [
       },
     },
   },
+  // 공룡나라는 컷오프가 많은데 컷오프된 사람들 기록을 따로 "컷오프"로 분류했다
+  // 그리고 메디오가 없다
+  // 특이한 경우라 뭔가 더 기능을 추가해야 한다
+  // {
+  //   id: "dino",
+  //   location: "공룡나라",
+  //   years: [2024, 2025],
+  //   color: {
+  //     from: "#8b5cf6",
+  //     to: "#6d28d9",
+  //   },
+  //   latestEvent: {
+  //     date: "2025.3.29",
+  //     granFondo: {
+  //       distance: 119,
+  //       elevation: 1320,
+  //     },
+  //     medioFondo: {
+  //       distance: 0,
+  //       elevation: 0,
+  //     },
+  //   },
+  //   meta: {
+  //     title: "공룡나라 그란폰도 | FondoScope",
+  //     description:
+  //       "공룡나라 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2024년부터 2025년까지의 데이터를 제공합니다.",
+  //     image: "/images/dino-og.jpg", // 공룡나라 그란폰도 대표 이미지
+  //   },
+  //   registered: {
+  //     2025: {
+  //       granfondo: 0,
+  //       mediofondo: 0,
+  //     },
+  //     2024: {
+  //       granfondo: 0,
+  //       mediofondo: 0,
+  //     },
+  //   },
+  // },
 ];
