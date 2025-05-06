@@ -86,21 +86,24 @@ export function StatsChart({ yearStats }: StatsChartProps) {
 // 커스텀 툴팁 컴포넌트
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
-    const timeRange = label; // 시간 범위
-    const participants = payload[0].value; // 참가자 수
-    const percentile = payload[0].payload.percentile; // 백분위
+    const timeRange = label;
+    const participants = payload[0].value;
+    const percentile = payload[0].payload.percentile; // 누적 %
+    const cumulativeCount = payload[0].payload.cumulativeCount; // 누적 명수
 
     return (
       <div className="bg-background border border-border rounded-md shadow-md p-3 text-sm">
-        <div className="space-y-1">
-          <div className="text-foreground font-medium">{timeRange}</div>
-          <div className="text-foreground">{participants}명</div>
-          <div className="text-foreground">{percentile}%</div>
+        <div className="space-y-1 min-w-[110px]">
+          <div className="font-medium">{timeRange}</div>
+          <div className="border-t my-1" />
+          <div>{participants}명</div>
+          <div>
+            {cumulativeCount}명, {percentile}%
+          </div>
         </div>
       </div>
     );
   }
-
   return null;
 };
 
