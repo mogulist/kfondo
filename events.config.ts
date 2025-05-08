@@ -28,7 +28,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "홍천 그란폰도 | FondoScope",
+      title: "홍천 그란폰도 통계 | FondoScope",
       description:
         "홍천 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2022년부터 2025년까지의 데이터를 제공합니다.",
       image: "/images/hongcheon-og.jpg", // 홍천 그란폰도 대표 이미지
@@ -73,7 +73,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "양양 그란폰도 | FondoScope",
+      title: "양양 그란폰도 통계 | FondoScope",
       description:
         "양양 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2024년부터 2025년까지의 데이터를 제공합니다.",
       image: "/images/yangyang-og.jpg", // 양양 그란폰도 대표 이미지
@@ -110,7 +110,7 @@ export const events: Event[] = [
       },
     },
     meta: {
-      title: "영산 그란폰도 | FondoScope",
+      title: "영산 그란폰도 통계 | FondoScope",
       description:
         "영산 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2023년부터 2025년까지의 데이터를 제공합니다.",
       image: "/images/yeongsan-og.jpg", // 영산 그란폰도 대표 이미지
@@ -147,7 +147,7 @@ export const events: Event[] = [
       },
     },
     meta: {
-      title: "설악 그란폰도 | FondoScope",
+      title: "설악 그란폰도 통계 | FondoScope",
       description:
         "설악 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
       image: "/images/seorak-og.jpg", // 설악 그란폰도 대표 이미지
@@ -196,7 +196,7 @@ export const events: Event[] = [
       },
     },
     meta: {
-      title: "문경새재 그란폰도 | FondoScope",
+      title: "문경새재 그란폰도 통계 | FondoScope",
       description:
         "문경새재 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2023년부터 2024년까지의 데이터를 제공합니다.",
       image: "/images/mungyeong-og.jpg", // 문경 그란폰도 대표 이미지
@@ -233,7 +233,7 @@ export const events: Event[] = [
       },
     },
     meta: {
-      title: "정읍내장산 그란폰도 | FondoScope",
+      title: "정읍내장산 그란폰도 통계 | FondoScope",
       description:
         "정읍내장산 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2023년부터 2024년까지의 데이터를 제공합니다.",
       image: "/images/jeongeup-og.jpg", // 문경 그란폰도 대표 이미지
@@ -269,7 +269,7 @@ export const events: Event[] = [
       },
     },
     meta: {
-      title: "삼척 그란폰도 | FondoScope",
+      title: "삼척 그란폰도 통계 | FondoScope",
       description:
         "삼척 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
       image: "/images/samcheok-og.jpg", // 삼척 그란폰도 대표 이미지
