@@ -1,57 +1,111 @@
-import type {
-  Event,
-  EventYear,
-  EventYearInitial,
-  GranMedio,
-} from "./lib/types";
+import type { EventV2 } from "./lib/types";
 
 // 그란폰도 이벤트 목록
-export const events: Event[] = [
+export const events: EventV2[] = [
+  // 홍천 (이미 변환됨)
   {
     id: "hongcheon",
     location: "홍천",
     years: [2022, 2023, 2024, 2025],
     color: {
-      from: "#f43f5e", // 선명한 핑크
-      to: "#e11d48", // 진한 핑크
-    },
-    latestEvent: {
-      date: "2025.4.19",
-      granFondo: {
-        distance: 122,
-        elevation: 1594,
-      },
-      medioFondo: {
-        distance: 79,
-        elevation: 1144,
-      },
+      from: "#f43f5e",
+      to: "#e11d48",
     },
     status: "ready",
     meta: {
       title: "홍천 그란폰도 통계 | FondoScope",
       description:
         "홍천 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2022년부터 2025년까지의 데이터를 제공합니다.",
-      image: "/images/hongcheon-og.jpg", // 홍천 그란폰도 대표 이미지
+      image: "/images/hongcheon-og.jpg",
     },
-    registered: {
+    yearDetails: {
       2025: {
-        granfondo: 1876,
-        mediofondo: 1204,
+        year: 2025,
+        date: "2025.4.19",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 122,
+            elevation: 1594,
+            registered: 1876,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 79,
+            elevation: 1144,
+            registered: 1204,
+          },
+        ],
+        totalRegistered: 3080,
       },
       2024: {
-        granfondo: 1986,
-        mediofondo: 1178,
+        year: 2024,
+        date: "2024.4.19",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 122,
+            elevation: 1594,
+            registered: 1986,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 79,
+            elevation: 1144,
+            registered: 1178,
+          },
+        ],
+        totalRegistered: 3164,
       },
       2023: {
-        granfondo: 2580,
-        mediofondo: 1350,
+        year: 2023,
+        date: "2023.4.19",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 122,
+            elevation: 1594,
+            registered: 2580,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 79,
+            elevation: 1144,
+            registered: 1350,
+          },
+        ],
+        totalRegistered: 3930,
       },
       2022: {
-        granfondo: 3228,
-        mediofondo: 772,
+        year: 2022,
+        date: "2022.4.19",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 122,
+            elevation: 1594,
+            registered: 3228,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 79,
+            elevation: 1144,
+            registered: 772,
+          },
+        ],
+        totalRegistered: 4000,
       },
     },
   },
+  // 양양
   {
     id: "yangyang",
     location: "양양",
@@ -60,195 +114,345 @@ export const events: Event[] = [
       from: "#0ea5e9",
       to: "#0369a1",
     },
-    latestEvent: {
-      date: "2025.4.26",
-      granFondo: {
-        distance: 151,
-        elevation: 2380,
-      },
-      medioFondo: {
-        distance: 68,
-        elevation: 630,
-      },
-    },
     status: "ready",
     meta: {
       title: "양양 그란폰도 통계 | FondoScope",
       description:
         "양양 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2024년부터 2025년까지의 데이터를 제공합니다.",
-      image: "/images/yangyang-og.jpg", // 양양 그란폰도 대표 이미지
+      image: "/images/yangyang-og.jpg",
     },
-    registered: {
+    yearDetails: {
       2025: {
-        granfondo: 1241,
-        mediofondo: 809,
+        year: 2025,
+        date: "2025.4.26",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 151,
+            elevation: 2380,
+            registered: 1241,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 68,
+            elevation: 630,
+            registered: 809,
+          },
+        ],
+        totalRegistered: 2050,
       },
       2024: {
-        granfondo: 1200,
-        mediofondo: 700,
+        year: 2024,
+        date: "2024.4.26",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 151,
+            elevation: 2380,
+            registered: 1200,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 68,
+            elevation: 630,
+            registered: 700,
+          },
+        ],
+        totalRegistered: 1900,
       },
     },
   },
+  // 영산강
   {
     id: "yeongsan",
     location: "영산강",
     years: [2023, 2024, 2025],
     color: {
-      from: "#a855f7", // 보라색 계열 (예: purple-500)
-      to: "#6d28d9", // 더 진한 보라색 (예: purple-700)
+      from: "#a855f7",
+      to: "#6d28d9",
     },
     status: "ready",
-    latestEvent: {
-      date: "2025.4.26",
-      granFondo: {
-        distance: 121,
-        elevation: 1000,
-      },
-      medioFondo: {
-        distance: 104,
-        elevation: 757,
-      },
-    },
     meta: {
       title: "영산 그란폰도 통계 | FondoScope",
       description:
         "영산 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2023년부터 2025년까지의 데이터를 제공합니다.",
-      image: "/images/yeongsan-og.jpg", // 영산 그란폰도 대표 이미지
+      image: "/images/yeongsan-og.jpg",
     },
-    registered: {
+    yearDetails: {
       2025: {
-        granfondo: 1241,
-        mediofondo: 809,
+        year: 2025,
+        date: "2025.4.26",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 121,
+            elevation: 1000,
+            registered: 1241,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 104,
+            elevation: 757,
+            registered: 809,
+          },
+        ],
+        totalRegistered: 2050,
       },
       2024: {
-        granfondo: 1200,
-        mediofondo: 700,
+        year: 2024,
+        date: "2024.4.26",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 121,
+            elevation: 1000,
+            registered: 1200,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 104,
+            elevation: 757,
+            registered: 700,
+          },
+        ],
+        totalRegistered: 1900,
+      },
+      2023: {
+        year: 2023,
+        date: "2023.4.26",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 121,
+            elevation: 1000,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 104,
+            elevation: 757,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
       },
     },
   },
+  // 설악
   {
     id: "seorak",
     location: "설악",
     years: [2022, 2023, 2024],
     color: {
-      from: "#0d9488", // teal-600
-      to: "#0f766e", // teal-700
+      from: "#0d9488",
+      to: "#0f766e",
     },
     status: "ready",
-    latestEvent: {
-      date: "2024.5.18",
-      granFondo: {
-        distance: 208,
-        elevation: 3800,
-      },
-      medioFondo: {
-        distance: 105,
-        elevation: 1700,
-      },
-    },
     meta: {
       title: "설악 그란폰도 통계 | FondoScope",
       description:
         "설악 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
-      image: "/images/seorak-og.jpg", // 설악 그란폰도 대표 이미지
+      image: "/images/seorak-og.jpg",
     },
-    registered: {
+    yearDetails: {
       2024: {
-        granfondo: 3370,
-        mediofondo: 2470,
+        year: 2024,
+        date: "2024.5.18",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 208,
+            elevation: 3800,
+            registered: 3370,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 105,
+            elevation: 1700,
+            registered: 2470,
+          },
+        ],
+        totalRegistered: 5840,
       },
       2023: {
-        granfondo: 2926,
-        mediofondo: 2995,
+        year: 2023,
+        date: "2023.5.18",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 208,
+            elevation: 3800,
+            registered: 2926,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 105,
+            elevation: 1700,
+            registered: 2995,
+          },
+        ],
+        totalRegistered: 5921,
       },
       2022: {
-        granfondo: 2125,
-        mediofondo: 2175,
-      },
-      2021: {
-        granfondo: 0,
-        mediofondo: 0,
-      },
-      2020: {
-        granfondo: 0,
-        mediofondo: 0,
+        year: 2022,
+        date: "2022.5.18",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 208,
+            elevation: 3800,
+            registered: 2125,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 105,
+            elevation: 1700,
+            registered: 2175,
+          },
+        ],
+        totalRegistered: 4300,
       },
     },
   },
+  // 문경새재
   {
     id: "mungyeong",
-    status: "ready",
     location: "문경새재",
     years: [2023, 2024],
     color: {
-      from: "#22c55e", // green-500
-      to: "#15803d", // green-700
+      from: "#22c55e",
+      to: "#15803d",
     },
-    latestEvent: {
-      date: "2024.9.1",
-      granFondo: {
-        distance: 152.5,
-        elevation: 2025,
-      },
-      medioFondo: {
-        distance: 110.4,
-        elevation: 1817,
-      },
-    },
+    status: "ready",
     meta: {
       title: "문경새재 그란폰도 통계 | FondoScope",
       description:
         "문경새재 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2023년부터 2024년까지의 데이터를 제공합니다.",
-      image: "/images/mungyeong-og.jpg", // 문경 그란폰도 대표 이미지
+      image: "/images/mungyeong-og.jpg",
     },
-    registered: {
+    yearDetails: {
       2024: {
-        granfondo: 1099,
-        mediofondo: 1429,
+        year: 2024,
+        date: "2024.9.1",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 152.5,
+            elevation: 2025,
+            registered: 1099,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 110.4,
+            elevation: 1817,
+            registered: 1429,
+          },
+        ],
+        totalRegistered: 2528,
       },
       2023: {
-        granfondo: 1196,
-        mediofondo: 1110,
+        year: 2023,
+        date: "2023.9.1",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 152.5,
+            elevation: 2025,
+            registered: 1196,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 110.4,
+            elevation: 1817,
+            registered: 1110,
+          },
+        ],
+        totalRegistered: 2306,
       },
     },
   },
+  // 정읍내장산
   {
     id: "jeongeup",
-    status: "ready",
     location: "정읍내장산",
     years: [2023, 2024],
     color: {
-      from: "#f59e42", // orange-400
-      to: "#ea580c", // orange-600
+      from: "#f59e42",
+      to: "#ea580c",
     },
-    latestEvent: {
-      date: "2025.5.26",
-      granFondo: {
-        distance: 139,
-        elevation: 2076,
-      },
-      medioFondo: {
-        distance: 96,
-        elevation: 1489,
-      },
-    },
+    status: "ready",
     meta: {
       title: "정읍내장산 그란폰도 통계 | FondoScope",
       description:
         "정읍내장산 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2023년부터 2024년까지의 데이터를 제공합니다.",
-      image: "/images/jeongeup-og.jpg", // 문경 그란폰도 대표 이미지
+      image: "/images/jeongeup-og.jpg",
     },
-    registered: {
+    yearDetails: {
       2024: {
-        granfondo: 809,
-        mediofondo: 630,
+        year: 2024,
+        date: "2024.5.26",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 139,
+            elevation: 2076,
+            registered: 809,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 96,
+            elevation: 1489,
+            registered: 630,
+          },
+        ],
+        totalRegistered: 1439,
       },
       2023: {
-        granfondo: 731,
-        mediofondo: 426,
+        year: 2023,
+        date: "2023.5.26",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 139,
+            elevation: 2076,
+            registered: 731,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 96,
+            elevation: 1489,
+            registered: 426,
+          },
+        ],
+        totalRegistered: 1157,
       },
     },
   },
+  // 삼척 (등록자 수 없음)
   {
     id: "samcheok",
     location: "삼척",
@@ -257,75 +461,77 @@ export const events: Event[] = [
       from: "#10b981",
       to: "#047857",
     },
-    latestEvent: {
-      date: "2024",
-      granFondo: {
-        distance: 128,
-        elevation: 1668,
-      },
-      medioFondo: {
-        distance: 102,
-        elevation: 1201,
-      },
-    },
+    status: "upcoming",
     meta: {
       title: "삼척 그란폰도 통계 | FondoScope",
       description:
         "삼척 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
-      image: "/images/samcheok-og.jpg", // 삼척 그란폰도 대표 이미지
+      image: "/images/samcheok-og.jpg",
     },
-    registered: {
+    yearDetails: {
       2024: {
-        granfondo: 0,
-        mediofondo: 0,
+        year: 2024,
+        date: "2024",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 128,
+            elevation: 1668,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 102,
+            elevation: 1201,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
       },
       2023: {
-        granfondo: 0,
-        mediofondo: 0,
+        year: 2023,
+        date: "2023",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 128,
+            elevation: 1668,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 102,
+            elevation: 1201,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
       },
       2022: {
-        granfondo: 0,
-        mediofondo: 0,
+        year: 2022,
+        date: "2022",
+        categories: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 128,
+            elevation: 1668,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 102,
+            elevation: 1201,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
       },
     },
   },
-  // 공룡나라는 컷오프가 많은데 컷오프된 사람들 기록을 따로 "컷오프"로 분류했다
-  // 그리고 메디오가 없다
-  // 특이한 경우라 뭔가 더 기능을 추가해야 한다
-  // {
-  //   id: "dino",
-  //   location: "공룡나라",
-  //   years: [2024, 2025],
-  //   color: {
-  //     from: "#8b5cf6",
-  //     to: "#6d28d9",
-  //   },
-  //   latestEvent: {
-  //     date: "2025.3.29",
-  //     granFondo: {
-  //       distance: 119,
-  //       elevation: 1320,
-  //     },
-  //     medioFondo: {
-  //       distance: 0,
-  //       elevation: 0,
-  //     },
-  //   },
-  //   meta: {
-  //     title: "공룡나라 그란폰도 | FondoScope",
-  //     description:
-  //       "공룡나라 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2024년부터 2025년까지의 데이터를 제공합니다.",
-  //     image: "/images/dino-og.jpg", // 공룡나라 그란폰도 대표 이미지
-  //   },
-  //   registered: {
-  //     2025: {
-  //       granfondo: 0,
-  //       mediofondo: 0,
-  //     },
-  //     2024: {
-  //       granfondo: 0,
-  //       mediofondo: 0,
-  //     },
-  //   },
-  // },
 ];

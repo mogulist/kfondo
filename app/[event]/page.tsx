@@ -11,6 +11,7 @@ import { timeToSeconds } from "@/lib/utils";
 import type { EventYearStats } from "@/lib/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import type { Event, EventV2, EventYearDetail } from "@/lib/types";
 
 type EventPageProps = {
   params: {
@@ -20,19 +21,44 @@ type EventPageProps = {
 
 export default async function EventPage({ params }: EventPageProps) {
   const { event: eventId } = await params;
-  const event = events.find((e) => e.id === eventId);
+  const event = events.find((e) => e.id === eventId) as
+    | Event
+    | EventV2
+    | undefined;
 
   if (!event) {
     notFound();
   }
 
+  // 타입 가드
+  const isV2 = (e: any): e is EventV2 => "yearDetails" in e;
+
   // 연도별 데이터 생성
-  const eventData = event.years.map((year) => ({
-    year,
-    registered: event.registered[year] || { granfondo: 0, mediofondo: 0 },
-    participants: calculateParticipants(eventId, year),
-    dnf: calculateDNF(eventId, year),
-  }));
+  let eventData: any[] = [];
+  if (isV2(event)) {
+    eventData = event.years.map((year) => {
+      const detail = event.yearDetails[year];
+      // granfondo/mediofondo registered 추출 (기존 차트 호환 위해)
+      const gran = detail.categories.find((c) => c.id === "granfondo");
+      const medio = detail.categories.find((c) => c.id === "mediofondo");
+      return {
+        year,
+        registered: {
+          granfondo: gran?.registered ?? 0,
+          mediofondo: medio?.registered ?? 0,
+        },
+        participants: calculateParticipants(eventId, year),
+        dnf: calculateDNF(eventId, year),
+      };
+    });
+  } else {
+    eventData = event.years.map((year) => ({
+      year,
+      registered: event.registered[year] || { granfondo: 0, mediofondo: 0 },
+      participants: calculateParticipants(eventId, year),
+      dnf: calculateDNF(eventId, year),
+    }));
+  }
 
   // 실제 기록 분포 차트 제공 (확장성 개선)
   let yearStats: EventYearStats[] = [];
