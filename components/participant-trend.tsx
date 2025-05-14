@@ -83,6 +83,169 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
+// 카테고리별 차트/테이블 공통 컴포넌트 -> 코스별 차트/테이블 공통 컴포넌트
+interface CourseTrendSectionProps {
+  title: string;
+  data: {
+    year: number;
+    registered: number;
+    participants: number;
+    dnf: number;
+    rate: string;
+    completionRate: string;
+  }[];
+  viewType: "chart" | "table";
+  isMobile: boolean;
+  isTablet: boolean;
+  scrollRef: React.RefObject<HTMLDivElement | null>;
+  totalWidth: number;
+  config: Record<string, { label: string; color: string }>;
+}
+
+function CourseTrendSection({
+  title,
+  data,
+  viewType,
+  isMobile,
+  isTablet,
+  scrollRef,
+  totalWidth,
+  config,
+}: CourseTrendSectionProps) {
+  return (
+    <div className="w-full">
+      <h3 className="text-lg font-medium mb-2">{title}</h3>
+      {viewType === "chart" ? (
+        isMobile ? (
+          <div
+            ref={scrollRef}
+            className="relative overflow-x-auto pb-6 hide-scrollbar"
+            style={{ overscrollBehavior: "contain" }}
+          >
+            <div style={{ width: `${totalWidth}px` }}>
+              <ChartContainer config={config}>
+                <BarChart
+                  data={data}
+                  margin={{ top: 8, right: 16, left: 0, bottom: 0 }}
+                  barSize={24}
+                  barGap={2}
+                  width={totalWidth}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="year"
+                    tickFormatter={(value) => `${value}년`}
+                    height={35}
+                  />
+                  <YAxis
+                    type="number"
+                    domain={[0, "dataMax + 100"]}
+                    width={45}
+                  />
+                  <ChartTooltip content={<CustomTooltip />} />
+                  <Bar
+                    name="등록자"
+                    dataKey="registered"
+                    fill="var(--color-registered)"
+                  />
+                  <Bar
+                    name="참가자"
+                    dataKey="participants"
+                    fill="var(--color-participants)"
+                  />
+                  <Bar name="DNF" dataKey="dnf" fill="var(--color-dnf)" />
+                  <Legend
+                    content={CustomLegend}
+                    verticalAlign="bottom"
+                    height={36}
+                  />
+                </BarChart>
+              </ChartContainer>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <ChartContainer config={config}>
+              <ResponsiveContainer width="100%" height={320}>
+                <BarChart
+                  data={data}
+                  margin={{ top: 20, right: 16, left: 16, bottom: 20 }}
+                  barSize={20}
+                  barGap={2}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="year"
+                    tick={{ fontSize: 12 }}
+                    tickFormatter={(value) => `${value}년`}
+                    height={35}
+                  />
+                  <YAxis tick={{ fontSize: 12 }} width={45} />
+                  <ChartTooltip content={<CustomTooltip />} />
+                  <Bar
+                    name="등록자"
+                    dataKey="registered"
+                    fill="var(--color-registered)"
+                  />
+                  <Bar
+                    name="참가자"
+                    dataKey="participants"
+                    fill="var(--color-participants)"
+                  />
+                  <Bar name="DNF" dataKey="dnf" fill="var(--color-dnf)" />
+                  <Legend
+                    content={CustomLegend}
+                    verticalAlign="bottom"
+                    height={36}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </div>
+        )
+      ) : (
+        <div className="h-[250px] overflow-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[80px]">연도</TableHead>
+                <TableHead>등록자</TableHead>
+                <TableHead>참가자</TableHead>
+                <TableHead>DNF</TableHead>
+                <TableHead className="text-right">참가율</TableHead>
+                <TableHead className="text-right">완주율</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data.map(
+                (item: {
+                  year: number;
+                  registered: number;
+                  participants: number;
+                  dnf: number;
+                  rate: string;
+                  completionRate: string;
+                }) => (
+                  <TableRow key={item.year}>
+                    <TableCell className="font-medium">{item.year}년</TableCell>
+                    <TableCell>{item.registered}명</TableCell>
+                    <TableCell>{item.participants}명</TableCell>
+                    <TableCell>{item.dnf}명</TableCell>
+                    <TableCell className="text-right">{item.rate}%</TableCell>
+                    <TableCell className="text-right">
+                      {item.completionRate}%
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
   const isMobile = useMobile();
   const isTablet = useMobile(1024); // 1024px 미만을 태블릿으로 간주
@@ -155,357 +318,49 @@ export function ParticipantTrend({ eventData }: ParticipantTrendProps) {
           isTablet ? "flex flex-col space-y-6" : "grid grid-cols-2 gap-8"
         } px-4`}
       >
-        <div className="w-full">
-          <h3 className="text-lg font-medium mb-2">그란폰도</h3>
-          {viewType === "chart" ? (
-            isMobile ? (
-              <div
-                ref={scrollRef}
-                className="relative overflow-x-auto pb-6 hide-scrollbar"
-                style={{ overscrollBehavior: "contain" }}
-              >
-                <div style={{ width: `${totalWidth}px` }}>
-                  <ChartContainer
-                    config={{
-                      registered: {
-                        label: "등록자",
-                        color: "hsl(215, 90%, 80%)",
-                      },
-                      participants: {
-                        label: "참가자",
-                        color: "hsl(215, 90%, 50%)",
-                      },
-                      dnf: {
-                        label: "DNF",
-                        color: "hsl(0, 80%, 60%)",
-                      },
-                    }}
-                  >
-                    <BarChart
-                      data={sortedData.map((d) => ({
-                        year: d.year,
-                        registered: d.granFondoRegistered,
-                        participants: d.granFondoParticipants,
-                        dnf: d.granFondoDNF,
-                      }))}
-                      margin={{
-                        top: 8,
-                        right: 16,
-                        left: 0,
-                        bottom: 0,
-                      }}
-                      barSize={24}
-                      barGap={2}
-                      width={totalWidth}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis
-                        dataKey="year"
-                        tickFormatter={(value) => `${value}년`}
-                        height={35}
-                      />
-                      <YAxis
-                        type="number"
-                        domain={[0, "dataMax + 100"]}
-                        width={45}
-                      />
-                      <ChartTooltip content={<CustomTooltip />} />
-                      <Bar
-                        name="등록자"
-                        dataKey="registered"
-                        fill="var(--color-registered)"
-                      />
-                      <Bar
-                        name="참가자"
-                        dataKey="participants"
-                        fill="var(--color-participants)"
-                      />
-                      <Bar name="DNF" dataKey="dnf" fill="var(--color-dnf)" />
-                      <Legend
-                        content={CustomLegend}
-                        verticalAlign="bottom"
-                        height={36}
-                      />
-                    </BarChart>
-                  </ChartContainer>
-                </div>
-              </div>
-            ) : (
-              <div>
-                <ChartContainer
-                  config={{
-                    registered: {
-                      label: "등록자",
-                      color: "hsl(215, 90%, 80%)",
-                    },
-                    participants: {
-                      label: "참가자",
-                      color: "hsl(215, 90%, 50%)",
-                    },
-                    dnf: {
-                      label: "DNF",
-                      color: "hsl(0, 80%, 60%)",
-                    },
-                  }}
-                >
-                  <ResponsiveContainer width="100%" height={320}>
-                    <BarChart
-                      data={data.map((d) => ({
-                        year: d.year,
-                        registered: d.granFondoRegistered,
-                        participants: d.granFondoParticipants,
-                        dnf: d.granFondoDNF,
-                      }))}
-                      margin={{
-                        top: 20,
-                        right: 16,
-                        left: 16,
-                        bottom: 20,
-                      }}
-                      barSize={20}
-                      barGap={2}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis
-                        dataKey="year"
-                        tick={{ fontSize: 12 }}
-                        tickFormatter={(value) => `${value}년`}
-                        height={35}
-                      />
-                      <YAxis tick={{ fontSize: 12 }} width={45} />
-                      <ChartTooltip content={<CustomTooltip />} />
-                      <Bar
-                        name="등록자"
-                        dataKey="registered"
-                        fill="var(--color-registered)"
-                      />
-                      <Bar
-                        name="참가자"
-                        dataKey="participants"
-                        fill="var(--color-participants)"
-                      />
-                      <Bar name="DNF" dataKey="dnf" fill="var(--color-dnf)" />
-                      <Legend
-                        content={CustomLegend}
-                        verticalAlign="bottom"
-                        height={36}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
-              </div>
-            )
-          ) : (
-            <div className="h-[250px] overflow-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[80px]">연도</TableHead>
-                    <TableHead>등록자</TableHead>
-                    <TableHead>참가자</TableHead>
-                    <TableHead>DNF</TableHead>
-                    <TableHead className="text-right">참가율</TableHead>
-                    <TableHead className="text-right">완주율</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {sortedData.map((item) => (
-                    <TableRow key={item.year}>
-                      <TableCell className="font-medium">
-                        {item.year}년
-                      </TableCell>
-                      <TableCell>{item.granFondoRegistered}명</TableCell>
-                      <TableCell>{item.granFondoParticipants}명</TableCell>
-                      <TableCell>{item.granFondoDNF}명</TableCell>
-                      <TableCell className="text-right">
-                        {item.granFondoRate}%
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {item.granFondoCompletionRate}%
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          )}
-        </div>
+        <CourseTrendSection
+          title="그란폰도"
+          data={sortedData.map((d) => ({
+            year: d.year,
+            registered: d.granFondoRegistered,
+            participants: d.granFondoParticipants,
+            dnf: d.granFondoDNF,
+            rate: d.granFondoRate,
+            completionRate: d.granFondoCompletionRate,
+          }))}
+          viewType={viewType}
+          isMobile={isMobile}
+          isTablet={isTablet}
+          scrollRef={scrollRef}
+          totalWidth={totalWidth}
+          config={{
+            registered: { label: "등록자", color: "hsl(215, 90%, 80%)" },
+            participants: { label: "참가자", color: "hsl(215, 90%, 50%)" },
+            dnf: { label: "DNF", color: "hsl(0, 80%, 60%)" },
+          }}
+        />
 
-        <div className="w-full">
-          <h3 className="text-lg font-medium mb-2">메디오폰도</h3>
-          {viewType === "chart" ? (
-            isMobile ? (
-              <div
-                ref={scrollRef}
-                className="relative overflow-x-auto pb-6 hide-scrollbar"
-                style={{ overscrollBehavior: "contain" }}
-              >
-                <div style={{ width: `${totalWidth}px` }}>
-                  <ChartContainer
-                    config={{
-                      registered: {
-                        label: "등록자",
-                        color: "hsl(150, 80%, 80%)",
-                      },
-                      participants: {
-                        label: "참가자",
-                        color: "hsl(150, 80%, 40%)",
-                      },
-                      dnf: {
-                        label: "DNF",
-                        color: "hsl(0, 80%, 60%)",
-                      },
-                    }}
-                  >
-                    <BarChart
-                      data={sortedData.map((d) => ({
-                        year: d.year,
-                        registered: d.medioFondoRegistered,
-                        participants: d.medioFondoParticipants,
-                        dnf: d.medioFondoDNF,
-                      }))}
-                      margin={{
-                        top: 8,
-                        right: 16,
-                        left: 0,
-                        bottom: 0,
-                      }}
-                      barSize={24}
-                      barGap={2}
-                      width={totalWidth}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis
-                        dataKey="year"
-                        tickFormatter={(value) => `${value}년`}
-                        height={35}
-                      />
-                      <YAxis
-                        type="number"
-                        domain={[0, "dataMax + 100"]}
-                        width={45}
-                      />
-                      <ChartTooltip content={<CustomTooltip />} />
-                      <Bar
-                        name="등록자"
-                        dataKey="registered"
-                        fill="var(--color-registered)"
-                      />
-                      <Bar
-                        name="참가자"
-                        dataKey="participants"
-                        fill="var(--color-participants)"
-                      />
-                      <Bar name="DNF" dataKey="dnf" fill="var(--color-dnf)" />
-                      <Legend
-                        content={CustomLegend}
-                        verticalAlign="bottom"
-                        height={36}
-                      />
-                    </BarChart>
-                  </ChartContainer>
-                </div>
-              </div>
-            ) : (
-              <div>
-                <ChartContainer
-                  config={{
-                    registered: {
-                      label: "등록자",
-                      color: "hsl(150, 80%, 80%)",
-                    },
-                    participants: {
-                      label: "참가자",
-                      color: "hsl(150, 80%, 40%)",
-                    },
-                    dnf: {
-                      label: "DNF",
-                      color: "hsl(0, 80%, 60%)",
-                    },
-                  }}
-                >
-                  <ResponsiveContainer width="100%" height={320}>
-                    <BarChart
-                      data={data.map((d) => ({
-                        year: d.year,
-                        registered: d.medioFondoRegistered,
-                        participants: d.medioFondoParticipants,
-                        dnf: d.medioFondoDNF,
-                      }))}
-                      margin={{
-                        top: 20,
-                        right: 16,
-                        left: 16,
-                        bottom: 20,
-                      }}
-                      barSize={20}
-                      barGap={2}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis
-                        dataKey="year"
-                        tick={{ fontSize: 12 }}
-                        tickFormatter={(value) => `${value}년`}
-                        height={35}
-                      />
-                      <YAxis tick={{ fontSize: 12 }} width={45} />
-                      <ChartTooltip content={<CustomTooltip />} />
-                      <Bar
-                        name="등록자"
-                        dataKey="registered"
-                        fill="var(--color-registered)"
-                      />
-                      <Bar
-                        name="참가자"
-                        dataKey="participants"
-                        fill="var(--color-participants)"
-                      />
-                      <Bar name="DNF" dataKey="dnf" fill="var(--color-dnf)" />
-                      <Legend
-                        content={CustomLegend}
-                        verticalAlign="bottom"
-                        height={36}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
-              </div>
-            )
-          ) : (
-            <div className="h-[250px] overflow-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[80px]">연도</TableHead>
-                    <TableHead>등록자</TableHead>
-                    <TableHead>참가자</TableHead>
-                    <TableHead>DNF</TableHead>
-                    <TableHead className="text-right">참가율</TableHead>
-                    <TableHead className="text-right">완주율</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {sortedData.map((item) => (
-                    <TableRow key={item.year}>
-                      <TableCell className="font-medium">
-                        {item.year}년
-                      </TableCell>
-                      <TableCell>{item.medioFondoRegistered}명</TableCell>
-                      <TableCell>{item.medioFondoParticipants}명</TableCell>
-                      <TableCell>{item.medioFondoDNF}명</TableCell>
-                      <TableCell className="text-right">
-                        {item.medioFondoRate}%
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {item.medioFondoCompletionRate}%
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          )}
-        </div>
+        <CourseTrendSection
+          title="메디오폰도"
+          data={sortedData.map((d) => ({
+            year: d.year,
+            registered: d.medioFondoRegistered,
+            participants: d.medioFondoParticipants,
+            dnf: d.medioFondoDNF,
+            rate: d.medioFondoRate,
+            completionRate: d.medioFondoCompletionRate,
+          }))}
+          viewType={viewType}
+          isMobile={isMobile}
+          isTablet={isTablet}
+          scrollRef={scrollRef}
+          totalWidth={totalWidth}
+          config={{
+            registered: { label: "등록자", color: "hsl(150, 80%, 80%)" },
+            participants: { label: "참가자", color: "hsl(150, 80%, 40%)" },
+            dnf: { label: "DNF", color: "hsl(0, 80%, 60%)" },
+          }}
+        />
       </div>
     </div>
   );
