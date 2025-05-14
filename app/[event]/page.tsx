@@ -39,8 +39,8 @@ export default async function EventPage({ params }: EventPageProps) {
     eventData = event.years.map((year) => {
       const detail = event.yearDetails[year];
       // granfondo/mediofondo registered 추출 (기존 차트 호환 위해)
-      const gran = detail.categories.find((c) => c.id === "granfondo");
-      const medio = detail.categories.find((c) => c.id === "mediofondo");
+      const gran = detail.courses.find((c) => c.id === "granfondo");
+      const medio = detail.courses.find((c) => c.id === "mediofondo");
       return {
         year,
         registered: {

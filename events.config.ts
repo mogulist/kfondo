@@ -22,7 +22,7 @@ export const events: EventV2[] = [
       2025: {
         year: 2025,
         date: "2025.4.19",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -43,7 +43,7 @@ export const events: EventV2[] = [
       2024: {
         year: 2024,
         date: "2024.4.19",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -64,7 +64,7 @@ export const events: EventV2[] = [
       2023: {
         year: 2023,
         date: "2023.4.19",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -85,7 +85,7 @@ export const events: EventV2[] = [
       2022: {
         year: 2022,
         date: "2022.4.19",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -125,7 +125,7 @@ export const events: EventV2[] = [
       2025: {
         year: 2025,
         date: "2025.4.26",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -146,7 +146,7 @@ export const events: EventV2[] = [
       2024: {
         year: 2024,
         date: "2024.4.26",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -186,7 +186,7 @@ export const events: EventV2[] = [
       2025: {
         year: 2025,
         date: "2025.4.26",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -207,7 +207,7 @@ export const events: EventV2[] = [
       2024: {
         year: 2024,
         date: "2024.4.26",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -228,7 +228,7 @@ export const events: EventV2[] = [
       2023: {
         year: 2023,
         date: "2023.4.26",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -268,7 +268,7 @@ export const events: EventV2[] = [
       2024: {
         year: 2024,
         date: "2024.5.18",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -289,7 +289,7 @@ export const events: EventV2[] = [
       2023: {
         year: 2023,
         date: "2023.5.18",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -310,7 +310,7 @@ export const events: EventV2[] = [
       2022: {
         year: 2022,
         date: "2022.5.18",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -350,7 +350,7 @@ export const events: EventV2[] = [
       2024: {
         year: 2024,
         date: "2024.9.1",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -371,7 +371,7 @@ export const events: EventV2[] = [
       2023: {
         year: 2023,
         date: "2023.9.1",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -411,7 +411,7 @@ export const events: EventV2[] = [
       2024: {
         year: 2024,
         date: "2024.5.26",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -432,7 +432,7 @@ export const events: EventV2[] = [
       2023: {
         year: 2023,
         date: "2023.5.26",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -472,7 +472,7 @@ export const events: EventV2[] = [
       2024: {
         year: 2024,
         date: "2024",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -493,7 +493,7 @@ export const events: EventV2[] = [
       2023: {
         year: 2023,
         date: "2023",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -514,7 +514,7 @@ export const events: EventV2[] = [
       2022: {
         year: 2022,
         date: "2022",
-        categories: [
+        courses: [
           {
             id: "granfondo",
             name: "그란폰도",
@@ -527,6 +527,67 @@ export const events: EventV2[] = [
             name: "메디오폰도",
             distance: 102,
             elevation: 1201,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+  },
+  // 화천 DMZ 랠리
+  {
+    id: "hwacheon",
+    location: "화천",
+    years: [2022, 2023, 2025],
+    color: {
+      from: "#8b5cf6",
+      to: "#6d28d9",
+    },
+    status: "ready",
+    meta: {
+      title: "화천 DMZ 랠리 통계 | FondoScope",
+      description:
+        "화천 DMZ 랠리의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2022년부터 2025년까지의 데이터를 제공합니다.",
+      image: "/images/hwacheon-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.5.11",
+        courses: [
+          {
+            id: "single",
+            name: "DMZ 랠리",
+            distance: 71.35,
+            elevation: 1244,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+      2023: {
+        year: 2023,
+        date: "2023",
+        courses: [
+          {
+            id: "single",
+            name: "DMZ 랠리",
+            distance: 0,
+            elevation: 0,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+      2022: {
+        year: 2022,
+        date: "2022",
+        courses: [
+          {
+            id: "single",
+            name: "DMZ 랠리",
+            distance: 0,
+            elevation: 0,
             registered: 0,
           },
         ],

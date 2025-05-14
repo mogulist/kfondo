@@ -135,7 +135,7 @@ export function EventCard({ event }: EventCardProps) {
                         </div>
                       </>
                     ) : (
-                      latestYearDetail?.categories.map((cat) => (
+                      latestYearDetail?.courses.map((cat) => (
                         <div
                           key={cat.id}
                           className="bg-white/10 p-2 rounded text-xs"
