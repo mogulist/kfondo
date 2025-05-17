@@ -163,7 +163,9 @@ const TableSection = ({ data }: any) => (
             <TableCell>{item.registered}명</TableCell>
             <TableCell>{item.participants}명</TableCell>
             <TableCell>{item.dnf}명</TableCell>
-            <TableCell className="text-right">{item.rate}%</TableCell>
+            <TableCell className="text-right">
+              {item.registered > 0 ? `${item.rate}%` : "-"}
+            </TableCell>
             <TableCell className="text-right">{item.completionRate}%</TableCell>
           </TableRow>
         ))}
@@ -197,7 +199,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     const registered = payload[0].value;
     const participants = payload[1].value;
     const dnf = payload.length > 2 ? payload[2].value : 0;
-    const participationRate = ((participants / registered) * 100).toFixed(1);
+    const participationRate =
+      registered > 0 ? ((participants / registered) * 100).toFixed(1) : "-";
     const completionRate =
       dnf > 0
         ? (((participants - dnf) / participants) * 100).toFixed(1)
@@ -209,7 +212,9 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         <p className="text-xs mb-1">{`등록자: ${registered}명`}</p>
         <p className="text-xs mb-1">{`참가자: ${participants}명`}</p>
         {dnf > 0 && <p className="text-xs mb-1">{`DNF: ${dnf}명`}</p>}
-        <p className="text-xs font-medium">{`참가율: ${participationRate}%`}</p>
+        <p className="text-xs font-medium">{`참가율: ${
+          participationRate === "-" ? "-" : participationRate + "%"
+        }`}</p>
         <p className="text-xs font-medium">{`완주율: ${completionRate}%`}</p>
       </div>
     );

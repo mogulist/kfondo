@@ -252,7 +252,7 @@ export const events: EventV2[] = [
   {
     id: "seorak",
     location: "설악",
-    years: [2022, 2023, 2024],
+    years: [2022, 2023, 2024, 2025],
     color: {
       from: "#0d9488",
       to: "#0f766e",
@@ -265,6 +265,27 @@ export const events: EventV2[] = [
       image: "/images/seorak-og.jpg",
     },
     yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2024.5.17",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 208,
+            elevation: 3800,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 105,
+            elevation: 1700,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
       2024: {
         year: 2024,
         date: "2024.5.18",
