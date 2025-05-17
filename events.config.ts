@@ -2,6 +2,109 @@ import type { EventV2 } from "./lib/types";
 
 // 그란폰도 이벤트 목록
 export const events: EventV2[] = [
+  // 설악
+  {
+    id: "seorak",
+    location: "설악",
+    years: [2022, 2023, 2024, 2025],
+    color: {
+      from: "#0d9488",
+      to: "#0f766e",
+    },
+    status: "ready",
+    meta: {
+      title: "설악 그란폰도 통계 | FondoScope",
+      description:
+        "설악 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
+      image: "/images/seorak-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2024.5.17",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 208,
+            elevation: 3800,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 105,
+            elevation: 1700,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+      2024: {
+        year: 2024,
+        date: "2024.5.18",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 208,
+            elevation: 3800,
+            registered: 3370,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 105,
+            elevation: 1700,
+            registered: 2470,
+          },
+        ],
+        totalRegistered: 5840,
+      },
+      2023: {
+        year: 2023,
+        date: "2023.5.18",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 208,
+            elevation: 3800,
+            registered: 2926,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 105,
+            elevation: 1700,
+            registered: 2995,
+          },
+        ],
+        totalRegistered: 5921,
+      },
+      2022: {
+        year: 2022,
+        date: "2022.5.18",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 208,
+            elevation: 3800,
+            registered: 2125,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 105,
+            elevation: 1700,
+            registered: 2175,
+          },
+        ],
+        totalRegistered: 4300,
+      },
+    },
+  },
   // 홍천 (이미 변환됨)
   {
     id: "hongcheon",
@@ -245,109 +348,6 @@ export const events: EventV2[] = [
           },
         ],
         totalRegistered: 0,
-      },
-    },
-  },
-  // 설악
-  {
-    id: "seorak",
-    location: "설악",
-    years: [2022, 2023, 2024, 2025],
-    color: {
-      from: "#0d9488",
-      to: "#0f766e",
-    },
-    status: "ready",
-    meta: {
-      title: "설악 그란폰도 통계 | FondoScope",
-      description:
-        "설악 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
-      image: "/images/seorak-og.jpg",
-    },
-    yearDetails: {
-      2025: {
-        year: 2025,
-        date: "2024.5.17",
-        courses: [
-          {
-            id: "granfondo",
-            name: "그란폰도",
-            distance: 208,
-            elevation: 3800,
-            registered: 0,
-          },
-          {
-            id: "mediofondo",
-            name: "메디오폰도",
-            distance: 105,
-            elevation: 1700,
-            registered: 0,
-          },
-        ],
-        totalRegistered: 0,
-      },
-      2024: {
-        year: 2024,
-        date: "2024.5.18",
-        courses: [
-          {
-            id: "granfondo",
-            name: "그란폰도",
-            distance: 208,
-            elevation: 3800,
-            registered: 3370,
-          },
-          {
-            id: "mediofondo",
-            name: "메디오폰도",
-            distance: 105,
-            elevation: 1700,
-            registered: 2470,
-          },
-        ],
-        totalRegistered: 5840,
-      },
-      2023: {
-        year: 2023,
-        date: "2023.5.18",
-        courses: [
-          {
-            id: "granfondo",
-            name: "그란폰도",
-            distance: 208,
-            elevation: 3800,
-            registered: 2926,
-          },
-          {
-            id: "mediofondo",
-            name: "메디오폰도",
-            distance: 105,
-            elevation: 1700,
-            registered: 2995,
-          },
-        ],
-        totalRegistered: 5921,
-      },
-      2022: {
-        year: 2022,
-        date: "2022.5.18",
-        courses: [
-          {
-            id: "granfondo",
-            name: "그란폰도",
-            distance: 208,
-            elevation: 3800,
-            registered: 2125,
-          },
-          {
-            id: "mediofondo",
-            name: "메디오폰도",
-            distance: 105,
-            elevation: 1700,
-            registered: 2175,
-          },
-        ],
-        totalRegistered: 4300,
       },
     },
   },
