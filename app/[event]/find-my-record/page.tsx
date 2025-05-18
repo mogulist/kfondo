@@ -32,6 +32,23 @@ const FindMyRecordPage = async ({ params }: Props) => {
         <div className="text-xl text-muted-foreground font-semibold mb-8">
           {latestYear} {eventName}
         </div>
+        <form className="max-w-xs mx-auto">
+          <label
+            htmlFor="record-input"
+            className="block text-sm font-medium mb-2"
+          >
+            기록 입력
+          </label>
+          <input
+            id="record-input"
+            name="record"
+            type="text"
+            inputMode="numeric"
+            autoComplete="off"
+            placeholder="예: 05:08:27 또는 05:08:27.53"
+            className="w-full border rounded px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </form>
         {/* 이후 컨텐츠 영역 */}
       </div>
     </main>
