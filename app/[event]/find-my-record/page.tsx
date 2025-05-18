@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { events } from "@/events.config";
 import type { Event, EventV2 } from "@/lib/types";
 import StackNavBar from "./StackNavBar";
-import RecordInput from "./RecordInput";
+import FindMyRecordSection from "./FindMyRecordSection";
 
 type Props = {
   params: {
@@ -26,13 +26,11 @@ const FindMyRecordPage = async ({ params }: Props) => {
   return (
     <main className="container mx-auto px-0 py-0">
       <StackNavBar />
-      <div className="space-y-12 max-w-full px-4 py-4">
-        <div className="text-xl text-muted-foreground font-semibold mb-8">
-          {latestYear} {eventName}
-        </div>
-        <RecordInput />
-        {/* 이후 컨텐츠 영역 */}
-      </div>
+      <FindMyRecordSection
+        event={event}
+        latestYear={latestYear}
+        eventName={eventName}
+      />
     </main>
   );
 };

@@ -1,5 +1,11 @@
 "use client";
-import { useState } from "react";
+import type { FC } from "react";
+
+interface RecordInputProps {
+  value: string;
+  onChange: (value: string) => void;
+  error?: string;
+}
 
 const isValidRecordFormat = (value: string) => {
   // 허용: HH:mm:ss 또는 HH:mm:ss.SS
@@ -21,21 +27,11 @@ const formatRecordInput = (value: string) => {
   return value;
 };
 
-const RecordInput = () => {
-  const [record, setRecord] = useState("");
-  const [error, setError] = useState("");
-
+const RecordInput: FC<RecordInputProps> = ({ value, onChange, error }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
-    // 자동 포맷팅
-    value = formatRecordInput(value);
-    setRecord(value);
-    // 유효성 검사
-    if (value && !isValidRecordFormat(value)) {
-      setError("올바른 시간 형식이 아닙니다. 예: 05:08:27 또는 05:08:27.53");
-    } else {
-      setError("");
-    }
+    let v = e.target.value;
+    v = formatRecordInput(v);
+    onChange(v);
   };
 
   return (
@@ -55,7 +51,7 @@ const RecordInput = () => {
         autoComplete="off"
         placeholder="예: 05:08:27 또는 05:08:27.53"
         className="w-full border rounded px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        value={record}
+        value={value}
         onChange={handleInputChange}
       />
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
@@ -63,4 +59,5 @@ const RecordInput = () => {
   );
 };
 
+export { isValidRecordFormat };
 export default RecordInput;
