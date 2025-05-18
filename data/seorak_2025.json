@@ -9,16 +9,18 @@
   {
     "BIB_NO": 1002,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:20:20",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1003,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:05:52",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1005,
@@ -121,9 +123,10 @@
   {
     "BIB_NO": 1021,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:08:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1022,
@@ -422,9 +425,10 @@
   {
     "BIB_NO": 1069,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:13:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1070,
@@ -450,9 +454,10 @@
   {
     "BIB_NO": 1074,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:37:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1075,
@@ -471,9 +476,10 @@
   {
     "BIB_NO": 1077,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:24:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1078,
@@ -548,9 +554,10 @@
   {
     "BIB_NO": 1090,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:40:25",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1091,
@@ -723,9 +730,10 @@
   {
     "BIB_NO": 1115,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:10:00",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1116,
@@ -737,16 +745,18 @@
   {
     "BIB_NO": 1117,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:04:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1118,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:22:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1119,
@@ -758,9 +768,10 @@
   {
     "BIB_NO": 1120,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:18:25",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1121,
@@ -947,16 +958,18 @@
   {
     "BIB_NO": 1155,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:10:20",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1157,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:10:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1158,
@@ -1003,9 +1016,10 @@
   {
     "BIB_NO": 1164,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:17:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1165,
@@ -1143,9 +1157,10 @@
   {
     "BIB_NO": 1185,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:28:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1186,
@@ -1297,9 +1312,10 @@
   {
     "BIB_NO": 1208,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:37:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1209,
@@ -1563,9 +1579,10 @@
   {
     "BIB_NO": 1250,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:00:00",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1252,
@@ -1759,9 +1776,10 @@
   {
     "BIB_NO": 1285,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:13:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1286,
@@ -1913,9 +1931,10 @@
   {
     "BIB_NO": 1309,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:26:40",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1310,
@@ -1927,9 +1946,10 @@
   {
     "BIB_NO": 1311,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:30:41",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1312,
@@ -1962,9 +1982,10 @@
   {
     "BIB_NO": 1316,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:58:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1317,
@@ -2046,16 +2067,18 @@
   {
     "BIB_NO": 1330,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:08:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1331,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:56:57",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1332,
@@ -2088,23 +2111,26 @@
   {
     "BIB_NO": 1337,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:12:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1338,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:08:34",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1339,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:03:19",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1340,
@@ -2158,9 +2184,10 @@
   {
     "BIB_NO": 1347,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:31:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1348,
@@ -2200,9 +2227,10 @@
   {
     "BIB_NO": 1353,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:18:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1354,
@@ -2256,9 +2284,10 @@
   {
     "BIB_NO": 1361,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:24:19",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1362,
@@ -2326,9 +2355,10 @@
   {
     "BIB_NO": 1371,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:24:20",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1372,
@@ -2347,9 +2377,10 @@
   {
     "BIB_NO": 1374,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:38:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1375,
@@ -2382,9 +2413,10 @@
   {
     "BIB_NO": 1379,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:48:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1380,
@@ -2396,9 +2428,10 @@
   {
     "BIB_NO": 1381,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:47:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1382,
@@ -2410,9 +2443,10 @@
   {
     "BIB_NO": 1384,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1385,
@@ -2445,9 +2479,10 @@
   {
     "BIB_NO": 1389,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:24:14",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1391,
@@ -2578,9 +2613,10 @@
   {
     "BIB_NO": 1412,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:23:57",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1413,
@@ -2599,30 +2635,34 @@
   {
     "BIB_NO": 1415,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:59:32",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1416,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:27:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1417,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:57:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1418,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:28:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1419,
@@ -2655,16 +2695,18 @@
   {
     "BIB_NO": 1423,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:53:20",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1424,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:55:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1425,
@@ -2704,9 +2746,10 @@
   {
     "BIB_NO": 1430,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:01:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1431,
@@ -2816,9 +2859,10 @@
   {
     "BIB_NO": 1449,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:36:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1450,
@@ -2935,9 +2979,10 @@
   {
     "BIB_NO": 1468,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:21:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1469,
@@ -2998,9 +3043,10 @@
   {
     "BIB_NO": 1477,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:40:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1478,
@@ -3047,9 +3093,10 @@
   {
     "BIB_NO": 1484,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:53:23",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1485,
@@ -3159,30 +3206,34 @@
   {
     "BIB_NO": 1504,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:19:16",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1505,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:58:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1506,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:02:57",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1507,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:15:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1508,
@@ -3404,9 +3455,10 @@
   {
     "BIB_NO": 1545,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:56:14",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1546,
@@ -3460,16 +3512,18 @@
   {
     "BIB_NO": 1553,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "",
-    "Status": "DNF"
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1554,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:43:23",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1555,
@@ -3509,23 +3563,26 @@
   {
     "BIB_NO": 1560,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:38:48",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1561,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:38:43",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1562,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "",
-    "Status": "DNF"
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1563,
@@ -3586,9 +3643,10 @@
   {
     "BIB_NO": 1574,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:01:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1575,
@@ -3600,9 +3658,10 @@
   {
     "BIB_NO": 1576,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:34:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1577,
@@ -3614,16 +3673,18 @@
   {
     "BIB_NO": 1578,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:36:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1579,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:56:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1580,
@@ -3670,9 +3731,10 @@
   {
     "BIB_NO": 1586,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:14:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1587,
@@ -3684,9 +3746,10 @@
   {
     "BIB_NO": 1588,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:58:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1589,
@@ -3733,9 +3796,10 @@
   {
     "BIB_NO": 1595,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:58:34",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1596,
@@ -3789,16 +3853,18 @@
   {
     "BIB_NO": 1603,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:10:12",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1604,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:27:35",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1605,
@@ -3824,9 +3890,10 @@
   {
     "BIB_NO": 1609,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:08:51",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1610,
@@ -3852,9 +3919,10 @@
   {
     "BIB_NO": 1613,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:08:51",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1614,
@@ -3957,9 +4025,10 @@
   {
     "BIB_NO": 1630,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:43:33",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1631,
@@ -4090,9 +4159,10 @@
   {
     "BIB_NO": 1649,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:51:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1650,
@@ -4111,16 +4181,18 @@
   {
     "BIB_NO": 1652,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:08:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1653,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:06",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1654,
@@ -4146,16 +4218,18 @@
   {
     "BIB_NO": 1662,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:21:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1663,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:21:12",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1664,
@@ -4167,9 +4241,10 @@
   {
     "BIB_NO": 1665,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:21:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1667,
@@ -4188,9 +4263,10 @@
   {
     "BIB_NO": 1669,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:51:40",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1671,
@@ -4202,9 +4278,10 @@
   {
     "BIB_NO": 1672,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:39:43",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1673,
@@ -4230,23 +4307,26 @@
   {
     "BIB_NO": 1676,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:33:41",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1677,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:27:19",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1679,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:55:55",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1680,
@@ -4265,9 +4345,10 @@
   {
     "BIB_NO": 1682,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:58:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1683,
@@ -4391,9 +4472,10 @@
   {
     "BIB_NO": 1702,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:45:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1703,
@@ -4426,9 +4508,10 @@
   {
     "BIB_NO": 1707,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:27:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1708,
@@ -4447,9 +4530,10 @@
   {
     "BIB_NO": 1710,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:45:57",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1711,
@@ -4475,9 +4559,10 @@
   {
     "BIB_NO": 1714,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:45:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1715,
@@ -4510,9 +4595,10 @@
   {
     "BIB_NO": 1719,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:48:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1720,
@@ -4594,9 +4680,10 @@
   {
     "BIB_NO": 1732,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:08:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1733,
@@ -4608,9 +4695,10 @@
   {
     "BIB_NO": 1734,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:08:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1735,
@@ -4748,9 +4836,10 @@
   {
     "BIB_NO": 1757,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:21:31",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1759,
@@ -4797,9 +4886,10 @@
   {
     "BIB_NO": 1765,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:33:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1766,
@@ -4916,9 +5006,10 @@
   {
     "BIB_NO": 1786,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:26:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1787,
@@ -4937,16 +5028,18 @@
   {
     "BIB_NO": 1789,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:29:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1791,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:26:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1792,
@@ -4958,23 +5051,26 @@
   {
     "BIB_NO": 1793,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:27:32",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1794,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:53:00",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1795,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:10:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1796,
@@ -4993,9 +5089,10 @@
   {
     "BIB_NO": 1799,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:52:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1802,
@@ -5014,16 +5111,18 @@
   {
     "BIB_NO": 1804,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:51:52",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1805,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:10:06",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1806,
@@ -5112,16 +5211,18 @@
   {
     "BIB_NO": 1819,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:27:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1820,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:27:41",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1821,
@@ -5133,9 +5234,10 @@
   {
     "BIB_NO": 1822,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:54:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1823,
@@ -5168,9 +5270,10 @@
   {
     "BIB_NO": 1827,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:01:51",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1828,
@@ -5343,9 +5446,10 @@
   {
     "BIB_NO": 1852,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:41:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1853,
@@ -5392,9 +5496,10 @@
   {
     "BIB_NO": 1861,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:37:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1862,
@@ -5427,9 +5532,10 @@
   {
     "BIB_NO": 1867,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:07:40",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1868,
@@ -5511,9 +5617,10 @@
   {
     "BIB_NO": 1881,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:45:42",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1882,
@@ -5742,9 +5849,10 @@
   {
     "BIB_NO": 1916,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:06:51",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1917,
@@ -5770,9 +5878,10 @@
   {
     "BIB_NO": 1920,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:12:51",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1922,
@@ -5798,9 +5907,10 @@
   {
     "BIB_NO": 1925,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:40:33",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1926,
@@ -5847,9 +5957,10 @@
   {
     "BIB_NO": 1935,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:59:48",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1936,
@@ -5861,9 +5972,10 @@
   {
     "BIB_NO": 1937,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:49:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1938,
@@ -5875,9 +5987,10 @@
   {
     "BIB_NO": 1939,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:36:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1940,
@@ -5889,9 +6002,10 @@
   {
     "BIB_NO": 1941,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:09:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1942,
@@ -5910,9 +6024,10 @@
   {
     "BIB_NO": 1944,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:40:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1945,
@@ -5945,9 +6060,10 @@
   {
     "BIB_NO": 1951,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:34:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1953,
@@ -5966,9 +6082,10 @@
   {
     "BIB_NO": 1955,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:37:32",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1956,
@@ -5994,23 +6111,26 @@
   {
     "BIB_NO": 1960,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:21:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1961,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:45:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1962,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:41:15",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1963,
@@ -6029,9 +6149,10 @@
   {
     "BIB_NO": 1965,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:19:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1966,
@@ -6050,23 +6171,26 @@
   {
     "BIB_NO": 1968,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:43:55",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1969,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:40:35",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1970,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:40:35",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1971,
@@ -6085,9 +6209,10 @@
   {
     "BIB_NO": 1973,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:08:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1974,
@@ -6141,9 +6266,10 @@
   {
     "BIB_NO": 1981,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:22:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1982,
@@ -6162,16 +6288,18 @@
   {
     "BIB_NO": 1984,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:37:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1985,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:17:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1987,
@@ -6246,23 +6374,26 @@
   {
     "BIB_NO": 1997,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:40:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 1998,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2000,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2001,
@@ -6281,9 +6412,10 @@
   {
     "BIB_NO": 2003,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:45:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2004,
@@ -6309,16 +6441,18 @@
   {
     "BIB_NO": 2007,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:45:25",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2008,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:45:27",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2009,
@@ -6330,16 +6464,18 @@
   {
     "BIB_NO": 2010,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:53:49",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2011,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:12:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2012,
@@ -6701,9 +6837,10 @@
   {
     "BIB_NO": 2065,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:04:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2066,
@@ -6820,23 +6957,26 @@
   {
     "BIB_NO": 2089,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:48:58",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2091,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:49:02",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2092,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:49:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2094,
@@ -6876,16 +7016,18 @@
   {
     "BIB_NO": 2100,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:48:55",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2101,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:48:57",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2102,
@@ -6981,9 +7123,10 @@
   {
     "BIB_NO": 2115,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:51:48",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2116,
@@ -7086,9 +7229,10 @@
   {
     "BIB_NO": 2130,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:43:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2131,
@@ -7128,9 +7272,10 @@
   {
     "BIB_NO": 2136,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:45:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2137,
@@ -7142,16 +7287,18 @@
   {
     "BIB_NO": 2138,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:43:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2139,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:56:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2140,
@@ -7205,9 +7352,10 @@
   {
     "BIB_NO": 2147,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:41:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2148,
@@ -7254,16 +7402,18 @@
   {
     "BIB_NO": 2154,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:06:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2155,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:59:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2156,
@@ -7282,9 +7432,10 @@
   {
     "BIB_NO": 2158,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:27:42",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2159,
@@ -7359,16 +7510,18 @@
   {
     "BIB_NO": 2169,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:18:16",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2170,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:12:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2171,
@@ -7422,9 +7575,10 @@
   {
     "BIB_NO": 2179,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:12:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2180,
@@ -7499,9 +7653,10 @@
   {
     "BIB_NO": 2190,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:21:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2191,
@@ -7520,9 +7675,10 @@
   {
     "BIB_NO": 2194,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:16:48",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2195,
@@ -7569,9 +7725,10 @@
   {
     "BIB_NO": 2205,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:43:55",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2207,
@@ -7625,16 +7782,18 @@
   {
     "BIB_NO": 2214,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:17:17",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2215,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:56:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2216,
@@ -7716,16 +7875,18 @@
   {
     "BIB_NO": 2227,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:07:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2228,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:07:06",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2229,
@@ -7744,9 +7905,10 @@
   {
     "BIB_NO": 2231,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:26:23",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2232,
@@ -7758,30 +7920,34 @@
   {
     "BIB_NO": 2234,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:09:48",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2235,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:40:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2236,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:50:25",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2237,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:14:57",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2238,
@@ -7856,37 +8022,42 @@
   {
     "BIB_NO": 2251,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:36:52",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2252,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:16:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2253,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:23:32",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2254,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:25:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2256,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:23:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2257,
@@ -7898,9 +8069,10 @@
   {
     "BIB_NO": 2258,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:21:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2259,
@@ -7919,9 +8091,10 @@
   {
     "BIB_NO": 2262,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:25:16",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2263,
@@ -7940,16 +8113,18 @@
   {
     "BIB_NO": 2265,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:50:19",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2266,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:52:23",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2267,
@@ -7982,9 +8157,10 @@
   {
     "BIB_NO": 2271,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:48:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2272,
@@ -8003,9 +8179,10 @@
   {
     "BIB_NO": 2274,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:50:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2275,
@@ -8045,9 +8222,10 @@
   {
     "BIB_NO": 2280,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "",
-    "Status": "DNF"
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2281,
@@ -8059,9 +8237,10 @@
   {
     "BIB_NO": 2282,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:10:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2283,
@@ -8227,9 +8406,10 @@
   {
     "BIB_NO": 2306,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:04:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2307,
@@ -8255,9 +8435,10 @@
   {
     "BIB_NO": 2310,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:43:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2311,
@@ -8325,16 +8506,18 @@
   {
     "BIB_NO": 2320,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:12:42",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2321,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:12:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2322,
@@ -8353,9 +8536,10 @@
   {
     "BIB_NO": 2324,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:06:52",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2325,
@@ -8402,23 +8586,26 @@
   {
     "BIB_NO": 2333,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:01:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2335,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:26:24",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2337,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:53:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2338,
@@ -8479,16 +8666,18 @@
   {
     "BIB_NO": 2347,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:26:24",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2348,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:57:17",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2349,
@@ -8500,16 +8689,18 @@
   {
     "BIB_NO": 2350,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:26:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2351,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:17:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2352,
@@ -8640,9 +8831,10 @@
   {
     "BIB_NO": 2371,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:24:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2372,
@@ -8654,9 +8846,10 @@
   {
     "BIB_NO": 2373,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:55:48",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2374,
@@ -8745,9 +8938,10 @@
   {
     "BIB_NO": 2396,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:21:06",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2397,
@@ -8780,9 +8974,10 @@
   {
     "BIB_NO": 2403,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:56:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2404,
@@ -8829,9 +9024,10 @@
   {
     "BIB_NO": 2412,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:44:32",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2413,
@@ -8913,9 +9109,10 @@
   {
     "BIB_NO": 2425,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:08:49",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2426,
@@ -8941,16 +9138,18 @@
   {
     "BIB_NO": 2433,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:32:02",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2434,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:42:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2436,
@@ -9018,9 +9217,10 @@
   {
     "BIB_NO": 2446,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:08:23",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2447,
@@ -9137,9 +9337,10 @@
   {
     "BIB_NO": 2465,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:07:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2466,
@@ -9193,9 +9394,10 @@
   {
     "BIB_NO": 2477,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:52:37",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2478,
@@ -9214,9 +9416,10 @@
   {
     "BIB_NO": 2480,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:29:26",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2481,
@@ -9319,9 +9522,10 @@
   {
     "BIB_NO": 2497,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:33:48",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2498,
@@ -9438,9 +9642,10 @@
   {
     "BIB_NO": 2518,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:21:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2519,
@@ -9466,37 +9671,42 @@
   {
     "BIB_NO": 2522,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:34:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2523,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:09:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2524,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:24:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2526,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:19:41",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2527,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:14:24",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2528,
@@ -9557,9 +9767,10 @@
   {
     "BIB_NO": 2536,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:14:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2537,
@@ -9606,9 +9817,10 @@
   {
     "BIB_NO": 2544,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:30:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2546,
@@ -9634,9 +9846,10 @@
   {
     "BIB_NO": 2550,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:38:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2551,
@@ -9676,16 +9889,18 @@
   {
     "BIB_NO": 2557,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:03:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2558,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:02:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2559,
@@ -9732,37 +9947,42 @@
   {
     "BIB_NO": 2565,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:28:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2566,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:02:55",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2567,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:25:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2568,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:19:42",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2569,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:22:43",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2570,
@@ -9788,9 +10008,10 @@
   {
     "BIB_NO": 2573,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:23:31",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2574,
@@ -9886,9 +10107,10 @@
   {
     "BIB_NO": 2589,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:23:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2590,
@@ -9907,9 +10129,10 @@
   {
     "BIB_NO": 2592,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:47:17",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2593,
@@ -9949,9 +10172,10 @@
   {
     "BIB_NO": 2598,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:04:26",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2599,
@@ -9970,9 +10194,10 @@
   {
     "BIB_NO": 2602,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:32:31",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2603,
@@ -10040,9 +10265,10 @@
   {
     "BIB_NO": 2612,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:13:57",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2613,
@@ -10145,23 +10371,26 @@
   {
     "BIB_NO": 2629,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:35:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2630,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:21:58",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2631,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:35:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2632,
@@ -10180,16 +10409,18 @@
   {
     "BIB_NO": 2634,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:44:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2636,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:44:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2637,
@@ -10306,9 +10537,10 @@
   {
     "BIB_NO": 2653,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:40:24",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2654,
@@ -10376,9 +10608,10 @@
   {
     "BIB_NO": 2664,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:15:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2665,
@@ -10390,9 +10623,10 @@
   {
     "BIB_NO": 2667,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:01:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2668,
@@ -10425,9 +10659,10 @@
   {
     "BIB_NO": 2672,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:03:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2673,
@@ -10467,9 +10702,10 @@
   {
     "BIB_NO": 2678,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:38:58",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2679,
@@ -10509,9 +10745,10 @@
   {
     "BIB_NO": 2685,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:36:00",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2686,
@@ -10523,9 +10760,10 @@
   {
     "BIB_NO": 2687,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:01:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2688,
@@ -10551,16 +10789,18 @@
   {
     "BIB_NO": 2691,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:55:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2693,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:49:19",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2694,
@@ -10572,30 +10812,34 @@
   {
     "BIB_NO": 2695,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:50:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2696,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:51:58",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2699,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:50:25",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2700,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:09:18",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2701,
@@ -10614,30 +10858,34 @@
   {
     "BIB_NO": 2703,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:10:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2704,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:01:17",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2705,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:01:15",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2706,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:48:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2707,
@@ -10761,16 +11009,18 @@
   {
     "BIB_NO": 2724,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:56:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2725,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:56:33",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2726,
@@ -10831,9 +11081,10 @@
   {
     "BIB_NO": 2735,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:52:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2736,
@@ -10950,9 +11201,10 @@
   {
     "BIB_NO": 2754,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:44:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2755,
@@ -10964,23 +11216,26 @@
   {
     "BIB_NO": 2757,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:11:42",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2758,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:00:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2759,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:12:20",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2760,
@@ -10999,9 +11254,10 @@
   {
     "BIB_NO": 2763,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:14:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2764,
@@ -11013,16 +11269,18 @@
   {
     "BIB_NO": 2765,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:16:12",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2768,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:43:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2769,
@@ -11111,9 +11369,10 @@
   {
     "BIB_NO": 2782,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:18:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2783,
@@ -11258,9 +11517,10 @@
   {
     "BIB_NO": 2805,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:47:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2806,
@@ -11272,23 +11532,26 @@
   {
     "BIB_NO": 2807,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:26:06",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2808,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:09:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2810,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:32:55",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2811,
@@ -11335,9 +11598,10 @@
   {
     "BIB_NO": 2817,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:23:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2818,
@@ -11363,9 +11627,10 @@
   {
     "BIB_NO": 2824,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:15:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2825,
@@ -11384,16 +11649,18 @@
   {
     "BIB_NO": 2827,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:16:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2828,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:26:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2829,
@@ -11426,9 +11693,10 @@
   {
     "BIB_NO": 2837,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:04:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2838,
@@ -11489,9 +11757,10 @@
   {
     "BIB_NO": 2848,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:51:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2849,
@@ -11503,9 +11772,10 @@
   {
     "BIB_NO": 2850,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:16:25",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2851,
@@ -11524,9 +11794,10 @@
   {
     "BIB_NO": 2856,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:01:15",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2857,
@@ -11636,16 +11907,18 @@
   {
     "BIB_NO": 2873,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:38:35",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2874,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:20:43",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2875,
@@ -11657,9 +11930,10 @@
   {
     "BIB_NO": 2876,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:11:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2877,
@@ -11741,9 +12015,10 @@
   {
     "BIB_NO": 2890,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:47:02",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2891,
@@ -11776,9 +12051,10 @@
   {
     "BIB_NO": 2895,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:54:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2896,
@@ -11839,16 +12115,18 @@
   {
     "BIB_NO": 2905,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:58:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2906,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:28:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2907,
@@ -11867,9 +12145,10 @@
   {
     "BIB_NO": 2909,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:45:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2910,
@@ -12098,16 +12377,18 @@
   {
     "BIB_NO": 2945,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:26:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2946,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:55:42",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2947,
@@ -12259,16 +12540,18 @@
   {
     "BIB_NO": 2969,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:41:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2970,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:47:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2971,
@@ -12280,16 +12563,18 @@
   {
     "BIB_NO": 2972,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:05:15",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2973,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:40:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2974,
@@ -12392,9 +12677,10 @@
   {
     "BIB_NO": 2990,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:50:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 2991,
@@ -12511,9 +12797,10 @@
   {
     "BIB_NO": 3009,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:27:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3010,
@@ -12581,16 +12868,18 @@
   {
     "BIB_NO": 3019,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:36:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3020,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:37:34",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3021,
@@ -12686,9 +12975,10 @@
   {
     "BIB_NO": 3034,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:29:52",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3036,
@@ -12721,9 +13011,10 @@
   {
     "BIB_NO": 3040,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:59:37",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3041,
@@ -12749,9 +13040,10 @@
   {
     "BIB_NO": 3044,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:11:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3045,
@@ -12812,9 +13104,10 @@
   {
     "BIB_NO": 3054,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:58:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3055,
@@ -12854,9 +13147,10 @@
   {
     "BIB_NO": 3062,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:40:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3065,
@@ -12917,9 +13211,10 @@
   {
     "BIB_NO": 3075,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:35:16",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3076,
@@ -12931,9 +13226,10 @@
   {
     "BIB_NO": 3077,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:59:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3078,
@@ -13148,9 +13444,10 @@
   {
     "BIB_NO": 3111,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:20:41",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3112,
@@ -13190,23 +13487,26 @@
   {
     "BIB_NO": 3117,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:48:00",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3119,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:41:35",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3120,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:23:37",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3121,
@@ -13225,9 +13525,10 @@
   {
     "BIB_NO": 3124,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:46:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3127,
@@ -13246,9 +13547,10 @@
   {
     "BIB_NO": 3129,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:39:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3130,
@@ -13267,9 +13569,10 @@
   {
     "BIB_NO": 3132,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:14:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3133,
@@ -13302,9 +13605,10 @@
   {
     "BIB_NO": 3137,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:42:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3138,
@@ -13393,9 +13697,10 @@
   {
     "BIB_NO": 3150,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:42:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3151,
@@ -13652,9 +13957,10 @@
   {
     "BIB_NO": 3195,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:03:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3196,
@@ -13666,9 +13972,10 @@
   {
     "BIB_NO": 3198,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:39:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3199,
@@ -13722,9 +14029,10 @@
   {
     "BIB_NO": 3206,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:09:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3208,
@@ -13743,9 +14051,10 @@
   {
     "BIB_NO": 3211,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:08:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3212,
@@ -13799,9 +14108,10 @@
   {
     "BIB_NO": 3222,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:27:06",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3223,
@@ -13855,9 +14165,10 @@
   {
     "BIB_NO": 3231,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:57:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3232,
@@ -13876,9 +14187,10 @@
   {
     "BIB_NO": 3234,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:33:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3235,
@@ -13897,9 +14209,10 @@
   {
     "BIB_NO": 3237,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:56:37",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3238,
@@ -13960,9 +14273,10 @@
   {
     "BIB_NO": 3248,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:18:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3249,
@@ -14016,9 +14330,10 @@
   {
     "BIB_NO": 3256,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:56:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3258,
@@ -14051,9 +14366,10 @@
   {
     "BIB_NO": 3263,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:50:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3264,
@@ -14135,23 +14451,26 @@
   {
     "BIB_NO": 3277,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:22:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3278,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:05:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3279,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:23:55",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3280,
@@ -14205,9 +14524,10 @@
   {
     "BIB_NO": 3289,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:24:02",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3290,
@@ -14289,23 +14609,26 @@
   {
     "BIB_NO": 3309,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:34:26",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3310,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:36:40",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3311,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:15:20",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3314,
@@ -14317,9 +14640,10 @@
   {
     "BIB_NO": 3315,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:05:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3316,
@@ -14352,9 +14676,10 @@
   {
     "BIB_NO": 3320,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:20:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3321,
@@ -14373,16 +14698,18 @@
   {
     "BIB_NO": 3323,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:55:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3324,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:02:02",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3325,
@@ -14401,9 +14728,10 @@
   {
     "BIB_NO": 3327,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:03:20",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3328,
@@ -14457,16 +14785,18 @@
   {
     "BIB_NO": 3336,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:29:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3337,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:32:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3338,
@@ -14506,9 +14836,10 @@
   {
     "BIB_NO": 3343,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:11:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3344,
@@ -14541,9 +14872,10 @@
   {
     "BIB_NO": 3348,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:26:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3349,
@@ -14583,9 +14915,10 @@
   {
     "BIB_NO": 3354,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:11:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3355,
@@ -14604,16 +14937,18 @@
   {
     "BIB_NO": 3357,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:21:58",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3358,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:12:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3359,
@@ -14625,9 +14960,10 @@
   {
     "BIB_NO": 3360,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:03:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3361,
@@ -14653,16 +14989,18 @@
   {
     "BIB_NO": 3365,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:10:19",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3366,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3369,
@@ -14716,9 +15054,10 @@
   {
     "BIB_NO": 3377,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:17:37",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3379,
@@ -14954,9 +15293,10 @@
   {
     "BIB_NO": 3415,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:28:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3416,
@@ -14975,9 +15315,10 @@
   {
     "BIB_NO": 3418,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:44:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3419,
@@ -15066,9 +15407,10 @@
   {
     "BIB_NO": 3432,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:01:18",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3433,
@@ -15101,16 +15443,18 @@
   {
     "BIB_NO": 3439,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:03:00",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3440,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:01:23",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3441,
@@ -15136,9 +15480,10 @@
   {
     "BIB_NO": 3444,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:37:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3445,
@@ -15185,16 +15530,18 @@
   {
     "BIB_NO": 3452,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:01:42",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3453,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:51:51",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3454,
@@ -15241,9 +15588,10 @@
   {
     "BIB_NO": 3461,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:32:48",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3462,
@@ -15381,9 +15729,10 @@
   {
     "BIB_NO": 3484,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:06:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3485,
@@ -15626,9 +15975,10 @@
   {
     "BIB_NO": 3522,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:57:31",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3523,
@@ -15703,9 +16053,10 @@
   {
     "BIB_NO": 3533,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:27:31",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3534,
@@ -15787,9 +16138,10 @@
   {
     "BIB_NO": 3549,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:10:18",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3550,
@@ -15864,16 +16216,18 @@
   {
     "BIB_NO": 3561,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:50:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3563,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:21:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3564,
@@ -15892,16 +16246,18 @@
   {
     "BIB_NO": 3567,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:56:17",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3568,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:04:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3569,
@@ -16025,9 +16381,10 @@
   {
     "BIB_NO": 3587,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:43:25",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3588,
@@ -16165,9 +16522,10 @@
   {
     "BIB_NO": 3608,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:26:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3609,
@@ -16200,9 +16558,10 @@
   {
     "BIB_NO": 3615,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:23:41",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3616,
@@ -16214,9 +16573,10 @@
   {
     "BIB_NO": 3617,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:38:42",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3618,
@@ -16228,9 +16588,10 @@
   {
     "BIB_NO": 3619,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:30:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3620,
@@ -16333,9 +16694,10 @@
   {
     "BIB_NO": 3636,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:21:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3637,
@@ -16417,9 +16779,10 @@
   {
     "BIB_NO": 3648,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:08:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3649,
@@ -16431,9 +16794,10 @@
   {
     "BIB_NO": 3650,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:06:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3651,
@@ -16452,9 +16816,10 @@
   {
     "BIB_NO": 3653,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:29:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3654,
@@ -16564,9 +16929,10 @@
   {
     "BIB_NO": 3676,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:21:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3677,
@@ -16627,9 +16993,10 @@
   {
     "BIB_NO": 3687,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:28:26",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3688,
@@ -16690,9 +17057,10 @@
   {
     "BIB_NO": 3696,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:13:31",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3697,
@@ -16746,9 +17114,10 @@
   {
     "BIB_NO": 3705,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:32:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3706,
@@ -16858,16 +17227,18 @@
   {
     "BIB_NO": 3725,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:23:27",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3726,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:10:49",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3727,
@@ -16963,9 +17334,10 @@
   {
     "BIB_NO": 3742,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:05:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3743,
@@ -17082,9 +17454,10 @@
   {
     "BIB_NO": 3760,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:05:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3761,
@@ -17138,9 +17511,10 @@
   {
     "BIB_NO": 3768,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:05:58",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3769,
@@ -17229,9 +17603,10 @@
   {
     "BIB_NO": 3783,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:23:48",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3784,
@@ -17250,9 +17625,10 @@
   {
     "BIB_NO": 3786,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:26:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3788,
@@ -17264,9 +17640,10 @@
   {
     "BIB_NO": 3789,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:12:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3797,
@@ -17278,9 +17655,10 @@
   {
     "BIB_NO": 3798,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:32:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3799,
@@ -17292,16 +17670,18 @@
   {
     "BIB_NO": 3800,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:30:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3801,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:42:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3802,
@@ -17313,16 +17693,18 @@
   {
     "BIB_NO": 3803,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:18:43",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3804,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:36:25",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3806,
@@ -17348,9 +17730,10 @@
   {
     "BIB_NO": 3809,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:20:26",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3810,
@@ -17439,9 +17822,10 @@
   {
     "BIB_NO": 3823,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:37:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3824,
@@ -17901,9 +18285,10 @@
   {
     "BIB_NO": 3895,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:50:14",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3896,
@@ -17964,9 +18349,10 @@
   {
     "BIB_NO": 3906,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:26:52",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3907,
@@ -18020,9 +18406,10 @@
   {
     "BIB_NO": 3914,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:57:57",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3915,
@@ -18055,9 +18442,10 @@
   {
     "BIB_NO": 3920,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:35:17",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3921,
@@ -18097,9 +18485,10 @@
   {
     "BIB_NO": 3926,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:48:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3927,
@@ -18139,9 +18528,10 @@
   {
     "BIB_NO": 3932,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:48:31",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3933,
@@ -18209,9 +18599,10 @@
   {
     "BIB_NO": 3944,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:43:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3945,
@@ -18237,16 +18628,18 @@
   {
     "BIB_NO": 3949,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:14:33",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3950,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:01:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3951,
@@ -18258,9 +18651,10 @@
   {
     "BIB_NO": 3952,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:21:41",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3953,
@@ -18272,9 +18666,10 @@
   {
     "BIB_NO": 3954,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:00:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3956,
@@ -18335,9 +18730,10 @@
   {
     "BIB_NO": 3965,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:52:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3966,
@@ -18384,9 +18780,10 @@
   {
     "BIB_NO": 3972,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:42:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3973,
@@ -18398,9 +18795,10 @@
   {
     "BIB_NO": 3974,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:01:49",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3975,
@@ -18489,9 +18887,10 @@
   {
     "BIB_NO": 3989,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:16:24",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3990,
@@ -18517,16 +18916,18 @@
   {
     "BIB_NO": 3994,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:36:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3995,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:51:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 3997,
@@ -18552,16 +18953,18 @@
   {
     "BIB_NO": 4000,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:55:12",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4001,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:04:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4002,
@@ -18580,9 +18983,10 @@
   {
     "BIB_NO": 4004,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:35:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4005,
@@ -18594,9 +18998,10 @@
   {
     "BIB_NO": 4006,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:42:48",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4007,
@@ -18615,9 +19020,10 @@
   {
     "BIB_NO": 4009,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:43:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4010,
@@ -18643,9 +19049,10 @@
   {
     "BIB_NO": 4014,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:01:16",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4015,
@@ -18685,16 +19092,18 @@
   {
     "BIB_NO": 4020,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:15",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4021,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4022,
@@ -18748,16 +19157,18 @@
   {
     "BIB_NO": 4029,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:52:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4030,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:42:49",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4031,
@@ -18832,9 +19243,10 @@
   {
     "BIB_NO": 4042,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:40:12",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4043,
@@ -18846,9 +19258,10 @@
   {
     "BIB_NO": 4044,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:57:23",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4045,
@@ -18965,9 +19378,10 @@
   {
     "BIB_NO": 4063,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:01:32",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4064,
@@ -19000,9 +19414,10 @@
   {
     "BIB_NO": 4068,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:37:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4069,
@@ -19028,9 +19443,10 @@
   {
     "BIB_NO": 4072,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:36:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4073,
@@ -19105,16 +19521,18 @@
   {
     "BIB_NO": 4083,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:37:17",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4084,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:24:06",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4085,
@@ -19133,9 +19551,10 @@
   {
     "BIB_NO": 4089,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:14:31",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4090,
@@ -19252,9 +19671,10 @@
   {
     "BIB_NO": 4106,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:56:25",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4107,
@@ -19322,9 +19742,10 @@
   {
     "BIB_NO": 4116,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:11:26",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4117,
@@ -19357,9 +19778,10 @@
   {
     "BIB_NO": 4123,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:12:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4124,
@@ -19427,16 +19849,18 @@
   {
     "BIB_NO": 4135,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:59:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4136,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:17:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4137,
@@ -19532,9 +19956,10 @@
   {
     "BIB_NO": 4152,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:11:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4153,
@@ -19546,9 +19971,10 @@
   {
     "BIB_NO": 4154,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:20:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4155,
@@ -19567,23 +19993,26 @@
   {
     "BIB_NO": 4157,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:36:21",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4158,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:30:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4159,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:09:51",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4160,
@@ -19728,9 +20157,10 @@
   {
     "BIB_NO": 4183,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:05:42",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4184,
@@ -19742,9 +20172,10 @@
   {
     "BIB_NO": 4185,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:05:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4186,
@@ -19756,9 +20187,10 @@
   {
     "BIB_NO": 4187,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:41:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4188,
@@ -19770,9 +20202,10 @@
   {
     "BIB_NO": 4190,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:41:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4191,
@@ -19819,9 +20252,10 @@
   {
     "BIB_NO": 4197,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:03:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4198,
@@ -19861,9 +20295,10 @@
   {
     "BIB_NO": 4203,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:21:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4204,
@@ -19882,9 +20317,10 @@
   {
     "BIB_NO": 4206,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4207,
@@ -19945,9 +20381,10 @@
   {
     "BIB_NO": 4216,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:42:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4217,
@@ -19973,9 +20410,10 @@
   {
     "BIB_NO": 4221,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:30:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4222,
@@ -20029,9 +20467,10 @@
   {
     "BIB_NO": 4229,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:40:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4230,
@@ -20127,9 +20566,10 @@
   {
     "BIB_NO": 4243,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:51:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4244,
@@ -20176,9 +20616,10 @@
   {
     "BIB_NO": 4253,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:17:18",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4254,
@@ -20211,9 +20652,10 @@
   {
     "BIB_NO": 4259,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:10:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4260,
@@ -20302,16 +20744,18 @@
   {
     "BIB_NO": 4274,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:05:00",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4275,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:28:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4276,
@@ -20330,9 +20774,10 @@
   {
     "BIB_NO": 4278,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:02:34",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4280,
@@ -20358,9 +20803,10 @@
   {
     "BIB_NO": 4283,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:00:26",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4284,
@@ -20442,9 +20888,10 @@
   {
     "BIB_NO": 4297,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:09:52",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4299,
@@ -20638,9 +21085,10 @@
   {
     "BIB_NO": 4329,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:35:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4331,
@@ -20764,9 +21212,10 @@
   {
     "BIB_NO": 4348,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:18:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4349,
@@ -20792,9 +21241,10 @@
   {
     "BIB_NO": 4354,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:33:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4355,
@@ -20827,16 +21277,18 @@
   {
     "BIB_NO": 4360,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:09:40",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4361,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:56:17",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4362,
@@ -20855,9 +21307,10 @@
   {
     "BIB_NO": 4364,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:55:16",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4365,
@@ -20897,9 +21350,10 @@
   {
     "BIB_NO": 4370,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:28:27",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4371,
@@ -20911,9 +21365,10 @@
   {
     "BIB_NO": 4372,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:39:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4373,
@@ -20932,9 +21387,10 @@
   {
     "BIB_NO": 4375,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:13:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4377,
@@ -20960,9 +21416,10 @@
   {
     "BIB_NO": 4380,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:37:12",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4381,
@@ -21037,9 +21494,10 @@
   {
     "BIB_NO": 4393,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:10:43",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4394,
@@ -21065,9 +21523,10 @@
   {
     "BIB_NO": 4397,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:08:15",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4398,
@@ -21107,9 +21566,10 @@
   {
     "BIB_NO": 4404,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:42:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4405,
@@ -21121,9 +21581,10 @@
   {
     "BIB_NO": 4406,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:21",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4407,
@@ -21135,16 +21596,18 @@
   {
     "BIB_NO": 4408,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:30:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4409,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:08:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4410,
@@ -21177,9 +21640,10 @@
   {
     "BIB_NO": 4414,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:24:51",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4415,
@@ -21226,9 +21690,10 @@
   {
     "BIB_NO": 4421,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:50:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4422,
@@ -21289,9 +21754,10 @@
   {
     "BIB_NO": 4431,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:49:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4432,
@@ -21408,9 +21874,10 @@
   {
     "BIB_NO": 4450,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:03:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4451,
@@ -21464,9 +21931,10 @@
   {
     "BIB_NO": 4459,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:40:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4461,
@@ -21513,16 +21981,18 @@
   {
     "BIB_NO": 4467,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:21:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4470,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:29:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4471,
@@ -21534,9 +22004,10 @@
   {
     "BIB_NO": 4472,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:42:31",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4473,
@@ -21625,9 +22096,10 @@
   {
     "BIB_NO": 4492,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:37:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4493,
@@ -21653,9 +22125,10 @@
   {
     "BIB_NO": 4496,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:34:27",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4497,
@@ -21702,9 +22175,10 @@
   {
     "BIB_NO": 4505,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:27:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4506,
@@ -21730,9 +22204,10 @@
   {
     "BIB_NO": 4510,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:36:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4511,
@@ -21751,23 +22226,26 @@
   {
     "BIB_NO": 4513,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:36:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4515,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:44:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4516,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:36:17",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4517,
@@ -21870,16 +22348,18 @@
   {
     "BIB_NO": 4533,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:41:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4534,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:18:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4535,
@@ -22038,9 +22518,10 @@
   {
     "BIB_NO": 4561,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:30:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4562,
@@ -22122,9 +22603,10 @@
   {
     "BIB_NO": 4575,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "",
-    "Status": "DNF"
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4576,
@@ -22143,9 +22625,10 @@
   {
     "BIB_NO": 4578,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:26:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4579,
@@ -22178,9 +22661,10 @@
   {
     "BIB_NO": 4585,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:27:57",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4588,
@@ -22192,9 +22676,10 @@
   {
     "BIB_NO": 4589,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:17:51",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4590,
@@ -22234,9 +22719,10 @@
   {
     "BIB_NO": 4595,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:40:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4596,
@@ -22262,9 +22748,10 @@
   {
     "BIB_NO": 4599,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:43:21",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4600,
@@ -22318,16 +22805,18 @@
   {
     "BIB_NO": 4630,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:45:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4631,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:29:15",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 4632,
@@ -22353,9 +22842,10 @@
   {
     "BIB_NO": 5002,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:20:23",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5003,
@@ -22430,9 +22920,10 @@
   {
     "BIB_NO": 5015,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:09:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5016,
@@ -22563,9 +23054,10 @@
   {
     "BIB_NO": 5037,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:13:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5038,
@@ -22591,23 +23083,26 @@
   {
     "BIB_NO": 5041,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:58:33",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5042,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:58:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5043,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:17:32",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5044,
@@ -22626,16 +23121,18 @@
   {
     "BIB_NO": 5046,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:08:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5047,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:56:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5048,
@@ -22647,9 +23144,10 @@
   {
     "BIB_NO": 5049,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:03:18",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5050,
@@ -22668,9 +23166,10 @@
   {
     "BIB_NO": 5052,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:24:15",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5053,
@@ -22682,30 +23181,34 @@
   {
     "BIB_NO": 5054,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:21:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5056,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:23:58",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5057,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:16:52",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5058,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:57:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5059,
@@ -22724,9 +23227,10 @@
   {
     "BIB_NO": 5061,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:24",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5062,
@@ -22738,16 +23242,18 @@
   {
     "BIB_NO": 5063,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:41:31",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5064,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:50:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5065,
@@ -22773,30 +23279,34 @@
   {
     "BIB_NO": 5069,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:34:14",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5070,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "",
-    "Status": "DNF"
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5071,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:57:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5073,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:58:35",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5075,
@@ -22836,9 +23346,10 @@
   {
     "BIB_NO": 5080,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:21:19",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5081,
@@ -22864,9 +23375,10 @@
   {
     "BIB_NO": 5084,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:27:18",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5085,
@@ -22906,9 +23418,10 @@
   {
     "BIB_NO": 5090,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:39:12",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5091,
@@ -22976,9 +23489,10 @@
   {
     "BIB_NO": 5100,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:44:20",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5101,
@@ -23004,16 +23518,18 @@
   {
     "BIB_NO": 5105,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:52:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5106,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:29:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5107,
@@ -23144,16 +23660,18 @@
   {
     "BIB_NO": 5126,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:03:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5127,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:04:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5128,
@@ -23207,9 +23725,10 @@
   {
     "BIB_NO": 5137,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:13:19",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5139,
@@ -23235,23 +23754,26 @@
   {
     "BIB_NO": 5142,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:41:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5143,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:03:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5144,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "07:16:24",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5146,
@@ -23277,9 +23799,10 @@
   {
     "BIB_NO": 5149,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:16:32",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5150,
@@ -23298,9 +23821,10 @@
   {
     "BIB_NO": 5152,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "07:18:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5154,
@@ -23319,9 +23843,10 @@
   {
     "BIB_NO": 5156,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:27:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5157,
@@ -23333,23 +23858,26 @@
   {
     "BIB_NO": 5158,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:21:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5159,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:20:58",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5160,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:21:06",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5161,
@@ -23368,9 +23896,10 @@
   {
     "BIB_NO": 5163,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:11:38",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5164,
@@ -23529,9 +24058,10 @@
   {
     "BIB_NO": 5191,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5192,
@@ -23550,9 +24080,10 @@
   {
     "BIB_NO": 5194,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "07:09:40",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5195,
@@ -23564,9 +24095,10 @@
   {
     "BIB_NO": 5196,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:20:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5198,
@@ -23739,9 +24271,10 @@
   {
     "BIB_NO": 5223,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:58:35",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5224,
@@ -23753,9 +24286,10 @@
   {
     "BIB_NO": 5225,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:21:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5226,
@@ -23816,9 +24350,10 @@
   {
     "BIB_NO": 5238,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:33:54",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5239,
@@ -23851,16 +24386,18 @@
   {
     "BIB_NO": 5248,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:11:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5249,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:10:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5250,
@@ -23991,16 +24528,18 @@
   {
     "BIB_NO": 5268,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:58:33",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5269,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:21:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5270,
@@ -24096,9 +24635,10 @@
   {
     "BIB_NO": 5284,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:18:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5285,
@@ -24117,16 +24657,18 @@
   {
     "BIB_NO": 5288,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:48:57",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5289,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:48:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5290,
@@ -24145,9 +24687,10 @@
   {
     "BIB_NO": 5292,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:05:12",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5293,
@@ -24250,9 +24793,10 @@
   {
     "BIB_NO": 5309,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:36:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5310,
@@ -24264,9 +24808,10 @@
   {
     "BIB_NO": 5311,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:14:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5313,
@@ -24278,9 +24823,10 @@
   {
     "BIB_NO": 5314,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:05:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5315,
@@ -24299,9 +24845,10 @@
   {
     "BIB_NO": 5317,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:08:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5318,
@@ -24313,16 +24860,18 @@
   {
     "BIB_NO": 5319,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:42:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5320,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:57:21",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5321,
@@ -24341,9 +24890,10 @@
   {
     "BIB_NO": 5323,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:36:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 5324,
@@ -24390,9 +24940,10 @@
   {
     "BIB_NO": 5330,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "",
-    "Status": "DNF"
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6002,
@@ -24453,9 +25004,10 @@
   {
     "BIB_NO": 6014,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:03:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6015,
@@ -24551,16 +25103,18 @@
   {
     "BIB_NO": 6032,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:24:20",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6033,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:57:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6034,
@@ -24572,23 +25126,26 @@
   {
     "BIB_NO": 6035,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:57:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6036,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:11:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6037,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:36:02",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6038,
@@ -24880,9 +25437,10 @@
   {
     "BIB_NO": 6088,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:14:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6089,
@@ -24950,23 +25508,26 @@
   {
     "BIB_NO": 6101,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:56:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6102,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:09:41",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6103,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:14:15",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6104,
@@ -25139,44 +25700,50 @@
   {
     "BIB_NO": 6130,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:56:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6131,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:55:55",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6132,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:55:55",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6133,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:55:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6134,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:55:55",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6135,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:55:57",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6136,
@@ -25237,23 +25804,26 @@
   {
     "BIB_NO": 6146,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:11:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6147,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:58:32",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6148,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:58:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6149,
@@ -25314,16 +25884,18 @@
   {
     "BIB_NO": 6159,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:41:52",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6160,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:31:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6162,
@@ -25349,16 +25921,18 @@
   {
     "BIB_NO": 6166,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:33:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6167,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:32:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6168,
@@ -25370,9 +25944,10 @@
   {
     "BIB_NO": 6169,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:33",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6170,
@@ -25391,9 +25966,10 @@
   {
     "BIB_NO": 6172,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:51:55",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6175,
@@ -25678,37 +26254,42 @@
   {
     "BIB_NO": 6224,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:58:33",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6225,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:57:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6226,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:17:19",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6227,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:17:19",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6228,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:58:33",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6229,
@@ -25755,9 +26336,10 @@
   {
     "BIB_NO": 6236,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:01:16",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6237,
@@ -25937,44 +26519,50 @@
   {
     "BIB_NO": 6265,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:27:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6266,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:44:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6267,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:58:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6268,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:34",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6269,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:02:31",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6270,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:40:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6272,
@@ -26196,9 +26784,10 @@
   {
     "BIB_NO": 6311,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:17:38",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6312,
@@ -26266,9 +26855,10 @@
   {
     "BIB_NO": 6321,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:22:31",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6322,
@@ -26896,9 +27486,10 @@
   {
     "BIB_NO": 6417,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:06:55",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6418,
@@ -26966,16 +27557,18 @@
   {
     "BIB_NO": 6428,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:26:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6429,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:22:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6430,
@@ -27043,9 +27636,10 @@
   {
     "BIB_NO": 6439,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:06:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6440,
@@ -27120,9 +27714,10 @@
   {
     "BIB_NO": 6453,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:39:20",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6454,
@@ -27400,9 +27995,10 @@
   {
     "BIB_NO": 6499,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:07:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6501,
@@ -27421,9 +28017,10 @@
   {
     "BIB_NO": 6504,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:21:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6506,
@@ -27533,23 +28130,26 @@
   {
     "BIB_NO": 6526,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:59:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6527,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:30:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6529,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:06:06",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6530,
@@ -27575,16 +28175,18 @@
   {
     "BIB_NO": 6533,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:06:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6534,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:30:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6535,
@@ -27715,9 +28317,10 @@
   {
     "BIB_NO": 6565,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:02:53",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6567,
@@ -27841,16 +28444,18 @@
   {
     "BIB_NO": 6584,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:29:25",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6585,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:29:25",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6586,
@@ -27932,9 +28537,10 @@
   {
     "BIB_NO": 6601,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:12:34",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6602,
@@ -27946,16 +28552,18 @@
   {
     "BIB_NO": 6603,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:08:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6604,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:11:48",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6605,
@@ -28065,9 +28673,10 @@
   {
     "BIB_NO": 6623,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:17:34",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6624,
@@ -28177,9 +28786,10 @@
   {
     "BIB_NO": 6646,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:16:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6647,
@@ -28191,9 +28801,10 @@
   {
     "BIB_NO": 6648,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:32:12",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6649,
@@ -28261,9 +28872,10 @@
   {
     "BIB_NO": 6659,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:55:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6660,
@@ -28275,9 +28887,10 @@
   {
     "BIB_NO": 6661,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:13:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6662,
@@ -28296,9 +28909,10 @@
   {
     "BIB_NO": 6664,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:55:02",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6666,
@@ -28422,30 +29036,34 @@
   {
     "BIB_NO": 6687,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:34:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6688,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:17:26",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6689,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:11:49",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6690,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:30:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6693,
@@ -28464,9 +29082,10 @@
   {
     "BIB_NO": 6695,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:27:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6696,
@@ -28478,9 +29097,10 @@
   {
     "BIB_NO": 6697,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:33:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6699,
@@ -28548,9 +29168,10 @@
   {
     "BIB_NO": 6709,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:03:21",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6710,
@@ -28646,9 +29267,10 @@
   {
     "BIB_NO": 6724,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:11:50",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6725,
@@ -28835,16 +29457,18 @@
   {
     "BIB_NO": 6754,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:24:36",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6757,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:06:17",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6758,
@@ -28870,9 +29494,10 @@
   {
     "BIB_NO": 6762,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:31:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6763,
@@ -28891,9 +29516,10 @@
   {
     "BIB_NO": 6765,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:26:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6766,
@@ -29094,16 +29720,18 @@
   {
     "BIB_NO": 6797,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:05:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6798,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:55:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6799,
@@ -29325,9 +29953,10 @@
   {
     "BIB_NO": 6835,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:25:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6838,
@@ -29374,30 +30003,34 @@
   {
     "BIB_NO": 6845,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:18:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6846,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:44:58",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6847,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:47:03",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6850,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:40:23",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6851,
@@ -29416,23 +30049,26 @@
   {
     "BIB_NO": 6853,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:26:00",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6854,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:54:32",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6855,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:41:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6856,
@@ -29661,9 +30297,10 @@
   {
     "BIB_NO": 6897,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:45:32",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6898,
@@ -29682,9 +30319,10 @@
   {
     "BIB_NO": 6901,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:08:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6902,
@@ -29724,9 +30362,10 @@
   {
     "BIB_NO": 6909,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:14:22",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6910,
@@ -29759,9 +30398,10 @@
   {
     "BIB_NO": 6917,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:00:16",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6918,
@@ -29836,16 +30476,18 @@
   {
     "BIB_NO": 6931,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:09:06",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6932,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:08:10",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6933,
@@ -29871,9 +30513,10 @@
   {
     "BIB_NO": 6936,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:13",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6937,
@@ -29885,9 +30528,10 @@
   {
     "BIB_NO": 6938,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:30:15",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6940,
@@ -29934,9 +30578,10 @@
   {
     "BIB_NO": 6946,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:45:08",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6948,
@@ -29948,9 +30593,10 @@
   {
     "BIB_NO": 6949,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:18:01",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6951,
@@ -30032,9 +30678,10 @@
   {
     "BIB_NO": 6964,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:25:02",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6965,
@@ -30067,9 +30714,10 @@
   {
     "BIB_NO": 6971,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:39:21",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6972,
@@ -30095,9 +30743,10 @@
   {
     "BIB_NO": 6975,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:48:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6976,
@@ -30109,9 +30758,10 @@
   {
     "BIB_NO": 6978,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:37:16",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 6979,
@@ -30214,9 +30864,10 @@
   {
     "BIB_NO": 6998,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:14:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7001,
@@ -30361,9 +31012,10 @@
   {
     "BIB_NO": 7024,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:09:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7025,
@@ -30396,9 +31048,10 @@
   {
     "BIB_NO": 7035,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:10:39",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7036,
@@ -30536,9 +31189,10 @@
   {
     "BIB_NO": 7060,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:54:21",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7061,
@@ -30732,9 +31386,10 @@
   {
     "BIB_NO": 7093,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:13:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7094,
@@ -30830,9 +31485,10 @@
   {
     "BIB_NO": 7107,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:36:05",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7108,
@@ -31005,9 +31661,10 @@
   {
     "BIB_NO": 7140,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:30:38",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7141,
@@ -31159,9 +31816,10 @@
   {
     "BIB_NO": 7166,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:19:00",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7167,
@@ -31208,9 +31866,10 @@
   {
     "BIB_NO": 7175,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:35:42",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7176,
@@ -31348,9 +32007,10 @@
   {
     "BIB_NO": 7197,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:42:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7198,
@@ -31404,9 +32064,10 @@
   {
     "BIB_NO": 7207,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:12:58",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7208,
@@ -31509,9 +32170,10 @@
   {
     "BIB_NO": 7225,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:41:00",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7226,
@@ -31607,9 +32269,10 @@
   {
     "BIB_NO": 7244,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:05:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7245,
@@ -31621,9 +32284,10 @@
   {
     "BIB_NO": 7246,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:44:47",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7247,
@@ -31845,9 +32509,10 @@
   {
     "BIB_NO": 7285,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:53:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7286,
@@ -31901,9 +32566,10 @@
   {
     "BIB_NO": 7295,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:09:00",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7296,
@@ -31950,16 +32616,18 @@
   {
     "BIB_NO": 7302,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:24:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7303,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:24:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 7306,
@@ -32111,9 +32779,10 @@
   {
     "BIB_NO": 8020,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:45:28",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8021,
@@ -32160,9 +32829,10 @@
   {
     "BIB_NO": 8028,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "08:03:16",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8029,
@@ -32195,9 +32865,10 @@
   {
     "BIB_NO": 8039,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:29:42",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8040,
@@ -32237,9 +32908,10 @@
   {
     "BIB_NO": 8046,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:30:45",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8047,
@@ -32286,16 +32958,18 @@
   {
     "BIB_NO": 8056,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:46:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8058,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:43:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8059,
@@ -32314,9 +32988,10 @@
   {
     "BIB_NO": 8061,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:01:59",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8062,
@@ -32335,9 +33010,10 @@
   {
     "BIB_NO": 8064,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:13:42",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8065,
@@ -32384,9 +33060,10 @@
   {
     "BIB_NO": 8071,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:02:04",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8072,
@@ -32573,9 +33250,10 @@
   {
     "BIB_NO": 8100,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:48:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8101,
@@ -32608,9 +33286,10 @@
   {
     "BIB_NO": 8105,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:39:30",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8107,
@@ -32678,9 +33357,10 @@
   {
     "BIB_NO": 8118,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:53:44",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8119,
@@ -32699,9 +33379,10 @@
   {
     "BIB_NO": 8121,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:12:11",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8122,
@@ -32853,9 +33534,10 @@
   {
     "BIB_NO": 8156,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "07:44:32",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8157,
@@ -32881,9 +33563,10 @@
   {
     "BIB_NO": 8161,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:19:56",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8162,
@@ -32909,9 +33592,10 @@
   {
     "BIB_NO": 8168,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "07:40:21",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8169,
@@ -32923,9 +33607,10 @@
   {
     "BIB_NO": 8170,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:04:51",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8171,
@@ -32958,9 +33643,10 @@
   {
     "BIB_NO": 8175,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:06:46",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8176,
@@ -32986,9 +33672,10 @@
   {
     "BIB_NO": 8179,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:37:14",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8180,
@@ -33014,9 +33701,10 @@
   {
     "BIB_NO": 8183,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "05:42:29",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8184,
@@ -33098,9 +33786,10 @@
   {
     "BIB_NO": 8196,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "07:38:41",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8197,
@@ -33126,9 +33815,10 @@
   {
     "BIB_NO": 8201,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:19:33",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8202,
@@ -33140,9 +33830,10 @@
   {
     "BIB_NO": 8205,
     "Gender": "F",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "06:41:09",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 8206,
@@ -33210,9 +33901,10 @@
   {
     "BIB_NO": 9001,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:53:14",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 9002,
@@ -33273,9 +33965,10 @@
   {
     "BIB_NO": 9013,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:53:07",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 9014,
@@ -33294,9 +33987,10 @@
   {
     "BIB_NO": 9018,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "03:56:23",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   },
   {
     "BIB_NO": 9019,
@@ -33308,8 +34002,9 @@
   {
     "BIB_NO": 9020,
     "Gender": "M",
-    "Event": "코스제외자",
+    "Event": "그란폰도",
     "Time": "04:50:18",
-    "Status": ""
+    "Status": "DNF",
+    "Comment": "코스제외자"
   }
 ]
