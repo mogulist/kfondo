@@ -15,6 +15,7 @@ export type DistributionChartProps = {
   color: string;
   interval: number;
   isMobile: boolean;
+  comment?: string;
   formatXAxisTick: (
     value: string,
     isMobile: boolean,
@@ -29,6 +30,7 @@ export function DistributionChart({
   color,
   interval,
   isMobile,
+  comment,
   formatXAxisTick,
   CustomTooltip,
 }: DistributionChartProps) {
@@ -56,7 +58,7 @@ export function DistributionChart({
                 top: 10,
                 right: isMobile ? 10 : 30,
                 left: isMobile ? 0 : 0,
-                bottom: isMobile ? 10 : 30,
+                bottom: 20,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
@@ -99,6 +101,11 @@ export function DistributionChart({
             </AreaChart>
           </ResponsiveContainer>
         </ChartContainer>
+        {comment && (
+          <p className="text-xs text-muted-foreground mt-1 mb-8 text-center">
+            {comment}
+          </p>
+        )}
       </div>
     </div>
   );

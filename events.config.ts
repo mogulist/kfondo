@@ -18,6 +18,7 @@ export const events: EventV2[] = [
         "설악 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
       image: "/images/seorak-og.jpg",
     },
+    comment: "2025년 코스제외자 695명은 그란폰도 DNF로 분류하였습니다.",
     yearDetails: {
       2025: {
         year: 2025,

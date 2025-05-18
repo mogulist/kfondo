@@ -64,6 +64,7 @@ export const StatsChart = ({ yearStats }: StatsChartProps) => {
                 color="hsl(215, 90%, 50%)"
                 interval={granInterval}
                 isMobile={isMobile}
+                comment={stats.comment}
                 formatXAxisTick={formatXAxisTick}
                 CustomTooltip={CustomTooltip}
               />

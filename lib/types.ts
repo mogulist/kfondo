@@ -67,6 +67,7 @@ export type EventYearStats = {
   year: number;
   granFondoDistribution: TimeDistribution[];
   medioFondoDistribution: TimeDistribution[];
+  comment?: string;
 };
 
 export type RaceRecord = {
@@ -85,6 +86,7 @@ export type RaceCategory = {
   distance: number; // 거리
   elevation: number; // 고도
   registered?: number; // 등록자 수
+  comment?: string;
 };
 
 // 연도별 대회 정보
@@ -110,6 +112,7 @@ export type EventV2 = {
     description: string;
     image: string;
   };
+  comment?: string;
   // 연도별 상세 정보
   yearDetails: Record<number, EventYearDetail>;
 };
