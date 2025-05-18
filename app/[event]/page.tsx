@@ -12,6 +12,7 @@ import type { EventYearStats } from "@/lib/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { Event, EventV2, EventYearDetail } from "@/lib/types";
+import FondoScopeHeader from "@/components/FondoScopeHeader";
 
 type EventPageProps = {
   params: {
@@ -106,43 +107,46 @@ export default async function EventPage({ params }: EventPageProps) {
   yearStats.sort((a, b) => b.year - a.year);
 
   return (
-    <main className="container mx-auto px-4 py-12">
-      <div className="space-y-12 max-w-full">
-        <div className="space-y-4">
-          <h1 className="text-4xl font-bold tracking-tight">
-            {event.location} 그란폰도
-          </h1>
-          <p className="text-xl text-muted-foreground">
-            {event.years[0]}년부터 {event.years[event.years.length - 1]}년까지의
-            통계 데이터
-          </p>
+    <>
+      <FondoScopeHeader />
+      <main className="container mx-auto px-4 py-12">
+        <div className="space-y-12 max-w-full">
+          <div className="space-y-4">
+            <h1 className="text-4xl font-bold tracking-tight">
+              {event.location} 그란폰도
+            </h1>
+            <p className="text-xl text-muted-foreground">
+              {event.years[0]}년부터 {event.years[event.years.length - 1]}
+              년까지의 통계 데이터
+            </p>
+          </div>
+
+          <div className="space-y-16 md:space-y-20">
+            <section className="space-y-4">
+              <h2 className="text-2xl font-semibold">연도별 참가자 추세</h2>
+              <div className="w-full">
+                <ParticipantTrend eventData={eventData} />
+              </div>
+            </section>
+
+            <section className="space-y-4">
+              <h2 className="text-2xl font-semibold">기록 분포</h2>
+              <div className="w-full">
+                <StatsChart yearStats={yearStats} />
+              </div>
+            </section>
+
+            <section className="space-y-4">
+              <h2 className="text-2xl font-semibold">댓글</h2>
+              <DisqusComments
+                eventId={eventId}
+                eventTitle={`${event.location} 그란폰도`}
+              />
+            </section>
+          </div>
         </div>
-
-        <div className="space-y-16 md:space-y-20">
-          <section className="space-y-4">
-            <h2 className="text-2xl font-semibold">연도별 참가자 추세</h2>
-            <div className="w-full">
-              <ParticipantTrend eventData={eventData} />
-            </div>
-          </section>
-
-          <section className="space-y-4">
-            <h2 className="text-2xl font-semibold">기록 분포</h2>
-            <div className="w-full">
-              <StatsChart yearStats={yearStats} />
-            </div>
-          </section>
-
-          <section className="space-y-4">
-            <h2 className="text-2xl font-semibold">댓글</h2>
-            <DisqusComments
-              eventId={eventId}
-              eventTitle={`${event.location} 그란폰도`}
-            />
-          </section>
-        </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
 

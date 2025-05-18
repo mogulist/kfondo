@@ -87,26 +87,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="min-h-screen bg-background">
-            <header className="border-b">
-              <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-                <a href="/" className="text-xl font-bold">
-                  FondoScope
-                </a>
-                <nav className="flex items-center gap-4">
-                  {/* 
-                  <a href="/" className="text-sm font-medium hover:underline">
-                    홈
-                  </a>
-                  <a href="#" className="text-sm font-medium hover:underline">
-                    통계
-                  </a>
-                  <a href="#" className="text-sm font-medium hover:underline">
-                    정보
-                  </a>
-                  */}
-                </nav>
-              </div>
-            </header>
             {children}
             <Analytics />
             <footer className="border-t mt-12">

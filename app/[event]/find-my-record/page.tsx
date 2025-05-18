@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { events } from "@/events.config";
 import type { Event, EventV2 } from "@/lib/types";
+import StackNavBar from "./StackNavBar";
 
 type Props = {
   params: {
@@ -20,21 +21,23 @@ const FindMyRecordPage = async ({ params }: Props) => {
     notFound();
   }
 
+  // 최신 연도 추출 (내림차순 정렬 후 첫 번째)
+  const latestYear = [...event.years].sort((a, b) => b - a)[0];
+  const eventName = event.location + " 그란폰도";
+
   return (
-    <main className="container mx-auto px-4 py-12">
-      <div className="space-y-12 max-w-full">
-        <div className="space-y-4">
-          <h1 className="text-4xl font-bold tracking-tight">기록으로 찾기</h1>
-          <p className="text-xl text-muted-foreground">
-            {event.location} 그란폰도
-          </p>
+    <main className="container mx-auto px-0 py-0">
+      <StackNavBar />
+      <div className="space-y-12 max-w-full px-4 py-4">
+        <div className="text-xl text-muted-foreground font-semibold mb-8">
+          {latestYear} {eventName}
         </div>
+        {/* 이후 컨텐츠 영역 */}
       </div>
     </main>
   );
 };
 
-// 동적 메타데이터 생성
 const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const { event: eventId } = params;
   const event = events.find((e) => e.id === eventId);
