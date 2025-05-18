@@ -1,11 +1,12 @@
 "use client";
 import type { FC } from "react";
 
-interface RecordInputProps {
+export type RecordInputProps = {
   value: string;
   onChange: (value: string) => void;
   error?: string;
-}
+  onSubmit?: () => void;
+};
 
 const isValidRecordFormat = (value: string) => {
   // 허용: HH:mm:ss 또는 HH:mm:ss.SS
@@ -27,18 +28,28 @@ const formatRecordInput = (value: string) => {
   return value;
 };
 
-const RecordInput: FC<RecordInputProps> = ({ value, onChange, error }) => {
+const RecordInput: FC<RecordInputProps> = ({
+  value,
+  onChange,
+  error,
+  onSubmit,
+}) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let v = e.target.value;
     v = formatRecordInput(v);
     onChange(v);
   };
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onSubmit) onSubmit();
+  };
+
   return (
     <form
       className="max-w-xs mx-auto"
       autoComplete="off"
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={handleFormSubmit}
     >
       <label htmlFor="record-input" className="block text-sm font-medium mb-2">
         기록 입력
@@ -59,5 +70,5 @@ const RecordInput: FC<RecordInputProps> = ({ value, onChange, error }) => {
   );
 };
 
-export { isValidRecordFormat };
+export { isValidRecordFormat, formatRecordInput };
 export default RecordInput;
