@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { events } from "@/events.config";
 import type { Event, EventV2 } from "@/lib/types";
 import StackNavBar from "./StackNavBar";
+import RecordInput from "./RecordInput";
 
 type Props = {
   params: {
@@ -16,12 +17,9 @@ const FindMyRecordPage = async ({ params }: Props) => {
     | Event
     | EventV2
     | undefined;
-
   if (!event) {
     notFound();
   }
-
-  // 최신 연도 추출 (내림차순 정렬 후 첫 번째)
   const latestYear = [...event.years].sort((a, b) => b - a)[0];
   const eventName = event.location + " 그란폰도";
 
@@ -32,23 +30,7 @@ const FindMyRecordPage = async ({ params }: Props) => {
         <div className="text-xl text-muted-foreground font-semibold mb-8">
           {latestYear} {eventName}
         </div>
-        <form className="max-w-xs mx-auto">
-          <label
-            htmlFor="record-input"
-            className="block text-sm font-medium mb-2"
-          >
-            기록 입력
-          </label>
-          <input
-            id="record-input"
-            name="record"
-            type="text"
-            inputMode="numeric"
-            autoComplete="off"
-            placeholder="예: 05:08:27 또는 05:08:27.53"
-            className="w-full border rounded px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </form>
+        <RecordInput />
         {/* 이후 컨텐츠 영역 */}
       </div>
     </main>
