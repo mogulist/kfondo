@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 import { useMobile } from "@/hooks/use-mobile";
 import type { EventYearStats } from "@/lib/types";
 import { DistributionChart } from "./distribution-chart";
+import dayjs from "dayjs";
 
 type StatsChartProps = {
   yearStats: EventYearStats[];
 };
 
-export function StatsChart({ yearStats }: StatsChartProps) {
+export const StatsChart = ({ yearStats }: StatsChartProps) => {
   const isMobile = useMobile();
   const isTablet = useMobile(1024);
 
@@ -81,12 +82,34 @@ export function StatsChart({ yearStats }: StatsChartProps) {
       })}
     </div>
   );
-}
+};
+
+// 툴팁 시간 범위를 명확하게 포맷팅하는 함수
+const formatTooltipTimeRange = (timeRange: string, intervalMinutes = 2) => {
+  // timeRange: "4:30 - 4:32" 형태
+  const [start, end] = timeRange.split(" - ");
+  // 시작 시간 파싱
+  const startTime = dayjs(`2000-01-01 ${start.padStart(5, "0")}:00`);
+  // interval 계산 (기존 구간의 분 차이, 기본값 2분)
+  let interval = intervalMinutes;
+  if (start && end) {
+    const [sh, sm] = start.split(":").map(Number);
+    const [eh, em] = end.split(":").map(Number);
+    interval = eh * 60 + em - (sh * 60 + sm);
+    if (interval <= 0) interval = intervalMinutes;
+  }
+  const endTime = startTime.add(interval, "minute").subtract(1, "second");
+  return `${startTime.format("HH:mm:00")} - ${endTime.format("HH:mm:ss")}`;
+};
 
 // 커스텀 툴팁 컴포넌트
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
-    const timeRange = label;
+    // label이 timeRange임
+    const timeRange = formatTooltipTimeRange(
+      label,
+      payload[0]?.payload?.interval || 2
+    );
     const participants = payload[0].value;
     const percentile = payload[0].payload.percentile; // 누적 %
     const cumulativeCount = payload[0].payload.cumulativeCount; // 누적 명수
@@ -108,13 +131,13 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 // 시간 문자열("4:00" 등)을 분 단위로 변환
-function timeStringToMinutes(time: string) {
+const timeStringToMinutes = (time: string) => {
   const [hours, minutes] = time.split(":").map(Number);
   return hours * 60 + minutes;
-}
+};
 
 // 분포의 시작~끝 시간 차이에 따라 interval 결정
-function getTickIntervalByRange(start: string, end: string) {
+const getTickIntervalByRange = (start: string, end: string) => {
   const startMin = timeStringToMinutes(start);
   const endMin = timeStringToMinutes(end);
   const diff = endMin - startMin;
@@ -123,7 +146,7 @@ function getTickIntervalByRange(start: string, end: string) {
   if (diff >= 240) return 20; // 4시간 이상
   if (diff >= 180) return 12; // 3시간 이상
   return 10; // 그 외
-}
+};
 
 const formatXAxisTick = (
   value: string,
