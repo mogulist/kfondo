@@ -8,9 +8,10 @@ import dayjs from "dayjs";
 
 type StatsChartProps = {
   yearStats: EventYearStats[];
+  eventId: string;
 };
 
-export const StatsChart = ({ yearStats }: StatsChartProps) => {
+export const StatsChart = ({ yearStats, eventId }: StatsChartProps) => {
   const isMobile = useMobile();
   const isTablet = useMobile(1024);
 
@@ -60,6 +61,9 @@ export const StatsChart = ({ yearStats }: StatsChartProps) => {
             >
               <DistributionChart
                 title={`그란폰도 (${stats.year}년)`}
+                eventId={eventId}
+                course="granfondo"
+                year={stats.year}
                 data={stats.granFondoDistribution}
                 color="hsl(215, 90%, 50%)"
                 interval={granInterval}
@@ -69,6 +73,9 @@ export const StatsChart = ({ yearStats }: StatsChartProps) => {
               />
               <DistributionChart
                 title={`메디오폰도 (${stats.year}년)`}
+                eventId={eventId}
+                course="mediofondo"
+                year={stats.year}
                 data={stats.medioFondoDistribution}
                 color="hsl(150, 80%, 40%)"
                 interval={medioInterval}

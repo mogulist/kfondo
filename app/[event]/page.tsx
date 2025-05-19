@@ -132,7 +132,7 @@ export default async function EventPage({ params }: EventPageProps) {
             <section className="space-y-4">
               <h2 className="text-2xl font-semibold">기록 분포</h2>
               <div className="w-full">
-                <StatsChart yearStats={yearStats} />
+                <StatsChart yearStats={yearStats} eventId={eventId} />
               </div>
             </section>
 
