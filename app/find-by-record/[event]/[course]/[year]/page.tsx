@@ -8,11 +8,13 @@ import FindMyRecordSection from "./FindMyRecordSection";
 type Props = {
   params: {
     event: string;
+    course: string;
+    year: string;
   };
 };
 
 const FindMyRecordPage = async ({ params }: Props) => {
-  const { event: eventId } = params;
+  const { event: eventId, course, year } = params;
   const event = events.find((e) => e.id === eventId) as
     | Event
     | EventV2
@@ -20,7 +22,7 @@ const FindMyRecordPage = async ({ params }: Props) => {
   if (!event) {
     notFound();
   }
-  const latestYear = [...event.years].sort((a, b) => b - a)[0];
+  const latestYear = Number(year);
   const eventName = event.location + " 그란폰도";
 
   return (
@@ -30,6 +32,8 @@ const FindMyRecordPage = async ({ params }: Props) => {
         event={event}
         latestYear={latestYear}
         eventName={eventName}
+        course={course}
+        year={year}
       />
     </main>
   );

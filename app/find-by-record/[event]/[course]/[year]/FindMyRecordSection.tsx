@@ -11,12 +11,16 @@ interface FindMyRecordSectionProps {
   event: Event | EventV2;
   latestYear: number;
   eventName: string;
+  course: string;
+  year: string;
 }
 
 const FindMyRecordSection = ({
   event,
   latestYear,
   eventName,
+  course,
+  year,
 }: FindMyRecordSectionProps) => {
   const [record, setRecord] = useState("");
   const [error, setError] = useState("");
@@ -42,7 +46,7 @@ const FindMyRecordSection = ({
   const handleSubmit = () => {
     if (!record || error) return;
     const digit = toDigitString(record);
-    router.push(`/${event.id}/find-by-record/${digit}`);
+    router.push(`/find-by-record/${event.id}/${course}/${year}/${digit}`);
   };
 
   return (
