@@ -9,27 +9,6 @@ type Props = {
   params: { event: string; course: string; year: string; time: string };
 };
 
-type CardProps = {
-  main: React.ReactNode;
-  label: string;
-  subLabel?: string;
-  className?: string;
-};
-
-const Card = ({ main, label, subLabel, className = "" }: CardProps) => (
-  <div
-    className={`flex-1 bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40 ${className}`}
-  >
-    <div className="text-3xl font-extrabold text-primary mb-1">{main}</div>
-    <div className="text-base font-medium text-muted-foreground mb-1">
-      {label}
-    </div>
-    {subLabel && (
-      <div className="text-xs text-gray-500 dark:text-gray-400">{subLabel}</div>
-    )}
-  </div>
-);
-
 const ResultPage = async (props: Props) => {
   const awaitedParams = await props.params;
   const { event: eventId, course, year, time } = awaitedParams;
@@ -66,28 +45,10 @@ const ResultPage = async (props: Props) => {
   const inputMsec = timeToMilliseconds(parsedTime);
   if (inputMsec < 0) notFound();
 
-  // 디버깅용 로그
-  console.log("[DEBUG] inputMsec:", inputMsec);
-  console.log(
-    "[DEBUG] courseArr.includes(inputMsec):",
-    courseArr.includes(inputMsec)
-  );
-  console.log(
-    "[DEBUG] 동일 기록 수:",
-    courseArr.filter((msec) => msec === inputMsec).length
-  );
   // inputMsec와 가장 가까운 위치 찾기
   const closestIdx = courseArr.findIndex((msec) => msec > inputMsec);
   const start = Math.max(0, closestIdx - 10);
   const end = Math.min(courseArr.length, closestIdx + 10);
-  console.log(
-    "[DEBUG] courseArr 앞 10개:",
-    courseArr.slice(start, closestIdx).map(msecToTimeString)
-  );
-  console.log(
-    "[DEBUG] courseArr 뒤 10개:",
-    courseArr.slice(closestIdx, end).map(msecToTimeString)
-  );
 
   let rank: number | null = null;
   let percentile: number | null = null;
@@ -181,6 +142,27 @@ const ResultPage = async (props: Props) => {
     </main>
   );
 };
+
+type CardProps = {
+  main: React.ReactNode;
+  label: string;
+  subLabel?: string;
+  className?: string;
+};
+
+const Card = ({ main, label, subLabel, className = "" }: CardProps) => (
+  <div
+    className={`flex-1 bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40 ${className}`}
+  >
+    <div className="text-3xl font-extrabold text-primary mb-1">{main}</div>
+    <div className="text-base font-medium text-muted-foreground mb-1">
+      {label}
+    </div>
+    {subLabel && (
+      <div className="text-xs text-gray-500 dark:text-gray-400">{subLabel}</div>
+    )}
+  </div>
+);
 
 // digit string(05082735) → HH:mm:ss.SS로 변환
 const parseDigitTime = (digit: string): string | null => {
