@@ -70,6 +70,18 @@ const ResultPage = async (props: Props) => {
   let percentile: number | null = null;
   let resultMsg = null;
 
+  // 주변 기록 배열 준비
+  let recordsAround: { msec: number; isInput: boolean }[] = [];
+  if (courseArr.length > 0 && inputMsec >= 0) {
+    const faster = courseArr.slice(Math.max(0, closestIdx - 10), closestIdx);
+    const slower = courseArr.slice(closestIdx, closestIdx + 10);
+    recordsAround = [
+      ...faster.map((msec) => ({ msec, isInput: false })),
+      { msec: inputMsec, isInput: true },
+      ...slower.map((msec) => ({ msec, isInput: false })),
+    ];
+  }
+
   if (courseArr.length === 0) {
     resultMsg = (
       <div className="text-lg text-red-500 mb-4">
@@ -102,6 +114,21 @@ const ResultPage = async (props: Props) => {
             </div>
             <div className="text-sm text-gray-500">
               ({course} 완주자 {courseArr.length}명 기준)
+            </div>
+            <div className="w-full border-t border-muted-foreground/20 my-8" />
+            <div className="flex flex-col items-center gap-1">
+              {recordsAround.map((rec, idx) => (
+                <div
+                  key={idx}
+                  className={
+                    rec.isInput
+                      ? "font-bold bg-primary/10 border border-primary rounded px-2 py-1 text-primary text-lg"
+                      : "text-sm text-foreground px-2 py-1"
+                  }
+                >
+                  {msecToTimeString(rec.msec)}
+                </div>
+              ))}
             </div>
           </>
         )}
