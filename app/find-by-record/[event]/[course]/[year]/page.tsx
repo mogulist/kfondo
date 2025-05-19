@@ -14,7 +14,7 @@ type Props = {
 };
 
 const FindMyRecordPage = async ({ params }: Props) => {
-  const { event: eventId, course, year } = params;
+  const { event: eventId, course, year } = await params;
   const event = events.find((e) => e.id === eventId) as
     | Event
     | EventV2
@@ -22,7 +22,6 @@ const FindMyRecordPage = async ({ params }: Props) => {
   if (!event) {
     notFound();
   }
-  const latestYear = Number(year);
   const eventName = event.location + " 그란폰도";
 
   return (
@@ -30,7 +29,6 @@ const FindMyRecordPage = async ({ params }: Props) => {
       <StackNavBar />
       <FindMyRecordSection
         event={event}
-        latestYear={latestYear}
         eventName={eventName}
         course={course}
         year={year}
@@ -40,7 +38,7 @@ const FindMyRecordPage = async ({ params }: Props) => {
 };
 
 const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
-  const { event: eventId } = params;
+  const { event: eventId } = await params;
   const event = events.find((e) => e.id === eventId);
 
   if (!event) {
