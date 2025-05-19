@@ -5,7 +5,7 @@ import type { FC } from "react";
 const StackNavBar: FC = () => {
   const router = useRouter();
   return (
-    <nav className="flex items-center px-2 py-3 border-b bg-white sticky top-0 z-20">
+    <nav className="flex items-center px-2 py-3 border-b bg-white dark:bg-background sticky top-0 z-20">
       <button
         type="button"
         onClick={() => router.back()}
@@ -20,7 +20,7 @@ const StackNavBar: FC = () => {
           viewBox="0 0 24 24"
           strokeWidth={2}
           stroke="currentColor"
-          className="w-6 h-6 text-gray-900"
+          className="w-6 h-6 text-gray-900 dark:text-white"
         >
           <path
             strokeLinecap="round"
@@ -28,7 +28,7 @@ const StackNavBar: FC = () => {
             d="M15.75 19.5L8.25 12l7.5-7.5"
           />
         </svg>
-        <span className="ml-1 text-base font-medium text-gray-900">
+        <span className="ml-1 text-base font-medium text-gray-900 dark:text-white">
           기록으로 찾기
         </span>
       </button>
