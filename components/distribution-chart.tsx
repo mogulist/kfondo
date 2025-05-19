@@ -8,6 +8,8 @@ import {
   YAxis,
 } from "recharts";
 import React from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export type DistributionChartProps = {
   title: string;
@@ -42,12 +44,11 @@ export function DistributionChart({
     <div className={isMobile ? "h-[350px]" : "h-full w-full"}>
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-medium">{title}</h3>
-        <a
-          href={`/find-by-record/${eventId}/${course}/${year}`}
-          className="ml-2 px-2 py-1 rounded border border-white/30 dark:border-white/30 border-gray-900/20 text-xs font-normal text-gray-200 dark:text-gray-200 hover:bg-white/5 hover:text-white transition-colors"
-        >
-          기록 찾기
-        </a>
+        <Button asChild variant="outline" size="sm" className="ml-2 text-xs font-normal">
+          <Link href={`/find-by-record/${eventId}/${course}/${year}`}>
+            기록 찾기
+          </Link>
+        </Button>
       </div>
       <div
         className={`h-[calc(100%-2rem)] w-full${
