@@ -1,5 +1,6 @@
 "use client";
 import type { FC } from "react";
+import { Button } from "@/components/ui/button";
 
 export type RecordInputProps = {
   value: string;
@@ -66,6 +67,9 @@ const RecordInput: FC<RecordInputProps> = ({
         onChange={handleInputChange}
       />
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+      <Button type="submit" className="w-full mt-4">
+        기록 찾기
+      </Button>
     </form>
   );
 };
