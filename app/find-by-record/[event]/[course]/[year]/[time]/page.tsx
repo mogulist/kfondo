@@ -9,6 +9,27 @@ type Props = {
   params: { event: string; course: string; year: string; time: string };
 };
 
+type CardProps = {
+  main: React.ReactNode;
+  label: string;
+  subLabel?: string;
+  className?: string;
+};
+
+const Card = ({ main, label, subLabel, className = "" }: CardProps) => (
+  <div
+    className={`flex-1 bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40 ${className}`}
+  >
+    <div className="text-3xl font-extrabold text-primary mb-1">{main}</div>
+    <div className="text-base font-medium text-muted-foreground mb-1">
+      {label}
+    </div>
+    {subLabel && (
+      <div className="text-xs text-gray-500 dark:text-gray-400">{subLabel}</div>
+    )}
+  </div>
+);
+
 const ResultPage = async (props: Props) => {
   const awaitedParams = await props.params;
   const { event: eventId, course, year, time } = awaitedParams;
@@ -113,53 +134,25 @@ const ResultPage = async (props: Props) => {
           <div className="flex flex-col gap-4 w-full">
             {/* 입력 기록 카드: PC에서는 한 줄 전체, 모바일에서는 첫 번째 카드 */}
             <div className="sm:w-full">
-              <div className="bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40">
-                <div className="text-3xl font-extrabold text-primary mb-1">
-                  {parsedTime}
-                </div>
-                <div className="text-base font-medium text-muted-foreground mb-1">
-                  입력 기록
-                </div>
-              </div>
+              <Card main={parsedTime} label="입력 기록" />
             </div>
             {/* 3개 카드: PC에서는 가로, 모바일에서는 세로 */}
             <div className="flex flex-col sm:flex-row gap-4 w-full">
-              {/* 순위 카드 */}
-              <div className="flex-1 bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40">
-                <div className="text-3xl font-extrabold text-primary mb-1">
-                  {rank ?? "-"}위
-                </div>
-                <div className="text-base font-medium text-muted-foreground mb-1">
-                  순위
-                </div>
-              </div>
-              {/* 참가자 기준 카드 */}
-              <div className="flex-1 bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40">
-                <div className="text-3xl font-extrabold text-primary mb-1">
-                  {percentileByParticipants !== null
+              <Card main={`${rank ?? "-"}위`} label="순위" />
+              <Card
+                main={`${
+                  percentileByParticipants !== null
                     ? percentileByParticipants.toFixed(1)
-                    : "-"}
-                  %
-                </div>
-                <div className="text-base font-medium text-muted-foreground mb-1">
-                  참가자 기준
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">
-                  {totalParticipants.toLocaleString()}명 기준
-                </div>
-              </div>
-              {/* 완주자 기준 카드 */}
-              <div className="flex-1 bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40">
-                <div className="text-3xl font-extrabold text-primary mb-1">
-                  {percentile !== null ? percentile.toFixed(1) : "-"}%
-                </div>
-                <div className="text-base font-medium text-muted-foreground mb-1">
-                  완주자 기준
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">
-                  {courseArr.length.toLocaleString()}명 기준
-                </div>
-              </div>
+                    : "-"
+                }%`}
+                label="참가자 기준"
+                subLabel={`${totalParticipants.toLocaleString()}명 기준`}
+              />
+              <Card
+                main={`${percentile !== null ? percentile.toFixed(1) : "-"}%`}
+                label="완주자 기준"
+                subLabel={`${courseArr.length.toLocaleString()}명 기준`}
+              />
             </div>
           </div>
         </div>
