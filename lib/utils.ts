@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { events } from "../events.config";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -18,3 +19,41 @@ export function timeToSeconds(timeStr: string): number {
 
   return hours * 3600 + minutes * 60 + seconds;
 }
+
+// eventId, year, courseId로 course 이름 반환
+export const getCourseNameById = (
+  eventId: string,
+  year: string | number,
+  courseId: string
+): string | undefined => {
+  const event = events.find((e) => e.id === eventId);
+  if (!event) return undefined;
+
+  const yearDetail = event.yearDetails?.[Number(year)];
+  if (!yearDetail) return undefined;
+
+  const course = yearDetail.courses.find((c) => c.id === courseId);
+  return course?.name;
+};
+
+// eventId, year, courseId로 코스 정보 반환
+export const getCourseInfoById = (
+  eventId: string,
+  year: string | number,
+  courseId: string
+): { name: string; distance: number; elevation: number } | undefined => {
+  const event = events.find((e) => e.id === eventId);
+  if (!event) return undefined;
+
+  const yearDetail = event.yearDetails?.[Number(year)];
+  if (!yearDetail) return undefined;
+
+  const course = yearDetail.courses.find((c) => c.id === courseId);
+  if (!course) return undefined;
+
+  return {
+    name: course.name,
+    distance: course.distance,
+    elevation: course.elevation,
+  };
+};

@@ -1,33 +1,23 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import RecordInput, {
-  isValidRecordFormat,
-  formatRecordInput,
-} from "./RecordInput";
+import RecordInput, { isValidRecordFormat } from "./RecordInput";
 import type { Event, EventV2 } from "@/lib/types";
+import { getCourseInfoById } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
-interface FindMyRecordSectionProps {
+type Pros = {
   event: Event | EventV2;
-  latestYear: number;
   eventName: string;
   course: string;
   year: string;
-}
+};
 
-const FindMyRecordSection = ({
-  event,
-  latestYear,
-  eventName,
-  course,
-  year,
-}: FindMyRecordSectionProps) => {
+const FindMyRecordSection = ({ event, eventName, course, year }: Pros) => {
   const [record, setRecord] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
-
-  // 결과 표시용 상태 (추후 순위/백분율 등)
-  // const [result, setResult] = useState(null);
 
   const handleRecordChange = (value: string) => {
     setRecord(value);
@@ -49,18 +39,30 @@ const FindMyRecordSection = ({
     router.push(`/find-by-record/${event.id}/${course}/${year}/${digit}`);
   };
 
+  const courseInfo = getCourseInfoById(event.id, year, course);
+
   return (
-    <div className="space-y-12 max-w-full px-4 py-4">
-      <div className="text-xl text-muted-foreground font-semibold mb-8">
-        {latestYear} {eventName}
+    <div className="max-w-full px-4 py-4">
+      <div className="text-xl text-muted-foreground font-semibold mb-4">
+        {year}년 {eventName}
       </div>
+      {courseInfo && (
+        <div className="flex gap-2">
+          <Badge className="bg-blue-600 text-white">{courseInfo.name}</Badge>
+          <Badge className="bg-green-600 text-white">
+            {courseInfo.distance}km
+          </Badge>
+          <Badge className="bg-orange-500 text-white">
+            {courseInfo.elevation}m
+          </Badge>
+        </div>
+      )}
       <RecordInput
         value={record}
         onChange={handleRecordChange}
         error={error}
         onSubmit={handleSubmit}
       />
-      {/* 결과 표시 영역 (추후 구현) */}
     </div>
   );
 };

@@ -47,7 +47,7 @@ const RecordInput: FC<RecordInputProps> = ({
 
   return (
     <form
-      className="max-w-xs mx-auto"
+      className="max-w-xs mx-auto my-16"
       autoComplete="off"
       onSubmit={handleFormSubmit}
     >
