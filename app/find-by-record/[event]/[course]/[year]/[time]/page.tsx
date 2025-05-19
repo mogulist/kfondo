@@ -40,6 +40,8 @@ const ResultPage = async (props: Props) => {
   };
   const courseKey = courseMap[course] || course;
   const courseArr: number[] = sortedData[courseKey] || [];
+  // 참가자 수 mock (실제 데이터 구조에 맞게 수정 필요)
+  const totalParticipants = sortedData.totalParticipants || 1200;
   const inputMsec = timeToMilliseconds(parsedTime);
   if (inputMsec < 0) notFound();
 
@@ -68,6 +70,7 @@ const ResultPage = async (props: Props) => {
 
   let rank: number | null = null;
   let percentile: number | null = null;
+  let percentileByParticipants: number | null = null;
   let resultMsg = null;
 
   // 주변 기록 배열 준비
@@ -91,9 +94,13 @@ const ResultPage = async (props: Props) => {
   } else {
     // 입력 기록보다 빠른 사람 수 + 1 (동일 기록은 같은 순위)
     rank = courseArr.filter((msec) => msec < inputMsec).length + 1;
-    // 상위 %
+    // 상위 % (완주자 기준)
     if (courseArr.length > 0) {
       percentile = ((rank - 1) / courseArr.length) * 100;
+    }
+    // 상위 % (참가자 기준)
+    if (totalParticipants > 0) {
+      percentileByParticipants = ((rank - 1) / totalParticipants) * 100;
     }
   }
 
@@ -101,20 +108,65 @@ const ResultPage = async (props: Props) => {
     <main className="container mx-auto px-0 py-0">
       <StackNavBar />
       <div className="max-w-full px-4 py-4">
-        <div className="text-xl text-muted-foreground font-semibold mb-8">
-          입력 기록: {parsedTime}
+        <div className="w-full max-w-2xl mx-auto mb-4">
+          {/* 모바일: 4개 세로, PC: 입력기록 한 줄, 아래 3개 가로 */}
+          <div className="flex flex-col gap-4 w-full">
+            {/* 입력 기록 카드: PC에서는 한 줄 전체, 모바일에서는 첫 번째 카드 */}
+            <div className="sm:w-full">
+              <div className="bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40">
+                <div className="text-3xl font-extrabold text-primary mb-1">
+                  {parsedTime}
+                </div>
+                <div className="text-base font-medium text-muted-foreground mb-1">
+                  입력 기록
+                </div>
+              </div>
+            </div>
+            {/* 3개 카드: PC에서는 가로, 모바일에서는 세로 */}
+            <div className="flex flex-col sm:flex-row gap-4 w-full">
+              {/* 순위 카드 */}
+              <div className="flex-1 bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40">
+                <div className="text-3xl font-extrabold text-primary mb-1">
+                  {rank ?? "-"}위
+                </div>
+                <div className="text-base font-medium text-muted-foreground mb-1">
+                  순위
+                </div>
+              </div>
+              {/* 참가자 기준 카드 */}
+              <div className="flex-1 bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40">
+                <div className="text-3xl font-extrabold text-primary mb-1">
+                  {percentileByParticipants !== null
+                    ? percentileByParticipants.toFixed(1)
+                    : "-"}
+                  %
+                </div>
+                <div className="text-base font-medium text-muted-foreground mb-1">
+                  참가자 기준
+                </div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  {totalParticipants.toLocaleString()}명 기준
+                </div>
+              </div>
+              {/* 완주자 기준 카드 */}
+              <div className="flex-1 bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40">
+                <div className="text-3xl font-extrabold text-primary mb-1">
+                  {percentile !== null ? percentile.toFixed(1) : "-"}%
+                </div>
+                <div className="text-base font-medium text-muted-foreground mb-1">
+                  완주자 기준
+                </div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  {courseArr.length.toLocaleString()}명 기준
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         {resultMsg ? (
           resultMsg
         ) : (
           <>
-            <div className="text-2xl font-bold mb-4">순위: {rank}위</div>
-            <div className="text-lg mb-2">
-              상위 {percentile !== null ? percentile.toFixed(1) : "-"}%
-            </div>
-            <div className="text-sm text-gray-500">
-              ({course} 완주자 {courseArr.length}명 기준)
-            </div>
             <div className="w-full border-t border-muted-foreground/20 my-8" />
             <div className="flex flex-col items-center gap-1">
               {recordsAround.map((rec, idx) => (
