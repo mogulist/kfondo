@@ -6,12 +6,12 @@ import fs from "fs";
 import path from "path";
 
 type Props = {
-  params: { event: string; course: string; year: string; digit: string };
+  params: { event: string; course: string; year: string; time: string };
 };
 
 const ResultPage = async (props: Props) => {
   const awaitedParams = await props.params;
-  const { event: eventId, course, year, digit } = awaitedParams;
+  const { event: eventId, course, year, time } = awaitedParams;
   const event = events.find((e) => e.id === eventId) as
     | Event
     | EventV2
@@ -19,7 +19,7 @@ const ResultPage = async (props: Props) => {
   if (!event) notFound();
 
   // digit string(05082735) → HH:mm:ss.SS로 변환
-  const parsedTime = parseDigitTime(digit);
+  const parsedTime = parseDigitTime(time);
   if (!parsedTime) notFound();
 
   // 파일 경로
