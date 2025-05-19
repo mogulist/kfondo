@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { events } from "@/events.config";
 import type { Event, EventV2 } from "@/lib/types";
-import StackNavBar from "./StackNavBar";
+import StackNavBar from "../../../../../components/StackNavBar";
 import FindMyRecordSection from "./FindMyRecordSection";
 
 type Props = {

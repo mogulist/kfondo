@@ -6,7 +6,7 @@ const DATA_DIR = path.join(process.cwd(), "data");
 const OUTPUT_DIR = path.join(DATA_DIR, "sorted-msec");
 
 function timeToMilliseconds(time: string): number {
-  // HH:mm:ss 또는 HH:mm:ss.SS
+  // HH:mm:ss 또는 HH:mm:ss.SS 또는 HH:mm:ss.SSS
   if (!time || time === "DNF" || time === "DNS") return -1;
   const [h, m, s] = time.split(":");
   if (!h || !m || !s) return -1;
@@ -15,7 +15,8 @@ function timeToMilliseconds(time: string): number {
   if (s.includes(".")) {
     const [secStr, msStr] = s.split(".");
     sec = parseInt(secStr, 10);
-    ms = parseInt((msStr + "00").slice(0, 3), 10); // SS, SSS 모두 지원
+    // msStr을 항상 3자리로 맞추고, msec로 변환
+    ms = parseInt(msStr.padEnd(3, "0").slice(0, 3), 10);
   } else {
     sec = parseInt(s, 10);
   }
