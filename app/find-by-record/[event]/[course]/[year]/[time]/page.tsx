@@ -4,6 +4,7 @@ import type { Event, EventV2 } from "@/lib/types";
 import StackNavBar from "@/components/StackNavBar";
 import fs from "fs";
 import path from "path";
+import { calculateParticipants, calculateDNF } from "@/lib/participants";
 
 type Props = {
   params: { event: string; course: string; year: string; time: string };
@@ -22,6 +23,13 @@ const ResultPage = async (props: Props) => {
   const parsedTime = parseDigitTime(time);
   if (!parsedTime) notFound();
 
+  const participants = calculateParticipants(eventId, Number(year));
+  const dnf = calculateDNF(eventId, Number(year));
+  const courseKey = course === "granfondo" ? "granfondo" : "mediofondo";
+  const totalParticipants = participants[courseKey];
+  const totalDNF = dnf[courseKey];
+  const finishers = totalParticipants - totalDNF;
+
   // 파일 경로
   const sortedFile = path.join(
     process.cwd(),
@@ -38,10 +46,8 @@ const ResultPage = async (props: Props) => {
     granfondo: "그란폰도",
     mediofondo: "메디오폰도",
   };
-  const courseKey = courseMap[course] || course;
-  const courseArr: number[] = sortedData[courseKey] || [];
-  // 참가자 수 mock (실제 데이터 구조에 맞게 수정 필요)
-  const totalParticipants = sortedData.totalParticipants || 1200;
+  const courseKey2 = courseMap[course] || course;
+  const courseArr: number[] = sortedData[courseKey2] || [];
   const inputMsec = timeToMilliseconds(parsedTime);
   if (inputMsec < 0) notFound();
 
@@ -112,7 +118,7 @@ const ResultPage = async (props: Props) => {
               <Card
                 main={`${percentile !== null ? percentile.toFixed(1) : "-"}%`}
                 label="완주자 기준"
-                subLabel={`${courseArr.length.toLocaleString()}명 기준`}
+                subLabel={`${finishers.toLocaleString()}명 기준`}
               />
             </div>
           </div>
