@@ -106,9 +106,15 @@ const ResultPage = async (props: Props) => {
           </div>
           {courseInfo && (
             <div className="flex gap-2">
-              <Badge className="bg-blue-600 text-white">{courseInfo.name}</Badge>
-              <Badge className="bg-green-600 text-white">{courseInfo.distance}km</Badge>
-              <Badge className="bg-orange-500 text-white">{courseInfo.elevation}m</Badge>
+              <Badge className="bg-blue-600 text-white">
+                {courseInfo.name}
+              </Badge>
+              <Badge className="bg-green-600 text-white">
+                {courseInfo.distance}km
+              </Badge>
+              <Badge className="bg-orange-500 text-white">
+                {courseInfo.elevation}m
+              </Badge>
             </div>
           )}
         </div>
@@ -121,7 +127,7 @@ const ResultPage = async (props: Props) => {
             </div>
             {/* 3개 카드: PC에서는 가로, 모바일에서는 세로 */}
             <div className="flex flex-col sm:flex-row gap-4 w-full">
-              <Card main={`${rank ?? "-"}위`} label="순위" />
+              <Card main={`${rank ?? "-"}위`} label="순위" testId="rank" />
               <Card
                 main={`${
                   percentileByParticipants !== null
@@ -130,11 +136,13 @@ const ResultPage = async (props: Props) => {
                 }%`}
                 label="참가자 기준"
                 subLabel={`${totalParticipants.toLocaleString()}명 기준`}
+                testId="participant"
               />
               <Card
                 main={`${percentile !== null ? percentile.toFixed(1) : "-"}%`}
                 label="완주자 기준"
                 subLabel={`${finishers.toLocaleString()}명 기준`}
+                testId="finisher"
               />
             </div>
           </div>
@@ -170,18 +178,38 @@ type CardProps = {
   label: string;
   subLabel?: string;
   className?: string;
+  testId?: string;
 };
 
-const Card = ({ main, label, subLabel, className = "" }: CardProps) => (
+const Card = ({
+  main,
+  label,
+  subLabel,
+  className = "",
+  testId = "",
+}: CardProps) => (
   <div
     className={`flex-1 bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40 ${className}`}
   >
-    <div className="text-3xl font-extrabold text-primary mb-1">{main}</div>
-    <div className="text-base font-medium text-muted-foreground mb-1">
+    <div
+      className="text-3xl font-extrabold text-primary mb-1"
+      data-testid={`${testId}-main`}
+    >
+      {main}
+    </div>
+    <div
+      className="text-base font-medium text-muted-foreground mb-1"
+      data-testid={`${testId}-label`}
+    >
       {label}
     </div>
     {subLabel && (
-      <div className="text-xs text-gray-500 dark:text-gray-400">{subLabel}</div>
+      <div
+        className="text-xs text-gray-500 dark:text-gray-400"
+        data-testid={`${testId}-subLabel`}
+      >
+        {subLabel}
+      </div>
     )}
   </div>
 );
