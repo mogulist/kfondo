@@ -87,15 +87,17 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="min-h-screen bg-background">
-            {children}
-            <Analytics />
-            <footer className="border-t mt-12">
-              <div className="container mx-auto px-4 py-8">
-                <p className="text-center text-sm text-muted-foreground">
-                  © {new Date().getFullYear()} FondoScope. All rights reserved.
-                </p>
-              </div>
-            </footer>
+            <div className="w-full max-w-screen-xl mx-auto px-4">
+              {children}
+              <Analytics />
+              <footer className="border-t mt-12">
+                <div className="py-8">
+                  <p className="text-center text-sm text-muted-foreground">
+                    © {new Date().getFullYear()} FondoScope. All rights reserved.
+                  </p>
+                </div>
+              </footer>
+            </div>
           </div>
         </ThemeProvider>
       </body>
