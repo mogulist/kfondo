@@ -5,6 +5,8 @@ import StackNavBar from "@/components/StackNavBar";
 import fs from "fs";
 import path from "path";
 import { calculateParticipants, calculateDNF } from "@/lib/participants";
+import { getCourseInfoById } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 type Props = {
   params: { event: string; course: string; year: string; time: string };
@@ -92,10 +94,24 @@ const ResultPage = async (props: Props) => {
     }
   }
 
+  const courseInfo = getCourseInfoById(eventId, year, course);
+
   return (
     <main className="container mx-auto px-0 py-0">
       <StackNavBar />
       <div className="max-w-full px-4 py-4">
+        <div className="flex flex-col items-center mb-6">
+          <div className="text-3xl text-muted-foreground font-semibold mb-2">
+            {year}년 {event.location} {courseInfo?.name}
+          </div>
+          {courseInfo && (
+            <div className="flex gap-2">
+              <Badge className="bg-blue-600 text-white">{courseInfo.name}</Badge>
+              <Badge className="bg-green-600 text-white">{courseInfo.distance}km</Badge>
+              <Badge className="bg-orange-500 text-white">{courseInfo.elevation}m</Badge>
+            </div>
+          )}
+        </div>
         <div className="w-full max-w-2xl mx-auto mb-4">
           {/* 모바일: 4개 세로, PC: 입력기록 한 줄, 아래 3개 가로 */}
           <div className="flex flex-col gap-4 w-full">
