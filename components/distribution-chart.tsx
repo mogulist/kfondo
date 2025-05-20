@@ -8,6 +8,8 @@ import {
   YAxis,
 } from "recharts";
 import React from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export type DistributionChartProps = {
   title: string;
@@ -22,6 +24,9 @@ export type DistributionChartProps = {
     interval: number
   ) => string;
   CustomTooltip: React.FC<any>;
+  eventId: string;
+  course: string;
+  year: number;
 };
 
 export function DistributionChart({
@@ -33,10 +38,20 @@ export function DistributionChart({
   comment,
   formatXAxisTick,
   CustomTooltip,
+  eventId,
+  course,
+  year,
 }: DistributionChartProps) {
   return (
     <div className={isMobile ? "h-[350px]" : "h-full w-full"}>
-      <h3 className="text-lg font-medium mb-4">{title}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-medium">{title}</h3>
+        <Button asChild variant="outline" size="sm" className="ml-2 text-xs font-normal">
+          <Link href={`/find-by-record/${eventId}/${course}/${year}`}>
+            기록 찾기
+          </Link>
+        </Button>
+      </div>
       <div
         className={`h-[calc(100%-2rem)] w-full${
           isMobile ? " overflow-x-auto overscroll-contain touch-pan-x" : ""
