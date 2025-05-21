@@ -1,12 +1,14 @@
 import { notFound } from "next/navigation";
 import { events } from "@/events.config";
 import type { Event, EventV2 } from "@/lib/types";
+import type { Metadata } from "next";
 import StackNavBar from "@/components/StackNavBar";
 import fs from "fs";
 import path from "path";
 import { calculateParticipants, calculateDNF } from "@/lib/participants";
 import { getCourseInfoById } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { generateFindRecordMetadata } from "@/lib/metadata";
 
 type Props = {
   params: { event: string; course: string; year: string; time: string };
@@ -263,4 +265,14 @@ const msecToTimeString = (msec: number): string => {
     .padStart(2, "0")}.${ms.toString().padStart(2, "0")}`;
 };
 
+const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { event: eventId, course, year } = await params;
+  return generateFindRecordMetadata({
+    eventId,
+    course,
+    year,
+  });
+};
+
 export default ResultPage;
+export { generateMetadata };

@@ -4,6 +4,7 @@ import { events } from "@/events.config";
 import type { Event, EventV2 } from "@/lib/types";
 import StackNavBar from "../../../../../components/StackNavBar";
 import FindMyRecordSection from "./FindMyRecordSection";
+import { generateFindRecordMetadata } from "@/lib/metadata";
 
 type Props = {
   params: {
@@ -38,20 +39,8 @@ const FindMyRecordPage = async ({ params }: Props) => {
 };
 
 const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
-  const { event: eventId } = await params;
-  const event = events.find((e) => e.id === eventId);
-
-  if (!event) {
-    return {
-      title: "페이지를 찾을 수 없습니다 | FondoScope",
-      description: "요청하신 페이지를 찾을 수 없습니다.",
-    };
-  }
-
-  return {
-    title: `${event.location} 그란폰도 - 기록으로 찾기 | FondoScope`,
-    description: `${event.location} 그란폰도의 기록을 입력하여 순위와 백분율을 확인하세요.`,
-  };
+  const { event: eventId, course, year } = await params;
+  return generateFindRecordMetadata({ eventId, course, year });
 };
 
 export default FindMyRecordPage;
