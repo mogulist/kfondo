@@ -11,7 +11,7 @@ import { timeToSeconds } from "@/lib/utils";
 import type { EventYearStats } from "@/lib/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import type { Event, EventV2, EventYearDetail } from "@/lib/types";
+import type { Event } from "@/lib/types";
 import FondoScopeHeader from "@/components/FondoScopeHeader";
 
 type EventPageProps = {
@@ -22,46 +22,30 @@ type EventPageProps = {
 
 export default async function EventPage({ params }: EventPageProps) {
   const { event: eventId } = await params;
-  const event = events.find((e) => e.id === eventId) as
-    | Event
-    | EventV2
-    | undefined;
+  const event = events.find((e) => e.id === eventId) as Event | undefined;
 
   if (!event) {
     notFound();
   }
 
-  // 타입 가드
-  const isV2 = (e: any): e is EventV2 => "yearDetails" in e;
-
   // 연도별 데이터 생성
-  let eventData: any[] = [];
-  if (isV2(event)) {
-    eventData = event.years.map((year) => {
-      const detail = event.yearDetails[year];
-      // granfondo/mediofondo registered 추출 (기존 차트 호환 위해)
-      const gran = detail.courses.find((c) => c.id === "granfondo");
-      const medio = detail.courses.find((c) => c.id === "mediofondo");
-      return {
-        year,
-        registered: {
-          granfondo: gran?.registered ?? 0,
-          mediofondo: medio?.registered ?? 0,
-        },
-        participants: calculateParticipants(eventId, year),
-        dnf: calculateDNF(eventId, year),
-      };
-    });
-  } else {
-    eventData = event.years.map((year) => ({
+  const eventData = event.years.map((year) => {
+    const detail = event.yearDetails[year];
+    // granfondo/mediofondo registered 추출
+    const gran = detail.courses.find((c) => c.id === "granfondo");
+    const medio = detail.courses.find((c) => c.id === "mediofondo");
+    return {
       year,
-      registered: event.registered[year] || { granfondo: 0, mediofondo: 0 },
+      registered: {
+        granfondo: gran?.registered ?? 0,
+        mediofondo: medio?.registered ?? 0,
+      },
       participants: calculateParticipants(eventId, year),
       dnf: calculateDNF(eventId, year),
-    }));
-  }
+    };
+  });
 
-  // 실제 기록 분포 차트 제공 (확장성 개선)
+  // 실제 기록 분포 차트 제공
   let yearStats: EventYearStats[] = [];
   const dataDir = path.join(process.cwd(), "data");
   const yearsWithData = event.years.filter((year) => {
@@ -87,13 +71,10 @@ export default async function EventPage({ params }: EventPageProps) {
     }
 
     // granfondo 코스의 comment만 추출
-    let granfondoComment: string | undefined = undefined;
-    if (isV2(event)) {
-      const gran = event.yearDetails[year]?.courses.find(
-        (c) => c.id === "granfondo"
-      );
-      granfondoComment = gran?.comment;
-    }
+    const gran = event.yearDetails[year]?.courses.find(
+      (c) => c.id === "granfondo"
+    );
+    const granfondoComment = gran?.comment;
 
     return {
       year,
@@ -137,7 +118,7 @@ export default async function EventPage({ params }: EventPageProps) {
               <div className="w-full">
                 <ParticipantTrend eventData={eventData} />
               </div>
-              {isV2(event) && event.comment && (
+              {event.comment && (
                 <div className="mb-4 px-4 py-3 rounded-md bg-blue-50 border border-blue-200 text-blue-900 flex items-start">
                   <svg
                     className="w-5 h-5 mt-0.5 text-blue-400 shrink-0 mr-2"
@@ -198,22 +179,12 @@ export async function generateMetadata({
     openGraph: {
       title: event.meta.title,
       description: event.meta.description,
-      // 이미지가 준비되면 주석 해제
-      // images: [
-      //   {
-      //     url: event.meta.image,
-      //     width: 1200,
-      //     height: 630,
-      //     alt: `${event.location} 그란폰도`,
-      //   },
-      // ],
+      type: "website",
     },
     twitter: {
-      card: "summary_large_image",
+      card: "summary",
       title: event.meta.title,
       description: event.meta.description,
-      // 이미지가 준비되면 주석 해제
-      // images: [event.meta.image],
     },
   };
 }

@@ -1,7 +1,7 @@
-import type { EventV2 } from "./lib/types";
+import type { Event } from "./lib/types";
 
 // 그란폰도 이벤트 목록
-export const events: EventV2[] = [
+export const events: Event[] = [
   // 설악
   {
     id: "seorak",

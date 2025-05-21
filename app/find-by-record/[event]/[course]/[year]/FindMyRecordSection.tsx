@@ -3,18 +3,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import RecordInput, { isValidRecordFormat } from "./RecordInput";
-import type { Event, EventV2 } from "@/lib/types";
+import type { Event } from "@/lib/types";
 import { getCourseInfoById } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
-type Pros = {
-  event: Event | EventV2;
+type Props = {
+  event: Event;
   eventName: string;
   course: string;
   year: string;
 };
 
-const FindMyRecordSection = ({ event, eventName, course, year }: Pros) => {
+const FindMyRecordSection = ({ event, eventName, course, year }: Props) => {
   const [record, setRecord] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();

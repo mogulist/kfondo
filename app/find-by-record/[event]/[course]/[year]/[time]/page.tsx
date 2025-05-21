@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { events } from "@/events.config";
-import type { Event, EventV2 } from "@/lib/types";
+import type { Event } from "@/lib/types";
 import type { Metadata } from "next";
 import StackNavBar from "@/components/StackNavBar";
 import fs from "fs";
@@ -17,10 +17,7 @@ type Props = {
 const ResultPage = async (props: Props) => {
   const awaitedParams = await props.params;
   const { event: eventId, course, year, time } = awaitedParams;
-  const event = events.find((e) => e.id === eventId) as
-    | Event
-    | EventV2
-    | undefined;
+  const event = events.find((e) => e.id === eventId) as Event | undefined;
   if (!event) notFound();
 
   // digit string(05082735) → HH:mm:ss.SS로 변환
@@ -267,11 +264,7 @@ const msecToTimeString = (msec: number): string => {
 
 const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const { event: eventId, course, year } = await params;
-  return generateFindRecordMetadata({
-    eventId,
-    course,
-    year,
-  });
+  return generateFindRecordMetadata({ eventId, course, year });
 };
 
 export default ResultPage;

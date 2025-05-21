@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { events } from "@/events.config";
-import type { Event, EventV2 } from "@/lib/types";
+import type { Event } from "@/lib/types";
 
 type GenerateFindRecordMetadataParams = {
   eventId: string;
