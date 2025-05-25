@@ -2,7 +2,45 @@ import type { Event } from "./lib/types";
 
 // 그란폰도 이벤트 목록
 export const events: Event[] = [
-  // 설악
+  {
+    id: "gapyeong",
+    location: "가평",
+    years: [2025],
+    color: {
+      from: "#a21caf",
+      to: "#6d28d9",
+    },
+    status: "ready",
+    meta: {
+      title: "트렉가평자라섬 그란폰도 통계 | FondoScope",
+      description:
+        "트렉가평자라섬 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/gapyeong-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.5.24",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 130.6,
+            elevation: 2441,
+            registered: 807,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 87.6,
+            elevation: 1393,
+            registered: 394,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+  },
   {
     id: "seorak",
     location: "설악",
