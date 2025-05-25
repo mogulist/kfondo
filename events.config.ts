@@ -61,7 +61,7 @@ export const events: Event[] = [
     yearDetails: {
       2025: {
         year: 2025,
-        date: "2024.5.17",
+        date: "2025.5.17",
         courses: [
           {
             id: "granfondo",
