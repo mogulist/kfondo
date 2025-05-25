@@ -17,6 +17,8 @@ export const events: Event[] = [
         "트렉가평자라섬 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/gapyeong-og.jpg",
     },
+    comment:
+      "그란폰도 참가자 중 78km 하오재 계측 기록이 없는 244명은 DNF로 분류하였습니다. 기록 업데이트: 5.25 15:50",
     yearDetails: {
       2025: {
         year: 2025,
@@ -25,16 +27,16 @@ export const events: Event[] = [
           {
             id: "granfondo",
             name: "그란폰도",
-            distance: 130.6,
+            distance: 118,
             elevation: 2441,
-            registered: 807,
+            registered: 806,
           },
           {
             id: "mediofondo",
             name: "메디오폰도",
-            distance: 87.6,
+            distance: 75,
             elevation: 1393,
-            registered: 394,
+            registered: 392,
           },
         ],
         totalRegistered: 0,
