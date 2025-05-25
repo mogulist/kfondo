@@ -1,8 +1,17 @@
 import { EventCard } from "@/components/event-card";
 import { events } from "@/events.config";
 import FondoScopeHeader from "@/components/FondoScopeHeader";
+import dayjs from "dayjs";
 
 const HomePage = () => {
+  const sortedEvents = [...events].sort((a, b) => {
+    const aLatestYear = Math.max(...a.years);
+    const bLatestYear = Math.max(...b.years);
+    const aDate = dayjs(a.yearDetails[aLatestYear].date);
+    const bDate = dayjs(b.yearDetails[bLatestYear].date);
+    return bDate.valueOf() - aDate.valueOf();
+  });
+
   return (
     <>
       <FondoScopeHeader />
@@ -18,7 +27,7 @@ const HomePage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {events.map((event) => (
+            {sortedEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>
