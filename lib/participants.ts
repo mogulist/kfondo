@@ -106,6 +106,8 @@ type EventParticipantTrendForYear = {
   registered: number;
   participants: number;
   dnf: number;
+  participationRate: string;
+  completionRate: string;
 };
 type EventParticipantTrendForACourse = {
   id: string;
@@ -113,7 +115,7 @@ type EventParticipantTrendForACourse = {
   yearlyData: EventParticipantTrendForYear[];
 };
 
-type EventParticipantTrends = EventParticipantTrendForACourse[];
+export type EventParticipantTrends = EventParticipantTrendForACourse[];
 
 type BaseCourse = {
   id: string;
@@ -130,21 +132,34 @@ export const getEventParticipantTrend = (
     name: course.name,
   }));
 
-  console.log("courses", baseCourses);
+  const recentlyFirstSortedYears = event.years.sort((a, b) => b - a);
 
   const eventParticipantTrends: EventParticipantTrends = baseCourses.map(
     (course) => {
       const yearlyData: EventParticipantTrendForYear[] = [];
 
-      event.years.forEach((year) => {
+      recentlyFirstSortedYears.forEach((year) => {
         const courseData = event.yearDetails[year].courses.find(
           (c) => c.id === course.id
         );
+        const registered = courseData?.registered ?? 0;
+        const participants = calculateParticipantsFor(event.id, course, year);
+        const dnf = calculateDNFsFor(event.id, course, year);
+        const participationRate =
+          registered === 0
+            ? "0"
+            : ((100 * participants) / registered).toFixed(1);
+        const completionRate = dnf
+          ? ((100 * (participants - dnf)) / participants).toFixed(1)
+          : "100";
+
         yearlyData.push({
           year,
           registered: courseData?.registered ?? 0,
-          participants: calculateParticipantsFor(event.id, course, year),
-          dnf: calculateDNFsFor(event.id, course, year),
+          participants,
+          dnf,
+          participationRate,
+          completionRate,
         });
       });
 
@@ -155,8 +170,6 @@ export const getEventParticipantTrend = (
       };
     }
   );
-
-  console.log("eventParticipantTrends", eventParticipantTrends);
 
   return eventParticipantTrends;
 };

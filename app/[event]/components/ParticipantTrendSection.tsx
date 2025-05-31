@@ -1,5 +1,5 @@
 import type { Event } from "@/lib/types";
-import { calculateParticipants, calculateDNF } from "@/lib/participants";
+import { getEventParticipantTrend } from "@/lib/participants";
 import { ParticipantTrend } from "./ParticipantTrend";
 
 type Props = {
@@ -7,20 +7,7 @@ type Props = {
 };
 
 export const ParticipantTrendSection = ({ event }: Props) => {
-  const eventData = event.years.map((year) => {
-    const detail = event.yearDetails[year];
-    const gran = detail.courses.find((c) => c.id === "granfondo");
-    const medio = detail.courses.find((c) => c.id === "mediofondo");
-    return {
-      year,
-      registered: {
-        granfondo: gran?.registered ?? 0,
-        mediofondo: medio?.registered ?? 0,
-      },
-      participants: calculateParticipants(event.id, year),
-      dnf: calculateDNF(event.id, year),
-    };
-  });
+  const eventData = getEventParticipantTrend(event);
 
   return (
     <section className="space-y-4">
