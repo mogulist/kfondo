@@ -1,5 +1,5 @@
 import { ParticipantTrendSection } from "./components/ParticipantTrendSection";
-import { StatsChart } from "@/components/stats-chart";
+import { StatsSection } from "./components/StatsSection";
 import { DisqusComments } from "@/components/disqus-comments";
 import { events } from "@/events.config";
 import { calculateParticipants, calculateDNF } from "@/lib/participants";
@@ -114,13 +114,7 @@ export default async function EventPage({ params }: EventPageProps) {
 
           <div className="space-y-16 md:space-y-20">
             <ParticipantTrendSection event={event} />
-
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold">기록 분포</h2>
-              <div className="w-full">
-                <StatsChart yearStats={yearStats} eventId={eventId} />
-              </div>
-            </section>
+            <StatsSection event={event} />
 
             <section className="space-y-4">
               <h2 className="text-2xl font-semibold">댓글</h2>
