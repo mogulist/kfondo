@@ -7,8 +7,8 @@ export const events: Event[] = [
     location: "가평",
     years: [2025],
     color: {
-      from: "#a21caf",
-      to: "#6d28d9",
+      from: "#eab308",
+      to: "#a16207",
     },
     status: "ready",
     meta: {
@@ -651,6 +651,45 @@ export const events: Event[] = [
             name: "DMZ 랠리",
             distance: 0,
             elevation: 0,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+  },
+  {
+    id: "jeosu",
+    location: "예천저수령",
+    years: [2025],
+    color: {
+      from: "#8b5cf6",
+      to: "#6d28d9",
+    },
+    status: "upcoming",
+    meta: {
+      title: "예천저수령 그란폰도 통계 | FondoScope",
+      description:
+        "예천저수령 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/jeosu-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.5.31",
+        courses: [
+          {
+            id: "single",
+            name: "Challenge A",
+            distance: 103.6,
+            elevation: 2020,
+            registered: 0,
+          },
+          {
+            id: "single",
+            name: "Challenge B",
+            distance: 93.3,
+            elevation: 1754,
             registered: 0,
           },
         ],
