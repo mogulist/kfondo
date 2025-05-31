@@ -18,8 +18,7 @@ export type Event = {
 };
 
 export type GranMedio = {
-  granfondo: number;
-  mediofondo: number;
+  [key: string]: number;
 };
 
 export type EventYear = {
