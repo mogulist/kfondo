@@ -666,7 +666,7 @@ export const events: Event[] = [
       from: "#8b5cf6",
       to: "#6d28d9",
     },
-    status: "upcoming",
+    status: "ready",
     meta: {
       title: "예천저수령 그란폰도 통계 | FondoScope",
       description:
@@ -679,14 +679,14 @@ export const events: Event[] = [
         date: "2025.5.31",
         courses: [
           {
-            id: "single",
+            id: "granfondo",
             name: "Challenge A",
             distance: 103.6,
             elevation: 2020,
             registered: 0,
           },
           {
-            id: "single",
+            id: "mediofondo",
             name: "Challenge B",
             distance: 93.3,
             elevation: 1754,
