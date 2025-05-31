@@ -1,6 +1,6 @@
-import { ParticipantTrend } from "@/components/participant-trend";
 import type { Event } from "@/lib/types";
 import { calculateParticipants, calculateDNF } from "@/lib/participants";
+import { ParticipantTrend } from "./ParticipantTrend";
 
 type Props = {
   event: Event;

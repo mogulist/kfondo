@@ -1,9 +1,9 @@
-import { StatsChart } from "@/components/stats-chart";
+import path from "path";
+import fs from "fs";
 import type { Event, EventYearStats, RaceRecord } from "@/lib/types";
 import { generateTimeDistributionFromRecords } from "@/lib/record-stats";
 import { timeToSeconds } from "@/lib/utils";
-import path from "path";
-import fs from "fs";
+import { StatsChart } from "./StatsChart";
 
 type Props = {
   event: Event;

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useMobile } from "@/hooks/use-mobile";
 import type { EventYearStats } from "@/lib/types";
-import { DistributionChart } from "./distribution-chart";
+import { DistributionChart } from "../../../components/distribution-chart";
 import dayjs from "dayjs";
 
 type StatsChartProps = {
