@@ -458,7 +458,7 @@ export const events: Event[] = [
   {
     id: "jeongeup",
     location: "정읍내장산",
-    years: [2023, 2024],
+    years: [2023, 2024, 2025],
     color: {
       from: "#f59e42",
       to: "#ea580c",
@@ -471,6 +471,27 @@ export const events: Event[] = [
       image: "/images/jeongeup-og.jpg",
     },
     yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.6.1",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 139,
+            elevation: 2076,
+            registered: 930,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 96,
+            elevation: 1489,
+            registered: 635,
+          },
+        ],
+        totalRegistered: 1565,
+      },
       2024: {
         year: 2024,
         date: "2024.5.26",
