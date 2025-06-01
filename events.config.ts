@@ -681,14 +681,14 @@ export const events: Event[] = [
         date: "2025.5.31",
         courses: [
           {
-            id: "granfondo",
+            id: "challenge-a",
             name: "Challenge A",
             distance: 103.6,
             elevation: 2020,
             registered: 2109,
           },
           {
-            id: "mediofondo",
+            id: "challenge-b",
             name: "Challenge B",
             distance: 93.3,
             elevation: 1754,

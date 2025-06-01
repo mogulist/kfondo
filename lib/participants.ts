@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
-import type { Event, EventYear, GranMedio } from "./types";
+import type { Event, GranMedio } from "./types";
+import { events } from "@/events.config";
 
 type Participant = {
   BIB_NO: number;
@@ -28,40 +29,56 @@ function readParticipants(eventId: string, year: number): Participant[] {
 export function calculateParticipants(
   eventId: string,
   year: number
-): GranMedio {
+): Record<string, number> {
+  const event = events.find((e) => e.id === eventId) as Event | undefined;
+  if (!event) {
+    throw new Error(`Event ${eventId} not found`);
+  }
+
+  const { courses } = event.yearDetails[year];
+  const courseIdsNames = courses.map((c) => ({
+    id: c.id,
+    name: c.name,
+  }));
+
   const participants = readParticipants(eventId, year);
 
-  const granfondoParticipants = participants.filter(
-    (participant) => participant.Event === "그란폰도"
-  ).length;
-
-  const mediofondoParticipants = participants.filter(
-    (participant) => participant.Event === "메디오폰도"
-  ).length;
-
-  return {
-    granfondo: granfondoParticipants,
-    mediofondo: mediofondoParticipants,
-  };
+  return courseIdsNames.reduce((acc: Record<string, number>, curr) => {
+    const count = participants.filter(
+      (participant) =>
+        participant.Event === curr.id || participant.Event === curr.name
+    ).length;
+    acc[curr.id] = count;
+    return acc;
+  }, {});
 }
 
-export function calculateDNF(eventId: string, year: number): GranMedio {
+export function calculateDNF(
+  eventId: string,
+  year: number
+): Record<string, number> {
+  const event = events.find((e) => e.id === eventId) as Event | undefined;
+  if (!event) {
+    throw new Error(`Event ${eventId} not found`);
+  }
+
+  const { courses } = event.yearDetails[year];
+  const courseIdsNames = courses.map((c) => ({
+    id: c.id,
+    name: c.name,
+  }));
+
   const participants = readParticipants(eventId, year);
 
-  const granfondoDNF = participants.filter(
-    (participant) =>
-      participant.Event === "그란폰도" && participant.Status === "DNF"
-  ).length;
-
-  const mediofondoDNF = participants.filter(
-    (participant) =>
-      participant.Event === "메디오폰도" && participant.Status === "DNF"
-  ).length;
-
-  return {
-    granfondo: granfondoDNF,
-    mediofondo: mediofondoDNF,
-  };
+  return courseIdsNames.reduce((acc: Record<string, number>, curr) => {
+    const count = participants.filter(
+      (participant) =>
+        (participant.Event === curr.id || participant.Event === curr.name) &&
+        participant.Status === "DNF"
+    ).length;
+    acc[curr.id] = count;
+    return acc;
+  }, {});
 }
 
 export function calculateParticipantsFor(

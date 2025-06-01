@@ -9,13 +9,13 @@ import { generateFindRecordMetadata } from "@/lib/metadata";
 type Props = {
   params: {
     event: string;
-    course: string;
+    courseId: string;
     year: string;
   };
 };
 
 const FindMyRecordPage = async ({ params }: Props) => {
-  const { event: eventId, course, year } = await params;
+  const { event: eventId, courseId, year } = await params;
   const event = events.find((e) => e.id === eventId) as Event | undefined;
   if (!event) {
     notFound();
@@ -28,7 +28,7 @@ const FindMyRecordPage = async ({ params }: Props) => {
       <FindMyRecordSection
         event={event}
         eventName={eventName}
-        course={course}
+        courseId={courseId}
         year={year}
       />
     </main>
@@ -36,8 +36,8 @@ const FindMyRecordPage = async ({ params }: Props) => {
 };
 
 const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
-  const { event: eventId, course, year } = await params;
-  return generateFindRecordMetadata({ eventId, course, year });
+  const { event: eventId, courseId, year } = await params;
+  return generateFindRecordMetadata({ eventId, courseId, year });
 };
 
 export default FindMyRecordPage;

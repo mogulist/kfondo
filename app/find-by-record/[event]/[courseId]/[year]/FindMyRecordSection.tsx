@@ -10,11 +10,11 @@ import { Badge } from "@/components/ui/badge";
 type Props = {
   event: Event;
   eventName: string;
-  course: string;
+  courseId: string;
   year: string;
 };
 
-const FindMyRecordSection = ({ event, eventName, course, year }: Props) => {
+const FindMyRecordSection = ({ event, eventName, courseId, year }: Props) => {
   const [record, setRecord] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
@@ -36,10 +36,10 @@ const FindMyRecordSection = ({ event, eventName, course, year }: Props) => {
   const handleSubmit = () => {
     if (!record || error) return;
     const digit = toDigitString(record);
-    router.push(`/find-by-record/${event.id}/${course}/${year}/${digit}`);
+    router.push(`/find-by-record/${event.id}/${courseId}/${year}/${digit}`);
   };
 
-  const courseInfo = getCourseInfoById(event.id, year, course);
+  const courseInfo = getCourseInfoById(event.id, year, courseId);
 
   return (
     <div className="max-w-full px-4 py-4">

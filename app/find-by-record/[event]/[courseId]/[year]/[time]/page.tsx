@@ -11,12 +11,12 @@ import { Badge } from "@/components/ui/badge";
 import { generateFindRecordMetadata } from "@/lib/metadata";
 
 type Props = {
-  params: { event: string; course: string; year: string; time: string };
+  params: { event: string; courseId: string; year: string; time: string };
 };
 
 const ResultPage = async (props: Props) => {
   const awaitedParams = await props.params;
-  const { event: eventId, course, year, time } = awaitedParams;
+  const { event: eventId, courseId, year, time } = awaitedParams;
   const event = events.find((e) => e.id === eventId) as Event | undefined;
   if (!event) notFound();
 
@@ -26,10 +26,18 @@ const ResultPage = async (props: Props) => {
 
   const participants = calculateParticipants(eventId, Number(year));
   const dnf = calculateDNF(eventId, Number(year));
-  const courseKey = course === "granfondo" ? "granfondo" : "mediofondo";
-  const totalParticipants = participants[courseKey];
-  const totalDNF = dnf[courseKey];
+  const totalParticipants = participants[courseId];
+
+  console.log("courseId", courseId);
+  console.log("participants", participants);
+  console.log("dnf", dnf);
+
+  const totalDNF = dnf[courseId];
   const finishers = totalParticipants - totalDNF;
+
+  console.log("totalParticipants", totalParticipants);
+  console.log("totalDNF", totalDNF);
+  console.log("finishers", finishers);
 
   // 파일 경로
   const sortedFile = path.join(
@@ -43,12 +51,16 @@ const ResultPage = async (props: Props) => {
   const sortedData = JSON.parse(sortedRaw);
 
   // course 영문 → 한글 매핑
+  // TODO: 확장성 있게 수정하기. getCourseNameById 사용하면 될 듯
   const courseMap: Record<string, string> = {
     granfondo: "그란폰도",
     mediofondo: "메디오폰도",
+    "challenge-a": "Challenge A",
+    "challenge-b": "Challenge B",
   };
-  const courseKey2 = courseMap[course] || course;
-  const courseArr: number[] = sortedData[courseKey2] || [];
+
+  const courseKey = courseMap[courseId] || courseId;
+  const courseArr: number[] = sortedData[courseKey] || [];
   const inputMsec = timeToMilliseconds(parsedTime);
   if (inputMsec < 0) notFound();
 
@@ -93,7 +105,7 @@ const ResultPage = async (props: Props) => {
     }
   }
 
-  const courseInfo = getCourseInfoById(eventId, year, course);
+  const courseInfo = getCourseInfoById(eventId, year, courseId);
 
   return (
     <main className="container mx-auto px-0 py-0">
@@ -263,8 +275,8 @@ const msecToTimeString = (msec: number): string => {
 };
 
 const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
-  const { event: eventId, course, year } = await params;
-  return generateFindRecordMetadata({ eventId, course, year });
+  const { event: eventId, courseId, year } = await params;
+  return generateFindRecordMetadata({ eventId, courseId, year });
 };
 
 export default ResultPage;

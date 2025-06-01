@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { events } from "@/events.config";
-import type { Event } from "@/lib/types";
+import { getCourseNameById } from "./utils";
 
 type GenerateFindRecordMetadataParams = {
   eventId: string;
-  course?: string;
-  year?: string;
+  courseId: string;
+  year: string;
 };
 
 export const generateFindRecordMetadata = ({
   eventId,
-  course,
+  courseId,
   year,
 }: GenerateFindRecordMetadataParams): Metadata => {
   const event = events.find((e) => e.id === eventId);
@@ -22,7 +22,7 @@ export const generateFindRecordMetadata = ({
     };
   }
 
-  const courseName = course === "granfondo" ? "그란폰도" : "메디오폰도";
+  const courseName = getCourseNameById(eventId, year, courseId);
 
   const title = `${year ? `${year}년 ` : ""}${
     event.location
