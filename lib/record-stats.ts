@@ -99,10 +99,6 @@ export function generateTimeDistributionFromRecords(
       : records.filter(
           (r) => r.event === eventType && r.status !== "DNS" && r.time !== ""
         ).length;
-  console.log(
-    `[분포] eventType: ${eventType}, year: ${year}, allParticipants:`,
-    allParticipants
-  );
 
   for (const item of distribution) {
     cumulativeParticipants += item.participants;
