@@ -627,7 +627,7 @@ export const events: Event[] = [
       from: "#8b5cf6",
       to: "#6d28d9",
     },
-    status: "upcoming",
+    status: "ready",
     meta: {
       title: "화천 DMZ 랠리 통계 | FondoScope",
       description:
