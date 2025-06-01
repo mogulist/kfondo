@@ -673,6 +673,8 @@ export const events: Event[] = [
         "예천저수령 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/jeosu-og.jpg",
     },
+    comment:
+      "Challenge A 참가자 중 5번째 체크포인트 기록이 없는 302명은 DNF로 분류하였습니다.",
     yearDetails: {
       2025: {
         year: 2025,
@@ -683,14 +685,14 @@ export const events: Event[] = [
             name: "Challenge A",
             distance: 103.6,
             elevation: 2020,
-            registered: 0,
+            registered: 2109,
           },
           {
             id: "mediofondo",
             name: "Challenge B",
             distance: 93.3,
             elevation: 1754,
-            registered: 0,
+            registered: 191,
           },
         ],
         totalRegistered: 0,
