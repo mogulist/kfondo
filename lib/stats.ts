@@ -57,15 +57,13 @@ export function getYearStats(event: Event, dataDir: string): EventYearStats[] {
         records,
         "그란폰도",
         2,
-        year,
-        yearData.registered.granfondo
+        year
       ),
       medioFondoDistribution: generateTimeDistributionFromRecords(
         records,
         "메디오폰도",
         2,
-        year,
-        yearData.registered.mediofondo
+        year
       ),
       comment: granfondoComment,
     };
@@ -104,8 +102,7 @@ export function getYearStatsWithCourses(
         records,
         course.name,
         2,
-        year,
-        course.registered ?? 0
+        year
       ),
     }));
 

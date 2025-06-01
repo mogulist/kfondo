@@ -51,6 +51,7 @@ export function ParticipantTrend({ eventData }: Props) {
       >
         {eventData.map((course) => (
           <CourseTrendSection
+            key={course.id}
             title={course.name}
             data={course.yearlyData.map((d) => ({
               year: d.year,

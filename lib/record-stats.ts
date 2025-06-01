@@ -90,16 +90,12 @@ export function generateTimeDistributionFromRecords(
     });
   }
 
-  // 누적 참가자 수 및 백분위 계산
-  let cumulativeParticipants = 0;
   // 전체 참가자 수(완주+DNF, DNS 제외)
-  const allParticipants =
-    typeof totalParticipants === "number"
-      ? totalParticipants
-      : records.filter(
-          (r) => r.event === eventType && r.status !== "DNS" && r.time !== ""
-        ).length;
+  const allParticipants = records.filter(
+    (r) => r.event === eventType && r.status !== "DNS"
+  ).length;
 
+  let cumulativeParticipants = 0;
   for (const item of distribution) {
     cumulativeParticipants += item.participants;
     item.cumulativeCount = cumulativeParticipants; // 누적 명수 할당

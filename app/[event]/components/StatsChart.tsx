@@ -2,88 +2,66 @@
 
 import { motion } from "framer-motion";
 import { useMobile } from "@/hooks/use-mobile";
-import type { EventYearStats } from "@/lib/types";
+import type { EventYearStats, EventYearStatsWithCourses } from "@/lib/types";
 import { DistributionChart } from "../../../components/distribution-chart";
 import dayjs from "dayjs";
 
-type StatsChartProps = {
-  yearStats: EventYearStats[];
+const colors = ["hsl(215, 90%, 50%)", "hsl(150, 80%, 40%)", "hsl(0, 80%, 60%)"];
+
+type Props = {
+  statistics: EventYearStatsWithCourses[];
   eventId: string;
 };
 
-export const StatsChart = ({ yearStats, eventId }: StatsChartProps) => {
+export const StatsChart = ({ statistics, eventId }: Props) => {
   const isMobile = useMobile();
   const isTablet = useMobile(1024);
 
-  if (!yearStats || yearStats.length === 0) return null;
+  if (!statistics || statistics.length === 0) return null;
 
   return (
     <div className="flex flex-col gap-12">
-      {yearStats.map((stats) => {
-        // granFondo 분포의 시작~끝 시간
-        const granStart =
-          stats.granFondoDistribution[0]?.timeRange.split(" - ")[0];
-
-        const granEnd = stats.granFondoDistribution
-          .at(-1)
-          ?.timeRange.split(" - ")[0];
-
-        const granInterval =
-          granStart && granEnd
-            ? getTickIntervalByRange(granStart, granEnd)
-            : 10;
-
-        // medioFondo 분포의 시작~끝 시간
-        const medioStart =
-          stats.medioFondoDistribution[0]?.timeRange.split(" - ")[0];
-
-        const medioEnd = stats.medioFondoDistribution
-          .at(-1)
-          ?.timeRange.split(" - ")[0];
-
-        const medioInterval =
-          medioStart && medioEnd
-            ? getTickIntervalByRange(medioStart, medioEnd)
-            : 10;
-
+      {statistics.map((yearData) => {
         return (
           <motion.div
             className="h-full w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            key={stats.year}
+            key={yearData.year}
           >
             <div
               className={`${
                 isTablet ? "flex flex-col gap-8" : "grid grid-cols-2 gap-12"
               } h-full`}
             >
-              <DistributionChart
-                title={`그란폰도 (${stats.year}년)`}
-                eventId={eventId}
-                course="granfondo"
-                year={stats.year}
-                data={stats.granFondoDistribution}
-                color="hsl(215, 90%, 50%)"
-                interval={granInterval}
-                isMobile={isMobile}
-                comment={stats.comment}
-                formatXAxisTick={formatXAxisTick}
-                CustomTooltip={CustomTooltip}
-              />
-              <DistributionChart
-                title={`메디오폰도 (${stats.year}년)`}
-                eventId={eventId}
-                course="mediofondo"
-                year={stats.year}
-                data={stats.medioFondoDistribution}
-                color="hsl(150, 80%, 40%)"
-                interval={medioInterval}
-                isMobile={isMobile}
-                formatXAxisTick={formatXAxisTick}
-                CustomTooltip={CustomTooltip}
-              />
+              {yearData.distributions.map((distribution, index) => {
+                const start =
+                  distribution.distribution[0]?.timeRange.split(" - ")[0];
+                const end = distribution.distribution
+                  .at(-1)
+                  ?.timeRange.split(" - ")[0];
+                const interval =
+                  start && end ? getTickIntervalByRange(start, end) : 10;
+                const color = colors[index];
+
+                return (
+                  <DistributionChart
+                    key={distribution.courseId}
+                    title={`${distribution.courseName} (${yearData.year}년)`}
+                    eventId={eventId}
+                    course={distribution.courseId}
+                    year={yearData.year}
+                    data={distribution.distribution}
+                    color={color}
+                    interval={interval}
+                    isMobile={isMobile}
+                    comment={yearData.comment}
+                    formatXAxisTick={formatXAxisTick}
+                    CustomTooltip={CustomTooltip}
+                  />
+                );
+              })}
             </div>
           </motion.div>
         );
