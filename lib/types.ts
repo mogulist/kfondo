@@ -41,6 +41,16 @@ export type EventYearStats = {
   comment?: string;
 };
 
+export type EventYearStatsWithCourses = {
+  year: number;
+  distributions: {
+    courseId: string;
+    courseName: string;
+    distribution: TimeDistribution[];
+  }[];
+  comment?: string;
+};
+
 export type RaceRecord = {
   bibNo: string;
   gender: string;
