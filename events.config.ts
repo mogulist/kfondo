@@ -545,7 +545,7 @@ export const events: Event[] = [
       from: "#10b981",
       to: "#047857",
     },
-    status: "upcoming",
+    status: "ready",
     meta: {
       title: "삼척 그란폰도 통계 | FondoScope",
       description:
