@@ -699,4 +699,37 @@ export const events: Event[] = [
       },
     },
   },
+  {
+    id: "yeonchun",
+    location: "연천",
+    years: [2025],
+    color: {
+      from: "#8b5cf6",
+      to: "#6d28d9",
+    },
+    status: "ready",
+    meta: {
+      title: "연천 그란폰도 통계 | FondoScope",
+      description:
+        "연천 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/yeonchu-og.jpg",
+    },
+    comment: "Cycle과 MTB 종목을 통합하였습니다",
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.6.21",
+        courses: [
+          {
+            id: "rally",
+            name: "랠리",
+            distance: 76,
+            elevation: 557,
+            registered: 1400,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+  },
 ];

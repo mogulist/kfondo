@@ -57,6 +57,7 @@ const ResultPage = async (props: Props) => {
     mediofondo: "메디오폰도",
     "challenge-a": "Challenge A",
     "challenge-b": "Challenge B",
+    rally: "랠리",
   };
 
   const courseKey = courseMap[courseId] || courseId;
