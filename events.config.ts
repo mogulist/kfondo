@@ -701,11 +701,11 @@ export const events: Event[] = [
   },
   {
     id: "yeonchun",
-    location: "연천",
+    location: "연천DMZ",
     years: [2025],
     color: {
-      from: "#8b5cf6",
-      to: "#6d28d9",
+      from: "#ec4899",
+      to: "#be185d",
     },
     status: "ready",
     meta: {
