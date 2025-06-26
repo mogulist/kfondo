@@ -379,17 +379,10 @@ export const events: Event[] = [
             name: "그란폰도",
             distance: 121,
             elevation: 1000,
-            registered: 0,
-          },
-          {
-            id: "mediofondo",
-            name: "메디오폰도",
-            distance: 104,
-            elevation: 757,
-            registered: 0,
+            registered: 1373,
           },
         ],
-        totalRegistered: 0,
+        totalRegistered: 1373,
       },
     },
   },
@@ -606,7 +599,7 @@ export const events: Event[] = [
       from: "#8b5cf6",
       to: "#6d28d9",
     },
-    status: "ready",
+    status: "upcoming",
     meta: {
       title: "화천 DMZ 랠리 통계 | FondoScope",
       description:
