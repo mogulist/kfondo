@@ -764,4 +764,43 @@ export const events: Event[] = [
       },
     },
   },
+  {
+    id: "goseong",
+    location: "Tour de DMZ 고성",
+    years: [2025],
+    color: {
+      from: "#8b5cf6",
+      to: "#6d28d9",
+    },
+    status: "upcoming",
+    meta: {
+      title: "Tour de DMZ 고성 그란폰도 통계 | FondoScope",
+      description:
+        "Tour de DMZ 고성 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/jeongseon-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.8.30",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 93,
+            elevation: 1319,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 63.83,
+            elevation: 870,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+  },
 ];
