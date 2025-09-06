@@ -790,8 +790,8 @@ export const events: Event[] = [
     location: "Tour de DMZ 고성",
     years: [2025],
     color: {
-      from: "#8b5cf6",
-      to: "#6d28d9",
+      from: "#f97316",
+      to: "#ea580c",
     },
     status: "ready",
     meta: {
@@ -829,8 +829,8 @@ export const events: Event[] = [
     location: "양평",
     years: [2025],
     color: {
-      from: "#8b5cf6",
-      to: "#6d28d9",
+      from: "#2563eb",
+      to: "#1e40af",
     },
     status: "ready",
     meta: {
