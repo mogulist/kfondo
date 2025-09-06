@@ -395,7 +395,7 @@ export const events: Event[] = [
       from: "#22c55e",
       to: "#15803d",
     },
-    status: "upcoming",
+    status: "ready",
     meta: {
       title: "문경새재 그란폰도 통계 | FondoScope",
       description:
@@ -832,7 +832,7 @@ export const events: Event[] = [
       from: "#8b5cf6",
       to: "#6d28d9",
     },
-    status: "upcoming",
+    status: "ready",
     meta: {
       title: "양평 그란폰도 통계 | FondoScope",
       description:
