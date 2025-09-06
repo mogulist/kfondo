@@ -29,7 +29,7 @@ npx ts-node sptc-crawler.ts 홍천 2023 8000 8100
 
 결과는 `results_홍천_2025.csv`와 같은 형식의 파일명으로 저장됩니다.
 
-### JSON 크롤러 (sptc-json-crawler.ts)
+### SPTC JSON 크롤러 (sptc-json-crawler.ts)
 
 ```bash
 # 기본 사용법
@@ -93,6 +93,23 @@ npx ts-node sptc-json-crawler.ts 설악 2024 1 2000
 - `Event`: 참가 종목 (그란폰도, 메디오폰도)
 - `Time`: 완주 시간 (미완주 시 빈 문자열)
 - `Status`: 상태 (DNS: 미출발, DNF: 미완주, 완주 시 빈 문자열)
+
+### SmartChip 크롤러
+
+```
+npx ts-node crawlers/smartchip-crawler.ts <event_name> <event_id> <start_bib_number> <ending_bib_number>
+
+```
+
+데이터는 data/<event_name>.json 으로 생성됨
+event_id 는 해당대회의 URL에서 useData 쿼리 파람의 값
+
+예)
+
+```
+npx ts-node crawlers/smartchip-crawler.ts yangpyeong_2025 202550000156 1 999
+
+```
 
 ## 요구사항
 

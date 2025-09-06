@@ -154,18 +154,18 @@ async function scrapeRecord(usedata: string, bibNo: number): Promise<Record> {
   }
 }
 
-async function scrapeGoseong(
+async function crawlFromSmartChip(
+  eventName: string,
+  usedata: string,
   startBib: number = 1,
   endBib: number = 9999,
   period: number = 150
 ): Promise<void> {
-  const usedata = "202550000149"; // 2025 Tour de DMZ 고성그란폰도
-  const outputFile = path.join(__dirname, "뚜르드DMZ고성_2025.json");
+  const outputFile = path.join(__dirname, "../data", `${eventName}.json`);
   const records: Record[] = [];
 
-  console.log(
-    `Starting to scrape 2025 Tour de DMZ 고성그란폰도 from bib #${startBib} to #${endBib}`
-  );
+  console.log(`Event: ${eventName} (usedata=${usedata})`);
+  console.log(`Starting to crawl from bib #${startBib} to #${endBib}`);
   console.log(`Results will be saved to: ${outputFile}`);
   console.log(
     `API call period: ${period}ms (${1000 / period} calls per second)`
@@ -195,7 +195,7 @@ async function scrapeGoseong(
     await delay(delayMs);
   }
 
-  console.log(`Scraping completed for 2025 Tour de DMZ 고성그란폰도!`);
+  console.log(`Scraping completed for ${eventName}!`);
 }
 
 async function main() {
@@ -203,7 +203,12 @@ async function main() {
 
   program
     .name("smartchip-crawler")
-    .description("Crawl 2025 Tour de DMZ Goseong Granfondo results")
+    .description("Crawl SmartChip event results by usedata")
+    .argument(
+      "<eventName>",
+      "Event name for output filename (e.g., yangyang_2025)"
+    )
+    .argument("<usedata>", "SmartChip usedata value (e.g., 202550000156)")
     .argument("[startBib]", "Starting bib number", (val) => parseInt(val, 10))
     .argument("[endBib]", "Ending bib number", (val) => parseInt(val, 10))
     .option(
@@ -217,10 +222,18 @@ async function main() {
 
   const options = program.opts();
   const args = program.args;
-  const startBib = args[0] ? parseInt(args[0], 10) : 1;
-  const endBib = args[1] ? parseInt(args[1], 10) : 9999;
+  const eventName = args[0];
+  const usedata = args[1];
+  const startBib = args[2] ? parseInt(args[2], 10) : 1;
+  const endBib = args[3] ? parseInt(args[3], 10) : 9999;
 
-  await scrapeGoseong(startBib, endBib, options.period);
+  await crawlFromSmartChip(
+    eventName,
+    usedata,
+    startBib,
+    endBib,
+    options.period
+  );
 }
 
 main().catch(console.error);
