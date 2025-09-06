@@ -390,12 +390,12 @@ export const events: Event[] = [
   {
     id: "mungyeong",
     location: "문경새재",
-    years: [2023, 2024],
+    years: [2023, 2024, 2025],
     color: {
       from: "#22c55e",
       to: "#15803d",
     },
-    status: "ready",
+    status: "upcoming",
     meta: {
       title: "문경새재 그란폰도 통계 | FondoScope",
       description:
@@ -403,6 +403,27 @@ export const events: Event[] = [
       image: "/images/mungyeong-og.jpg",
     },
     yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.9.6",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 152.5,
+            elevation: 1970,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 107.6,
+            elevation: 1480,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
       2024: {
         year: 2024,
         date: "2024.9.1",
@@ -796,6 +817,38 @@ export const events: Event[] = [
             name: "메디오폰도",
             distance: 63.83,
             elevation: 870,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+  },
+  {
+    id: "yangpyeong",
+    location: "양평",
+    years: [2025],
+    color: {
+      from: "#8b5cf6",
+      to: "#6d28d9",
+    },
+    status: "upcoming",
+    meta: {
+      title: "양평 그란폰도 통계 | FondoScope",
+      description:
+        "양평 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/yangpyeong-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.9.6",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 95.59,
+            elevation: 1247,
             registered: 0,
           },
         ],
