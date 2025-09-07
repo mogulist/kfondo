@@ -118,9 +118,9 @@ async function main() {
 
   if (!location || !year || !startBibStr || !endBibStr) {
     console.error(
-      "Usage: npx ts-node sptc-crawler.ts <location> <year> <start_bib> <end_bib>"
+      "Usage: bun run sptc-crawler.ts <location> <year> <start_bib> <end_bib>"
     );
-    console.error("Example: npx ts-node sptc-crawler.ts 홍천 2025 1 9999");
+    console.error("Example: bun run sptc-crawler.ts 홍천 2025 1 9999");
     process.exit(1);
   }
 

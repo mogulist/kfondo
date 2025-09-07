@@ -2,8 +2,8 @@
 
 ## 1. 사전 준비
 
-- Node.js가 설치되어 있어야 합니다.
-- (권장) 프로젝트 루트에서 `pnpm install` 또는 `npm install`로 의존성 설치 (dayjs 등)
+- bun이 설치되어 있어야 합니다.
+- (권장) 프로젝트 루트에서 `bun install`로 의존성 설치 (dayjs 등)
 
 ## 2. 기록 데이터 변환 스크립트 실행
 
@@ -16,13 +16,13 @@
 
 ```sh
 # 프로젝트 루트에서 실행
-npx ts-node scripts/generate_sorted_msec.ts
+bun run scripts/generate_sorted_msec.ts
 ```
 
 - 또는, ts-node가 전역 설치되어 있다면:
 
 ```sh
-ts-node scripts/generate_sorted_msec.ts
+bun run scripts/generate_sorted_msec.ts
 ```
 
 - 또는, 빌드 후 node로 실행:
