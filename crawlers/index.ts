@@ -9,7 +9,7 @@ import * as path from "path";
 import { Command } from "commander";
 import { crawlSmartChip } from "./smartchip-crawler-unified";
 
-type Record = {
+type CrawlerRecord = {
   BIB_NO: number;
   Gender: string;
   Event: string;
@@ -19,11 +19,24 @@ type Record = {
   FinishTime?: string;
 };
 
+type CrawlerType = "sptc" | "smartchip";
+
+type CrawlerConfig = {
+  eventName: string;
+  eventId: string;
+  startBib: number;
+  endBib: number;
+  period: number;
+  outputFile: string;
+};
+
+type CrawlerFunction = (config: CrawlerConfig) => Promise<CrawlerRecord[]>;
+
 async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function saveRecordToFile(records: Record[], outputFile: string): void {
+function saveRecordToFile(records: CrawlerRecord[], outputFile: string): void {
   fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
 }
 
@@ -49,7 +62,7 @@ async function scrapeRecord(
   location: string,
   year: string,
   bibNo: number
-): Promise<Record> {
+): Promise<CrawlerRecord> {
   const eventInfo = getEventInfo(location, year);
   if (!eventInfo) {
     throw new Error(`Invalid location or year: ${location} ${year}`);
@@ -154,7 +167,7 @@ async function crawlSptc(
   endBib: number = 9999,
   period: number = 150,
   outputFile?: string
-): Promise<Record[]> {
+): Promise<CrawlerRecord[]> {
   // eventId를 location과 year로 파싱 (예: "seorak_2024" -> "seorak", "2024")
   const [location, year] = eventId.split("_");
 
@@ -168,7 +181,7 @@ async function crawlSptc(
     throw new Error(`Invalid location: ${location}`);
   }
 
-  const records: Record[] = [];
+  const records: CrawlerRecord[] = [];
 
   console.log(
     `Starting to scrape ${location} Granfondo ${year} from bib #${startBib} to #${endBib}`
@@ -205,6 +218,51 @@ async function crawlSptc(
 
   console.log(`Scraping completed for ${location} ${year}!`);
   return records;
+}
+
+// 크롤러 함수들을 통일된 인터페이스로 래핑
+async function crawlSptcWrapper(
+  config: CrawlerConfig
+): Promise<CrawlerRecord[]> {
+  return await crawlSptc(
+    config.eventName,
+    config.eventId,
+    config.startBib,
+    config.endBib,
+    config.period,
+    config.outputFile
+  );
+}
+
+async function crawlSmartChipWrapper(
+  config: CrawlerConfig
+): Promise<CrawlerRecord[]> {
+  return await crawlSmartChip(
+    config.eventName,
+    config.eventId,
+    config.startBib,
+    config.endBib,
+    config.period,
+    config.outputFile
+  );
+}
+
+// 팩토리 함수
+function createCrawler(crawlerType: CrawlerType): CrawlerFunction {
+  const crawlers: Record<CrawlerType, CrawlerFunction> = {
+    sptc: crawlSptcWrapper,
+    smartchip: crawlSmartChipWrapper,
+  };
+
+  if (!crawlers[crawlerType]) {
+    throw new Error(`Unsupported crawler type: ${crawlerType}`);
+  }
+
+  return crawlers[crawlerType];
+}
+
+function getSupportedCrawlerTypes(): CrawlerType[] {
+  return ["sptc", "smartchip"];
 }
 
 async function main() {
@@ -255,9 +313,12 @@ async function main() {
     process.exit(1);
   }
 
-  if (crawlerName !== "sptc" && crawlerName !== "smartchip") {
+  const supportedTypes = getSupportedCrawlerTypes();
+  if (!supportedTypes.includes(crawlerName as CrawlerType)) {
     console.error(
-      `Error: Only 'sptc' and 'smartchip' crawlers are currently supported. Got: ${crawlerName}`
+      `Error: Only ${supportedTypes.join(
+        " and "
+      )} crawlers are currently supported. Got: ${crawlerName}`
     );
     process.exit(1);
   }
@@ -273,32 +334,22 @@ async function main() {
     console.log(`Bib range: ${startBib} - ${endBib}`);
     console.log(`Period: ${options.period}ms`);
 
-    // 공통 outputFile 생성
     const outputFile = createOutputFile(eventName);
 
-    if (crawlerName === "sptc") {
-      const records = await crawlSptc(
-        eventName,
-        eventId,
-        startBib,
-        endBib,
-        options.period,
-        outputFile
-      );
-      console.log(`Total records: ${records.length}`);
-      console.log(`Output file: ${outputFile}`);
-    } else if (crawlerName === "smartchip") {
-      const records = await crawlSmartChip(
-        eventName,
-        eventId,
-        startBib,
-        endBib,
-        options.period,
-        outputFile
-      );
-      console.log(`Total records: ${records.length}`);
-      console.log(`Output file: ${outputFile}`);
-    }
+    // 팩토리 패턴으로 크롤러 생성 및 실행
+    const crawler = createCrawler(crawlerName as CrawlerType);
+    const config: CrawlerConfig = {
+      eventName,
+      eventId,
+      startBib,
+      endBib,
+      period: options.period,
+      outputFile,
+    };
+
+    const records = await crawler(config);
+    console.log(`Total records: ${records.length}`);
+    console.log(`Output file: ${outputFile}`);
 
     console.log(`\nCrawling completed successfully!`);
   } catch (error) {
