@@ -7,6 +7,7 @@ import * as cheerio from "cheerio";
 import * as fs from "fs";
 import * as path from "path";
 import { Command } from "commander";
+import { crawlSmartChip } from "./smartchip-crawler-unified";
 
 type Record = {
   BIB_NO: number;
@@ -241,9 +242,9 @@ async function main() {
     process.exit(1);
   }
 
-  if (crawlerName !== "sptc") {
+  if (crawlerName !== "sptc" && crawlerName !== "smartchip") {
     console.error(
-      `Error: Only 'sptc' crawler is currently supported. Got: ${crawlerName}`
+      `Error: Only 'sptc' and 'smartchip' crawlers are currently supported. Got: ${crawlerName}`
     );
     process.exit(1);
   }
@@ -259,7 +260,29 @@ async function main() {
     console.log(`Bib range: ${startBib} - ${endBib}`);
     console.log(`Period: ${options.period}ms`);
 
-    await crawlSptc(eventName, eventId, startBib, endBib, options.period);
+    if (crawlerName === "sptc") {
+      await crawlSptc(eventName, eventId, startBib, endBib, options.period);
+    } else if (crawlerName === "smartchip") {
+      const records = await crawlSmartChip(
+        eventName,
+        eventId,
+        startBib,
+        endBib,
+        options.period
+      );
+
+      // 결과를 preliminary 폴더에 저장
+      const outputDir = path.join(__dirname, "../data/preliminary");
+      if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+      }
+
+      const outputFile = path.join(outputDir, `${eventName}.json`);
+      fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
+
+      console.log(`Total records: ${records.length}`);
+      console.log(`Output file: ${outputFile}`);
+    }
 
     console.log(`\nCrawling completed successfully!`);
   } catch (error) {
