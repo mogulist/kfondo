@@ -5,7 +5,7 @@
 ## 설치
 
 ```bash
-yarn install
+bun install
 ```
 
 ## 사용 방법
@@ -14,17 +14,17 @@ yarn install
 
 ```bash
 # 기본 사용법
-npx ts-node sptc-crawler.ts <location> <year> <start_bib> <end_bib>
+bun run sptc-crawler.ts <location> <year> <start_bib> <end_bib>
 ```
 
 #### 예시
 
 ```bash
 # 2025년 홍천 그란폰도 1~9999번 크롤링
-npx ts-node sptc-crawler.ts 홍천 2025 1 9999
+bun run sptc-crawler.ts 홍천 2025 1 9999
 
 # 2023년 홍천 그란폰도 8000~8100번 크롤링
-npx ts-node sptc-crawler.ts 홍천 2023 8000 8100
+bun run sptc-crawler.ts 홍천 2023 8000 8100
 ```
 
 결과는 `results_홍천_2025.csv`와 같은 형식의 파일명으로 저장됩니다.
@@ -33,26 +33,26 @@ npx ts-node sptc-crawler.ts 홍천 2023 8000 8100
 
 ```bash
 # 기본 사용법
-npx ts-node sptc-json-crawler.ts <location>
+bun run sptc-json-crawler.ts <location>
 
 # 특정 연도만 크롤링
-npx ts-node sptc-json-crawler.ts <location> <year>
+bun run sptc-json-crawler.ts <location> <year>
 
 # 특정 BIB 번호 범위로 크롤링
-npx ts-node sptc-json-crawler.ts <location> <year> <start_bib> <end_bib>
+bun run sptc-json-crawler.ts <location> <year> <start_bib> <end_bib>
 ```
 
 #### 예시
 
 ```bash
 # 설악 그란폰도 모든 연도 크롤링
-npx ts-node sptc-json-crawler.ts 설악
+bun run sptc-json-crawler.ts 설악
 
 # 설악 그란폰도 2024년도만 크롤링
-npx ts-node sptc-json-crawler.ts 설악 2024
+bun run sptc-json-crawler.ts 설악 2024
 
 # 설악 그란폰도 2024년도 BIB 1번부터 2000번까지 크롤링
-npx ts-node sptc-json-crawler.ts 설악 2024 1 2000
+bun run sptc-json-crawler.ts 설악 2024 1 2000
 ```
 
 #### 지원하는 대회 장소
@@ -97,7 +97,7 @@ npx ts-node sptc-json-crawler.ts 설악 2024 1 2000
 ### SmartChip 크롤러
 
 ```
-npx ts-node crawlers/smartchip-crawler.ts <event_name> <event_id> <start_bib_number> <ending_bib_number>
+bun run crawlers/smartchip-crawler.ts <event_name> <event_id> <start_bib_number> <ending_bib_number>
 
 ```
 
@@ -107,11 +107,11 @@ event_id 는 해당대회의 URL에서 useData 쿼리 파람의 값
 예)
 
 ```
-npx ts-node crawlers/smartchip-crawler.ts yangpyeong_2025 202550000156 1 999
+bun run crawlers/smartchip-crawler.ts yangpyeong_2025 202550000156 1 999
 
 ```
 
 ## 요구사항
 
-- Node.js 및 TypeScript
-- yarn
+- bun (Node.js 런타임 포함)
+- TypeScript
