@@ -1,30 +1,21 @@
 # fondo-scope
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+한국에서 열리는 그란폰도 대회들의 통계, 기록, 순위를 확인할 수 있습니다.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/herberts-projects/v0-fondo-scope)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/1aLz0O2fP81)
+https://fondoscope.vercel.app
 
-## Overview
+### 왜 만들었니?
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+그란폰도에 참석하여 완주하면 총 몇명 중 몇번째라는 문자를 받죠. `1500명 중 500번째` 처럼요.
+올해 2025년 홍천 그란폰도와 양양 그란폰도에 참가해보니, 총 참가자 수가 신청한 사람 수인지, 그란폰도 당일에 참석하여 출발한 사람들의 수인지 궁금해졌습니다.
+조사해보니 신청한 사람들 수였네요.
 
-## Deployment
+실제로 당일 대회에 참석하여 적어도 출발한 사람들은 몇명일까? 내가 몇분 더 기록을 단축했다면 순위가 어떻게 되었을까? 이런 것도 궁금해졌습니다.
 
-Your project is live at:
+그래서, 데이터를 모아서 단순한 웹사이트를 하나 만들어봤습니다. ^^
 
-**[https://vercel.com/herberts-projects/v0-fondo-scope](https://vercel.com/herberts-projects/v0-fondo-scope)**
+### Features
 
-## Build your app
-
-Continue building your app on:
-
-**[https://v0.dev/chat/projects/1aLz0O2fP81](https://v0.dev/chat/projects/1aLz0O2fP81)**
-
-## How It Works
-
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+- 최근 몇년 동안 개최된 한국의 그란폰도 리스트
+- 그란폰도 대회의 종목(대게는 그란폰도와 메디오폰도)별 기록 분포
+- 해당 종목에서 기록을 입력하여 순위 보기
