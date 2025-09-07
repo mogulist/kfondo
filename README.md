@@ -4,6 +4,20 @@
 
 https://fondoscope.vercel.app
 
+## 🕷️ 통합 크롤러
+
+SPTC와 SmartChip 웹사이트에서 대회 기록을 크롤링하는 통합 도구가 포함되어 있습니다.
+
+```bash
+# SPTC 크롤러
+bun run crawler sptc 양양그란폰도_2025 2025042601 1 100
+
+# SmartChip 크롤러
+bun run crawler smartchip 양평그란폰도 202550000156 1 50
+```
+
+자세한 사용법은 [`crawlers/README.md`](./crawlers/README.md)를 참고하세요.
+
 ### 왜 만들었니?
 
 그란폰도에 참석하여 완주하면 총 몇명 중 몇번째라는 문자를 받죠. `1500명 중 500번째` 처럼요.
