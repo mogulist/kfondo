@@ -9,7 +9,12 @@
     "lint": "next lint",
     "test": "jest --no-coverage",
     "test:watch": "jest --watch --no-coverage",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "crawl:sptc": "bun run crawlers/sptc-crawler.ts",
+    "crawl:sptc-json": "bun run crawlers/sptc-json-crawler.ts",
+    "crawl:smartchip": "bun run crawlers/smartchip-crawler.ts",
+    "crawl:marazone": "bun run crawlers/marazone_crawler.ts",
+    "generate:sorted-msec": "bun run scripts/generate_sorted_msec.ts"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",
