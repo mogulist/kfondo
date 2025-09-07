@@ -8,29 +8,12 @@ import * as fs from "fs";
 import * as path from "path";
 import { Command } from "commander";
 import { crawlSmartChip } from "./smartchip-crawler-unified";
-
-type CrawlerRecord = {
-  BIB_NO: number;
-  Gender: string;
-  Event: string;
-  Time: string;
-  Status: string;
-  StartTime?: string;
-  FinishTime?: string;
-};
-
-type CrawlerType = "sptc" | "smartchip";
-
-type CrawlerConfig = {
-  eventName: string;
-  eventId: string;
-  startBib: number;
-  endBib: number;
-  period: number;
-  outputFile: string;
-};
-
-type CrawlerFunction = (config: CrawlerConfig) => Promise<CrawlerRecord[]>;
+import {
+  CrawlerRecord,
+  CrawlerType,
+  CrawlerConfig,
+  CrawlerFunction,
+} from "./types";
 
 async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));

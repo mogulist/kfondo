@@ -2,16 +2,7 @@ import axios from "axios";
 import * as cheerio from "cheerio";
 import * as fs from "fs";
 import { URLSearchParams } from "url";
-
-type Record = {
-  BIB_NO: number;
-  Gender: string;
-  Event: string;
-  Time: string;
-  Status: string;
-  StartTime: string;
-  FinishTime: string;
-};
+import { CrawlerRecord } from "./types";
 
 async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -22,7 +13,10 @@ function formatTime(timeStr: string): string {
   return timeStr.trim();
 }
 
-async function scrapeRecord(usedata: string, bibNo: number): Promise<Record> {
+async function scrapeRecord(
+  usedata: string,
+  bibNo: number
+): Promise<CrawlerRecord> {
   const url = "https://smartchip.co.kr/return_data_livephoto.asp";
 
   try {
@@ -155,8 +149,8 @@ export async function crawlSmartChip(
   endBib: number = 9999,
   period: number = 150,
   outputFile?: string
-): Promise<Record[]> {
-  const records: Record[] = [];
+): Promise<CrawlerRecord[]> {
+  const records: CrawlerRecord[] = [];
 
   console.log(`Event: ${eventName} (usedata=${usedata})`);
   console.log(`Starting to crawl from bib #${startBib} to #${endBib}`);
