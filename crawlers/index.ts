@@ -89,7 +89,10 @@ async function main() {
       "<event-name>",
       "Event name for output filename (e.g., 설악그란폰도)"
     )
-    .argument("<event-id>", "Event identifier (e.g., seorak_2024 for sptc)")
+    .argument(
+      "<event-id>",
+      "Event identifier (e.g., 2025090602 for sptc, or usedata for smartchip)"
+    )
     .argument(
       "[starting-bib-no]",
       "Starting bib number",

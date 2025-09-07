@@ -1,5 +1,3 @@
-import { getEventInfo, generateUrl } from "./event.utils";
-import { EVENTS } from "./event.config";
 import axios from "axios";
 import * as cheerio from "cheerio";
 import * as fs from "fs";
@@ -14,17 +12,20 @@ function formatTime(timeStr: string): string {
   return timeStr;
 }
 
+function generateUrl(eventNo: string, bibNo: number): string {
+  const bibStr = bibNo.toString().padStart(6, "0");
+  // 2025년은 https를 사용
+  const protocol = eventNo.startsWith("2025") ? "https" : "http";
+
+  // 모든 이벤트에 대해 새로운 URL 형식 사용 (E와 B 파라미터)
+  return `${protocol}://time.spct.kr/m2.php?E=${eventNo}&B=${bibStr}`;
+}
+
 async function scrapeRecord(
-  location: string,
-  year: string,
+  eventNo: string,
   bibNo: number
 ): Promise<CrawlerRecord> {
-  const eventInfo = getEventInfo(location, year);
-  if (!eventInfo) {
-    throw new Error(`Invalid location or year: ${location} ${year}`);
-  }
-
-  const url = generateUrl(eventInfo, bibNo);
+  const url = generateUrl(eventNo, bibNo);
 
   try {
     const response = await axios.get(url);
@@ -118,29 +119,16 @@ async function scrapeRecord(
 
 export async function crawlSptc(
   eventName: string,
-  eventId: string,
+  eventNo: string,
   startBib: number = 1,
   endBib: number = 9999,
   period: number = 150,
   outputFile?: string
 ): Promise<CrawlerRecord[]> {
-  // eventId를 location과 year로 파싱 (예: "seorak_2024" -> "seorak", "2024")
-  const [location, year] = eventId.split("_");
-
-  if (!location || !year) {
-    throw new Error(
-      `Invalid eventId format: ${eventId}. Expected format: location_year (e.g., seorak_2024)`
-    );
-  }
-
-  if (!EVENTS[location]) {
-    throw new Error(`Invalid location: ${location}`);
-  }
-
   const records: CrawlerRecord[] = [];
 
   console.log(
-    `Starting to scrape ${location} Granfondo ${year} from bib #${startBib} to #${endBib}`
+    `Starting to scrape ${eventName} (Event No: ${eventNo}) from bib #${startBib} to #${endBib}`
   );
   if (outputFile) {
     console.log(`Results will be saved to: ${outputFile}`);
@@ -151,7 +139,7 @@ export async function crawlSptc(
 
   for (let bibNo = startBib; bibNo <= endBib; bibNo++) {
     const apiStart = Date.now();
-    const record = await scrapeRecord(location, year, bibNo);
+    const record = await scrapeRecord(eventNo, bibNo);
 
     // 항상 콘솔에 표시
     console.log(
@@ -172,6 +160,6 @@ export async function crawlSptc(
     await delay(delayMs);
   }
 
-  console.log(`Scraping completed for ${location} ${year}!`);
+  console.log(`Scraping completed for ${eventName}!`);
   return records;
 }
