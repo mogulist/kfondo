@@ -23,6 +23,23 @@ async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function saveRecordToFile(records: Record[], outputFile: string): void {
+  fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
+}
+
+function createOutputFile(eventName: string): string {
+  const outputDir = path.join(__dirname, "../data/preliminary");
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+  const outputFile = path.join(outputDir, `${eventName}.json`);
+
+  // Create initial empty file
+  fs.writeFileSync(outputFile, JSON.stringify([], null, 2));
+
+  return outputFile;
+}
+
 function formatTime(timeStr: string): string {
   if (!timeStr) return "";
   return timeStr;
@@ -135,8 +152,9 @@ async function crawlSptc(
   eventId: string,
   startBib: number = 1,
   endBib: number = 9999,
-  period: number = 150
-): Promise<void> {
+  period: number = 150,
+  outputFile?: string
+): Promise<Record[]> {
   // eventId를 location과 year로 파싱 (예: "seorak_2024" -> "seorak", "2024")
   const [location, year] = eventId.split("_");
 
@@ -150,25 +168,17 @@ async function crawlSptc(
     throw new Error(`Invalid location: ${location}`);
   }
 
-  // 결과를 preliminary 폴더에 저장
-  const outputDir = path.join(__dirname, "../data/preliminary");
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
-
-  const outputFile = path.join(outputDir, `${eventName}.json`);
   const records: Record[] = [];
 
   console.log(
     `Starting to scrape ${location} Granfondo ${year} from bib #${startBib} to #${endBib}`
   );
-  console.log(`Results will be saved to: ${outputFile}`);
+  if (outputFile) {
+    console.log(`Results will be saved to: ${outputFile}`);
+  }
   console.log(
     `API call period: ${period}ms (${1000 / period} calls per second)`
   );
-
-  // Create initial empty file
-  fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
 
   for (let bibNo = startBib; bibNo <= endBib; bibNo++) {
     const apiStart = Date.now();
@@ -182,8 +192,10 @@ async function crawlSptc(
     // 파일에는 조건을 만족하는 레코드만 저장
     if (record.Time || record.Status) {
       records.push(record);
-      // Save to file after each record
-      fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
+      // Save to file after each record if outputFile is provided
+      if (outputFile) {
+        saveRecordToFile(records, outputFile);
+      }
     }
 
     const fetchAndWriteFileDuration = Date.now() - apiStart;
@@ -192,6 +204,7 @@ async function crawlSptc(
   }
 
   console.log(`Scraping completed for ${location} ${year}!`);
+  return records;
 }
 
 async function main() {
@@ -260,26 +273,29 @@ async function main() {
     console.log(`Bib range: ${startBib} - ${endBib}`);
     console.log(`Period: ${options.period}ms`);
 
+    // 공통 outputFile 생성
+    const outputFile = createOutputFile(eventName);
+
     if (crawlerName === "sptc") {
-      await crawlSptc(eventName, eventId, startBib, endBib, options.period);
+      const records = await crawlSptc(
+        eventName,
+        eventId,
+        startBib,
+        endBib,
+        options.period,
+        outputFile
+      );
+      console.log(`Total records: ${records.length}`);
+      console.log(`Output file: ${outputFile}`);
     } else if (crawlerName === "smartchip") {
       const records = await crawlSmartChip(
         eventName,
         eventId,
         startBib,
         endBib,
-        options.period
+        options.period,
+        outputFile
       );
-
-      // 결과를 preliminary 폴더에 저장
-      const outputDir = path.join(__dirname, "../data/preliminary");
-      if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
-      }
-
-      const outputFile = path.join(outputDir, `${eventName}.json`);
-      fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
-
       console.log(`Total records: ${records.length}`);
       console.log(`Output file: ${outputFile}`);
     }

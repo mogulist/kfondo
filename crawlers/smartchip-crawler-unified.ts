@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
+import * as fs from "fs";
 import { URLSearchParams } from "url";
 
 type Record = {
@@ -152,12 +153,16 @@ export async function crawlSmartChip(
   usedata: string,
   startBib: number = 1,
   endBib: number = 9999,
-  period: number = 150
+  period: number = 150,
+  outputFile?: string
 ): Promise<Record[]> {
   const records: Record[] = [];
 
   console.log(`Event: ${eventName} (usedata=${usedata})`);
   console.log(`Starting to crawl from bib #${startBib} to #${endBib}`);
+  if (outputFile) {
+    console.log(`Results will be saved to: ${outputFile}`);
+  }
   console.log(
     `API call period: ${period}ms (${1000 / period} calls per second)`
   );
@@ -174,6 +179,10 @@ export async function crawlSmartChip(
     // 파일에는 조건을 만족하는 레코드만 저장
     if (record.Time || record.Status) {
       records.push(record);
+      // Save to file after each record if outputFile is provided
+      if (outputFile) {
+        fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
+      }
     }
 
     const fetchAndWriteFileDuration = Date.now() - apiStart;
