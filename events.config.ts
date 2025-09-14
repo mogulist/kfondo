@@ -856,4 +856,43 @@ export const events: Event[] = [
       },
     },
   },
+  {
+    id: "gongju",
+    location: "공주백제",
+    years: [2025],
+    color: {
+      from: "#dc2626",
+      to: "#991b1b",
+    },
+    status: "upcoming",
+    meta: {
+      title: "공주백제   그란폰도 통계 | FondoScope",
+      description:
+        "공주백제 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/gongju-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.9.14",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 135,
+            elevation: 1500,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 79,
+            elevation: 616,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+  },
 ];
