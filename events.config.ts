@@ -864,7 +864,7 @@ export const events: Event[] = [
       from: "#dc2626",
       to: "#991b1b",
     },
-    status: "upcoming",
+    status: "ready",
     meta: {
       title: "공주백제   그란폰도 통계 | FondoScope",
       description:
