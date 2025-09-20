@@ -6,7 +6,7 @@ import * as path from "path";
 import { Command } from "commander";
 
 type Record = {
-  BIB_NO: number;
+  BIB_NO: string;
   Gender: string;
   Event: string;
   Time: string;
@@ -85,7 +85,7 @@ async function delay(ms: number): Promise<void> {
 export async function scrapeRecord(
   location: string,
   year: string,
-  bibNo: number
+  bibNo: string
 ): Promise<Record> {
   const url = "http://54.180.176.16/api/record-info";
   const headers = {
@@ -106,7 +106,7 @@ export async function scrapeRecord(
       url,
       {
         comp_title: `${location}그란폰도`,
-        bibNum: bibNo.toString(),
+        bibNum: bibNo,
         name: "",
       },
       { headers }
@@ -135,7 +135,7 @@ export async function scrapeRecord(
     }
 
     return {
-      BIB_NO: parseInt(record.Bib),
+      BIB_NO: record.Bib,
       Gender: record.Sex,
       Event: record.Division,
       Time: record.Time,
@@ -185,8 +185,8 @@ export async function scrapeRecord(
 async function scrapeYear(
   location: string,
   year: string,
-  startBib: number = 1,
-  endBib: number = 9999,
+  startBib: string = "A000",
+  endBib: string = "Z999",
   period: number = 200 // 1초에 5번 호출 = 200ms 간격
 ): Promise<void> {
   const outputFile = path.join(__dirname, `${location}_${year}.json`);
@@ -203,25 +203,42 @@ async function scrapeYear(
   // Create initial empty file
   fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
 
-  for (let bibNo = startBib; bibNo <= endBib; bibNo++) {
-    const apiStart = Date.now();
-    const record = await scrapeRecord(location, year, bibNo);
+  // A000부터 Z999까지 모든 조합 처리
+  const startLetter = startBib.charAt(0);
+  const endLetter = endBib.charAt(0);
+  const startNum = parseInt(startBib.substring(1));
+  const endNum = parseInt(endBib.substring(1));
 
-    // 항상 콘솔에 표시
-    console.log(
-      `${record.BIB_NO},${record.Gender},${record.Event},${record.Time},${record.Status}`
-    );
+  for (
+    let letterCode = startLetter.charCodeAt(0);
+    letterCode <= endLetter.charCodeAt(0);
+    letterCode++
+  ) {
+    const letter = String.fromCharCode(letterCode);
+    const numStart = letterCode === startLetter.charCodeAt(0) ? startNum : 0;
+    const numEnd = letterCode === endLetter.charCodeAt(0) ? endNum : 999;
 
-    // 파일에는 조건을 만족하는 레코드만 저장
-    if (record.Time || record.Status) {
-      records.push(record);
-      // Save to file after each record
-      fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
+    for (let bibNum = numStart; bibNum <= numEnd; bibNum++) {
+      const bibNo = `${letter}${bibNum.toString().padStart(3, "0")}`;
+      const apiStart = Date.now();
+      const record = await scrapeRecord(location, year, bibNo);
+
+      // 항상 콘솔에 표시
+      console.log(
+        `${record.BIB_NO},${record.Gender},${record.Event},${record.Time},${record.Status}`
+      );
+
+      // 파일에는 조건을 만족하는 레코드만 저장
+      if (record.Time || record.Status) {
+        records.push(record);
+        // Save to file after each record
+        fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
+      }
+
+      const fetchAndWriteFileDuration = Date.now() - apiStart;
+      const delayMs = Math.max(0, period - fetchAndWriteFileDuration);
+      await delay(delayMs);
     }
-
-    const fetchAndWriteFileDuration = Date.now() - apiStart;
-    const delayMs = Math.max(0, period - fetchAndWriteFileDuration);
-    await delay(delayMs);
   }
 
   console.log(`Scraping completed for ${location} ${year}!`);
@@ -235,8 +252,8 @@ async function main() {
     .description("Crawl Marazone Granfondo results")
     .argument("<location>", "Location of the event (e.g., 트렉가평자라섬)")
     .argument("[year]", "Year of the event (e.g., 2024)")
-    .argument("[startBib]", "Starting bib number", (val) => parseInt(val, 10))
-    .argument("[endBib]", "Ending bib number", (val) => parseInt(val, 10))
+    .argument("[startBib]", "Starting bib number (e.g., A500)")
+    .argument("[endBib]", "Ending bib number (e.g., A600)")
     .option(
       "-p, --period <number>",
       "API call period in milliseconds (default: 200)",
@@ -247,11 +264,11 @@ async function main() {
   program.parse();
 
   const options = program.opts();
-  const [location, year, startBib = 1, endBib = 9999] = program.args as [
+  const [location, year, startBib = "A000", endBib = "Z999"] = program.args as [
     string,
     string | undefined,
-    number,
-    number
+    string,
+    string
   ];
 
   if (year) {
