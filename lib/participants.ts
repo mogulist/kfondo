@@ -46,7 +46,8 @@ export function calculateParticipants(
   return courseIdsNames.reduce((acc: Record<string, number>, curr) => {
     const count = participants.filter(
       (participant) =>
-        participant.Event === curr.id || participant.Event === curr.name
+        (participant.Event === curr.id || participant.Event === curr.name) &&
+        participant.Status !== "DNS"
     ).length;
     acc[curr.id] = count;
     return acc;
@@ -90,7 +91,10 @@ export function calculateParticipantsFor(
   let participantsCount = 0;
 
   participants.forEach((participant) => {
-    if (participant.Event === course.id || participant.Event === course.name) {
+    if (
+      (participant.Event === course.id || participant.Event === course.name) &&
+      participant.Status !== "DNS"
+    ) {
       participantsCount++;
     }
   });

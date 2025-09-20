@@ -927,4 +927,43 @@ export const events: Event[] = [
       },
     },
   },
+  {
+    id: "chungju",
+    location: "충주",
+    years: [2025],
+    color: {
+      from: "#0ea5e9",
+      to: "#0369a1",
+    },
+    status: "ready",
+    meta: {
+      title: "충주 그란폰도 통계 | FondoScope",
+      description:
+        "충주 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/chungju-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.9.20",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 119,
+            elevation: 1605,
+            registered: 1356,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 67,
+            elevation: 870,
+            registered: 673,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+  },
 ];
