@@ -895,4 +895,36 @@ export const events: Event[] = [
       },
     },
   },
+  {
+    id: "wanju",
+    location: "완주만경강",
+    years: [2025],
+    color: {
+      from: "#f97316",
+      to: "#ea580c",
+    },
+    status: "ready",
+    meta: {
+      title: "완주만경강 메디오폰도 통계 | FondoScope",
+      description:
+        "완주만경강 메디오폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/wanju-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.9.20",
+        courses: [
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 93.5,
+            elevation: 1071,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+  },
 ];
