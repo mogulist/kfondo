@@ -966,4 +966,43 @@ export const events: Event[] = [
       },
     },
   },
+  {
+    id: "taebaek",
+    location: "태백",
+    years: [2025],
+    color: {
+      from: "#10b981",
+      to: "#047857",
+    },
+    status: "upcoming",
+    meta: {
+      title: "어라운드 태백 그란폰도 통계 | FondoScope",
+      description:
+        "어라운드 태백 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/taebaek-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.9.27",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 100,
+            elevation: 1470,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 72,
+            elevation: 1250,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+  },
 ];
