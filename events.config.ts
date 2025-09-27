@@ -968,13 +968,13 @@ export const events: Event[] = [
   },
   {
     id: "taebaek",
-    location: "태백",
+    location: "어라운드 태백",
     years: [2025],
     color: {
       from: "#10b981",
       to: "#047857",
     },
-    status: "upcoming",
+    status: "ready",
     meta: {
       title: "어라운드 태백 그란폰도 통계 | FondoScope",
       description:
