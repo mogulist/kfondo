@@ -981,6 +981,8 @@ export const events: Event[] = [
         "어라운드 태백 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/taebaek-og.jpg",
     },
+    comment:
+      "14:30에 수집한 기록입니다. 21시에 다시 수집하여 업데이트 예정입니다.",
     yearDetails: {
       2025: {
         year: 2025,
