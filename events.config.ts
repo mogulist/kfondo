@@ -1005,4 +1005,43 @@ export const events: Event[] = [
       },
     },
   },
+  {
+    id: "sangju",
+    location: "상주",
+    years: [2025],
+    color: {
+      from: "#f59e0b",
+      to: "#d97706",
+    },
+    status: "ready",
+    meta: {
+      title: "상주 그란폰도 통계 | FondoScope",
+      description:
+        "상주 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/sangju-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.10.11",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 101.5,
+            elevation: 1245,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 61.1,
+            elevation: 663,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 2207,
+      },
+    },
+  },
 ];
