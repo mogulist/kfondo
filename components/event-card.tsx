@@ -14,6 +14,7 @@ type EventCardProps = {
 
 export function EventCard({ event }: EventCardProps) {
   const isReady = event.status === "ready";
+  const isUpcoming = event.status === "upcoming";
 
   // 최신 연도 정보 추출
   const years = event.years;
@@ -51,6 +52,8 @@ export function EventCard({ event }: EventCardProps) {
                   ? event.color
                     ? `linear-gradient(to bottom right, ${event.color.from}, ${event.color.to})`
                     : undefined
+                  : isUpcoming && event.color
+                  ? `linear-gradient(to bottom right, ${event.color.from}80, ${event.color.to}80)`
                   : "linear-gradient(to bottom right, #94a3b8, #64748b)",
               }}
             >
