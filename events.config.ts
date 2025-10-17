@@ -620,7 +620,7 @@ export const events: Event[] = [
       from: "#8b5cf6",
       to: "#6d28d9",
     },
-    status: "upcoming",
+    status: "ready",
     meta: {
       title: "화천 DMZ 랠리 통계 | FondoScope",
       description:
@@ -1041,6 +1041,86 @@ export const events: Event[] = [
           },
         ],
         totalRegistered: 2207,
+      },
+    },
+  },
+  // 부여 굿뜨래 그란폰도
+  {
+    id: "buyeo",
+    location: "부여 굿뜨래",
+    years: [2025],
+    color: {
+      from: "#8b5cf6",
+      to: "#6d28d9",
+    },
+    status: "upcoming",
+    meta: {
+      title: "부여 굿뜨래 그란폰도 통계 | FondoScope",
+      description:
+        "부여 굿뜨래 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/buyeo-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.10.17",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 105.6,
+            elevation: 1225.4,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 54.8,
+            elevation: 649.3,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+  },
+  // 비앙키 춘천 그란폰도
+  {
+    id: "bianchi-chuncheon",
+    location: "비앙키 춘천",
+    years: [2025],
+    color: {
+      from: "#54b9b1",
+      to: "#3a8a84",
+    },
+    status: "upcoming",
+    meta: {
+      title: "비앙키 춘천 그란폰도 통계 | FondoScope",
+      description:
+        "비앙키 춘천 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/bianchi-chuncheon-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.10.18",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 122.91,
+            elevation: 2788,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 81.68,
+            elevation: 1202,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
       },
     },
   },
