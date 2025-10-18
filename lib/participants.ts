@@ -160,9 +160,14 @@ export const getEventParticipantTrend = (
       const yearlyData: EventParticipantTrendForYear[] = [];
 
       recentlyFirstSortedYears.forEach((year) => {
-        const courseData = event.yearDetails[year].courses.find(
-          (c) => c.id === course.id
-        );
+        const yearDetail = event.yearDetails[year];
+
+        // preparing 상태인 연도는 데이터가 없으므로 건너뛰기
+        if (yearDetail.status === "preparing") {
+          return;
+        }
+
+        const courseData = yearDetail.courses.find((c) => c.id === course.id);
         const registered = courseData?.registered ?? 0;
         const participants = calculateParticipantsFor(event.id, course, year);
         const dnf = calculateDNFsFor(event.id, course, year);

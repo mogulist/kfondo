@@ -1064,6 +1064,7 @@ export const events: Event[] = [
       2023: {
         year: 2023,
         date: "2023.10.21",
+        status: "completed",
         courses: [
           {
             id: "granfondo",
@@ -1085,6 +1086,7 @@ export const events: Event[] = [
       2024: {
         year: 2024,
         date: "2024.10.12",
+        status: "completed",
         courses: [
           {
             id: "granfondo",
@@ -1106,6 +1108,7 @@ export const events: Event[] = [
       2025: {
         year: 2025,
         date: "2025.10.17",
+        status: "preparing",
         courses: [
           {
             id: "granfondo",
@@ -1146,6 +1149,7 @@ export const events: Event[] = [
       2025: {
         year: 2025,
         date: "2025.10.18",
+        status: "upcoming",
         courses: [
           {
             id: "granfondo",

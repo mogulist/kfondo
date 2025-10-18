@@ -23,9 +23,27 @@ export function EventCard({ event }: EventCardProps) {
 
   const hasLatestEventInfo = !!latestYearDetail;
 
+  // upcoming 또는 preparing 상태인 최신 연도 찾기
+  const latestUpcomingYear = event.years
+    .sort((a, b) => b - a) // 최신 연도부터 정렬
+    .find(
+      (year) =>
+        event.yearDetails[year]?.status === "upcoming" ||
+        event.yearDetails[year]?.status === "preparing"
+    );
+
+  // upcoming 상태인 연도가 있는지 확인 (클릭 불가능한 상태)
+  const hasUpcomingOnly =
+    event.years.some(
+      (year) => event.yearDetails[year]?.status === "upcoming"
+    ) &&
+    !event.years.some(
+      (year) => event.yearDetails[year]?.status === "preparing"
+    );
+
   // 상세 페이지로 이동 가능한지 여부에 따라 다른 컴포넌트 사용
   const CardWrapper = ({ children }: { children: React.ReactNode }) => {
-    if (isReady) {
+    if (isReady && !hasUpcomingOnly) {
       return <Link href={`/${event.id}`}>{children}</Link>;
     }
     return <div>{children}</div>;
@@ -39,7 +57,7 @@ export function EventCard({ event }: EventCardProps) {
       >
         <Card
           className={`overflow-hidden h-auto ${
-            isReady ? "cursor-pointer" : ""
+            isReady && !hasUpcomingOnly ? "cursor-pointer" : ""
           }`}
         >
           <CardContent className="p-0 h-full">
@@ -48,16 +66,15 @@ export function EventCard({ event }: EventCardProps) {
                 hasLatestEventInfo ? "pb-4" : ""
               } relative`}
               style={{
-                backgroundImage: isReady
-                  ? event.color
+                backgroundImage:
+                  hasUpcomingOnly && event.color
+                    ? `linear-gradient(to bottom right, ${event.color.from}80, ${event.color.to}80)`
+                    : event.color
                     ? `linear-gradient(to bottom right, ${event.color.from}, ${event.color.to})`
-                    : undefined
-                  : isUpcoming && event.color
-                  ? `linear-gradient(to bottom right, ${event.color.from}80, ${event.color.to}80)`
-                  : "linear-gradient(to bottom right, #94a3b8, #64748b)",
+                    : "linear-gradient(to bottom right, #94a3b8, #64748b)",
               }}
             >
-              {!isReady && (
+              {latestUpcomingYear && (
                 <div className="absolute top-3 right-3 z-10">
                   <Badge
                     variant="outline"
