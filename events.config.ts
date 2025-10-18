@@ -1048,12 +1048,12 @@ export const events: Event[] = [
   {
     id: "buyeo",
     location: "부여 굿뜨래",
-    years: [2025],
+    years: [2023, 2024, 2025],
     color: {
       from: "#8b5cf6",
       to: "#6d28d9",
     },
-    status: "upcoming",
+    status: "ready",
     meta: {
       title: "부여 굿뜨래 그란폰도 통계 | FondoScope",
       description:
@@ -1061,6 +1061,48 @@ export const events: Event[] = [
       image: "/images/buyeo-og.jpg",
     },
     yearDetails: {
+      2023: {
+        year: 2023,
+        date: "2023.10.21",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 105.6,
+            elevation: 1225.4,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 54.8,
+            elevation: 649.3,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 1142,
+      },
+      2024: {
+        year: 2024,
+        date: "2024.10.12",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 105.6,
+            elevation: 1225.4,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 54.8,
+            elevation: 649.3,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 1365,
+      },
       2025: {
         year: 2025,
         date: "2025.10.17",
