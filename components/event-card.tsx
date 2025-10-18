@@ -39,7 +39,8 @@ export function EventCard({ event }: EventCardProps) {
     ) &&
     !event.years.some(
       (year) => event.yearDetails[year]?.status === "preparing"
-    );
+    ) &&
+    !event.years.some((year) => event.yearDetails[year]?.status === "ready");
 
   // 상세 페이지로 이동 가능한지 여부에 따라 다른 컴포넌트 사용
   const CardWrapper = ({ children }: { children: React.ReactNode }) => {

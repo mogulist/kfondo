@@ -1131,14 +1131,14 @@ export const events: Event[] = [
   },
   // 비앙키 춘천 그란폰도
   {
-    id: "bianchi-chuncheon",
+    id: "chuncheon",
     location: "비앙키 춘천",
-    years: [2025],
+    years: [2024, 2025],
     color: {
       from: "#54b9b1",
       to: "#3a8a84",
     },
-    status: "upcoming",
+    status: "ready",
     meta: {
       title: "비앙키 춘천 그란폰도 통계 | FondoScope",
       description:
@@ -1146,10 +1146,31 @@ export const events: Event[] = [
       image: "/images/bianchi-chuncheon-og.jpg",
     },
     yearDetails: {
+      2024: {
+        year: 2024,
+        date: "2024.10.20",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 122.91,
+            elevation: 2788,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 81.68,
+            elevation: 1202,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 1839,
+      },
       2025: {
         year: 2025,
         date: "2025.10.18",
-        status: "upcoming",
+        status: "preparing",
         courses: [
           {
             id: "granfondo",
