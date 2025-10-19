@@ -1145,6 +1145,8 @@ export const events: Event[] = [
         "비앙키 춘천 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/bianchi-chuncheon-og.jpg",
     },
+    comment:
+      "2025년 데이터는 아직 검증 중입니다. DNF 분류 기준은 start 기록은 있으나 이후 Finish 기록이나 체크포인트 기록이 없는 경우입니다",
     yearDetails: {
       2024: {
         year: 2024,
@@ -1169,8 +1171,7 @@ export const events: Event[] = [
       },
       2025: {
         year: 2025,
-        date: "2025.10.18",
-        status: "preparing",
+        date: "2025.10.19",
         courses: [
           {
             id: "granfondo",
