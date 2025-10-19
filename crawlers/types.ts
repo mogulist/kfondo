@@ -6,6 +6,7 @@ export type CrawlerRecord = {
   Status: string;
   StartTime?: string;
   FinishTime?: string;
+  [key: string]: any; // 동적 체크포인트 필드
 };
 
 export type CrawlerType = "sptc" | "smartchip";
