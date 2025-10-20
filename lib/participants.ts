@@ -88,11 +88,17 @@ export function calculateParticipantsFor(
   year: number
 ): number {
   const participants = readParticipants(eventId, year);
+  const event = events.find((e) => e.id === eventId) as Event | undefined;
+  const yearDetail = event ? event.yearDetails[year] : undefined;
+  const courseForYear = yearDetail?.courses.find((c) => c.id === course.id);
+  const courseNameForYear = courseForYear?.name ?? course.name;
   let participantsCount = 0;
 
   participants.forEach((participant) => {
     if (
-      (participant.Event === course.id || participant.Event === course.name) &&
+      (participant.Event === course.id ||
+        participant.Event === courseNameForYear ||
+        participant.Event === course.name) &&
       participant.Status !== "DNS"
     ) {
       participantsCount++;
@@ -108,11 +114,17 @@ export function calculateDNFsFor(
   year: number
 ): number {
   const participants = readParticipants(eventId, year);
+  const event = events.find((e) => e.id === eventId) as Event | undefined;
+  const yearDetail = event ? event.yearDetails[year] : undefined;
+  const courseForYear = yearDetail?.courses.find((c) => c.id === course.id);
+  const courseNameForYear = courseForYear?.name ?? course.name;
   let dnfCount = 0;
 
   participants.forEach((participant) => {
     if (
-      (participant.Event === course.id || participant.Event === course.name) &&
+      (participant.Event === course.id ||
+        participant.Event === courseNameForYear ||
+        participant.Event === course.name) &&
       participant.Status === "DNF"
     ) {
       dnfCount++;
@@ -146,11 +158,20 @@ type BaseCourse = {
 export const getEventParticipantTrend = (
   event: Event
 ): EventParticipantTrends => {
-  const recentYear = event.years[event.years.length - 1];
-  const recentYearDetail = event.yearDetails[recentYear];
-  const baseCourses = recentYearDetail.courses.map((course) => ({
-    id: course.id,
-    name: course.name,
+  // 모든 연도의 코스 id 합집합으로 시리즈 기준을 만든다
+  const idToName: Record<string, string> = {};
+  event.years.forEach((y) => {
+    const yd = event.yearDetails[y];
+    yd.courses.forEach((c) => {
+      // 표준 코스명은 고정, 그 외는 최초 등장 name을 사용
+      if (c.id === "granfondo") idToName[c.id] = "그란폰도";
+      else if (c.id === "mediofondo") idToName[c.id] = "메디오폰도";
+      else if (!(c.id in idToName)) idToName[c.id] = c.name;
+    });
+  });
+  const baseCourses = Object.entries(idToName).map(([id, name]) => ({
+    id,
+    name,
   }));
 
   const recentlyFirstSortedYears = event.years.sort((a, b) => b - a);

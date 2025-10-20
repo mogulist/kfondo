@@ -1111,11 +1111,11 @@ export const events: Event[] = [
         status: "completed",
         courses: [
           {
-            id: "rainfondo",
+            id: "mediofondo",
             name: "우중폰도",
             distance: 0,
             elevation: 0,
-            registered: 0,
+            registered: 1062,
           },
         ],
         totalRegistered: 0,
