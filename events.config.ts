@@ -1107,21 +1107,14 @@ export const events: Event[] = [
       },
       2025: {
         year: 2025,
-        date: "2025.10.17",
-        status: "preparing",
+        date: "2025.10.18",
+        status: "completed",
         courses: [
           {
-            id: "granfondo",
-            name: "그란폰도",
-            distance: 105.6,
-            elevation: 1225.4,
-            registered: 0,
-          },
-          {
-            id: "mediofondo",
-            name: "메디오폰도",
-            distance: 54.8,
-            elevation: 649.3,
+            id: "rainfondo",
+            name: "우중폰도",
+            distance: 0,
+            elevation: 0,
             registered: 0,
           },
         ],
