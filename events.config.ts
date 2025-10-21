@@ -1178,7 +1178,7 @@ export const events: Event[] = [
       image: "/images/bianchi-chuncheon-og.jpg",
     },
     comment:
-      "2025년 데이터는 아직 검증 중입니다. DNF 분류 기준은 start 기록은 있으나 이후 Finish 기록이나 체크포인트 기록이 없는 경우입니다",
+      "2025년 데이터는 10월21일 공개된 엑셀파일의 내용을 토대로 업데이트하였습니다.",
     yearDetails: {
       2024: {
         year: 2024,
