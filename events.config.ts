@@ -1224,4 +1224,43 @@ export const events: Event[] = [
       },
     },
   },
+  {
+    id: "yeosu",
+    location: "섬섬 여수",
+    years: [2025],
+    color: {
+      from: "#f97316",
+      to: "#c2410c",
+    },
+    status: "ready",
+    meta: {
+      title: "섬섬 여수 그란폰도 통계 | FondoScope",
+      description:
+        "섬섬 여수 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요.",
+      image: "/images/yeosu-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.10.25",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 113,
+            elevation: 1650,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 93,
+            elevation: 1500,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+  },
 ];
