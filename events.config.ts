@@ -1248,7 +1248,7 @@ export const events: Event[] = [
             id: "granfondo",
             name: "그란폰도",
             distance: 97,
-            elevation: 0,
+            elevation: 1701,
             registered: 2276,
           },
         ],
