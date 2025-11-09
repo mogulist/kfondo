@@ -111,6 +111,29 @@ bun run crawlers/smartchip-crawler.ts yangpyeong_2025 202550000156 1 999
 
 ```
 
+### Marazone 크롤러
+
+```
+bun run crawlers/marazone_crawler.ts <location> <year> <start_bib> <end_bib> [options]
+```
+
+- `location`: 대회명에서 `그란폰도`를 제외한 문구 (예: `2025 스캇통영`)
+- `year`: 연도 (예: `2025`)
+- `start_bib`, `end_bib`: 시작/종료 Bib (예: `A000`, `C9999`). 알파벳별로 자릿수가 달라도 한 번에 처리됩니다.
+- 옵션
+  - `-p, --period`: 호출 주기(ms), 기본값 200
+  - `-o, --output`: 결과 저장 경로 (기본값: `crawlers/<location>_<year>.json`)
+
+#### 예시 (통영 그란폰도 2025)
+
+```
+# 전체 Bib (A000~C9999) 수집, 결과는 data/tongyeong_2025.json 으로 저장
+bun run crawlers/marazone_crawler.ts "2025 스캇통영" 2025 A000 C9999 --output data/tongyeong_2025.json
+```
+
+- 기존에 동일 파일이 있으면 이어서 수집합니다.
+- `A` 그룹은 3자리, `B/C` 그룹은 4자리 Bib을 사용합니다.
+
 ## 요구사항
 
 - bun (Node.js 런타임 포함)

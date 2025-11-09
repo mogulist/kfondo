@@ -1225,6 +1225,38 @@ export const events: Event[] = [
     },
   },
   {
+    id: "tongyeong",
+    location: "통영",
+    years: [2025],
+    color: {
+      from: "#fb7185",
+      to: "#be123c",
+    },
+    status: "ready",
+    meta: {
+      title: "통영 그란폰도 통계 | FondoScope",
+      description:
+        "통영 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/tongyeong-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.11.8",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 97,
+            elevation: 0,
+            registered: 2276,
+          },
+        ],
+        totalRegistered: 2276,
+      },
+    },
+  },
+  {
     id: "yeosu",
     location: "섬섬 여수",
     years: [2025],

@@ -182,32 +182,103 @@ export async function scrapeRecord(
   }
 }
 
+function resolveOutputFile(
+  location: string,
+  year: string,
+  outputPath?: string
+): string {
+  if (outputPath) {
+    return path.isAbsolute(outputPath)
+      ? outputPath
+      : path.join(process.cwd(), outputPath);
+  }
+
+  return path.join(__dirname, `${location}_${year}.json`);
+}
+
+function getDigitsPadding(
+  letter: string,
+  startLetter: string,
+  endLetter: string,
+  startDigits: number,
+  endDigits: number,
+  maxDigits: number
+): number {
+  if (startLetter === endLetter) {
+    return Math.max(startDigits, endDigits);
+  }
+
+  if (letter === startLetter) {
+    return startDigits;
+  }
+
+  if (letter === endLetter) {
+    return endDigits;
+  }
+
+  return maxDigits;
+}
+
+function getMaxNumber(digits: number): number {
+  if (digits <= 0) {
+    return 0;
+  }
+
+  return parseInt("9".repeat(digits), 10);
+}
+
 async function scrapeYear(
   location: string,
   year: string,
   startBib: string = "A000",
   endBib: string = "Z999",
-  period: number = 200 // 1초에 5번 호출 = 200ms 간격
+  period: number = 200, // 1초에 5번 호출 = 200ms 간격
+  outputPath?: string
 ): Promise<void> {
-  const outputFile = path.join(__dirname, `${location}_${year}.json`);
-  const records: Record[] = [];
+  const outputFile = resolveOutputFile(location, year, outputPath);
+  let records: Record[] = [];
+
+  fs.mkdirSync(path.dirname(outputFile), { recursive: true });
+
+  if (fs.existsSync(outputFile)) {
+    try {
+      const content = fs.readFileSync(outputFile, "utf-8");
+      if (content) {
+        records = JSON.parse(content) as Record[];
+      }
+    } catch (error) {
+      console.warn(
+        `Failed to load existing records from ${outputFile}. Starting fresh.`,
+        error
+      );
+      records = [];
+    }
+  } else {
+    fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
+  }
+
+  const processedBibs = new Set(records.map((record) => record.BIB_NO));
 
   console.log(
     `Starting to scrape ${location} Granfondo ${year} from bib #${startBib} to #${endBib}`
   );
   console.log(`Results will be saved to: ${outputFile}`);
   console.log(
+    `Already processed records: ${processedBibs.size} (will be skipped)`
+  );
+  console.log(
     `API call period: ${period}ms (${1000 / period} calls per second)`
   );
 
-  // Create initial empty file
-  fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
-
-  // A000부터 Z999까지 모든 조합 처리
   const startLetter = startBib.charAt(0);
   const endLetter = endBib.charAt(0);
-  const startNum = parseInt(startBib.substring(1));
-  const endNum = parseInt(endBib.substring(1));
+  const startNumberString = startBib.substring(1);
+  const endNumberString = endBib.substring(1);
+  const startNum = parseInt(startNumberString, 10);
+  const endNum = parseInt(endNumberString, 10);
+  const startDigits = startNumberString.length;
+  const endDigits = endNumberString.length;
+  const maxDigits = Math.max(startDigits, endDigits, 3);
 
   for (
     let letterCode = startLetter.charCodeAt(0);
@@ -215,11 +286,26 @@ async function scrapeYear(
     letterCode++
   ) {
     const letter = String.fromCharCode(letterCode);
-    const numStart = letterCode === startLetter.charCodeAt(0) ? startNum : 0;
-    const numEnd = letterCode === endLetter.charCodeAt(0) ? endNum : 999;
+    const isStartLetter = letter === startLetter;
+    const isEndLetter = letter === endLetter;
+    const padding = getDigitsPadding(
+      letter,
+      startLetter,
+      endLetter,
+      startDigits,
+      endDigits,
+      maxDigits
+    );
+    const numStart = isStartLetter ? startNum : 0;
+    const numEnd = isEndLetter ? endNum : getMaxNumber(padding);
 
     for (let bibNum = numStart; bibNum <= numEnd; bibNum++) {
-      const bibNo = `${letter}${bibNum.toString().padStart(3, "0")}`;
+      const bibNo = `${letter}${bibNum.toString().padStart(padding, "0")}`;
+
+      if (processedBibs.has(bibNo)) {
+        continue;
+      }
+
       const apiStart = Date.now();
       const record = await scrapeRecord(location, year, bibNo);
 
@@ -231,7 +317,7 @@ async function scrapeYear(
       // 파일에는 조건을 만족하는 레코드만 저장
       if (record.Time || record.Status) {
         records.push(record);
-        // Save to file after each record
+        processedBibs.add(bibNo);
         fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
       }
 
@@ -259,6 +345,10 @@ async function main() {
       "API call period in milliseconds (default: 200)",
       (val) => parseInt(val, 10),
       200
+    )
+    .option(
+      "-o, --output <path>",
+      "Output file path (default: crawlers directory with <location>_<year>.json)"
     );
 
   program.parse();
@@ -273,14 +363,35 @@ async function main() {
 
   if (year) {
     // If year is specified, scrape only that year
-    await scrapeYear(location, year, startBib, endBib, options.period);
+    await scrapeYear(
+      location,
+      year,
+      startBib,
+      endBib,
+      options.period,
+      options.output
+    );
   } else {
     // If no year is specified, scrape current year
     const currentYear = new Date().getFullYear().toString();
-    await scrapeYear(location, currentYear, startBib, endBib, options.period);
+    await scrapeYear(
+      location,
+      currentYear,
+      startBib,
+      endBib,
+      options.period,
+      options.output
+    );
   }
 }
 
-if (require.main === module) {
+const isDirectExecution =
+  (typeof import.meta !== "undefined" &&
+    (import.meta as { main?: boolean }).main === true) ||
+  (typeof module !== "undefined" &&
+    typeof require !== "undefined" &&
+    require.main === module);
+
+if (isDirectExecution) {
   main().catch(console.error);
 }
