@@ -15,6 +15,7 @@ export type Event = {
   comment?: string;
   // 연도별 상세 정보
   yearDetails: Record<number, EventYearDetail>;
+  dataSource?: "Marazone" | "SPTC" | "스마트칩";
 };
 
 export type GranMedio = {
