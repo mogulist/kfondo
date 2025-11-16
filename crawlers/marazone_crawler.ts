@@ -105,7 +105,7 @@ export async function scrapeRecord(
     const response = await axios.post(
       url,
       {
-        comp_title: `${location}그란폰도`,
+        comp_title: location,
         bibNum: bibNo,
         name: "",
       },
@@ -301,6 +301,10 @@ async function scrapeYear(
 
     for (let bibNum = numStart; bibNum <= numEnd; bibNum++) {
       const bibNo = `${letter}${bibNum.toString().padStart(padding, "0")}`;
+
+      console.log(
+        `Processing bib ${bibNo} for ${location} ${year} (padding: ${padding})`
+      );
 
       if (processedBibs.has(bibNo)) {
         continue;

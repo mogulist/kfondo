@@ -1295,4 +1295,36 @@ export const events: Event[] = [
       },
     },
   },
+  {
+    id: "daegu",
+    location: "대구 그란페스타",
+    years: [2025],
+    color: {
+      from: "#22c55e",
+      to: "#15803d",
+    },
+    status: "ready",
+    meta: {
+      title: "대구 그란페스타 그란폰도 통계 | FondoScope",
+      description:
+        "대구 그란페스타 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/daegu-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.11.15",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 110.9,
+            elevation: 1228,
+            registered: 851,
+          },
+        ],
+        totalRegistered: 851,
+      },
+    },
+  },
 ];
