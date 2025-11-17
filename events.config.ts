@@ -1328,4 +1328,37 @@ export const events: Event[] = [
     },
     dataSource: "Marazone",
   },
+  {
+    id: "iksan",
+    location: "익산 메디오폰도",
+    years: [2025],
+    color: {
+      from: "#0ea5e9",
+      to: "#0369a1",
+    },
+    status: "ready",
+    meta: {
+      title: "익산 미륵사지 메디오폰도 통계 | FondoScope",
+      description:
+        "익산 미륵사지 메디오폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
+      image: "/images/iksan-og.jpg",
+    },
+    yearDetails: {
+      2025: {
+        year: 2025,
+        date: "2025.11.16",
+        courses: [
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 95.7,
+            elevation: 609.5,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+    dataSource: "my.raceresult.com",
+  },
 ];
