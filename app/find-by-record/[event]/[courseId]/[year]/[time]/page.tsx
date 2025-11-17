@@ -114,7 +114,7 @@ const ResultPage = async (props: Props) => {
       <div className="max-w-full px-4 py-4">
         <div className="flex flex-col items-center mb-6">
           <div className="text-3xl text-muted-foreground font-semibold mb-2">
-            {year}년 {event.location} 그란폰도
+            {year}년 {event.name || `${event.location} 그란폰도`}
           </div>
           {courseInfo && (
             <div className="flex gap-2">

@@ -20,7 +20,7 @@ const FindMyRecordPage = async ({ params }: Props) => {
   if (!event) {
     notFound();
   }
-  const eventName = event.location + " 그란폰도";
+  const eventName = event.name || `${event.location} 그란폰도`;
 
   return (
     <main className="container mx-auto px-0 py-0">

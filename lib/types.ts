@@ -1,6 +1,7 @@
 export type Event = {
   id: string;
   location: string;
+  name?: string;
   years: number[];
   color: {
     from: string;

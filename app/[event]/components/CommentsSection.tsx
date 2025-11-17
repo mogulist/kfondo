@@ -12,7 +12,7 @@ export const CommentsSection = ({ event, eventId }: Props) => {
       <h2 className="text-2xl font-semibold">댓글</h2>
       <DisqusComments
         eventId={eventId}
-        eventTitle={`${event.location} 그란폰도`}
+        eventTitle={event.name || `${event.location} 그란폰도`}
       />
     </section>
   );

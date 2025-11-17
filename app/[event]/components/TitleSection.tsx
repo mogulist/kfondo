@@ -8,7 +8,7 @@ export const TitleSection = ({ event }: Props) => {
   return (
     <div className="space-y-4">
       <h1 className="text-4xl font-bold tracking-tight">
-        {event.location} 그란폰도
+        {event.name || `${event.location} 그란폰도`}
       </h1>
       <p className="text-xl text-muted-foreground">
         {event.years[0]}년부터 {event.years[event.years.length - 1]}

@@ -1330,7 +1330,8 @@ export const events: Event[] = [
   },
   {
     id: "iksan",
-    location: "익산 메디오폰도",
+    location: "익산",
+    name: "익산 미륵사지 메디오폰도",
     years: [2025],
     color: {
       from: "#0ea5e9",
