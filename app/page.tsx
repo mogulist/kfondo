@@ -149,7 +149,7 @@ const HomePage = () => {
               {showSections && (
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">📂</span>
-                  <h2 className="text-2xl font-bold text-gray-900">전체 대회 ({otherEvents.length})</h2>
+                  <h2 className="text-2xl font-bold text-foreground">전체 대회 ({otherEvents.length})</h2>
                 </div>
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

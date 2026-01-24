@@ -42,9 +42,9 @@ export function EventCard({ event, onClick }: EventCardProps) {
       className={cn(
         "group relative rounded-xl p-5 transition-all duration-200 overflow-hidden",
         "hover:shadow-lg cursor-pointer",
-        isUpcoming && "bg-white border-2 border-emerald-500",
-        isRecentlyUpdated && "bg-emerald-50 border-2 border-emerald-400",
-        !isUpcoming && !isRecentlyUpdated && "bg-white border border-gray-200 hover:border-gray-300"
+        isUpcoming && "bg-card border-2 border-emerald-500",
+        isRecentlyUpdated && "bg-emerald-50 dark:bg-emerald-950 border-2 border-emerald-400",
+        !isUpcoming && !isRecentlyUpdated && "bg-card border border-border hover:border-muted-foreground/50"
       )}
     >
       {/* Badge */}
@@ -66,12 +66,12 @@ export function EventCard({ event, onClick }: EventCardProps) {
        */}
 
       {/* Event Name */}
-      <h3 className="text-xl font-bold text-gray-900 mb-3 pr-12">
+      <h3 className="text-xl font-bold text-card-foreground mb-3 pr-12">
         {event.name}
       </h3>
       
       {/* Date */}
-      <div className="flex items-center gap-2 text-gray-600 mb-3">
+      <div className="flex items-center gap-2 text-muted-foreground mb-3">
         <Calendar className="h-4 w-4" />
         <span className="text-sm">
           {isUpcoming ? `${event.date} 예정` : event.date}
@@ -79,7 +79,7 @@ export function EventCard({ event, onClick }: EventCardProps) {
       </div>
       
       {/* Years Data Available */}
-      <div className="text-xs text-gray-500 mb-4">
+      <div className="text-xs text-muted-foreground mb-4">
         {event.years.length}년 데이터 ({event.years.join(', ')})
       </div>
       
@@ -90,13 +90,13 @@ export function EventCard({ event, onClick }: EventCardProps) {
             key={idx}
             className={cn(
               "flex items-center justify-between p-2 rounded-lg",
-              isUpcoming ? "bg-emerald-50" : "bg-gray-50"
+              isUpcoming ? "bg-emerald-50 dark:bg-emerald-950" : "bg-muted"
             )}
           >
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-medium text-foreground">
               {cat.name}
             </span>
-            <div className="flex items-center gap-3 text-xs text-gray-600">
+            <div className="flex items-center gap-3 text-xs text-muted-foreground">
               <span>{cat.distance}km</span>
               {cat.elevation ? (
                 <div className="flex items-center gap-1">
@@ -111,7 +111,7 @@ export function EventCard({ event, onClick }: EventCardProps) {
       
       {/* Participants (if available) */}
       {event.participants ? (
-        <div className="mt-4 pt-4 border-t border-gray-200 flex items-center gap-2 text-sm text-gray-600">
+        <div className="mt-4 pt-4 border-t border-border flex items-center gap-2 text-sm text-muted-foreground">
           <Users className="h-4 w-4" />
           <span>{event.participants.toLocaleString()}명 참가</span>
         </div>
@@ -119,7 +119,7 @@ export function EventCard({ event, onClick }: EventCardProps) {
       
       {/* Update Info for Recently Updated */}
       {isRecentlyUpdated && (
-        <div className="mt-3 text-xs text-emerald-600">
+        <div className="mt-3 text-xs text-emerald-600 dark:text-emerald-400">
           {daysSinceUpdate === 0 ? '오늘' : `${daysSinceUpdate}일 전`} 업데이트
         </div>
       )}

@@ -22,7 +22,7 @@ export function EventCarousel({ title, icon, events }: EventCarouselProps) {
       <div className="container mx-auto">
         <div className="flex items-center gap-2 mb-4">
            {icon && <span className="text-2xl">{icon}</span>}
-           <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+           <h2 className="text-2xl font-bold text-foreground">{title}</h2>
         </div>
         
         <Carousel
