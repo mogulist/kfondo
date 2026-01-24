@@ -1,6 +1,6 @@
 const FondoScopeHeader = () => {
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
+    <header className="sticky top-0 z-50 bg-background border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-16">
           {/* Logo */}
@@ -46,10 +46,10 @@ const FondoScopeHeader = () => {
             
             {/* Logo Text */}
             <div className="flex flex-col">
-              <span className="text-xl font-bold text-gray-900 group-hover:text-emerald-600 transition-colors">
+              <span className="text-xl font-bold text-foreground group-hover:text-emerald-600 transition-colors">
                 FondoScope
               </span>
-              <span className="text-xs text-gray-500 -mt-1">
+              <span className="text-xs text-muted-foreground -mt-1">
                 그란폰도 기록 통계
               </span>
             </div>
