@@ -1,4 +1,5 @@
-import { EventCard } from "@/components/event-card";
+import { EventCard } from "@/components/EventCard";
+import Link from "next/link";
 import { events } from "@/events.config";
 import FondoScopeHeader from "@/components/FondoScopeHeader";
 import dayjs from "dayjs";
@@ -27,9 +28,31 @@ const HomePage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sortedEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))}
+            {sortedEvents.map((event) => {
+              const latestYear = Math.max(...event.years);
+              const latestDetail = event.yearDetails[latestYear];
+              
+              const mappedEvent = {
+                id: event.id,
+                name: event.name || `${event.location} 그란폰도`,
+                status: 'archive' as const,
+                date: latestDetail.date,
+                years: event.years.map(String),
+                categories: latestDetail.courses.map(course => ({
+                  name: course.name,
+                  distance: course.distance,
+                  elevation: course.elevation
+                })),
+                updatedAt: latestDetail.date,
+                participants: latestDetail.totalRegistered
+              };
+
+              return (
+                <Link href={`/${event.id}`} key={event.id} className="block">
+                  <EventCard event={mappedEvent} />
+                </Link>
+              );
+            })}
           </div>
         </div>
       </main>
