@@ -3,6 +3,7 @@ import Link from "next/link";
 import { events } from "@/events.config";
 import FondoScopeHeader from "@/components/FondoScopeHeader";
 import dayjs from "dayjs";
+import { EventCarousel } from "@/components/EventCarousel";
 
 // Helper to map raw event to EventCard props
 const mapToEventData = (event: typeof events[0]): EventData => {
@@ -90,10 +91,25 @@ const HomePage = () => {
     return aDate.valueOf() - bDate.valueOf();
   });
   
-  // Other: Latest date first (Descending) - Already sorted from initial list sort but safe to keep logic
+  // Other: Latest date first (Descending)
+  // (sortedEvents was already desc)
+
+  // Other: Latest date first (Descending)
   // (sortedEvents was already desc)
 
   const showSections = recentEvents.length > 0 || upcomingEvents.length > 0;
+
+  const recentEventData = recentEvents.map(e => {
+    const data = mapToEventData(e);
+    data.status = 'recently_updated';
+    return data;
+  });
+
+  const upcomingEventData = upcomingEvents.map(e => {
+    const data = mapToEventData(e);
+    data.status = 'upcoming';
+    return data;
+  });
 
   return (
     <>
@@ -110,45 +126,21 @@ const HomePage = () => {
           </div>
 
           {/* 최근 기록 업데이트 섹션 */}
-          {recentEvents.length > 0 && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-               <span className="text-2xl">⚡️</span>
-               <h2 className="text-2xl font-bold text-gray-900">최근 기록 업데이트</h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recentEvents.map((event) => {
-                   const data = mapToEventData(event);
-                   data.status = 'recently_updated'; // Override status for styling
-                   return (
-                    <Link href={`/${event.id}`} key={event.id} className="block">
-                      <EventCard event={data} />
-                    </Link>
-                   );
-                })}
-              </div>
-            </div>
+          {recentEventData.length > 0 && (
+            <EventCarousel
+              icon="⚡️"
+              title="최근 기록 업데이트"
+              events={recentEventData}
+            />
           )}
 
           {/* 다가오는 대회 섹션 */}
-          {upcomingEvents.length > 0 && (
-            <div className="space-y-4">
-               <div className="flex items-center gap-2">
-               <span className="text-2xl">📅</span>
-               <h2 className="text-2xl font-bold text-gray-900">다가오는 대회</h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {upcomingEvents.map((event) => {
-                   const data = mapToEventData(event);
-                   data.status = 'upcoming'; // Override status for styling
-                   return (
-                    <Link href={`/${event.id}`} key={event.id} className="block">
-                      <EventCard event={data} />
-                    </Link>
-                   );
-                })}
-              </div>
-            </div>
+          {upcomingEventData.length > 0 && (
+            <EventCarousel
+              icon="📅"
+              title="다가오는 대회"
+              events={upcomingEventData}
+            />
           )}
 
           {/* 전체 대회 섹션 */}
