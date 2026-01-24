@@ -90,12 +90,6 @@ const HomePage = () => {
     const bDate = dayjs(b.yearDetails[2026].date);
     return aDate.valueOf() - bDate.valueOf();
   });
-  
-  // Other: Latest date first (Descending)
-  // (sortedEvents was already desc)
-
-  // Other: Latest date first (Descending)
-  // (sortedEvents was already desc)
 
   const showSections = recentEvents.length > 0 || upcomingEvents.length > 0;
 
@@ -114,9 +108,9 @@ const HomePage = () => {
   return (
     <>
       <FondoScopeHeader />
-      <main className="container mx-auto px-4 py-12">
+      <main className="py-12">
         <div className="space-y-12">
-          <div className="text-center space-y-4">
+          <div className="container mx-auto px-4 text-center space-y-4">
             <h1 className="text-4xl font-bold tracking-tight">
               한국 그란폰도 통계
             </h1>
@@ -145,7 +139,7 @@ const HomePage = () => {
 
           {/* 전체 대회 섹션 */}
           {otherEvents.length > 0 && (
-            <div className="space-y-6">
+            <div className="container mx-auto px-4 space-y-6">
               {showSections && (
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">📂</span>
