@@ -85,7 +85,7 @@ export const events: Event[] = [
   {
     id: "seorak",
     location: "설악",
-    years: [2022, 2023, 2024, 2025],
+    years: [2022, 2023, 2024, 2025, 2026],
     color: {
       from: "#0d9488",
       to: "#0f766e",
@@ -100,6 +100,27 @@ export const events: Event[] = [
     comment:
       "2025년 코스제외자 551명은 그란폰도 DNF로 분류하였습니다. 기록 업데이트: 5.20 21:00",
     yearDetails: {
+      2026: {
+        year: 2026,
+        date: "2026.5.20",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 208,
+            elevation: 3800,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 105,
+            elevation: 1700,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
       2025: {
         year: 2025,
         date: "2025.5.17",

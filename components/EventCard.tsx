@@ -40,7 +40,7 @@ export function EventCard({ event, onClick }: EventCardProps) {
     <div
       onClick={onClick}
       className={cn(
-        "group relative rounded-xl p-5 transition-all duration-200",
+        "group relative rounded-xl p-5 transition-all duration-200 overflow-hidden",
         "hover:shadow-lg cursor-pointer",
         isUpcoming && "bg-white border-2 border-emerald-500",
         isRecentlyUpdated && "bg-emerald-50 border-2 border-emerald-400",
@@ -49,13 +49,13 @@ export function EventCard({ event, onClick }: EventCardProps) {
     >
       {/* Badge */}
       {isUpcoming && event.dDay !== undefined && (
-        <div className="absolute -top-3 right-4 bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+        <div className="absolute -top-2.5 right-4 bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-medium">
           D-{event.dDay}
         </div>
       )}
       
       {isRecentlyUpdated && daysSinceUpdate <= 7 && (
-        <div className="absolute -top-3 right-4 bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+        <div className="absolute -top-2.5 right-4 bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-medium">
           NEW
         </div>
       )}
