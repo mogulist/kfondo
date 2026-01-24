@@ -62,6 +62,7 @@ export const events: Event[] = [
       2026: {
         year: 2026,
         date: "2026.5.9",
+        status: "upcoming",
         courses: [
           {
             id: "granfondo",
@@ -125,6 +126,7 @@ export const events: Event[] = [
       2026: {
         year: 2026,
         date: "2026.5.20",
+        status: "upcoming",
         courses: [
           {
             id: "granfondo",
@@ -569,6 +571,7 @@ export const events: Event[] = [
       2026: {
         year: 2026,
         date: "2026.5.16",
+        status: "upcoming",
         courses: [
           {
             id: "granfondo",
@@ -796,6 +799,7 @@ export const events: Event[] = [
       2026: {
         year: 2026,
         date: "2026.4.18",
+        status: "upcoming",
         courses: [
           {
             id: "challenge-a",
@@ -1069,6 +1073,7 @@ export const events: Event[] = [
       2026: {
         year: 2026,
         date: "2026.10.3",
+        status: "upcoming",
         courses: [
           {
             id: "granfondo",
@@ -1484,6 +1489,7 @@ export const events: Event[] = [
       2026: {
         year: 2026,
         date: "2026.4.4",
+        status: "upcoming",
         courses: [
           {
             id: "course-a",

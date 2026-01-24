@@ -22,7 +22,7 @@ const mapToEventData = (event: typeof events[0]): EventData => {
     name: event.name || `${event.location} 그란폰도`,
     status: 'archive',
     date: latestDetail.date,
-    years: event.years.map(String),
+    years: event.years.filter(year => event.yearDetails[year]?.status !== 'upcoming').map(String),
     categories: latestDetail.courses.map(course => ({
       name: course.name,
       distance: course.distance,

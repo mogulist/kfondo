@@ -80,7 +80,7 @@ export function EventCard({ event, onClick }: EventCardProps) {
       
       {/* Years Data Available */}
       <div className="text-xs text-muted-foreground mb-4">
-        {event.years.length}년 데이터 ({event.years.join(', ')})
+        {formatEventYears(event.years)}
       </div>
       
       {/* Categories */}
@@ -127,4 +127,20 @@ export function EventCard({ event, onClick }: EventCardProps) {
       )}
     </div>
   );
+}
+
+export function formatEventYears(years: string[]): string {
+  if (!years || years.length === 0) {
+    return "기록: 이전 기록 없음";
+  }
+
+  if (years.length === 1) {
+    return `기록: ${years[0]}`;
+  }
+
+  const sorted = [...years].sort();
+  const min = sorted[0];
+  const max = sorted[sorted.length - 1];
+  
+  return `기록: ${min}~${max}`;
 }
