@@ -90,13 +90,15 @@ export function EventCard({ event, onClick }: EventCardProps) {
             key={idx}
             className={cn(
               "flex items-center justify-between p-2 rounded-lg",
-              isUpcoming ? "bg-emerald-50 dark:bg-emerald-950" : "bg-muted"
+              isUpcoming 
+                ? "bg-emerald-50 dark:bg-slate-700" 
+                : "bg-gray-50 dark:bg-slate-700"
             )}
           >
-            <span className="text-sm font-medium text-foreground">
+            <span className="text-sm font-medium text-gray-900 dark:text-gray-200">
               {cat.name}
             </span>
-            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-300">
               <span>{cat.distance}km</span>
               {cat.elevation ? (
                 <div className="flex items-center gap-1">
