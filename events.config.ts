@@ -44,7 +44,7 @@ export const events: Event[] = [
   {
     id: "gapyeong",
     location: "가평",
-    years: [2025],
+    years: [2025, 2026],
     color: {
       from: "#eab308",
       to: "#a16207",
@@ -59,6 +59,28 @@ export const events: Event[] = [
     comment:
       "그란폰도 참가자 중 78km 하오재 계측 기록이 없는 244명은 DNF로 분류하였습니다. 기록 업데이트: 5.25 15:50",
     yearDetails: {
+      2026: {
+        year: 2026,
+        date: "2026.5.9",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 108.1,
+            elevation: 2231,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 65.1,
+            elevation: 1305,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+        url: "https://xcworks.com/sub/race.html?type=view&wrNo=18",
+      },
       2025: {
         year: 2025,
         date: "2025.5.24",
@@ -528,11 +550,10 @@ export const events: Event[] = [
       },
     },
   },
-  // 정읍내장산
   {
     id: "jeongeup",
     location: "정읍내장산",
-    years: [2023, 2024, 2025],
+    years: [2023, 2024, 2025, 2026],
     color: {
       from: "#f59e42",
       to: "#ea580c",
@@ -545,6 +566,28 @@ export const events: Event[] = [
       image: "/images/jeongeup-og.jpg",
     },
     yearDetails: {
+      2026: {
+        year: 2026,
+        date: "2026.5.16",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 118.4,
+            elevation: 1717,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 82.23,
+            elevation: 1171,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+        url: "https://www.thebike.co.kr/race/view.php?r_idx=327",
+      },
       2025: {
         year: 2025,
         date: "2025.6.1",
@@ -735,7 +778,7 @@ export const events: Event[] = [
   {
     id: "jeosu",
     location: "예천저수령",
-    years: [2025],
+    years: [2025, 2026],
     color: {
       from: "#8b5cf6",
       to: "#6d28d9",
@@ -750,6 +793,26 @@ export const events: Event[] = [
     comment:
       "Challenge A 참가자 중 5번째 체크포인트 기록이 없는 302명은 DNF로 분류하였습니다.",
     yearDetails: {
+      2026: {
+        year: 2026,
+        date: "2026.4.18",
+        courses: [
+          {
+            id: "challenge-a",
+            name: "Challenge A",
+            distance: 103.6,
+            registered: 0,
+          },
+          {
+            id: "challenge-b",
+            name: "Challenge B",
+            distance: 93.3,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+        url: "https://xcworks.com/sub/race.html?type=view&wrNo=13",
+      },
       2025: {
         year: 2025,
         date: "2025.5.31",
@@ -990,7 +1053,7 @@ export const events: Event[] = [
   {
     id: "chungju",
     location: "충주",
-    years: [2025],
+    years: [2025, 2026],
     color: {
       from: "#0ea5e9",
       to: "#0369a1",
@@ -1003,6 +1066,25 @@ export const events: Event[] = [
       image: "/images/chungju-og.jpg",
     },
     yearDetails: {
+      2026: {
+        year: 2026,
+        date: "2026.10.3",
+        courses: [
+          {
+            id: "granfondo",
+            name: "그란폰도",
+            distance: 112,
+            registered: 0,
+          },
+          {
+            id: "mediofondo",
+            name: "메디오폰도",
+            distance: 84,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
       2025: {
         year: 2025,
         date: "2025.9.20",
@@ -1375,6 +1457,46 @@ export const events: Event[] = [
             name: "메디오폰도",
             distance: 95.7,
             elevation: 609.5,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+    dataSource: "my.raceresult.com",
+  },
+  {
+    id: "dinosour",
+    location: "공룡나라",
+    years: [2026],
+    color: {
+      from: "#0ea5e9",
+      to: "#0369a1",
+    },
+    status: "ready",
+    meta: {
+      title: "공룡나라 그란폰도 통계 | FondoScope",
+      description:
+        "공룡나라 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2026년의 데이터를 제공합니다.",
+      image: "/images/dinosour-og.jpg",
+    },
+    yearDetails: {
+      2026: {
+        year: 2026,
+        date: "2026.4.4",
+        courses: [
+          {
+            id: "course-a",
+            name: "코스 A",
+            distance: 120.2,
+            elevation: 1326.9,
+            registered: 0,
+          },
+          {
+            id: "course-b",
+            name: "코스 B",
+            distance: 118.9,
+            elevation: 1274.9,
             registered: 0,
           },
         ],
