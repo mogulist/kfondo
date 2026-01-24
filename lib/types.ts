@@ -67,7 +67,7 @@ export type RaceCategory = {
   id: string; // 종목 고유 ID (예: "granfondo", "mediofondo", "kom")
   name: string; // 종목 이름 (예: "그란폰도", "메디오폰도", "KOM")
   distance: number; // 거리
-  elevation: number; // 고도
+  elevation?: number; // 고도
   registered?: number; // 등록자 수
   comment?: string;
 };
@@ -79,4 +79,5 @@ export type EventYearDetail = {
   status?: "completed" | "upcoming" | "preparing";
   courses: RaceCategory[];
   totalRegistered: number;
+  url?: string;
 };

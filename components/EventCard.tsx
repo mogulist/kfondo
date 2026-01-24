@@ -11,7 +11,7 @@ export type EventData = {
   categories: Array<{
     name: string;
     distance: number;
-    elevation: number;
+    elevation?: number;
   }>;
   updatedAt: string;
   participants?: number;
@@ -98,10 +98,12 @@ export function EventCard({ event, onClick }: EventCardProps) {
             </span>
             <div className="flex items-center gap-3 text-xs text-gray-600">
               <span>{cat.distance}km</span>
-              <div className="flex items-center gap-1">
-                <Mountain className="h-3 w-3" />
-                <span>{cat.elevation}m</span>
-              </div>
+              {cat.elevation ? (
+                <div className="flex items-center gap-1">
+                  <Mountain className="h-3 w-3" />
+                  <span>{cat.elevation}m</span>
+                </div>
+              ) : null}
             </div>
           </div>
         ))}
