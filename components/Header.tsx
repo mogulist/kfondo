@@ -1,4 +1,4 @@
-const FondoScopeHeader = () => {
+const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
       <div className="container mx-auto px-4">
@@ -39,4 +39,4 @@ const FondoScopeHeader = () => {
   );
 };
 
-export default FondoScopeHeader;
+export default Header;

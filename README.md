@@ -1,8 +1,8 @@
-# fondo-scope
+# K-Fondo (구 FondoScope)
 
 한국에서 열리는 그란폰도 대회들의 통계, 기록, 순위를 확인할 수 있습니다.
 
-https://fondoscope.vercel.app
+https://kfondo.cc
 
 ## 🕷️ 통합 크롤러
 

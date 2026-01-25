@@ -1,6 +1,6 @@
 import { EventCard } from "@/components/EventCard";
 import Link from "next/link";
-import FondoScopeHeader from "@/components/FondoScopeHeader";
+import Header from "@/components/Header";
 import { EventCarousel } from "@/components/EventCarousel";
 import { HeroSection } from "@/components/HeroSection";
 import { getFilteredEvents, mapToEventData } from "@/lib/server-utils";
@@ -24,7 +24,7 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
 
   return (
     <>
-      <FondoScopeHeader />
+      <Header />
       <HeroSection initialQuery={searchQuery} />
       <main className="py-12">
         <div className="space-y-12">

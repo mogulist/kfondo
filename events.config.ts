@@ -12,7 +12,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "무주 그란폰도 통계 | FondoScope",
+      title: "무주 그란폰도 통계 | K-Fondo",
       description:
         "무주 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/muju-og.jpg",
@@ -51,7 +51,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "트렉가평자라섬 그란폰도 통계 | FondoScope",
+      title: "트렉가평자라섬 그란폰도 통계 | K-Fondo",
       description:
         "트렉가평자라섬 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/gapyeong-og.jpg",
@@ -115,7 +115,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "설악 그란폰도 통계 | FondoScope",
+      title: "설악 그란폰도 통계 | K-Fondo",
       description:
         "설악 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2020년부터 2024년까지의 데이터를 제공합니다.",
       image: "/images/seorak-og.jpg",
@@ -242,7 +242,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "홍천 그란폰도 통계 | FondoScope",
+      title: "홍천 그란폰도 통계 | K-Fondo",
       description:
         "홍천 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2022년부터 2025년까지의 데이터를 제공합니다.",
       image: "/images/hongcheon-og.jpg",
@@ -345,7 +345,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "양양 그란폰도 통계 | FondoScope",
+      title: "양양 그란폰도 통계 | K-Fondo",
       description:
         "양양 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2024년부터 2025년까지의 데이터를 제공합니다.",
       image: "/images/yangyang-og.jpg",
@@ -406,7 +406,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "영산 그란폰도 통계 | FondoScope",
+      title: "영산 그란폰도 통계 | K-Fondo",
       description:
         "영산 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2023년부터 2025년까지의 데이터를 제공합니다.",
       image: "/images/yeongsan-og.jpg",
@@ -481,7 +481,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "문경새재 그란폰도 통계 | FondoScope",
+      title: "문경새재 그란폰도 통계 | K-Fondo",
       description:
         "문경새재 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2023년부터 2024년까지의 데이터를 제공합니다.",
       image: "/images/mungyeong-og.jpg",
@@ -562,7 +562,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "정읍내장산 그란폰도 통계 | FondoScope",
+      title: "정읍내장산 그란폰도 통계 | K-Fondo",
       description:
         "정읍내장산 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2023년부터 2024년까지의 데이터를 제공합니다.",
       image: "/images/jeongeup-og.jpg",
@@ -667,7 +667,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "삼척 그란폰도 통계 | FondoScope",
+      title: "삼척 그란폰도 통계 | K-Fondo",
       description:
         "삼척 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요.",
       image: "/images/samcheok-og.jpg",
@@ -728,7 +728,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "화천 DMZ 랠리 통계 | FondoScope",
+      title: "화천 DMZ 랠리 통계 | K-Fondo",
       description:
         "화천 DMZ 랠리의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2022년부터 2025년까지의 데이터를 제공합니다.",
       image: "/images/hwacheon-og.jpg",
@@ -788,7 +788,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "예천저수령 그란폰도 통계 | FondoScope",
+      title: "예천저수령 그란폰도 통계 | K-Fondo",
       description:
         "예천저수령 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/jeosu-og.jpg",
@@ -850,7 +850,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "연천 그란폰도 통계 | FondoScope",
+      title: "연천 그란폰도 통계 | K-Fondo",
       description:
         "연천 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/yeonchu-og.jpg",
@@ -883,7 +883,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "정선 그란폰도 통계 | FondoScope",
+      title: "정선 그란폰도 통계 | K-Fondo",
       description:
         "정선 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/jeongseon-og.jpg",
@@ -922,7 +922,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "Tour de DMZ 고성 그란폰도 통계 | FondoScope",
+      title: "Tour de DMZ 고성 그란폰도 통계 | K-Fondo",
       description:
         "Tour de DMZ 고성 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/jeongseon-og.jpg",
@@ -961,7 +961,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "양평 그란폰도 통계 | FondoScope",
+      title: "양평 그란폰도 통계 | K-Fondo",
       description:
         "양평 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/yangpyeong-og.jpg",
@@ -993,7 +993,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "공주백제   그란폰도 통계 | FondoScope",
+      title: "공주백제   그란폰도 통계 | K-Fondo",
       description:
         "공주백제 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/gongju-og.jpg",
@@ -1032,7 +1032,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "완주만경강 메디오폰도 통계 | FondoScope",
+      title: "완주만경강 메디오폰도 통계 | K-Fondo",
       description:
         "완주만경강 메디오폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/wanju-og.jpg",
@@ -1064,7 +1064,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "충주 그란폰도 통계 | FondoScope",
+      title: "충주 그란폰도 통계 | K-Fondo",
       description:
         "충주 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/chungju-og.jpg",
@@ -1123,7 +1123,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "어라운드 태백 그란폰도 통계 | FondoScope",
+      title: "어라운드 태백 그란폰도 통계 | K-Fondo",
       description:
         "어라운드 태백 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/taebaek-og.jpg",
@@ -1162,7 +1162,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "상주 그란폰도 통계 | FondoScope",
+      title: "상주 그란폰도 통계 | K-Fondo",
       description:
         "상주 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/sangju-og.jpg",
@@ -1202,7 +1202,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "부여 굿뜨래 그란폰도 통계 | FondoScope",
+      title: "부여 굿뜨래 그란폰도 통계 | K-Fondo",
       description:
         "부여 굿뜨래 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/buyeo-og.jpg",
@@ -1280,7 +1280,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "비앙키 춘천 그란폰도 통계 | FondoScope",
+      title: "비앙키 춘천 그란폰도 통계 | K-Fondo",
       description:
         "비앙키 춘천 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/bianchi-chuncheon-og.jpg",
@@ -1342,7 +1342,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "통영 그란폰도 통계 | FondoScope",
+      title: "통영 그란폰도 통계 | K-Fondo",
       description:
         "통영 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/tongyeong-og.jpg",
@@ -1374,7 +1374,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "섬섬 여수 그란폰도 통계 | FondoScope",
+      title: "섬섬 여수 그란폰도 통계 | K-Fondo",
       description:
         "섬섬 여수 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요.",
       image: "/images/yeosu-og.jpg",
@@ -1413,7 +1413,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "대구 그란페스타 그란폰도 통계 | FondoScope",
+      title: "대구 그란페스타 그란폰도 통계 | K-Fondo",
       description:
         "대구 그란페스타 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/daegu-og.jpg",
@@ -1447,7 +1447,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "익산 미륵사지 메디오폰도 통계 | FondoScope",
+      title: "익산 미륵사지 메디오폰도 통계 | K-Fondo",
       description:
         "익산 미륵사지 메디오폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2025년의 데이터를 제공합니다.",
       image: "/images/iksan-og.jpg",
@@ -1480,7 +1480,7 @@ export const events: Event[] = [
     },
     status: "ready",
     meta: {
-      title: "공룡나라 그란폰도 통계 | FondoScope",
+      title: "공룡나라 그란폰도 통계 | K-Fondo",
       description:
         "공룡나라 그란폰도의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2026년의 데이터를 제공합니다.",
       image: "/images/dinosour-og.jpg",

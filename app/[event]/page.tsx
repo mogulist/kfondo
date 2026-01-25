@@ -6,7 +6,7 @@ import { events } from "@/events.config";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { Event } from "@/lib/types";
-import FondoScopeHeader from "@/components/FondoScopeHeader";
+import Header from "@/components/Header";
 
 type Props = {
   params: {
@@ -24,7 +24,7 @@ export default async function EventPage({ params }: Props) {
 
   return (
     <>
-      <FondoScopeHeader />
+      <Header />
       <main className="container mx-auto px-4 py-12">
         <div className="space-y-12 max-w-full">
           <TitleSection event={event} />
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!event) {
     return {
-      title: "페이지를 찾을 수 없습니다 | FondoScope",
+      title: "페이지를 찾을 수 없습니다 | K-Fondo",
       description: "요청하신 페이지를 찾을 수 없습니다.",
     };
   }
