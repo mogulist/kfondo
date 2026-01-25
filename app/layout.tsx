@@ -1,10 +1,9 @@
 import type React from "react";
 import "@/app/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -95,15 +94,16 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
   verification: {
     google: "K_bu_gyZtuD8AhOPED0z9esyUAghuqnGV94sC0HoZx4",
   },
   other: {
     "naver-site-verification": "c42c853d3e698f688ace54aabfdd111ad8d50c30",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
