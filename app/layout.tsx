@@ -104,6 +104,6 @@ export const metadata: Metadata = {
     google: "K_bu_gyZtuD8AhOPED0z9esyUAghuqnGV94sC0HoZx4",
   },
   other: {
-    "naver-site-verification": "aa1c7da5641edfb88b4d8bef8bd3fce9ad6b9fc7",
+    "naver-site-verification": "c42c853d3e698f688ace54aabfdd111ad8d50c30",
   },
 };
