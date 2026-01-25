@@ -1511,4 +1511,46 @@ export const events: Event[] = [
     },
     dataSource: "my.raceresult.com",
   },
+  {
+    id: "yeosu-major-cup",
+    location: "여수시장배 전국 MTB&ROAD",
+    name: "여수시장배 전국 MTB&ROAD",
+    years: [2026],
+    color: {
+      from: "#0ea5e9",
+      to: "#0369a1",
+    },
+    status: "ready",
+    meta: {
+      title: "여수시장배 전국 MTB&ROAD 통계 | K-Fondo",
+      description:
+        "여수시장배 전국 MTB&ROAD의 연도별 참가자 통계와 기록 분포를 확인해보세요. 2026년의 데이터를 제공합니다.",
+      image: "/images/yeosu-major-cup-og.jpg",
+    },
+    yearDetails: {
+      2026: {
+        year: 2026,
+        date: "2026.3.8",
+        status: "upcoming",
+        courses: [
+          {
+            id: "road",
+            name: "로드",
+            distance: 69,
+            elevation: 1368,
+            registered: 0,
+          },
+          {
+            id: "mtb",
+            name: "MTB",
+            distance: 37,
+            elevation: 1467,
+            registered: 0,
+          },
+        ],
+        totalRegistered: 0,
+      },
+    },
+    dataSource: "my.raceresult.com",
+  },
 ];
