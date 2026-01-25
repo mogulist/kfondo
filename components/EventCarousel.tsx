@@ -35,13 +35,16 @@ export function EventCarousel({ title, icon, events }: EventCarouselProps) {
 
   if (events.length === 0) return null;
   
+  // Generate unique ID from title for accessibility
+  const sectionId = title.toLowerCase().replace(/\s+/g, '-');
+  
   return (
-    <section className="py-4">
+    <section className="py-4" aria-labelledby={sectionId}>
       <div className="container mx-auto px-4">
         {/* Title */}
         <div className="flex items-center gap-2 mb-4">
-           {icon && <span className="text-2xl">{icon}</span>}
-           <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+           {icon && <span className="text-2xl" aria-hidden="true">{icon}</span>}
+           <h2 id={sectionId} className="text-2xl font-bold text-foreground">{title}</h2>
         </div>
         
         {/* Carousel */}
