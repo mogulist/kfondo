@@ -28,7 +28,7 @@ export default function RootLayout({
             <footer className="border-t mt-12">
               <div className="max-w-screen-xl mx-auto px-4 py-8">
                 <p className="text-center text-sm text-muted-foreground">
-                  © {new Date().getFullYear()} FondoScope. All rights
+                  © 2025-{new Date().getFullYear()} K-Fondo. All rights
                   reserved.
                 </p>
               </div>
@@ -41,10 +41,12 @@ export default function RootLayout({
 }
 
 export const metadata: Metadata = {
-  title: "한국 그란폰도 통계와 기록 | FondoScope",
+  title: "K-Fondo | 한국 그란폰도 통계와 기록",
   description:
-    "홍천 그란폰도, 설악 그란폰도, 양양 그란폰도 등 한국 주요 그란폰도 대회의 참가자 통계, 기록 분포를 확인하고 기록의 순위도 찾아보세요. 대회별 참가자 수, 기록 분포, 기록이 몇위인지 찾는 검색 기능을 제공합니다.",
+    "K-Fondo는 홍천, 설악, 양양 등 한국 주요 그란폰도 대회의 참가자 통계와 기록 분포를 제공합니다. 내 기록이 몇 등인지 확인하고, 대회별 참가자 수와 기록 분포를 분석해보세요.",
   keywords: [
+    "K-Fondo",
+    "케이폰도",
     "그란폰도",
     "메디오폰도",
     "자전거",
@@ -52,6 +54,8 @@ export const metadata: Metadata = {
     "대회",
     "기록",
     "분포",
+    "순위",
+    "한국 그란폰도",
     "홍천 그란폰도",
     "설악 그란폰도",
     "양양 그란폰도",
@@ -60,32 +64,32 @@ export const metadata: Metadata = {
     "정읍내장산 그란폰도",
     "삼척 그란폰도",
   ],
-  authors: [{ name: "FondoScope" }],
-  creator: "FondoScope",
-  publisher: "FondoScope",
+  authors: [{ name: "K-Fondo" }],
+  creator: "K-Fondo",
+  publisher: "K-Fondo",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://fondoscope.com"),
+  metadataBase: new URL("https://kfondo.cc"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "한국 그란폰도 통계, 기록, 순위 | FondoScope",
+    title: "K-Fondo | 한국 그란폰도 통계, 기록, 순위",
     description:
-      "한국에서 열리는 그란폰도 대회들의 통계, 기록, 순위를 확인해보세요.",
-    url: "https://fondoscope.com",
-    siteName: "FondoScope",
+      "K-Fondo에서 한국 그란폰도 대회들의 통계, 기록, 순위를 확인해보세요. 내 기록이 몇 등인지 바로 찾을 수 있습니다.",
+    url: "https://kfondo.cc",
+    siteName: "K-Fondo",
     locale: "ko_KR",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "한국 그란폰도 통계, 기록, 순위 | FondoScope",
+    title: "K-Fondo | 한국 그란폰도 통계, 기록, 순위",
     description:
-      "한국에서 열리는 그란폰도 대회들의 통계, 기록, 순위를 확인해보세요.",
+      "K-Fondo에서 한국 그란폰도 대회들의 통계, 기록, 순위를 확인해보세요.",
   },
   robots: {
     index: true,
