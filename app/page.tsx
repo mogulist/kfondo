@@ -3,7 +3,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import { EventCarousel } from "@/components/EventCarousel";
 import { HeroSection } from "@/components/HeroSection";
-import { getFilteredEvents, mapToEventData } from "@/lib/server-utils";
+import { getFilteredEventsAsync, mapToEventData } from "@/lib/server-utils";
 
 interface HomePageProps {
   searchParams: Promise<{ q?: string }>;
@@ -13,9 +13,9 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
   const params = await searchParams;
   const searchQuery = params.q || "";
 
-  // Get filtered events from server-side utility
+  // Get filtered events from server-side utility (DB 사용)
   const { recentEvents, upcomingEvents, otherEvents, showSections } = 
-    getFilteredEvents(searchQuery);
+    await getFilteredEventsAsync(searchQuery);
 
   const hasSearchResults = 
     recentEvents.length > 0 || 

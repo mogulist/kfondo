@@ -32,3 +32,4 @@ test-results
 *.old
 
 data/preliminary/
+.env*.local
