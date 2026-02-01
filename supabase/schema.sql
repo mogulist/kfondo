@@ -50,6 +50,22 @@ CREATE TABLE courses (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- 4. Records 테이블 (참가자 기록 데이터)
+CREATE TABLE records (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_edition_id UUID NOT NULL REFERENCES event_editions(id) ON DELETE CASCADE,
+  course_id UUID REFERENCES courses(id) ON DELETE SET NULL,
+  bib_no TEXT NOT NULL,
+  gender TEXT,
+  record_time TEXT, -- "HH:MM:SS.ms" 형식
+  rank INTEGER,
+  status TEXT DEFAULT 'FINISHED', -- 'FINISHED', 'DNF', 'DNS'
+  start_time TEXT,
+  finish_time TEXT,
+  extra_data JSONB DEFAULT '{}'::jsonb, -- Pace, Speed, CP, KOM 등 가변 필드
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- 업데이트 시 updated_at 자동 갱신 트리거 함수
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
@@ -68,13 +84,19 @@ CREATE TRIGGER update_courses_updated_at BEFORE UPDATE ON courses FOR EACH ROW E
 ALTER TABLE events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_editions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE records ENABLE ROW LEVEL SECURITY;
 
 -- 읽기 정책: 모든 사용자 허용
 CREATE POLICY "Allow public read access on events" ON events FOR SELECT USING (true);
 CREATE POLICY "Allow public read access on event_editions" ON event_editions FOR SELECT USING (true);
 CREATE POLICY "Allow public read access on courses" ON courses FOR SELECT USING (true);
+CREATE POLICY "Allow public read access on records" ON records FOR SELECT USING (true);
 
 -- 인덱스 생성
 CREATE INDEX idx_events_slug ON events(slug);
 CREATE INDEX idx_editions_year ON event_editions(year);
 CREATE INDEX idx_courses_edition ON courses(edition_id);
+CREATE INDEX idx_records_edition ON records(event_edition_id);
+CREATE INDEX idx_records_course ON records(course_id);
+CREATE INDEX idx_records_bib ON records(bib_no);
+
