@@ -5,29 +5,62 @@
 
 import { supabase, isSupabaseEnabled } from "../supabase";
 import { events as eventsJson } from "../../events.config";
-import type { Event } from "../types";
-import type { EventRow } from "../database.types";
+import type { Event, EventYearDetail, RaceCategory } from "../types";
+import type { EventRow, EventEditionRow, CourseRow } from "../database.types";
 
-// DB Row를 기존 Event 타입으로 변환
-function mapRowToEvent(row: EventRow): Event {
+// DB Row들을 조합하여 Event 객체로 변환
+type EventWithRelations = EventRow & {
+  event_editions: (EventEditionRow & {
+    courses: CourseRow[];
+  })[];
+};
+
+function mapRowToEvent(row: EventWithRelations): Event {
+  // yearDetails 객체 재구성
+  const yearDetails: Record<number, EventYearDetail> = {};
+
+  if (row.event_editions) {
+    row.event_editions.forEach((edition) => {
+      const courses: RaceCategory[] =
+        edition.courses?.map((course) => ({
+          id: course.course_type,
+          name: course.name,
+          distance: course.distance,
+          elevation: course.elevation,
+          registered: course.registered_count,
+        })) || [];
+
+      yearDetails[edition.year] = {
+        year: edition.year,
+        date: edition.date.replace(/-/g, "."), // YYYY-MM-DD -> YYYY.MM.DD
+        status: edition.status as any,
+        url: edition.url || undefined,
+        courses: courses,
+        totalRegistered: courses.reduce(
+          (sum, c) => sum + (c.registered || 0),
+          0
+        ),
+      };
+    });
+  }
+
   return {
-    id: row.id,
+    id: row.slug, // 프론트엔드 id는 slug를 사용
     location: row.location,
-    name: row.name || undefined,
-    years: row.years,
+    name: row.name,
+    years: row.event_editions?.map((e) => e.year).sort((a, b) => a - b) || [],
     color: {
       from: row.color_from,
       to: row.color_to,
     },
-    status: row.status,
+    status: "ready", // 기본값 (개별 연도 상태 참조)
     meta: {
       title: row.meta_title,
       description: row.meta_description,
       image: row.meta_image,
     },
     comment: row.comment || undefined,
-    dataSource: row.data_source as Event["dataSource"],
-    yearDetails: row.year_details as Event["yearDetails"],
+    yearDetails: yearDetails,
   };
 }
 
@@ -38,12 +71,17 @@ function mapRowToEvent(row: EventRow): Event {
 export async function getAllEvents(): Promise<Event[]> {
   // Supabase가 설정되지 않았으면 JSON 폴백
   if (!isSupabaseEnabled() || !supabase) {
-    console.log(`[events] 📁 JSON에서 ${eventsJson.length}개 이벤트 로드 (Supabase 미설정)`);
+    console.log(
+      `[events] 📁 JSON에서 ${eventsJson.length}개 이벤트 로드 (Supabase 미설정)`
+    );
     return eventsJson;
   }
 
   try {
-    const { data, error } = await supabase.from("events").select("*");
+    // 3중 조인 쿼리
+    const { data, error } = await supabase
+      .from("events")
+      .select("*, event_editions(*, courses(*))");
 
     if (error) {
       console.error(`[events] ❌ Supabase 조회 실패: ${error.message}`);
@@ -57,7 +95,8 @@ export async function getAllEvents(): Promise<Event[]> {
     }
 
     console.log(`[events] ✅ Supabase에서 ${data.length}개 이벤트 로드`);
-    return data.map(mapRowToEvent);
+    // @ts-ignore: Supabase 조인 타입 추론 한계로 인해 무시 (실제 런타임 데이터 구조는 맞음)
+    return data.map((row) => mapRowToEvent(row as EventWithRelations));
   } catch (err) {
     console.error("[events] 예외 발생, JSON 폴백 사용:", err);
     return eventsJson;
@@ -65,38 +104,46 @@ export async function getAllEvents(): Promise<Event[]> {
 }
 
 /**
- * ID로 단일 이벤트 조회
- * @param eventId - 이벤트 ID
+ * ID(Slug)로 단일 이벤트 조회
+ * @param eventSlug - 이벤트 ID (slug, 예: muju)
  * @returns Event | undefined
  */
-export async function getEventById(eventId: string): Promise<Event | undefined> {
+export async function getEventById(
+  eventSlug: string
+): Promise<Event | undefined> {
   // Supabase가 설정되지 않았으면 JSON 폴백
   if (!isSupabaseEnabled() || !supabase) {
-    console.log(`[events] 📁 JSON에서 "${eventId}" 로드 (Supabase 미설정)`);
-    return eventsJson.find((e) => e.id === eventId);
+    console.log(
+      `[events] 📁 JSON에서 "${eventSlug}" 로드 (Supabase 미설정)`
+    );
+    return eventsJson.find((e) => e.id === eventSlug);
   }
 
   try {
     const { data, error } = await supabase
       .from("events")
-      .select("*")
-      .eq("id", eventId)
+      .select("*, event_editions(*, courses(*))")
+      .eq("slug", eventSlug) // id 대신 slug로 조회
       .single();
 
     if (error) {
-      console.error(`[events] ${eventId} 조회 실패, JSON 폴백 사용:`, error.message);
-      return eventsJson.find((e) => e.id === eventId);
+      console.error(
+        `[events] ${eventSlug} 조회 실패, JSON 폴백 사용:`,
+        error.message
+      );
+      return eventsJson.find((e) => e.id === eventSlug);
     }
 
     if (!data) {
-      return eventsJson.find((e) => e.id === eventId);
+      return eventsJson.find((e) => e.id === eventSlug);
     }
 
-    console.log(`[events] ✅ Supabase에서 "${eventId}" 로드`);
-    return mapRowToEvent(data);
+    console.log(`[events] ✅ Supabase에서 "${eventSlug}" 로드`);
+    // @ts-ignore
+    return mapRowToEvent(data as EventWithRelations);
   } catch (err) {
-    console.error(`[events] ${eventId} 예외 발생, JSON 폴백 사용:`, err);
-    return eventsJson.find((e) => e.id === eventId);
+    console.error(`[events] ${eventSlug} 예외 발생, JSON 폴백 사용:`, err);
+    return eventsJson.find((e) => e.id === eventSlug);
   }
 }
 

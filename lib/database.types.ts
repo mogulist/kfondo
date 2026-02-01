@@ -1,5 +1,10 @@
-// Supabase Database 타입 정의
-// Phase 1: events 테이블만 포함
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[];
 
 export type Database = {
   public: {
@@ -7,52 +12,113 @@ export type Database = {
       events: {
         Row: {
           id: string;
+          slug: string;
+          name: string;
           location: string;
-          name: string | null;
-          years: number[];
           color_from: string;
           color_to: string;
-          status: "ready" | "upcoming" | "completed";
           meta_title: string;
           meta_description: string;
           meta_image: string;
           comment: string | null;
-          data_source: string | null;
-          year_details: Record<number, EventYearDetailDB>;
           created_at: string;
           updated_at: string;
         };
         Insert: {
-          id: string;
+          id?: string;
+          slug: string;
+          name: string;
           location: string;
-          name?: string | null;
-          years: number[];
           color_from: string;
           color_to: string;
-          status?: "ready" | "upcoming" | "completed";
           meta_title: string;
           meta_description: string;
           meta_image: string;
           comment?: string | null;
-          data_source?: string | null;
-          year_details: Record<number, EventYearDetailDB>;
           created_at?: string;
           updated_at?: string;
         };
         Update: {
           id?: string;
+          slug?: string;
+          name?: string;
           location?: string;
-          name?: string | null;
-          years?: number[];
           color_from?: string;
           color_to?: string;
-          status?: "ready" | "upcoming" | "completed";
           meta_title?: string;
           meta_description?: string;
           meta_image?: string;
           comment?: string | null;
-          data_source?: string | null;
-          year_details?: Record<number, EventYearDetailDB>;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      event_editions: {
+        Row: {
+          id: string;
+          event_id: string;
+          year: number;
+          date: string;
+          status: "upcoming" | "completed" | "ready" | "preparing";
+          url: string | null;
+          comment: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          event_id: string;
+          year: number;
+          date: string;
+          status?: "upcoming" | "completed" | "ready" | "preparing";
+          url?: string | null;
+          comment?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          event_id?: string;
+          year?: number;
+          date?: string;
+          status?: "upcoming" | "completed" | "ready" | "preparing";
+          url?: string | null;
+          comment?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      courses: {
+        Row: {
+          id: string;
+          edition_id: string;
+          course_type: string;
+          name: string;
+          distance: number;
+          elevation: number;
+          registered_count: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          edition_id: string;
+          course_type: string;
+          name: string;
+          distance: number;
+          elevation: number;
+          registered_count?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          edition_id?: string;
+          course_type?: string;
+          name?: string;
+          distance?: number;
+          elevation?: number;
+          registered_count?: number;
           created_at?: string;
           updated_at?: string;
         };
@@ -61,22 +127,6 @@ export type Database = {
   };
 };
 
-// yearDetails를 JSONB로 저장하기 위한 타입
-export type EventYearDetailDB = {
-  year: number;
-  date: string;
-  status?: "completed" | "upcoming" | "preparing";
-  courses: {
-    id: string;
-    name: string;
-    distance: number;
-    elevation?: number;
-    registered?: number;
-    comment?: string;
-  }[];
-  totalRegistered: number;
-  url?: string;
-};
-
-// DB Row를 기존 Event 타입으로 변환하는 헬퍼 타입
 export type EventRow = Database["public"]["Tables"]["events"]["Row"];
+export type EventEditionRow = Database["public"]["Tables"]["event_editions"]["Row"];
+export type CourseRow = Database["public"]["Tables"]["courses"]["Row"];

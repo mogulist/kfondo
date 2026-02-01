@@ -1,26 +1,56 @@
--- Phase 1: events 테이블
--- Supabase SQL Editor에서 실행하세요
+-- Phase 2: Normalized Schema (Events, Editions, Courses)
+-- Supabase SQL Editor에서 이 전체 스크립트를 실행하여 스키마를 업데이트하세요.
+-- 주의: DROP TABLE 명령이 포함되어 있어 기존 데이터가 초기화됩니다.
 
--- events 테이블 생성
-CREATE TABLE IF NOT EXISTS events (
-  id TEXT PRIMARY KEY,
-  location TEXT NOT NULL,
-  name TEXT,
-  years INTEGER[] NOT NULL,
+-- 기존 테이블 삭제 (초기화)
+DROP TABLE IF EXISTS courses;
+DROP TABLE IF EXISTS event_editions;
+DROP TABLE IF EXISTS events;
+
+-- 1. Events 테이블 (대회 기본 정의)
+CREATE TABLE events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug TEXT NOT NULL UNIQUE, -- URL용 식별자 (예: muju)
+  name TEXT NOT NULL, -- 대회명 (예: 무주 그란폰도)
+  location TEXT NOT NULL, -- 개최 지역 (예: 무주)
   color_from TEXT NOT NULL,
   color_to TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'ready' CHECK (status IN ('ready', 'upcoming', 'completed')),
   meta_title TEXT NOT NULL,
   meta_description TEXT NOT NULL,
   meta_image TEXT NOT NULL,
   comment TEXT,
-  data_source TEXT,
-  year_details JSONB NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- 업데이트 시 updated_at 자동 갱신 트리거
+-- 2. Event Editions 테이블 (연도별 개최 정보)
+CREATE TABLE event_editions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_id UUID NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  year INTEGER NOT NULL,
+  date DATE NOT NULL,
+  status TEXT NOT NULL DEFAULT 'upcoming' CHECK (status IN ('upcoming', 'completed', 'ready', 'preparing')),
+  url TEXT, -- 대회 공식 홈페이지 등
+  comment TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(event_id, year) -- 같은 대회가 같은 연도에 두 번 열리지 않음
+);
+
+-- 3. Courses 테이블 (종목/코스 정보)
+CREATE TABLE courses (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  edition_id UUID NOT NULL REFERENCES event_editions(id) ON DELETE CASCADE,
+  course_type TEXT NOT NULL, -- id 역할 (예: granfondo, mediofondo)
+  name TEXT NOT NULL, -- 표시 이름 (예: 그란폰도)
+  distance DOUBLE PRECISION NOT NULL, -- km
+  elevation INTEGER NOT NULL, -- m
+  registered_count INTEGER DEFAULT 0, -- 접수 인원
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 업데이트 시 updated_at 자동 갱신 트리거 함수
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -29,21 +59,22 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
-CREATE TRIGGER update_events_updated_at
-  BEFORE UPDATE ON events
-  FOR EACH ROW
-  EXECUTE FUNCTION update_updated_at_column();
+-- 트리거 적용
+CREATE TRIGGER update_events_updated_at BEFORE UPDATE ON events FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_editions_updated_at BEFORE UPDATE ON event_editions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_courses_updated_at BEFORE UPDATE ON courses FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- RLS (Row Level Security) 설정
--- 읽기는 모두 허용, 쓰기는 인증된 사용자만 (나중에 어드민 기능 추가 시)
 ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE event_editions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
 
 -- 읽기 정책: 모든 사용자 허용
-CREATE POLICY "Allow public read access on events"
-  ON events
-  FOR SELECT
-  USING (true);
+CREATE POLICY "Allow public read access on events" ON events FOR SELECT USING (true);
+CREATE POLICY "Allow public read access on event_editions" ON event_editions FOR SELECT USING (true);
+CREATE POLICY "Allow public read access on courses" ON courses FOR SELECT USING (true);
 
--- 인덱스 생성 (검색 성능 향상)
-CREATE INDEX IF NOT EXISTS idx_events_status ON events(status);
-CREATE INDEX IF NOT EXISTS idx_events_years ON events USING GIN(years);
+-- 인덱스 생성
+CREATE INDEX idx_events_slug ON events(slug);
+CREATE INDEX idx_editions_year ON event_editions(year);
+CREATE INDEX idx_courses_edition ON courses(edition_id);
