@@ -1,13 +1,5 @@
 // 레코드 배열에서 시간 분포 데이터를 생성하는 함수
-import type { RaceRecord } from "./types";
-
-// 시간 분포 + 누적 명수 타입 정의
-export type TimeDistributionWithCumulative = {
-  timeRange: string;
-  participants: number;
-  percentile: number;
-  cumulativeCount: number;
-};
+import type { RaceRecord, TimeDistribution } from "./types";
 
 export function generateTimeDistributionFromRecords(
   records: RaceRecord[],
@@ -15,7 +7,7 @@ export function generateTimeDistributionFromRecords(
   intervalMinutes = 5, // 기본값을 5분으로 변경
   year?: number, // 연도 정보 추가
   totalParticipants?: number // 참가자 수를 외부에서 받을 수 있게 추가
-): TimeDistributionWithCumulative[] {
+): TimeDistribution[] {
   // 해당 이벤트 타입의 완주 기록만 필터링
   const filteredRecords = records.filter(
     (r) =>
@@ -58,7 +50,7 @@ export function generateTimeDistributionFromRecords(
   const intervals = Math.ceil(((maxHours - minHours) * 60) / intervalMinutes);
 
   // 각 구간별 참가자 수 카운트
-  const distribution: TimeDistributionWithCumulative[] = [];
+  const distribution: TimeDistribution[] = [];
   const intervalSeconds = intervalMinutes * 60;
 
   for (let i = 0; i < intervals; i++) {

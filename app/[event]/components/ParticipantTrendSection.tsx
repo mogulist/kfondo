@@ -6,8 +6,8 @@ type Props = {
   event: Event;
 };
 
-export const ParticipantTrendSection = ({ event }: Props) => {
-  const eventData = getEventParticipantTrend(event);
+export const ParticipantTrendSection = async ({ event }: Props) => {
+  const eventData = await getEventParticipantTrend(event);
 
   return (
     <section className="space-y-4">

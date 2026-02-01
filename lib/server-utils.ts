@@ -1,9 +1,10 @@
 import dayjs from "dayjs";
-import { events } from "@/events.config";
+import { getAllEvents } from "@/lib/db/events";
 import type { EventData } from "@/components/EventCard";
+import type { Event } from "@/lib/types";
 
 // Helper to map raw event to EventCard props
-export const mapToEventData = (event: typeof events[0]): EventData => {
+export const mapToEventData = (event: Event): EventData => {
   const latestYear = Math.max(...event.years);
   const latestDetail = event.yearDetails[latestYear];
   
@@ -28,7 +29,8 @@ export const mapToEventData = (event: typeof events[0]): EventData => {
 };
 
 // Server-side event filtering logic
-export function getFilteredEvents(searchQuery?: string) {
+export async function getFilteredEvents(searchQuery?: string) {
+  const events = await getAllEvents();
   const currentYear = dayjs().year();
   const today = dayjs();
 
@@ -134,3 +136,4 @@ export function getFilteredEvents(searchQuery?: string) {
     showSections: recentEvents.length > 0 || upcomingEvents.length > 0
   };
 }
+

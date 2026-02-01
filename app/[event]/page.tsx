@@ -2,21 +2,20 @@ import { ParticipantTrendSection } from "./components/ParticipantTrendSection";
 import { StatsSection } from "./components/StatsSection";
 import { TitleSection } from "./components/TitleSection";
 import { CommentsSection } from "./components/CommentsSection";
-import { events } from "@/events.config";
+import { getEventById } from "@/lib/db/events";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import type { Event } from "@/lib/types";
 import Header from "@/components/Header";
 
 type Props = {
-  params: {
+  params: Promise<{
     event: string;
-  };
+  }>;
 };
 
 export default async function EventPage({ params }: Props) {
-  const { event: eventId } = await params;
-  const event = events.find((e) => e.id === eventId) as Event | undefined;
+  const { event: eventSlug } = await params;
+  const event = await getEventById(eventSlug);
 
   if (!event) {
     notFound();
@@ -31,7 +30,7 @@ export default async function EventPage({ params }: Props) {
           <div className="space-y-16 md:space-y-20">
             <ParticipantTrendSection event={event} />
             <StatsSection event={event} />
-            <CommentsSection event={event} eventId={eventId} />
+            <CommentsSection event={event} eventId={eventSlug} />
           </div>
         </div>
       </main>
@@ -41,8 +40,8 @@ export default async function EventPage({ params }: Props) {
 
 // 동적 메타데이터 생성
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { event: eventId } = await params;
-  const event = events.find((e) => e.id === eventId);
+  const { event: eventSlug } = await params;
+  const event = await getEventById(eventSlug);
 
   if (!event) {
     return {

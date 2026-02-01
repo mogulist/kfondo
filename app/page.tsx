@@ -13,9 +13,9 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
   const params = await searchParams;
   const searchQuery = params.q || "";
 
-  // Get filtered events from server-side utility
+  // Get filtered events from server-side utility (DB 사용)
   const { recentEvents, upcomingEvents, otherEvents, showSections } = 
-    getFilteredEvents(searchQuery);
+    await getFilteredEvents(searchQuery);
 
   const hasSearchResults = 
     recentEvents.length > 0 || 

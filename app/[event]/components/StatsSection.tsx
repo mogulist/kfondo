@@ -7,9 +7,9 @@ type Props = {
   event: Event;
 };
 
-export const StatsSection = ({ event }: Props) => {
+export const StatsSection = async ({ event }: Props) => {
   const dataDir = path.join(process.cwd(), "data");
-  const yearlyStats = getYearStatsWithCourses(event, dataDir);
+  const yearlyStats = await getYearStatsWithCourses(event, dataDir);
 
   return (
     <section className="space-y-4">

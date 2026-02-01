@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import type { Event, GranMedio } from "./types";
-import { events } from "@/events.config";
+import { timeToSeconds } from "./utils"; // 필요한 경우 추가
 
 type Participant = {
   BIB_NO: number;
@@ -11,37 +11,48 @@ type Participant = {
   Status: string;
 };
 
-function readParticipants(eventId: string, year: number): Participant[] {
-  try {
-    const filePath = path.join(
-      process.cwd(),
-      "data",
-      `${eventId}_${year}.json`
-    );
-    const fileContent = fs.readFileSync(filePath, "utf-8");
-    return JSON.parse(fileContent);
-  } catch (error) {
-    console.error(`Error reading participants for ${eventId} ${year}:`, error);
-    return [];
+// Blob URL에서 데이터 fetch (lib/stats.ts와 로직 유사하지만 독립적)
+async function fetchParticipants(event: Event, year: number): Promise<Participant[]> {
+  const blobUrl = event.yearDetails[year]?.recordsBlobUrl;
+
+  if (blobUrl) {
+    try {
+      const response = await fetch(blobUrl, { next: { revalidate: 3600 } });
+      if (!response.ok) throw new Error(`Fetch failed: ${response.statusText}`);
+      return await response.json();
+    } catch (error) {
+      console.warn(`[Participants] Blob fetch failed for ${event.id} ${year}`, error);
+    }
   }
+
+  // 로컬 파일 폴백
+  if (typeof window === "undefined") {
+    try {
+      const filePath = path.join(process.cwd(), "data", `${event.id}_${year}.json`);
+      if (fs.existsSync(filePath)) {
+        const fileContent = fs.readFileSync(filePath, "utf-8");
+        return JSON.parse(fileContent);
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  return [];
 }
 
-export function calculateParticipants(
-  eventId: string,
+// 개별 연도의 참가자 수 계산 (Async)
+export async function calculateParticipants(
+  event: Event,
   year: number
-): Record<string, number> {
-  const event = events.find((e) => e.id === eventId) as Event | undefined;
-  if (!event) {
-    throw new Error(`Event ${eventId} not found`);
-  }
-
+): Promise<Record<string, number>> {
   const { courses } = event.yearDetails[year];
   const courseIdsNames = courses.map((c) => ({
     id: c.id,
     name: c.name,
   }));
 
-  const participants = readParticipants(eventId, year);
+  const participants = await fetchParticipants(event, year);
 
   return courseIdsNames.reduce((acc: Record<string, number>, curr) => {
     const count = participants.filter(
@@ -54,22 +65,18 @@ export function calculateParticipants(
   }, {});
 }
 
-export function calculateDNF(
-  eventId: string,
+// 개별 연도의 DNF 계산 (Async)
+export async function calculateDNF(
+  event: Event,
   year: number
-): Record<string, number> {
-  const event = events.find((e) => e.id === eventId) as Event | undefined;
-  if (!event) {
-    throw new Error(`Event ${eventId} not found`);
-  }
-
+): Promise<Record<string, number>> {
   const { courses } = event.yearDetails[year];
   const courseIdsNames = courses.map((c) => ({
     id: c.id,
     name: c.name,
   }));
 
-  const participants = readParticipants(eventId, year);
+  const participants = await fetchParticipants(event, year);
 
   return courseIdsNames.reduce((acc: Record<string, number>, curr) => {
     const count = participants.filter(
@@ -82,14 +89,20 @@ export function calculateDNF(
   }, {});
 }
 
-export function calculateParticipantsFor(
-  eventId: string,
+type BaseCourse = {
+  id: string;
+  name: string;
+};
+
+// 특정 코스 참가자 수 (Async)
+// participants 데이터를 인자로 받아서 중복 fetch 방지
+function calculateParticipantsForData(
+  participants: Participant[],
+  event: Event,
   course: BaseCourse,
   year: number
 ): number {
-  const participants = readParticipants(eventId, year);
-  const event = events.find((e) => e.id === eventId) as Event | undefined;
-  const yearDetail = event ? event.yearDetails[year] : undefined;
+  const yearDetail = event.yearDetails[year];
   const courseForYear = yearDetail?.courses.find((c) => c.id === course.id);
   const courseNameForYear = courseForYear?.name ?? course.name;
   let participantsCount = 0;
@@ -108,14 +121,14 @@ export function calculateParticipantsFor(
   return participantsCount;
 }
 
-export function calculateDNFsFor(
-  eventId: string,
+// 특정 코스 DNF 수 (Async - participants 받음)
+function calculateDNFsForData(
+  participants: Participant[],
+  event: Event,
   course: BaseCourse,
   year: number
 ): number {
-  const participants = readParticipants(eventId, year);
-  const event = events.find((e) => e.id === eventId) as Event | undefined;
-  const yearDetail = event ? event.yearDetails[year] : undefined;
+  const yearDetail = event.yearDetails[year];
   const courseForYear = yearDetail?.courses.find((c) => c.id === course.id);
   const courseNameForYear = courseForYear?.name ?? course.name;
   let dnfCount = 0;
@@ -150,20 +163,15 @@ type EventParticipantTrendForACourse = {
 
 export type EventParticipantTrends = EventParticipantTrendForACourse[];
 
-type BaseCourse = {
-  id: string;
-  name: string;
-};
-
-export const getEventParticipantTrend = (
+// 메인 함수 (Async)
+export const getEventParticipantTrend = async (
   event: Event
-): EventParticipantTrends => {
+): Promise<EventParticipantTrends> => {
   // 모든 연도의 코스 id 합집합으로 시리즈 기준을 만든다
   const idToName: Record<string, string> = {};
   event.years.forEach((y) => {
     const yd = event.yearDetails[y];
     yd.courses.forEach((c) => {
-      // 표준 코스명은 고정, 그 외는 최초 등장 name을 사용
       if (c.id === "granfondo") idToName[c.id] = "그란폰도";
       else if (c.id === "mediofondo") idToName[c.id] = "메디오폰도";
       else if (!(c.id in idToName)) idToName[c.id] = c.name;
@@ -176,6 +184,17 @@ export const getEventParticipantTrend = (
 
   const recentlyFirstSortedYears = event.years.sort((a, b) => b - a);
 
+  // 각 연도별 데이터를 미리 fetch (병렬 처리)
+  const participantsByYear = new Map<number, Participant[]>();
+  await Promise.all(
+    recentlyFirstSortedYears.map(async (year) => {
+      if (event.yearDetails[year].status !== "preparing") {
+         const data = await fetchParticipants(event, year);
+         participantsByYear.set(year, data);
+      }
+    })
+  );
+
   const eventParticipantTrends: EventParticipantTrends = baseCourses.map(
     (course) => {
       const yearlyData: EventParticipantTrendForYear[] = [];
@@ -183,28 +202,30 @@ export const getEventParticipantTrend = (
       recentlyFirstSortedYears.forEach((year) => {
         const yearDetail = event.yearDetails[year];
 
-        // preparing 상태인 연도는 데이터가 없으므로 건너뛰기
         if (yearDetail.status === "preparing") {
           return;
         }
 
         const courseData = yearDetail.courses.find((c) => c.id === course.id);
         const registered = courseData?.registered ?? 0;
-        const participants = calculateParticipantsFor(event.id, course, year);
-        const dnf = calculateDNFsFor(event.id, course, year);
+        
+        const participants = participantsByYear.get(year) || [];
+        const participantsCount = calculateParticipantsForData(participants, event, course, year);
+        const dnfCount = calculateDNFsForData(participants, event, course, year);
+        
         const participationRate =
           registered === 0
             ? "0"
-            : ((100 * participants) / registered).toFixed(1);
-        const completionRate = dnf
-          ? ((100 * (participants - dnf)) / participants).toFixed(1)
+            : ((100 * participantsCount) / registered).toFixed(1);
+        const completionRate = dnfCount
+          ? ((100 * (participantsCount - dnfCount)) / participantsCount).toFixed(1)
           : "100";
 
         yearlyData.push({
           year,
-          registered: courseData?.registered ?? 0,
-          participants,
-          dnf,
+          registered: registered,
+          participants: participantsCount,
+          dnf: dnfCount,
           participationRate,
           completionRate,
         });
