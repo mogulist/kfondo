@@ -1,7 +1,7 @@
 ---
+trigger: model_decision
 description: Package manager rules for this project
 globs: ["**/*"]
-alwaysApply: true
 ---
 
 # Package Manager: Bun Only
