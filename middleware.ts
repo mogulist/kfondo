@@ -8,18 +8,28 @@ export async function middleware(request: NextRequest) {
   const host = request.headers.get('host') || ''
   const pathname = request.nextUrl.pathname
   
-  const isAdminDomain = host.startsWith('admin.')
   const isAdminPath = pathname.startsWith('/admin')
+  const isAuthPath = pathname.startsWith('/admin/login') || pathname.startsWith('/admin/auth')
+  
+  // 로컬 개발 환경(localhost)이거나 admin 도메인인 경우
+  const isLocalAdmin = host.includes('localhost') && isAdminPath
+  const isAdminDomain = host.startsWith('admin.') || isLocalAdmin
 
   // admin.kfondo.cc 도메인에서만 /admin 경로 허용
   if (isAdminDomain) {
-    // admin 도메인에서 /admin 경로가 아니면 /admin으로 리다이렉트
-    if (!isAdminPath) {
+    // 1. 이미 로그인/인증 페이지에 있다면 건드리지 않음 (무한루프 방지)
+    if (isAuthPath) {
+      return supabaseResponse
+    }
+
+    // 2. admin 도메인인데 /admin 경로가 아니면 /admin으로 강제 이동
+    // (단, 로컬에서는 메인 페이지도 봐야 하므로, 진짜 admin 도메인일 때만 적용)
+    if (host.startsWith('admin.') && !isAdminPath) {
       const url = request.nextUrl.clone()
       url.pathname = '/admin'
       return NextResponse.redirect(url)
     }
-    // admin 도메인에서 /admin 경로면 허용
+    
     return supabaseResponse
   }
 
