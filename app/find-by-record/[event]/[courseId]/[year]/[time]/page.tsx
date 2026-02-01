@@ -1,14 +1,11 @@
 import { notFound } from "next/navigation";
-import { events } from "@/events.config";
-import type { Event } from "@/lib/types";
 import type { Metadata } from "next";
 import StackNavBar from "@/components/StackNavBar";
-import fs from "fs";
-import path from "path";
 import { calculateParticipants, calculateDNF } from "@/lib/participants";
 import { getCourseInfoById } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { generateFindRecordMetadata } from "@/lib/metadata";
+import { getEventById } from "@/lib/db/events";
 
 type Props = {
   params: { event: string; courseId: string; year: string; time: string };
@@ -17,38 +14,42 @@ type Props = {
 const ResultPage = async (props: Props) => {
   const awaitedParams = await props.params;
   const { event: eventId, courseId, year, time } = awaitedParams;
-  const event = events.find((e) => e.id === eventId) as Event | undefined;
+  
+  // Supabase에서 이벤트 데이터 가져오기 (Blob URL 포함)
+  const event = await getEventById(eventId);
   if (!event) notFound();
 
   // digit string(05082735) → HH:mm:ss.SS로 변환
   const parsedTime = parseDigitTime(time);
   if (!parsedTime) notFound();
 
-  const participants = calculateParticipants(eventId, Number(year));
-  const dnf = calculateDNF(eventId, Number(year));
-  const totalParticipants = participants[courseId];
-
-  console.log("courseId", courseId);
-  console.log("participants", participants);
-  console.log("dnf", dnf);
-
-  const totalDNF = dnf[courseId];
+  // async 함수로 업데이트 된 calculateParticipants/calculateDNF 사용
+  const participants = await calculateParticipants(event, Number(year));
+  const dnf = await calculateDNF(event, Number(year));
+  const totalParticipants = participants[courseId] ?? 0;
+  const totalDNF = dnf[courseId] ?? 0;
   const finishers = totalParticipants - totalDNF;
 
-  console.log("totalParticipants", totalParticipants);
-  console.log("totalDNF", totalDNF);
-  console.log("finishers", finishers);
+  // sorted-msec 데이터 가져오기 (Blob URL 필수)
+  const yearDetail = event.yearDetails[Number(year)];
+  const sortedBlobUrl = yearDetail?.sortedRecordsBlobUrl;
 
-  // 파일 경로
-  const sortedFile = path.join(
-    process.cwd(),
-    "data",
-    "sorted-msec",
-    `${eventId}_${year}.json`
-  );
-  if (!fs.existsSync(sortedFile)) notFound();
-  const sortedRaw = fs.readFileSync(sortedFile, "utf-8");
-  const sortedData = JSON.parse(sortedRaw);
+  if (!sortedBlobUrl) {
+    console.error(`[find-by-record] No Blob URL for ${eventId} ${year}`);
+    notFound();
+  }
+
+  let sortedData: Record<string, number[]> = {};
+  try {
+    const response = await fetch(sortedBlobUrl, { next: { revalidate: 3600 } });
+    if (!response.ok) {
+      throw new Error(`Fetch failed: ${response.statusText}`);
+    }
+    sortedData = await response.json();
+  } catch (error) {
+    console.error(`[find-by-record] Failed to fetch sorted data:`, error);
+    notFound();
+  }
 
   // course 영문 → 한글 매핑
   // TODO: 확장성 있게 수정하기. getCourseNameById 사용하면 될 듯
