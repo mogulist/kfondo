@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { events } from "@/events.config";
+import { getEventById } from "@/lib/db/events";
 import { getCourseNameById } from "./utils";
 
 type GenerateFindRecordMetadataParams = {
@@ -8,12 +8,12 @@ type GenerateFindRecordMetadataParams = {
   year: string;
 };
 
-export const generateFindRecordMetadata = ({
+export const generateFindRecordMetadata = async ({
   eventId,
   courseId,
   year,
-}: GenerateFindRecordMetadataParams): Metadata => {
-  const event = events.find((e) => e.id === eventId);
+}: GenerateFindRecordMetadataParams): Promise<Metadata> => {
+  const event = await getEventById(eventId);
 
   if (!event) {
     return {

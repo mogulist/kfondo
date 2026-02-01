@@ -1,10 +1,9 @@
 /**
  * events 데이터 조회 함수
- * 하이브리드 방식: Supabase 우선, 실패 시 JSON 폴백
+ * Supabase 필수 (폴백 제거됨)
  */
 
 import { supabase, isSupabaseEnabled } from "../supabase";
-import { events as eventsJson } from "../../events.config";
 import type { Event, EventYearDetail, RaceCategory } from "../types";
 import type { EventRow, EventEditionRow, CourseRow } from "../database.types";
 
@@ -71,38 +70,29 @@ function mapRowToEvent(row: EventWithRelations): Event {
  * @returns Event[] - 이벤트 배열
  */
 export async function getAllEvents(): Promise<Event[]> {
-  // Supabase가 설정되지 않았으면 JSON 폴백
   if (!isSupabaseEnabled() || !supabase) {
-    console.log(
-      `[events] 📁 JSON에서 ${eventsJson.length}개 이벤트 로드 (Supabase 미설정)`
+    throw new Error(
+      "[events] Supabase가 설정되지 않았습니다. NEXT_PUBLIC_SUPABASE_URL과 NEXT_PUBLIC_SUPABASE_ANON_KEY를 확인하세요."
     );
-    return eventsJson;
   }
 
-  try {
-    // 3중 조인 쿼리
-    const { data, error } = await supabase
-      .from("events")
-      .select("*, event_editions(*, courses(*))");
+  // 3중 조인 쿼리
+  const { data, error } = await supabase
+    .from("events")
+    .select("*, event_editions(*, courses(*))");
 
-    if (error) {
-      console.error(`[events] ❌ Supabase 조회 실패: ${error.message}`);
-      console.log(`[events] 📁 JSON 폴백 사용 (${eventsJson.length}개)`);
-      return eventsJson;
-    }
-
-    if (!data || data.length === 0) {
-      console.log("[events] DB에 데이터 없음, JSON 폴백 사용");
-      return eventsJson;
-    }
-
-    console.log(`[events] ✅ Supabase에서 ${data.length}개 이벤트 로드`);
-    // @ts-ignore: Supabase 조인 타입 추론 한계로 인해 무시 (실제 런타임 데이터 구조는 맞음)
-    return data.map((row) => mapRowToEvent(row as EventWithRelations));
-  } catch (err) {
-    console.error("[events] 예외 발생, JSON 폴백 사용:", err);
-    return eventsJson;
+  if (error) {
+    throw new Error(`[events] Supabase 조회 실패: ${error.message}`);
   }
+
+  if (!data || data.length === 0) {
+    console.warn("[events] DB에 이벤트 데이터가 없습니다.");
+    return [];
+  }
+
+  console.log(`[events] ✅ Supabase에서 ${data.length}개 이벤트 로드`);
+  // @ts-ignore: Supabase 조인 타입 추론 한계로 인해 무시 (실제 런타임 데이터 구조는 맞음)
+  return data.map((row) => mapRowToEvent(row as EventWithRelations));
 }
 
 /**
@@ -113,44 +103,31 @@ export async function getAllEvents(): Promise<Event[]> {
 export async function getEventById(
   eventSlug: string
 ): Promise<Event | undefined> {
-  // Supabase가 설정되지 않았으면 JSON 폴백
   if (!isSupabaseEnabled() || !supabase) {
-    console.log(
-      `[events] 📁 JSON에서 "${eventSlug}" 로드 (Supabase 미설정)`
+    throw new Error(
+      `[events] Supabase가 설정되지 않았습니다. "${eventSlug}" 조회 불가.`
     );
-    return eventsJson.find((e) => e.id === eventSlug);
   }
 
-  try {
-    const { data, error } = await supabase
-      .from("events")
-      .select("*, event_editions(*, courses(*))")
-      .eq("slug", eventSlug) // id 대신 slug로 조회
-      .single();
+  const { data, error } = await supabase
+    .from("events")
+    .select("*, event_editions(*, courses(*))")
+    .eq("slug", eventSlug) // id 대신 slug로 조회
+    .single();
 
-    if (error) {
-      console.error(
-        `[events] ${eventSlug} 조회 실패, JSON 폴백 사용:`,
-        error.message
-      );
-      return eventsJson.find((e) => e.id === eventSlug);
-    }
-
-    if (!data) {
-      return eventsJson.find((e) => e.id === eventSlug);
-    }
-
-    console.log(`[events] ✅ Supabase에서 "${eventSlug}" 로드`);
-    // @ts-ignore
-    return mapRowToEvent(data as EventWithRelations);
-  } catch (err) {
-    console.error(`[events] ${eventSlug} 예외 발생, JSON 폴백 사용:`, err);
-    return eventsJson.find((e) => e.id === eventSlug);
+  if (error) {
+    console.error(
+      `[events] "${eventSlug}" 조회 실패:`,
+      error.message
+    );
+    return undefined;
   }
+
+  if (!data) {
+    return undefined;
+  }
+
+  console.log(`[events] ✅ Supabase에서 "${eventSlug}" 로드`);
+  // @ts-ignore
+  return mapRowToEvent(data as EventWithRelations);
 }
-
-/**
- * 동기적 이벤트 접근 (기존 코드 호환용)
- * 빌드 타임이나 Supabase 미설정 환경에서 사용
- */
-export const events = eventsJson;

@@ -278,7 +278,7 @@ const msecToTimeString = (msec: number): string => {
 
 const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const { event: eventId, courseId, year } = await params;
-  return generateFindRecordMetadata({ eventId, courseId, year });
+  return await generateFindRecordMetadata({ eventId, courseId, year });
 };
 
 export default ResultPage;
