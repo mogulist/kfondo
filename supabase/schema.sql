@@ -1,8 +1,9 @@
--- Phase 2: Normalized Schema (Events, Editions, Courses)
--- Supabase SQL Editor에서 이 전체 스크립트를 실행하여 스키마를 업데이트하세요.
--- 주의: DROP TABLE 명령이 포함되어 있어 기존 데이터가 초기화됩니다.
+-- Phase 3: Vercel Blob Migration Schema
+-- Supabase SQL Editor에서 이 전체 스크립트를 실행하면 스키마가 초기화됩니다 (데이터 삭제됨).
+-- 운영 중인 DB에는 사용하지 말고, 전체 재생성 시에만 사용하세요.
 
 -- 기존 테이블 삭제 (초기화)
+DROP TABLE IF EXISTS records; -- Phase 3에서 제거됨
 DROP TABLE IF EXISTS courses;
 DROP TABLE IF EXISTS event_editions;
 DROP TABLE IF EXISTS events;
@@ -31,6 +32,8 @@ CREATE TABLE event_editions (
   date DATE NOT NULL,
   status TEXT NOT NULL DEFAULT 'upcoming' CHECK (status IN ('upcoming', 'completed', 'ready', 'preparing')),
   url TEXT, -- 대회 공식 홈페이지 등
+  records_blob_url TEXT, -- Vercel Blob URL (원본 기록) [Phase 3 NEW]
+  sorted_records_blob_url TEXT, -- Vercel Blob URL (정렬된 기록) [Phase 3 NEW]
   comment TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -50,21 +53,7 @@ CREATE TABLE courses (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- 4. Records 테이블 (참가자 기록 데이터)
-CREATE TABLE records (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  event_edition_id UUID NOT NULL REFERENCES event_editions(id) ON DELETE CASCADE,
-  course_id UUID REFERENCES courses(id) ON DELETE SET NULL,
-  bib_no TEXT NOT NULL,
-  gender TEXT,
-  record_time TEXT, -- "HH:MM:SS.ms" 형식
-  rank INTEGER,
-  status TEXT DEFAULT 'FINISHED', -- 'FINISHED', 'DNF', 'DNS'
-  start_time TEXT,
-  finish_time TEXT,
-  extra_data JSONB DEFAULT '{}'::jsonb, -- Pace, Speed, CP, KOM 등 가변 필드
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
+-- 4. Records 테이블 제거됨 (Phase 3: Vercel Blob으로 대체)
 
 -- 업데이트 시 updated_at 자동 갱신 트리거 함수
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -84,19 +73,13 @@ CREATE TRIGGER update_courses_updated_at BEFORE UPDATE ON courses FOR EACH ROW E
 ALTER TABLE events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_editions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
-ALTER TABLE records ENABLE ROW LEVEL SECURITY;
 
 -- 읽기 정책: 모든 사용자 허용
 CREATE POLICY "Allow public read access on events" ON events FOR SELECT USING (true);
 CREATE POLICY "Allow public read access on event_editions" ON event_editions FOR SELECT USING (true);
 CREATE POLICY "Allow public read access on courses" ON courses FOR SELECT USING (true);
-CREATE POLICY "Allow public read access on records" ON records FOR SELECT USING (true);
 
 -- 인덱스 생성
 CREATE INDEX idx_events_slug ON events(slug);
 CREATE INDEX idx_editions_year ON event_editions(year);
 CREATE INDEX idx_courses_edition ON courses(edition_id);
-CREATE INDEX idx_records_edition ON records(event_edition_id);
-CREATE INDEX idx_records_course ON records(course_id);
-CREATE INDEX idx_records_bib ON records(bib_no);
-

@@ -34,6 +34,7 @@ export type TimeDistribution = {
   timeRange: string;
   participants: number;
   percentile: number;
+  cumulativeCount?: number;
 };
 
 export type EventYearStats = {
@@ -80,4 +81,6 @@ export type EventYearDetail = {
   courses: RaceCategory[];
   totalRegistered: number;
   url?: string;
+  recordsBlobUrl?: string; // Phase 3: Vercel Blob URL (원본 기록)
+  sortedRecordsBlobUrl?: string; // Phase 3: Vercel Blob URL (정렬된 기록)
 };

@@ -64,6 +64,8 @@ export type Database = {
           comment: string | null;
           created_at: string;
           updated_at: string;
+          records_blob_url: string | null;
+          sorted_records_blob_url: string | null;
         };
         Insert: {
           id?: string;
@@ -75,6 +77,8 @@ export type Database = {
           comment?: string | null;
           created_at?: string;
           updated_at?: string;
+          records_blob_url?: string | null;
+          sorted_records_blob_url?: string | null;
         };
         Update: {
           id?: string;
@@ -86,6 +90,8 @@ export type Database = {
           comment?: string | null;
           created_at?: string;
           updated_at?: string;
+          records_blob_url?: string | null;
+          sorted_records_blob_url?: string | null;
         };
       };
       courses: {
@@ -123,50 +129,6 @@ export type Database = {
           updated_at?: string;
         };
       };
-      records: {
-        Row: {
-          id: string;
-          event_edition_id: string;
-          course_id: string | null;
-          bib_no: string;
-          gender: string | null;
-          record_time: string | null;
-          rank: number | null;
-          status: string;
-          start_time: string | null;
-          finish_time: string | null;
-          extra_data: Json;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          event_edition_id: string;
-          course_id?: string | null;
-          bib_no: string;
-          gender?: string | null;
-          record_time?: string | null;
-          rank?: number | null;
-          status?: string;
-          start_time?: string | null;
-          finish_time?: string | null;
-          extra_data?: Json;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          event_edition_id?: string;
-          course_id?: string | null;
-          bib_no?: string;
-          gender?: string | null;
-          record_time?: string | null;
-          rank?: number | null;
-          status?: string;
-          start_time?: string | null;
-          finish_time?: string | null;
-          extra_data?: Json;
-          created_at?: string;
-        };
-      };
     };
   };
 };
@@ -174,5 +136,4 @@ export type Database = {
 export type EventRow = Database["public"]["Tables"]["events"]["Row"];
 export type EventEditionRow = Database["public"]["Tables"]["event_editions"]["Row"];
 export type CourseRow = Database["public"]["Tables"]["courses"]["Row"];
-export type RecordRow = Database["public"]["Tables"]["records"]["Row"];
 

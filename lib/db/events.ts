@@ -35,6 +35,8 @@ function mapRowToEvent(row: EventWithRelations): Event {
         date: edition.date.replace(/-/g, "."), // YYYY-MM-DD -> YYYY.MM.DD
         status: edition.status as any,
         url: edition.url || undefined,
+        recordsBlobUrl: edition.records_blob_url || undefined,
+        sortedRecordsBlobUrl: edition.sorted_records_blob_url || undefined,
         courses: courses,
         totalRegistered: courses.reduce(
           (sum, c) => sum + (c.registered || 0),

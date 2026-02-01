@@ -9,42 +9,61 @@ import type {
 import { generateTimeDistributionFromRecords } from "./record-stats";
 import { timeToSeconds } from "./utils";
 
-export function getYearStats(event: Event, dataDir: string): EventYearStats[] {
-  const yearsWithData = event.years.filter((year) => {
-    const filePath = path.join(dataDir, `${event.id}_${year}.json`);
-    return fs.existsSync(filePath);
-  });
+// 레코드 파싱 헬퍼 함수
+function parseRecords(rawRecords: any[]): RaceRecord[] {
+  return rawRecords.map((r: any) => ({
+    bibNo: String(r.BIB_NO),
+    gender: r.Gender,
+    event: r.Event,
+    time: r.Time,
+    status: r.Status,
+    timeInSeconds: r.Time ? timeToSeconds(r.Time) : undefined,
+  }));
+}
 
-  const yearStats: EventYearStats[] = yearsWithData.map((year) => {
-    const filePath = path.join(dataDir, `${event.id}_${year}.json`);
-    const raw = fs.readFileSync(filePath, "utf-8");
-    const records: RaceRecord[] = JSON.parse(raw).map((r: any) => ({
-      bibNo: String(r.BIB_NO),
-      gender: r.Gender,
-      event: r.Event,
-      time: r.Time,
-      status: r.Status,
-      timeInSeconds: r.Time ? timeToSeconds(r.Time) : undefined,
-    }));
+// 레코드 가져오기 (Blob URL 우선, 로컬 파일 폴백)
+async function fetchRecords(
+  event: Event,
+  year: number,
+  dataDir: string
+): Promise<RaceRecord[]> {
+  const blobUrl = event.yearDetails[year]?.recordsBlobUrl;
 
-    const yearData = event.years
-      .map((y) => {
-        const detail = event.yearDetails[y];
-        const gran = detail.courses.find((c) => c.id === "granfondo");
-        const medio = detail.courses.find((c) => c.id === "mediofondo");
-        return {
-          year: y,
-          registered: {
-            granfondo: gran?.registered ?? 0,
-            mediofondo: medio?.registered ?? 0,
-          },
-        };
-      })
-      .find((d) => d.year === year);
-
-    if (!yearData) {
-      throw new Error(`No data found for year ${year}`);
+  // 1. Blob URL 사용
+  if (blobUrl) {
+    try {
+      const response = await fetch(blobUrl, { next: { revalidate: 3600 } }); // 1시간 캐시
+      if (!response.ok) throw new Error(`Fetch failed: ${response.statusText}`);
+      const rawRecords = await response.json();
+      return parseRecords(rawRecords);
+    } catch (error) {
+      console.warn(
+        `[Stats] Blob fetch failed for ${event.id} ${year}, falling back to local file.`,
+        error
+      );
     }
+  }
+
+  // 2. 로컬 파일 폴백 (서버 환경에서만)
+  if (typeof window === "undefined") {
+    const filePath = path.join(dataDir, `${event.id}_${year}.json`);
+    if (fs.existsSync(filePath)) {
+      const raw = fs.readFileSync(filePath, "utf-8");
+      return parseRecords(JSON.parse(raw));
+    }
+  }
+
+  return [];
+}
+
+export async function getYearStats(
+  event: Event,
+  dataDir: string
+): Promise<EventYearStats[]> {
+  const statsPromises = event.years.map(async (year) => {
+    const records = await fetchRecords(event, year, dataDir);
+    
+    if (records.length === 0) return null;
 
     const gran = event.yearDetails[year]?.courses.find(
       (c) => c.id === "granfondo"
@@ -69,30 +88,25 @@ export function getYearStats(event: Event, dataDir: string): EventYearStats[] {
     };
   });
 
+  const results = await Promise.all(statsPromises);
+  const yearStats: EventYearStats[] = [];
+  
+  for (const s of results) {
+    if (s) yearStats.push(s);
+  }
+
   yearStats.sort((a, b) => b.year - a.year);
   return yearStats;
 }
 
-export function getYearStatsWithCourses(
+export async function getYearStatsWithCourses(
   event: Event,
   dataDir: string
-): EventYearStatsWithCourses[] {
-  const yearsWithData = event.years.filter((year) => {
-    const filePath = path.join(dataDir, `${event.id}_${year}.json`);
-    return fs.existsSync(filePath);
-  });
+): Promise<EventYearStatsWithCourses[]> {
+  const statsPromises = event.years.map(async (year) => {
+    const records = await fetchRecords(event, year, dataDir);
 
-  const yearStats: EventYearStatsWithCourses[] = yearsWithData.map((year) => {
-    const filePath = path.join(dataDir, `${event.id}_${year}.json`);
-    const raw = fs.readFileSync(filePath, "utf-8");
-    const records: RaceRecord[] = JSON.parse(raw).map((r: any) => ({
-      bibNo: String(r.BIB_NO),
-      gender: r.Gender,
-      event: r.Event,
-      time: r.Time,
-      status: r.Status,
-      timeInSeconds: r.Time ? timeToSeconds(r.Time) : undefined,
-    }));
+    if (records.length === 0) return null;
 
     const detail = event.yearDetails[year];
     const distributions = detail.courses.map((course) => ({
@@ -116,6 +130,13 @@ export function getYearStatsWithCourses(
       comment: granfondoComment,
     };
   });
+
+  const results = await Promise.all(statsPromises);
+  const yearStats: EventYearStatsWithCourses[] = [];
+
+  for (const s of results) {
+    if (s) yearStats.push(s);
+  }
 
   yearStats.sort((a, b) => b.year - a.year);
   return yearStats;
