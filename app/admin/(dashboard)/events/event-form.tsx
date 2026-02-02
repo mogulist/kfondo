@@ -37,8 +37,10 @@ const formSchema = z.object({
   location: z.string().min(1, "Location is required"),
   meta_title: z.string().min(1, "Meta Title is required"),
   meta_description: z.string().min(1, "Meta Description is required"),
-  meta_image: z.string().url("Must be a valid URL"),
-  comment: z.string().optional(),
+  meta_image: z
+    .union([z.string().url("Must be a valid URL"), z.literal("")])
+    .optional(),
+  comment: z.string().nullish(),
 });
 
 interface EventFormProps {
@@ -58,7 +60,7 @@ export function EventForm({ initialData }: EventFormProps) {
       location: "",
       meta_title: "",
       meta_description: "",
-      meta_image: "https://example.com/image.jpg",
+      meta_image: "",
       comment: "",
     },
   });
@@ -206,7 +208,11 @@ export function EventForm({ initialData }: EventFormProps) {
             <FormItem>
               <FormLabel>Internal Comment</FormLabel>
               <FormControl>
-                <Textarea placeholder="Notes for admins..." {...field} />
+                <Textarea
+                  placeholder="Notes for admins..."
+                  {...field}
+                  value={field.value ?? ""}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
