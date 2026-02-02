@@ -90,7 +90,11 @@ export function EventForm({ initialData }: EventFormProps) {
         toast.success("Event created successfully.");
       }
 
-      router.push("/admin/events");
+      if (initialData) {
+        router.back();
+      } else {
+        router.push("/admin/events");
+      }
       router.refresh();
     } catch (error) {
       console.error(error);

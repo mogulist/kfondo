@@ -31,7 +31,12 @@ export default async function EventsPage() {
         </Button>
       </div>
 
-      <DataTable columns={columns} data={events || []} searchKey="name" />
+      <DataTable
+        columns={columns}
+        data={events || []}
+        searchKey="name"
+        searchParamKey="q"
+      />
     </div>
   );
 }

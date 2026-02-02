@@ -23,20 +23,55 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey?: string;
+  /** URL query key for persisting search (e.g. "q" => ?q=...). When set, search is synced to URL and restored on mount. */
+  searchParamKey?: string;
+}
+
+function getInitialColumnFilters(
+  searchKey: string | undefined,
+  searchParamKey: string | undefined,
+  searchParams: URLSearchParams | null
+): ColumnFiltersState {
+  if (!searchKey || !searchParamKey || !searchParams) return [];
+  const value = searchParams.get(searchParamKey) ?? "";
+  if (!value) return [];
+  return [{ id: searchKey, value }];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   searchKey,
+  searchParamKey,
 }: DataTableProps<TData, TValue>) {
+  const searchParams = useSearchParams();
+  const initialFilters = getInitialColumnFilters(
+    searchKey,
+    searchParamKey,
+    searchParams
+  );
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] =
+    useState<ColumnFiltersState>(initialFilters);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const updateSearchParam = (value: string) => {
+    if (!searchParamKey) return;
+    const params = new URLSearchParams(searchParams.toString());
+    if (value) params.set(searchParamKey, value);
+    else params.delete(searchParamKey);
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, {
+      scroll: false,
+    });
+  };
 
   const table = useReactTable({
     data,
@@ -62,9 +97,11 @@ export function DataTable<TData, TValue>({
             value={
               (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""
             }
-            onChange={(event) =>
-              table.getColumn(searchKey)?.setFilterValue(event.target.value)
-            }
+            onChange={(event) => {
+              const value = event.target.value;
+              table.getColumn(searchKey)?.setFilterValue(value);
+              updateSearchParam(value);
+            }}
             className="max-w-sm"
           />
         </div>
