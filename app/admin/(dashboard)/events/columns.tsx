@@ -20,6 +20,7 @@ type Event = Database["public"]["Tables"]["events"]["Row"];
 export const columns: ColumnDef<Event>[] = [
   {
     accessorKey: "name",
+    meta: { className: "min-w-[280px] w-full" },
     header: ({ column }) => {
       return (
         <Button
@@ -42,6 +43,7 @@ export const columns: ColumnDef<Event>[] = [
   },
   {
     accessorKey: "slug",
+    meta: { className: "w-56 whitespace-nowrap" },
     header: "Slug",
     cell: ({ row }) => (
       <span className="font-mono text-xs">{row.getValue("slug")}</span>
@@ -49,7 +51,8 @@ export const columns: ColumnDef<Event>[] = [
   },
   {
     accessorKey: "created_at",
-    header: "Created At",
+    meta: { className: "w-36 whitespace-nowrap" },
+    header: "생성일",
     cell: ({ row }) => {
       const date = new Date(row.getValue("created_at"));
       return <span>{date.toLocaleDateString()}</span>;
@@ -57,6 +60,7 @@ export const columns: ColumnDef<Event>[] = [
   },
   {
     id: "actions",
+    meta: { className: "w-14 text-right" },
     cell: ({ row }) => {
       const event = row.original;
 
