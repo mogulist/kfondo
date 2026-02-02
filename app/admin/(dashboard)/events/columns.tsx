@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,12 +10,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import Link from "next/link"
+} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 // 기존 타입 활용 (Database 생성 타입)
-import type { Database } from "@/lib/database.types"
-type Event = Database["public"]["Tables"]["events"]["Row"]
+import type { Database } from "@/lib/database.types";
+type Event = Database["public"]["Tables"]["events"]["Row"];
 
 export const columns: ColumnDef<Event>[] = [
   {
@@ -29,35 +29,36 @@ export const columns: ColumnDef<Event>[] = [
           Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
-  },
-  {
-    accessorKey: "location",
-    header: "Location",
+    cell: ({ row }) => (
+      <Link
+        href={`/admin/events/${row.original.id}`}
+        className="font-medium hover:underline"
+      >
+        {row.getValue("name")}
+      </Link>
+    ),
   },
   {
     accessorKey: "slug",
     header: "Slug",
-    cell: ({ row }) => <span className="font-mono text-xs">{row.getValue("slug")}</span>,
-  },
-  {
-    accessorKey: "id",
-    header: "ID",
-    cell: ({ row }) => <span className="font-mono text-xs text-slate-400">{row.getValue("id")}</span>,
+    cell: ({ row }) => (
+      <span className="font-mono text-xs">{row.getValue("slug")}</span>
+    ),
   },
   {
     accessorKey: "created_at",
     header: "Created At",
     cell: ({ row }) => {
-      const date = new Date(row.getValue("created_at"))
-      return <span>{date.toLocaleDateString()}</span>
+      const date = new Date(row.getValue("created_at"));
+      return <span>{date.toLocaleDateString()}</span>;
     },
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const event = row.original
+      const event = row.original;
 
       return (
         <DropdownMenu>
@@ -79,12 +80,10 @@ export const columns: ColumnDef<Event>[] = [
               <Link href={`/admin/events/${event.id}`}>Edit event</Link>
             </DropdownMenuItem>
             {/* 삭제 기능은 별도 확인 절차 필요하므로 일단 UI만 */}
-            <DropdownMenuItem className="text-red-600">
-              Delete
-            </DropdownMenuItem>
+            <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];
