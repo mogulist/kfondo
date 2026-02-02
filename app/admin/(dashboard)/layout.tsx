@@ -58,14 +58,14 @@ export default async function AdminLayout({
   }
 
   return (
-    <SidebarProvider>
+    <SidebarProvider className="flex min-h-0 flex-1">
       <AppSidebar />
-      <SidebarInset className="flex-1 overflow-auto">
-        <header className="flex h-14 items-center gap-4 border-b bg-white dark:bg-slate-950 px-6 lg:h-[60px]">
+      <SidebarInset className="flex min-h-0 flex-1 flex-col">
+        <header className="flex h-14 shrink-0 items-center gap-4 border-b bg-white dark:bg-slate-950 px-6 lg:h-[60px]">
           <SidebarTrigger />
           <div className="w-full flex-1">{/* Breadcrumbs could go here */}</div>
         </header>
-        <div className="flex-1 p-4 lg:p-6 w-full max-w-[1600px] mx-auto">
+        <div className="min-h-0 flex-1 overflow-auto p-4 lg:p-6 w-full max-w-[1600px] mx-auto">
           {children}
         </div>
       </SidebarInset>
