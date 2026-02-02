@@ -24,7 +24,7 @@ export default async function EventsPage() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Events</h1>
         </div>
-        <Button asChild>
+        <Button variant="outline" asChild>
           <Link href="/admin/events/new">
             <Plus className="mr-2 h-4 w-4" /> New Event
           </Link>
