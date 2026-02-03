@@ -1,11 +1,22 @@
 import type React from "react";
 import "@/app/globals.css";
+import { RootLayoutContent } from "@/components/root-layout-content";
 import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const FOOTER = (
+  <footer className="border-t mt-12">
+    <div className="max-w-screen-xl mx-auto px-4 py-8">
+      <p className="text-center text-sm text-muted-foreground">
+        © 2025-{new Date().getFullYear()} K-Fondo. All rights reserved.
+      </p>
+    </div>
+  </footer>
+);
 
 export default function RootLayout({
   children,
@@ -21,18 +32,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen bg-background">
+          <RootLayoutContent footer={FOOTER}>
             {children}
             <Analytics />
-            <footer className="border-t mt-12">
-              <div className="max-w-screen-xl mx-auto px-4 py-8">
-                <p className="text-center text-sm text-muted-foreground">
-                  © 2025-{new Date().getFullYear()} K-Fondo. All rights
-                  reserved.
-                </p>
-              </div>
-            </footer>
-          </div>
+          </RootLayoutContent>
         </ThemeProvider>
       </body>
     </html>
