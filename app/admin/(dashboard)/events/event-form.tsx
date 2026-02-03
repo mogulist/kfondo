@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -19,7 +20,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Save, X } from "lucide-react";
+import { Pencil, Save, X } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -61,51 +62,90 @@ const defaultValues: EventFormValues = {
   comment: "",
 };
 
-function BasicInfoView({ data }: { data: EventFormValues }) {
+const readOnlyInputClass =
+  "flex h-10 w-full rounded-md border border-input bg-muted/50 px-3 py-2 text-sm text-foreground";
+
+function BasicInfoView({
+  data,
+  onEditClick,
+}: {
+  data: EventFormValues;
+  onEditClick?: () => void;
+}) {
   return (
-    <div className="space-y-6 w-full bg-white dark:bg-slate-950 p-6 rounded-lg border">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-muted-foreground">대회명 *</p>
-          <p className="text-sm">{data.name}</p>
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-end">
+          {onEditClick && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={onEditClick}
+              className="gap-3"
+            >
+              <Pencil className="h-4 w-4" />
+              편집
+            </Button>
+          )}
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-muted-foreground">
+              대회명 *
+            </p>
+            <div className={readOnlyInputClass}>{data.name}</div>
+          </div>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-muted-foreground">
+              개최 지역 *
+            </p>
+            <div className={readOnlyInputClass}>{data.location}</div>
+          </div>
         </div>
         <div className="space-y-2">
           <p className="text-sm font-medium text-muted-foreground">
-            개최 지역 *
+            URL 슬러그 *
           </p>
-          <p className="text-sm">{data.location}</p>
-        </div>
-      </div>
-      <div className="space-y-2">
-        <p className="text-sm font-medium text-muted-foreground">
-          URL 슬러그 *
-        </p>
-        <p className="text-sm">{data.slug}</p>
-      </div>
-      <div className="space-y-2">
-        <p className="text-sm font-medium text-muted-foreground">코멘트</p>
-        <p className="text-sm">{data.comment || "-"}</p>
-      </div>
-      <div className="space-y-4 border-t pt-4">
-        <h3 className="font-medium text-sm text-slate-500">메타 정보 (SEO)</h3>
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-muted-foreground">
-            메타 타이틀
-          </p>
-          <p className="text-sm">{data.meta_title}</p>
+          <div className={readOnlyInputClass}>{data.slug}</div>
         </div>
         <div className="space-y-2">
-          <p className="text-sm font-medium text-muted-foreground">메타 설명</p>
-          <p className="text-sm">{data.meta_description}</p>
+          <p className="text-sm font-medium text-muted-foreground">코멘트</p>
+          <div className="min-h-[80px] w-full rounded-md border border-input bg-muted/50 px-3 py-2 text-sm text-foreground whitespace-pre-wrap">
+            {data.comment || "-"}
+          </div>
         </div>
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-muted-foreground">
-            메타 이미지 URL
-          </p>
-          <p className="text-sm break-all">{data.meta_image || "-"}</p>
+        <div className="space-y-4 border-t pt-4">
+          <h3 className="font-medium text-sm text-slate-500">
+            메타 정보 (SEO)
+          </h3>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-muted-foreground">
+              메타 타이틀
+            </p>
+            <div className={readOnlyInputClass}>{data.meta_title}</div>
+          </div>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-muted-foreground">
+              메타 설명
+            </p>
+            <div className="min-h-[80px] w-full rounded-md border border-input bg-muted/50 px-3 py-2 text-sm text-foreground whitespace-pre-wrap">
+              {data.meta_description}
+            </div>
+          </div>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-muted-foreground">
+              메타 이미지 URL
+            </p>
+            <div className={`${readOnlyInputClass} break-all`}>
+              {data.meta_image || "-"}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -172,158 +212,166 @@ export function EventForm({
           meta_image: initialData.meta_image ?? "",
           comment: initialData.comment ?? "",
         }}
+        onEditClick={
+          onEditModeChange ? () => onEditModeChange(true) : undefined
+        }
       />
     );
   }
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 w-full bg-white dark:bg-slate-950 p-6 rounded-lg border relative"
-      >
-        {initialData && onEditModeChange && (
-          <div className="absolute right-6 top-6 flex gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => onEditModeChange(false)}
-            >
-              <X className="mr-1 h-4 w-4" />
-              취소
-            </Button>
-            <Button
-              type="submit"
-              disabled={isLoading}
-              size="sm"
-              className="bg-primary text-primary-foreground"
-            >
-              <Save className="mr-1 h-4 w-4" />
-              {isLoading ? "저장 중..." : "저장"}
-            </Button>
-          </div>
-        )}
-
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>대회명 *</FormLabel>
-              <FormControl>
-                <Input placeholder="무주 그란폰도" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <Card>
+          {initialData && onEditModeChange && (
+            <CardHeader>
+              <div className="flex items-center justify-end">
+                <div className="flex gap-2">
+                  <Button
+                    type="submit"
+                    disabled={isLoading}
+                    size="sm"
+                    className="gap-2 bg-primary text-primary-foreground"
+                  >
+                    <Save className="h-4 w-4" />
+                    {isLoading ? "저장 중..." : "저장"}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onEditModeChange(false)}
+                    className="gap-2"
+                  >
+                    <X className="h-4 w-4" />
+                    취소
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
           )}
-        />
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>대회명 *</FormLabel>
+                    <FormControl>
+                      <Input placeholder="무주 그란폰도" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="location"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>개최 지역 *</FormLabel>
+                    <FormControl>
+                      <Input placeholder="무주" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="slug"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>URL 슬러그 *</FormLabel>
-                <FormControl>
-                  <Input placeholder="muju" {...field} />
-                </FormControl>
-                <FormDescription>
-                  URL용 식별자 (예: kfondo.cc/muju)
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
+            <FormField
+              control={form.control}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>URL 슬러그 *</FormLabel>
+                  <FormControl>
+                    <Input placeholder="muju" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    URL용 식별자 (예: kfondo.cc/muju)
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="comment"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>코멘트</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="관리자용 메모..."
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="space-y-4 border-t pt-4">
+              <h3 className="font-medium text-sm text-slate-500">
+                메타 정보 (SEO)
+              </h3>
+
+              <FormField
+                control={form.control}
+                name="meta_title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>메타 타이틀</FormLabel>
+                    <FormControl>
+                      <Input placeholder="무주 그란폰도 2024" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="meta_description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>메타 설명</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="대회 소개..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="meta_image"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>메타 이미지 URL</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {!initialData && (
+              <div className="flex justify-end">
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? "저장 중..." : "이벤트 생성"}
+                </Button>
+              </div>
             )}
-          />
-          <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>개최 지역 *</FormLabel>
-                <FormControl>
-                  <Input placeholder="무주" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <FormField
-          control={form.control}
-          name="comment"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>코멘트</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="관리자용 메모..."
-                  {...field}
-                  value={field.value ?? ""}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="space-y-4 border-t pt-4">
-          <h3 className="font-medium text-sm text-slate-500">
-            메타 정보 (SEO)
-          </h3>
-
-          <FormField
-            control={form.control}
-            name="meta_title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>메타 타이틀</FormLabel>
-                <FormControl>
-                  <Input placeholder="무주 그란폰도 2024" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="meta_description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>메타 설명</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="대회 소개..." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="meta_image"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>메타 이미지 URL</FormLabel>
-                <FormControl>
-                  <Input placeholder="https://..." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        {!initialData && (
-          <div className="flex justify-end">
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? "저장 중..." : "이벤트 생성"}
-            </Button>
-          </div>
-        )}
+          </CardContent>
+        </Card>
       </form>
     </Form>
   );

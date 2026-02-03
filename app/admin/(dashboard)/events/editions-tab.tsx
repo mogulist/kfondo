@@ -105,10 +105,7 @@ export function EditionsTab({ eventId, editions }: EditionsTabProps) {
   return (
     <div className="rounded-lg border bg-card p-6">
       <div className="mb-4 flex justify-end">
-        <Button
-          onClick={handleAdd}
-          className="bg-primary text-primary-foreground"
-        >
+        <Button onClick={handleAdd} size="sm" variant="outline">
           + 새 에디션 추가
         </Button>
       </div>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, Pencil } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { EventForm } from "../event-form";
@@ -44,16 +44,6 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
             <br />
             <span>수정: {updatedStr}</span>
           </div>
-          {activeTab === "basic" && !isBasicInfoEditing && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setIsBasicInfoEditing(true)}
-            >
-              <Pencil className="mr-1 h-4 w-4" />
-              편집
-            </Button>
-          )}
         </div>
       </div>
 

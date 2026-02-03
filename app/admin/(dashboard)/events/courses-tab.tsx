@@ -82,10 +82,7 @@ export function CoursesTab({ editions }: CoursesTabProps) {
   return (
     <div className="rounded-lg border bg-card p-6">
       <div className="mb-4 flex justify-end">
-        <Button
-          onClick={handleAdd}
-          className="bg-primary text-primary-foreground"
-        >
+        <Button onClick={handleAdd} variant="outline" size="sm">
           + 새 코스 추가
         </Button>
       </div>
