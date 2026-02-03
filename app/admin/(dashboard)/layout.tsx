@@ -61,10 +61,6 @@ export default async function AdminLayout({
     <SidebarProvider className="flex min-h-0 flex-1">
       <AppSidebar />
       <SidebarInset className="flex min-h-0 flex-1 flex-col">
-        <header className="flex h-14 shrink-0 items-center gap-4 border-b bg-white dark:bg-slate-950 px-6 lg:h-[60px]">
-          <SidebarTrigger />
-          <div className="w-full flex-1">{/* Breadcrumbs could go here */}</div>
-        </header>
         <div className="min-h-0 flex-1 overflow-auto p-4 lg:p-6 w-full max-w-[1600px] mx-auto">
           {children}
         </div>
@@ -76,7 +72,8 @@ export default async function AdminLayout({
 function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="h-14 flex items-center justify-center border-b">
+      <SidebarHeader className="h-14 flex items-center gap-2 border-b px-2">
+        <SidebarTrigger />
         <span className="font-bold text-lg">KFondo Admin</span>
       </SidebarHeader>
       <SidebarContent>

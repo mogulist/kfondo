@@ -23,51 +23,50 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
   const updatedStr = formatDateTime(event.updated_at);
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/admin/events" aria-label="목록으로">
-              <ChevronLeft className="h-5 w-5" />
-            </Link>
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">{event.name}</h1>
-            <p className="text-muted-foreground">
-              {event.location} · {event.slug}
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-col items-end gap-2">
-          <div className="text-sm text-muted-foreground">
-            <span>생성: {createdStr}</span>
-            <br />
-            <span>수정: {updatedStr}</span>
-          </div>
+    <div className="space-y-0">
+      <div className="flex items-center gap-2 pb-4">
+        <Button variant="ghost" size="icon" asChild>
+          <Link href="/admin/events" aria-label="목록으로">
+            <ChevronLeft className="h-5 w-5" />
+          </Link>
+        </Button>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">{event.name}</h1>
+          <p className="text-sm text-muted-foreground">
+            {event.location} · {event.slug}
+          </p>
         </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full max-w-md grid-cols-3">
-          <TabsTrigger
-            value="basic"
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            기본 정보
-          </TabsTrigger>
-          <TabsTrigger
-            value="editions"
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            개최 정보
-          </TabsTrigger>
-          <TabsTrigger
-            value="courses"
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            코스 정보
-          </TabsTrigger>
-        </TabsList>
+      <div className="border-b border-border" />
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-4">
+          <TabsList className="grid w-full max-w-md grid-cols-3">
+            <TabsTrigger
+              value="basic"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              기본 정보
+            </TabsTrigger>
+            <TabsTrigger
+              value="editions"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              개최 정보
+            </TabsTrigger>
+            <TabsTrigger
+              value="courses"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              코스 정보
+            </TabsTrigger>
+          </TabsList>
+          <div className="text-sm text-muted-foreground shrink-0">
+            <div>생성: {createdStr}</div>
+            <div>수정: {updatedStr}</div>
+          </div>
+        </div>
 
         <TabsContent value="basic" className="mt-4">
           <EventForm
