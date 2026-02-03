@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Pencil, Save, X } from "lucide-react";
 
@@ -162,6 +162,17 @@ export function EventForm({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || defaultValues,
   });
+
+  const name = form.watch("name");
+  useEffect(() => {
+    if (!initialData && name?.trim()) {
+      form.setValue("meta_title", `${name.trim()} 통계 | K-Fondo`);
+      form.setValue(
+        "meta_description",
+        `${name.trim()}의 연도별 참가자 통계와 기록 분포를 확인해보세요.`
+      );
+    }
+  }, [name, initialData, form]);
 
   const isViewMode = Boolean(initialData && !editMode);
 
