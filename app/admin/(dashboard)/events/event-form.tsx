@@ -18,9 +18,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "sonner"; // Assuming you have sonner or use-toast
+import { toast } from "sonner";
+import { Save, X } from "lucide-react";
 
-// 스키마 정의
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
@@ -43,29 +43,89 @@ const formSchema = z.object({
   comment: z.string().nullish(),
 });
 
-interface EventFormProps {
-  initialData?: z.infer<typeof formSchema> & { id: string };
+type EventFormValues = z.infer<typeof formSchema>;
+
+type EventFormProps = {
+  initialData?: EventFormValues & { id: string };
+  editMode?: boolean;
+  onEditModeChange?: (editing: boolean) => void;
+};
+
+const defaultValues: EventFormValues = {
+  name: "",
+  slug: "",
+  location: "",
+  meta_title: "",
+  meta_description: "",
+  meta_image: "",
+  comment: "",
+};
+
+function BasicInfoView({ data }: { data: EventFormValues }) {
+  return (
+    <div className="space-y-6 w-full bg-white dark:bg-slate-950 p-6 rounded-lg border">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <p className="text-sm font-medium text-muted-foreground">대회명 *</p>
+          <p className="text-sm">{data.name}</p>
+        </div>
+        <div className="space-y-2">
+          <p className="text-sm font-medium text-muted-foreground">
+            개최 지역 *
+          </p>
+          <p className="text-sm">{data.location}</p>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <p className="text-sm font-medium text-muted-foreground">
+          URL 슬러그 *
+        </p>
+        <p className="text-sm">{data.slug}</p>
+      </div>
+      <div className="space-y-2">
+        <p className="text-sm font-medium text-muted-foreground">코멘트</p>
+        <p className="text-sm">{data.comment || "-"}</p>
+      </div>
+      <div className="space-y-4 border-t pt-4">
+        <h3 className="font-medium text-sm text-slate-500">메타 정보 (SEO)</h3>
+        <div className="space-y-2">
+          <p className="text-sm font-medium text-muted-foreground">
+            메타 타이틀
+          </p>
+          <p className="text-sm">{data.meta_title}</p>
+        </div>
+        <div className="space-y-2">
+          <p className="text-sm font-medium text-muted-foreground">메타 설명</p>
+          <p className="text-sm">{data.meta_description}</p>
+        </div>
+        <div className="space-y-2">
+          <p className="text-sm font-medium text-muted-foreground">
+            메타 이미지 URL
+          </p>
+          <p className="text-sm break-all">{data.meta_image || "-"}</p>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export function EventForm({ initialData }: EventFormProps) {
+export function EventForm({
+  initialData,
+  editMode = false,
+  onEditModeChange,
+}: EventFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<EventFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {
-      name: "",
-      slug: "",
-      location: "",
-      meta_title: "",
-      meta_description: "",
-      meta_image: "",
-      comment: "",
-    },
+    defaultValues: initialData || defaultValues,
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const isViewMode = Boolean(initialData && !editMode);
+
+  async function onSubmit(values: EventFormValues) {
     setIsLoading(true);
     try {
       const payload = {
@@ -80,44 +140,79 @@ export function EventForm({ initialData }: EventFormProps) {
           .eq("id", initialData.id);
 
         if (error) throw error;
-        toast.success("Event updated successfully.");
+        toast.success("이벤트가 수정되었습니다.");
+        onEditModeChange?.(false);
       } else {
         const { error } = await supabase
           .from("events")
           .insert(payload as never);
 
         if (error) throw error;
-        toast.success("Event created successfully.");
-      }
-
-      if (initialData) {
-        router.back();
-      } else {
+        toast.success("이벤트가 생성되었습니다.");
         router.push("/admin/events");
       }
       router.refresh();
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong.");
+      toast.error("저장에 실패했습니다.");
     } finally {
       setIsLoading(false);
     }
+  }
+
+  if (isViewMode && initialData) {
+    return (
+      <BasicInfoView
+        data={{
+          name: initialData.name,
+          slug: initialData.slug,
+          location: initialData.location,
+          meta_title: initialData.meta_title,
+          meta_description: initialData.meta_description,
+          meta_image: initialData.meta_image ?? "",
+          comment: initialData.comment ?? "",
+        }}
+      />
+    );
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 w-full bg-white dark:bg-slate-950 p-6 rounded-lg border"
+        className="space-y-6 w-full bg-white dark:bg-slate-950 p-6 rounded-lg border relative"
       >
+        {initialData && onEditModeChange && (
+          <div className="absolute right-6 top-6 flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => onEditModeChange(false)}
+            >
+              <X className="mr-1 h-4 w-4" />
+              취소
+            </Button>
+            <Button
+              type="submit"
+              disabled={isLoading}
+              size="sm"
+              className="bg-primary text-primary-foreground"
+            >
+              <Save className="mr-1 h-4 w-4" />
+              {isLoading ? "저장 중..." : "저장"}
+            </Button>
+          </div>
+        )}
+
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Event Name</FormLabel>
+              <FormLabel>대회명 *</FormLabel>
               <FormControl>
-                <Input placeholder="Muju Granfondo" {...field} />
+                <Input placeholder="무주 그란폰도" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -130,12 +225,12 @@ export function EventForm({ initialData }: EventFormProps) {
             name="slug"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Slug (URL)</FormLabel>
+                <FormLabel>URL 슬러그 *</FormLabel>
                 <FormControl>
                   <Input placeholder="muju" {...field} />
                 </FormControl>
                 <FormDescription>
-                  Unique identifier for URLs (e.g., kfondo.cc/muju)
+                  URL용 식별자 (예: kfondo.cc/muju)
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -146,58 +241,9 @@ export function EventForm({ initialData }: EventFormProps) {
             name="location"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Location</FormLabel>
+                <FormLabel>개최 지역 *</FormLabel>
                 <FormControl>
-                  <Input placeholder="Muju, Jeonbuk" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="space-y-4 border-t pt-4">
-          <h3 className="font-medium text-sm text-slate-500">SEO & Metadata</h3>
-
-          <FormField
-            control={form.control}
-            name="meta_title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Meta Title</FormLabel>
-                <FormControl>
-                  <Input placeholder="Muju Granfondo 2024" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="meta_description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Meta Description</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Join us for the ultimate riding experience..."
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="meta_image"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Meta Image URL</FormLabel>
-                <FormControl>
-                  <Input placeholder="https://..." {...field} />
+                  <Input placeholder="무주" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -210,10 +256,10 @@ export function EventForm({ initialData }: EventFormProps) {
           name="comment"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Internal Comment</FormLabel>
+              <FormLabel>코멘트</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Notes for admins..."
+                  placeholder="관리자용 메모..."
                   {...field}
                   value={field.value ?? ""}
                 />
@@ -223,15 +269,61 @@ export function EventForm({ initialData }: EventFormProps) {
           )}
         />
 
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading}>
-            {isLoading
-              ? "Saving..."
-              : initialData
-              ? "Update Event"
-              : "Create Event"}
-          </Button>
+        <div className="space-y-4 border-t pt-4">
+          <h3 className="font-medium text-sm text-slate-500">
+            메타 정보 (SEO)
+          </h3>
+
+          <FormField
+            control={form.control}
+            name="meta_title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>메타 타이틀</FormLabel>
+                <FormControl>
+                  <Input placeholder="무주 그란폰도 2024" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="meta_description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>메타 설명</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="대회 소개..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="meta_image"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>메타 이미지 URL</FormLabel>
+                <FormControl>
+                  <Input placeholder="https://..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
+
+        {!initialData && (
+          <div className="flex justify-end">
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "저장 중..." : "이벤트 생성"}
+            </Button>
+          </div>
+        )}
       </form>
     </Form>
   );
