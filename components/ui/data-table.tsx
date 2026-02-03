@@ -31,6 +31,8 @@ interface DataTableProps<TData, TValue> {
   searchKey?: string;
   /** URL query key for persisting search (e.g. "q" => ?q=...). When set, search is synced to URL and restored on mount. */
   searchParamKey?: string;
+  /** Initial sort (e.g. [{ id: "latest_edition_date", desc: true }]). */
+  initialSorting?: SortingState;
 }
 
 function getInitialColumnFilters(
@@ -49,6 +51,7 @@ export function DataTable<TData, TValue>({
   data,
   searchKey,
   searchParamKey,
+  initialSorting = [],
 }: DataTableProps<TData, TValue>) {
   const searchParams = useSearchParams();
   const initialFilters = getInitialColumnFilters(
@@ -56,7 +59,7 @@ export function DataTable<TData, TValue>({
     searchParamKey,
     searchParams
   );
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] =
     useState<ColumnFiltersState>(initialFilters);
   const router = useRouter();

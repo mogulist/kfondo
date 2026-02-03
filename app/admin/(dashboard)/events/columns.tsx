@@ -15,9 +15,13 @@ import Link from "next/link";
 
 // 기존 타입 활용 (Database 생성 타입)
 import type { Database } from "@/lib/database.types";
-type Event = Database["public"]["Tables"]["events"]["Row"];
 
-export const columns: ColumnDef<Event>[] = [
+type EventRow = Database["public"]["Tables"]["events"]["Row"];
+export type EventWithLatestDate = EventRow & {
+  latest_edition_date: string | null;
+};
+
+export const columns: ColumnDef<EventWithLatestDate>[] = [
   {
     accessorKey: "name",
     meta: { className: "min-w-[280px] w-full" },
@@ -48,6 +52,33 @@ export const columns: ColumnDef<Event>[] = [
     cell: ({ row }) => (
       <span className="font-mono text-xs">{row.getValue("slug")}</span>
     ),
+  },
+  {
+    accessorKey: "latest_edition_date",
+    meta: { className: "w-36 whitespace-nowrap" },
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          최근 개최일
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const date = row.getValue("latest_edition_date") as string | null;
+      if (!date) return <span className="text-muted-foreground">—</span>;
+      return <span>{new Date(date).toLocaleDateString()}</span>;
+    },
+    sortingFn: (rowA, rowB) => {
+      const a = rowA.getValue("latest_edition_date") as string | null;
+      const b = rowB.getValue("latest_edition_date") as string | null;
+      const da = a ?? "";
+      const db = b ?? "";
+      return da.localeCompare(db);
+    },
   },
   {
     accessorKey: "created_at",
