@@ -72,9 +72,9 @@ export default async function AdminLayout({
 function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="h-14 flex items-center gap-2 border-b px-2">
-        <SidebarTrigger />
-        <span className="font-bold text-lg">KFondo Admin</span>
+      <SidebarHeader className="h-14 flex items-center justify-center border-b px-2">
+        {/* <SidebarTrigger /> */}
+        <span className="font-bold text-lg">KFondo</span>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
