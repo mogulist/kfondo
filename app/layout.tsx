@@ -4,7 +4,8 @@ import { RootLayoutContent } from "@/components/root-layout-content";
 import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import { Analytics, type BeforeSendEvent } from "@vercel/analytics/next";
+import { AnalyticsWithExclusions } from "@/components/analytics-with-exclusions";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,15 +35,8 @@ export default function RootLayout({
         >
           <RootLayoutContent footer={FOOTER}>
             {children}
-            <Analytics
-              beforeSend={(event: BeforeSendEvent) => {
-                const pathname = event.url.startsWith("http")
-                  ? new URL(event.url).pathname
-                  : event.url;
-                if (pathname.startsWith("/admin")) return null;
-                return event;
-              }}
-            />
+            <AnalyticsWithExclusions />
+            <SpeedInsights />
           </RootLayoutContent>
         </ThemeProvider>
       </body>
