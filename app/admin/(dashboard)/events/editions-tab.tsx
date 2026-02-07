@@ -24,7 +24,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { revalidateHomePage } from "@/app/actions/revalidate";
+import {
+  revalidateHomePage,
+  revalidateEventPage,
+} from "@/app/actions/revalidate";
 import { toast } from "sonner";
 import { EditionFormDialog } from "./edition-form-dialog";
 import type { EventEditionWithCourses } from "./types";
@@ -32,6 +35,7 @@ import { EDITION_STATUS_LABELS, formatEditionDate } from "./types";
 
 type EditionsTabProps = {
   eventId: string;
+  eventSlug: string;
   editions: EventEditionWithCourses[];
 };
 
@@ -45,7 +49,11 @@ const STATUS_VARIANT: Record<
   preparing: "outline",
 };
 
-export function EditionsTab({ eventId, editions }: EditionsTabProps) {
+export function EditionsTab({
+  eventId,
+  eventSlug,
+  editions,
+}: EditionsTabProps) {
   const router = useRouter();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingEdition, setEditingEdition] =
@@ -84,6 +92,7 @@ export function EditionsTab({ eventId, editions }: EditionsTabProps) {
       if (error) throw error;
       toast.success("에디션이 삭제되었습니다.");
       setDeleteTarget(null);
+      await revalidateEventPage(eventSlug);
       await revalidateHomePage();
       router.refresh();
     } catch (err) {
@@ -195,6 +204,7 @@ export function EditionsTab({ eventId, editions }: EditionsTabProps) {
         eventId={eventId}
         edition={editingEdition}
         onSuccess={async () => {
+          await revalidateEventPage(eventSlug);
           await revalidateHomePage();
           router.refresh();
         }}

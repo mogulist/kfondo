@@ -86,11 +86,18 @@ export function EventDetailContent({ event }: EventDetailContentProps) {
         </TabsContent>
 
         <TabsContent value="editions" className="mt-4">
-          <EditionsTab eventId={event.id} editions={event.event_editions} />
+          <EditionsTab
+            eventId={event.id}
+            eventSlug={event.slug}
+            editions={event.event_editions}
+          />
         </TabsContent>
 
         <TabsContent value="courses" className="mt-4">
-          <CoursesTab editions={event.event_editions} />
+          <CoursesTab
+            eventSlug={event.slug}
+            editions={event.event_editions}
+          />
         </TabsContent>
       </Tabs>
     </div>

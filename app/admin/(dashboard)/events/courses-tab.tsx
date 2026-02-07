@@ -24,17 +24,21 @@ import {
 } from "@/components/ui/alert-dialog";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { revalidateHomePage } from "@/app/actions/revalidate";
+import {
+  revalidateHomePage,
+  revalidateEventPage,
+} from "@/app/actions/revalidate";
 import { toast } from "sonner";
 import { CourseFormDialog } from "./course-form-dialog";
 import type { EventEditionWithCourses } from "./types";
 import type { CourseRow } from "@/lib/database.types";
 
 type CoursesTabProps = {
+  eventSlug: string;
   editions: EventEditionWithCourses[];
 };
 
-export function CoursesTab({ editions }: CoursesTabProps) {
+export function CoursesTab({ eventSlug, editions }: CoursesTabProps) {
   const router = useRouter();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState<CourseRow | null>(null);
@@ -71,6 +75,7 @@ export function CoursesTab({ editions }: CoursesTabProps) {
       if (error) throw error;
       toast.success("코스가 삭제되었습니다.");
       setDeleteTarget(null);
+      await revalidateEventPage(eventSlug);
       await revalidateHomePage();
       router.refresh();
     } catch (err) {
@@ -175,6 +180,7 @@ export function CoursesTab({ editions }: CoursesTabProps) {
         editions={editions}
         course={editingCourse}
         onSuccess={async () => {
+          await revalidateEventPage(eventSlug);
           await revalidateHomePage();
           router.refresh();
         }}

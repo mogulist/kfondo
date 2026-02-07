@@ -7,6 +7,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 
+export const revalidate = 3600;
+
 type Props = {
   params: Promise<{
     event: string;

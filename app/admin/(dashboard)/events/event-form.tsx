@@ -18,7 +18,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { revalidateHomePage } from "@/app/actions/revalidate";
+import {
+  revalidateHomePage,
+  revalidateEventPage,
+} from "@/app/actions/revalidate";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Pencil, Save, X } from "lucide-react";
@@ -194,6 +197,10 @@ export function EventForm({
         if (error) throw error;
         toast.success("이벤트가 수정되었습니다.");
         onEditModeChange?.(false);
+        await revalidateEventPage(values.slug);
+        if (initialData.slug !== values.slug) {
+          await revalidateEventPage(initialData.slug);
+        }
       } else {
         const { data, error } = await supabase
           .from("events")
@@ -205,6 +212,7 @@ export function EventForm({
         const newEventId = (data as { id: string } | null)?.id;
         if (!newEventId) throw new Error("Failed to get new event id");
         toast.success("이벤트가 생성되었습니다.");
+        await revalidateEventPage(values.slug);
         router.push(`/admin/events/${newEventId}?tab=editions`);
       }
       await revalidateHomePage();
