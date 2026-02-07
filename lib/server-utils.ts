@@ -28,6 +28,69 @@ export const mapToEventData = (event: Event): EventData => {
   };
 };
 
+const SPLIT_THRESHOLD = 6;
+const MIN_GROUP_SIZE = 3;
+
+type UpcomingCarousel = { title: string; events: EventData[] };
+
+function getMonthKey(dateStr: string): number {
+  const normalized = dateStr.replace(/\./g, '-');
+  return dayjs(normalized).month();
+}
+
+function formatMonthLabel(months: number[]): string {
+  if (months.length === 1) return `${months[0] + 1}월`;
+  if (months.length === 2) return `${months[0] + 1}~${months[1] + 1}월`;
+  return `${months[0] + 1}월 이후`;
+}
+
+export function splitUpcomingCarousels(events: EventData[]): UpcomingCarousel[] {
+  if (events.length === 0) return [];
+  if (events.length < SPLIT_THRESHOLD) {
+    return [{ title: "다가오는 대회", events }];
+  }
+
+  // 1. 월 단위 그룹 (month: 0=1월, 1=2월, ...)
+  const monthMap = new Map<number, EventData[]>();
+  for (const event of events) {
+    const month = getMonthKey(event.date);
+    const list = monthMap.get(month) ?? [];
+    list.push(event);
+    monthMap.set(month, list);
+  }
+
+  const sortedMonths = [...monthMap.keys()].sort((a, b) => a - b);
+  const groups: { months: number[]; events: EventData[] }[] = [];
+
+  for (const month of sortedMonths) {
+    const monthEvents = monthMap.get(month)!;
+    if (groups.length === 0) {
+      groups.push({ months: [month], events: monthEvents });
+      continue;
+    }
+
+    const last = groups[groups.length - 1];
+    if (last.events.length < MIN_GROUP_SIZE) {
+      last.months.push(month);
+      last.events.push(...monthEvents);
+    } else {
+      groups.push({ months: [month], events: monthEvents });
+    }
+  }
+
+  // 마지막 그룹이 MIN 미만이면 직전 그룹에 흡수
+  if (groups.length > 1 && groups[groups.length - 1].events.length < MIN_GROUP_SIZE) {
+    const last = groups.pop()!;
+    groups[groups.length - 1].months.push(...last.months);
+    groups[groups.length - 1].events.push(...last.events);
+  }
+
+  return groups.map((g) => ({
+    title: `다가오는 대회 (${formatMonthLabel(g.months)})`,
+    events: g.events,
+  }));
+}
+
 // Server-side event filtering logic
 export async function getFilteredEvents(searchQuery?: string) {
   const events = await getAllEvents();
@@ -129,11 +192,13 @@ export async function getFilteredEvents(searchQuery?: string) {
     return eventName.toLowerCase().includes(query) || event.id.toLowerCase().includes(query);
   });
 
+  const upcomingCarousels = splitUpcomingCarousels(filteredUpcomingEvents);
+
   return {
     recentEvents: filteredRecentEvents,
-    upcomingEvents: filteredUpcomingEvents,
+    upcomingCarousels,
     otherEvents: filteredOtherEvents,
-    showSections: recentEvents.length > 0 || upcomingEvents.length > 0
+    showSections: recentEvents.length > 0 || upcomingCarousels.length > 0
   };
 }
 

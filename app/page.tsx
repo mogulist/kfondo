@@ -14,12 +14,12 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
   const searchQuery = params.q || "";
 
   // Get filtered events from server-side utility (DB 사용)
-  const { recentEvents, upcomingEvents, otherEvents, showSections } = 
+  const { recentEvents, upcomingCarousels, otherEvents, showSections } = 
     await getFilteredEvents(searchQuery);
 
   const hasSearchResults = 
     recentEvents.length > 0 || 
-    upcomingEvents.length > 0 || 
+    upcomingCarousels.length > 0 || 
     otherEvents.length > 0;
 
   return (
@@ -39,13 +39,14 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
           )}
 
           {/* 다가오는 대회 섹션 */}
-          {upcomingEvents.length > 0 && (
+          {upcomingCarousels.map((carousel) => (
             <EventCarousel
+              key={carousel.title}
               icon="📅"
-              title="다가오는 대회"
-              events={upcomingEvents}
+              title={carousel.title}
+              events={carousel.events}
             />
-          )}
+          ))}
 
           {/* 전체 대회 섹션 */}
           {otherEvents.length > 0 && (

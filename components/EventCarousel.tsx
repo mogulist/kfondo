@@ -11,6 +11,35 @@ import {
 } from "@/components/ui/carousel";
 import { useState, useEffect } from "react";
 
+const MD_BREAKPOINT = 768;
+const LG_BREAKPOINT = 1024;
+
+function useSlidesPerView(): number {
+  const [slidesPerView, setSlidesPerView] = useState(1);
+
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      if (w >= LG_BREAKPOINT) setSlidesPerView(3);
+      else if (w >= MD_BREAKPOINT) setSlidesPerView(2);
+      else setSlidesPerView(1);
+    };
+
+    const mqlMd = window.matchMedia(`(min-width: ${MD_BREAKPOINT}px)`);
+    const mqlLg = window.matchMedia(`(min-width: ${LG_BREAKPOINT}px)`);
+
+    update();
+    mqlMd.addEventListener("change", update);
+    mqlLg.addEventListener("change", update);
+    return () => {
+      mqlMd.removeEventListener("change", update);
+      mqlLg.removeEventListener("change", update);
+    };
+  }, []);
+
+  return slidesPerView;
+}
+
 interface EventCarouselProps {
   title: string;
   icon?: string;
@@ -20,18 +49,21 @@ interface EventCarouselProps {
 export function EventCarousel({ title, icon, events }: EventCarouselProps) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-  
+  const slidesPerView = useSlidesPerView();
+
+  const dotCount = Math.max(1, events.length - slidesPerView + 1);
+
   useEffect(() => {
     if (!api) return;
 
-    setScrollSnaps(api.scrollSnapList());
-    setCurrent(api.selectedScrollSnap());
+    const updateCurrent = () => {
+      setCurrent(Math.min(api.selectedScrollSnap(), dotCount - 1));
+    };
 
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-  }, [api]);
+    updateCurrent();
+    api.on("select", updateCurrent);
+    api.on("reInit", updateCurrent);
+  }, [api, dotCount]);
 
   if (events.length === 0) return null;
   
@@ -90,7 +122,7 @@ export function EventCarousel({ title, icon, events }: EventCarouselProps) {
 
             {/* Dots */}
             <div className="flex gap-2">
-              {scrollSnaps.map((_, index) => (
+              {Array.from({ length: dotCount }, (_, index) => (
                 <button
                   key={index}
                   onClick={() => api?.scrollTo(index)}
@@ -108,7 +140,7 @@ export function EventCarousel({ title, icon, events }: EventCarouselProps) {
             {/* Next arrow */}
             <button
               onClick={() => api?.scrollNext()}
-              disabled={current === scrollSnaps.length - 1}
+              disabled={current === dotCount - 1}
               className={cn(
                 "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
                 "border border-border hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed"
