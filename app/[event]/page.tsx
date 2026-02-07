@@ -1,13 +1,15 @@
+import { unstable_cache } from "next/cache";
 import { ParticipantTrendSection } from "./components/ParticipantTrendSection";
 import { StatsSection } from "./components/StatsSection";
 import { TitleSection } from "./components/TitleSection";
 import { CommentsSection } from "./components/CommentsSection";
 import { getEventById } from "@/lib/db/events";
+import { REVALIDATE_SECONDS_MONTH } from "@/lib/constants";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 
-export const revalidate = 3600;
+export const revalidate = REVALIDATE_SECONDS_MONTH;
 
 type Props = {
   params: Promise<{
@@ -15,9 +17,21 @@ type Props = {
   }>;
 };
 
+function getCachedEvent(slug: string) {
+  return unstable_cache(
+    () => getEventById(slug),
+    [`event-${slug}`],
+    { revalidate: REVALIDATE_SECONDS_MONTH, tags: [`event-${slug}`] }
+  );
+}
+
+export async function generateStaticParams() {
+  return [];
+}
+
 export default async function EventPage({ params }: Props) {
   const { event: eventSlug } = await params;
-  const event = await getEventById(eventSlug);
+  const event = await getCachedEvent(eventSlug)();
 
   if (!event) {
     notFound();
@@ -40,10 +54,9 @@ export default async function EventPage({ params }: Props) {
   );
 }
 
-// 동적 메타데이터 생성
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { event: eventSlug } = await params;
-  const event = await getEventById(eventSlug);
+  const event = await getCachedEvent(eventSlug)();
 
   if (!event) {
     return {
