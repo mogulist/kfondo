@@ -4,12 +4,12 @@ import { StatsSection } from "./components/StatsSection";
 import { TitleSection } from "./components/TitleSection";
 import { CommentsSection } from "./components/CommentsSection";
 import { getEventById } from "@/lib/db/events";
-import { REVALIDATE_SECONDS_MONTH } from "@/lib/constants";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 
-export const revalidate = REVALIDATE_SECONDS_MONTH;
+/** 30일 (Next.js segment config는 리터럴만 허용) */
+export const revalidate = 2592000;
 
 type Props = {
   params: Promise<{
@@ -21,7 +21,7 @@ function getCachedEvent(slug: string) {
   return unstable_cache(
     () => getEventById(slug),
     [`event-${slug}`],
-    { revalidate: REVALIDATE_SECONDS_MONTH, tags: [`event-${slug}`] }
+    { revalidate: 2592000, tags: [`event-${slug}`] }
   );
 }
 
