@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,8 +16,16 @@ type EventDetailContentProps = {
   event: EventWithEditions;
 };
 
+const VALID_TABS = ["basic", "editions", "courses"] as const;
+
 export function EventDetailContent({ event }: EventDetailContentProps) {
-  const [activeTab, setActiveTab] = useState("basic");
+  const searchParams = useSearchParams();
+  const tabFromUrl = searchParams.get("tab");
+  const initialTab =
+    tabFromUrl && VALID_TABS.includes(tabFromUrl as (typeof VALID_TABS)[number])
+      ? (tabFromUrl as (typeof VALID_TABS)[number])
+      : "basic";
+  const [activeTab, setActiveTab] = useState<string>(initialTab);
   const [isBasicInfoEditing, setIsBasicInfoEditing] = useState(false);
 
   const createdStr = formatDateTime(event.created_at);

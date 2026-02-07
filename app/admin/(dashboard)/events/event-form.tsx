@@ -194,13 +194,17 @@ export function EventForm({
         toast.success("이벤트가 수정되었습니다.");
         onEditModeChange?.(false);
       } else {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from("events")
-          .insert(payload as never);
+          .insert(payload as never)
+          .select("id")
+          .single();
 
         if (error) throw error;
+        const newEventId = (data as { id: string } | null)?.id;
+        if (!newEventId) throw new Error("Failed to get new event id");
         toast.success("이벤트가 생성되었습니다.");
-        router.push("/admin/events");
+        router.push(`/admin/events/${newEventId}?tab=editions`);
       }
       router.refresh();
     } catch (error) {
