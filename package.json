@@ -10,6 +10,8 @@
     "test": "jest --no-coverage",
     "test:watch": "jest --watch --no-coverage",
     "test:coverage": "jest --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install chromium",
     "crawler": "bun run ./crawlers/index.ts",
     "crawl:sptc": "bun run crawlers/sptc-crawler.ts",
     "crawl:sptc-json": "bun run crawlers/sptc-json-crawler.ts",

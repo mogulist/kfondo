@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { revalidateHomePage } from "@/app/actions/revalidate";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Pencil, Save, X } from "lucide-react";
@@ -206,6 +207,7 @@ export function EventForm({
         toast.success("이벤트가 생성되었습니다.");
         router.push(`/admin/events/${newEventId}?tab=editions`);
       }
+      await revalidateHomePage();
       router.refresh();
     } catch (error) {
       console.error(error);

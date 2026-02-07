@@ -4,35 +4,47 @@ import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type Props = {
   initialQuery?: string;
 };
 
+function getQueryFromUrl(): string {
+  if (typeof window === "undefined") return "";
+  const hash = window.location.hash;
+  if (hash.startsWith("#q=")) return decodeURIComponent(hash.slice(3));
+  const params = new URLSearchParams(window.location.search);
+  return params.get("q") || "";
+}
+
 export function SearchBar({ initialQuery = "" }: Props) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [inputValue, setInputValue] = useState(initialQuery);
 
-  // Sync input with URL query parameter
   useEffect(() => {
-    const query = searchParams.get('q') || '';
-    setInputValue(query);
-  }, [searchParams]);
+    setInputValue(getQueryFromUrl() || initialQuery);
+  }, [initialQuery]);
+
+  useEffect(() => {
+    const handleHashChange = () => setInputValue(getQueryFromUrl());
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
   const handleSearch = () => {
     const query = inputValue.trim();
     if (query) {
-      router.push(`/?q=${encodeURIComponent(query)}`);
+      window.location.hash = `q=${encodeURIComponent(query)}`;
     } else {
-      router.push('/');
+      window.location.hash = "";
+      router.replace("/");
     }
   };
 
   const handleClear = () => {
     setInputValue("");
-    router.push('/');
+    router.replace("/");
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -67,7 +79,7 @@ export function SearchBar({ initialQuery = "" }: Props) {
         <Button
           onClick={handleSearch}
           size="icon"
-          className="h-[52px] w-[52px] bg-emerald-600 hover:bg-emerald-700 text-white flex-shrink-0"
+          className="h-[52px] w-[52px] bg-emerald-600 hover:bg-emerald-700 text-white shrink-0"
           aria-label="검색"
         >
           <Search className="h-5 w-5" />

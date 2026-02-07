@@ -91,8 +91,8 @@ export function splitUpcomingCarousels(events: EventData[]): UpcomingCarousel[] 
   }));
 }
 
-// Server-side event filtering logic
-export async function getFilteredEvents(searchQuery?: string) {
+// Server-side event filtering logic (no search - client filters)
+export async function getFilteredEvents(): Promise<HomePageFilteredData> {
   const events = await getAllEvents();
   const currentYear = dayjs().year();
   const today = dayjs();
@@ -173,32 +173,70 @@ export async function getFilteredEvents(searchQuery?: string) {
     return data;
   });
 
-  // Apply search filtering
-  const filterBySearch = (eventList: EventData[]) => {
-    if (!searchQuery || !searchQuery.trim()) return eventList;
-    const query = searchQuery.toLowerCase();
-    return eventList.filter(event => 
-      event.name.toLowerCase().includes(query) ||
-      event.id.toLowerCase().includes(query)
-    );
-  };
-
-  const filteredRecentEvents = filterBySearch(recentData);
-  const filteredUpcomingEvents = filterBySearch(upcomingData);
-  const filteredOtherEvents = otherEventsTemp.filter(event => {
-    if (!searchQuery || !searchQuery.trim()) return true;
-    const query = searchQuery.toLowerCase();
-    const eventName = event.name || `${event.location} 그란폰도`;
-    return eventName.toLowerCase().includes(query) || event.id.toLowerCase().includes(query);
-  });
-
-  const upcomingCarousels = splitUpcomingCarousels(filteredUpcomingEvents);
+  const upcomingCarousels = splitUpcomingCarousels(upcomingData);
 
   return {
-    recentEvents: filteredRecentEvents,
+    recentEvents: recentData,
     upcomingCarousels,
-    otherEvents: filteredOtherEvents,
-    showSections: recentEvents.length > 0 || upcomingCarousels.length > 0
+    otherEvents: otherEventsTemp,
+    showSections: recentEvents.length > 0 || upcomingCarousels.length > 0,
+  };
+}
+
+export type HomePageFilteredData = {
+  recentEvents: EventData[];
+  upcomingCarousels: { title: string; events: EventData[] }[];
+  otherEvents: Event[];
+  showSections: boolean;
+};
+
+function matchesSearch(value: string, query: string): boolean {
+  return value.toLowerCase().includes(query.toLowerCase());
+}
+
+export function filterEventDataBySearch(
+  events: EventData[],
+  searchQuery: string
+): EventData[] {
+  if (!searchQuery?.trim()) return events;
+  const query = searchQuery.trim().toLowerCase();
+  return events.filter(
+    (e) => matchesSearch(e.name, query) || matchesSearch(e.id, query)
+  );
+}
+
+export function filterRawEventsBySearch(
+  events: Event[],
+  searchQuery: string
+): Event[] {
+  if (!searchQuery?.trim()) return events;
+  const query = searchQuery.trim().toLowerCase();
+  return events.filter((e) => {
+    const name = e.name || `${e.location} 그란폰도`;
+    return matchesSearch(name, query) || matchesSearch(e.id, query);
+  });
+}
+
+export function filterHomePageDataBySearch(
+  data: HomePageFilteredData,
+  searchQuery: string
+): HomePageFilteredData {
+  if (!searchQuery?.trim()) return data;
+
+  const filteredRecent = filterEventDataBySearch(data.recentEvents, searchQuery);
+  const filteredUpcomingCarousels = data.upcomingCarousels
+    .map((c) => ({
+      ...c,
+      events: filterEventDataBySearch(c.events, searchQuery),
+    }))
+    .filter((c) => c.events.length > 0);
+  const filteredOther = filterRawEventsBySearch(data.otherEvents, searchQuery);
+
+  return {
+    recentEvents: filteredRecent,
+    upcomingCarousels: filteredUpcomingCarousels,
+    otherEvents: filteredOther,
+    showSections: data.showSections,
   };
 }
 

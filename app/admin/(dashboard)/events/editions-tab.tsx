@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { revalidateHomePage } from "@/app/actions/revalidate";
 import { toast } from "sonner";
 import { EditionFormDialog } from "./edition-form-dialog";
 import type { EventEditionWithCourses } from "./types";
@@ -83,6 +84,7 @@ export function EditionsTab({ eventId, editions }: EditionsTabProps) {
       if (error) throw error;
       toast.success("에디션이 삭제되었습니다.");
       setDeleteTarget(null);
+      await revalidateHomePage();
       router.refresh();
     } catch (err) {
       console.error(err);
@@ -192,7 +194,10 @@ export function EditionsTab({ eventId, editions }: EditionsTabProps) {
         onOpenChange={handleDialogClose}
         eventId={eventId}
         edition={editingEdition}
-        onSuccess={() => router.refresh()}
+        onSuccess={async () => {
+          await revalidateHomePage();
+          router.refresh();
+        }}
       />
 
       <AlertDialog
