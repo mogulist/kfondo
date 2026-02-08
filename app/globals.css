@@ -5,13 +5,6 @@
 /* SUIT 폰트 - 인증서 미리보기용 */
 @font-face {
   font-family: "SUIT";
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-  src: url("/fonts/SUIT-SemiBold.otf") format("opentype");
-}
-@font-face {
-  font-family: "SUIT";
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -23,6 +16,13 @@
   font-style: normal;
   font-display: swap;
   src: url("/fonts/SUIT-ExtraBold.otf") format("opentype");
+}
+@font-face {
+  font-family: "SUIT";
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/SUIT-Heavy.otf") format("opentype");
 }
 
 :root {

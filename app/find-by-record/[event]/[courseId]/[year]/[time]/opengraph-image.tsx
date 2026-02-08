@@ -71,11 +71,11 @@ export default async function Image(props: Props) {
       : "-";
   const finisherPct = percentile != null ? percentile.toFixed(1) : "-";
 
-  // SUIT 폰트 로드 (로컬 파일)
-  const [fontSemiBold, fontBold, fontExtraBold] = await Promise.all([
-    loadLocalFont("SUIT-SemiBold.otf"),
+  // SUIT 폰트 로드 (로컬 파일) - Bold보다 한 단계 두꺼운 Heavy 추가
+  const [fontBold, fontExtraBold, fontHeavy] = await Promise.all([
     loadLocalFont("SUIT-Bold.otf"),
     loadLocalFont("SUIT-ExtraBold.otf"),
+    loadLocalFont("SUIT-Heavy.otf"),
   ]);
 
   return new ImageResponse(
@@ -108,12 +108,6 @@ export default async function Image(props: Props) {
       fonts: [
         {
           name: "SUIT",
-          data: fontSemiBold,
-          weight: 600 as const,
-          style: "normal" as const,
-        },
-        {
-          name: "SUIT",
           data: fontBold,
           weight: 700 as const,
           style: "normal" as const,
@@ -122,6 +116,12 @@ export default async function Image(props: Props) {
           name: "SUIT",
           data: fontExtraBold,
           weight: 800 as const,
+          style: "normal" as const,
+        },
+        {
+          name: "SUIT",
+          data: fontHeavy,
+          weight: 900 as const,
           style: "normal" as const,
         },
       ],
