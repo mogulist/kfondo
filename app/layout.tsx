@@ -51,6 +51,9 @@ export const metadata: Metadata = {
   description:
     "K-Fondo는 홍천, 설악, 양양 등 한국 주요 그란폰도 대회의 참가자 통계와 기록 분포를 제공합니다. 내 기록이 몇 등인지 확인하고, 대회별 참가자 수와 기록 분포를 분석해보세요.",
   keywords: [
+    "2026 그란폰도",
+    "2026 그란폰도 일정",
+    "2026 자전거 대회",
     "K-Fondo",
     "케이폰도",
     "그란폰도",
@@ -63,7 +66,7 @@ export const metadata: Metadata = {
     "순위",
     "한국 그란폰도",
     "홍천 그란폰도",
-    "설악 그란폰도",
+    "2026 설악 그란폰도",
     "양양 그란폰도",
     "영산 그란폰도",
     "문경새재 그란폰도",
@@ -85,8 +88,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: "K-Fondo | 한국 그란폰도 통계, 기록, 순위",
     description:
-      "K-Fondo에서 한국 그란폰도 대회들의 통계, 기록, 순위를 확인해보세요. 내 기록이 몇 등인지 바로 찾을 수 있습니다.",
-    url: "https://kfondo.cc",
+      "2026년 한국 그란폰도 대회들의 일정, 통계, 기록, 순위를 확인해보세요. 주요 대회 정보와 내 기록 분석을 제공합니다.",
+    url: "https://www.kfondo.cc",
     siteName: "K-Fondo",
     locale: "ko_KR",
     type: "website",
@@ -95,7 +98,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "K-Fondo | 한국 그란폰도 통계, 기록, 순위",
     description:
-      "K-Fondo에서 한국 그란폰도 대회들의 통계, 기록, 순위를 확인해보세요.",
+      "2026년 한국 그란폰도 대회들의 일정, 통계, 기록, 순위를 확인해보세요.",
   },
   robots: {
     index: true,

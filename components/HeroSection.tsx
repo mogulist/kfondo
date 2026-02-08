@@ -16,7 +16,7 @@ export function HeroSection({ initialQuery = "" }: HeroSectionProps) {
           
           {/* Subheading */}
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300">
-            한국 그란폰도 기록 통계
+            2026 그란폰도 대회에서 순위와 백분율을 확인하세요
           </p>
           
           {/* Description */}
