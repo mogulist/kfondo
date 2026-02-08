@@ -1,11 +1,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import StackNavBar from "@/components/StackNavBar";
-import { calculateParticipants, calculateDNF } from "@/lib/participants";
-import { getCourseInfoById } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { generateFindRecordMetadata } from "@/lib/metadata";
-import { getEventById } from "@/lib/db/events";
+import {
+  getFindByRecordData,
+  msecToTimeString,
+} from "@/lib/find-by-record-data";
+import ShareRecordMenu from "./ShareRecordMenu";
 
 type Props = {
   params: { event: string; courseId: string; year: string; time: string };
@@ -14,108 +16,67 @@ type Props = {
 const ResultPage = async (props: Props) => {
   const awaitedParams = await props.params;
   const { event: eventId, courseId, year, time } = awaitedParams;
-  
-  // Supabase에서 이벤트 데이터 가져오기 (Blob URL 포함)
-  const event = await getEventById(eventId);
-  if (!event) notFound();
 
-  // digit string(05082735) → HH:mm:ss.SS로 변환
-  const parsedTime = parseDigitTime(time);
-  if (!parsedTime) notFound();
+  const data = await getFindByRecordData(eventId, courseId, year, time);
+  if (!data) notFound();
 
-  // async 함수로 업데이트 된 calculateParticipants/calculateDNF 사용
-  const participants = await calculateParticipants(event, Number(year));
-  const dnf = await calculateDNF(event, Number(year));
-  const totalParticipants = participants[courseId] ?? 0;
-  const totalDNF = dnf[courseId] ?? 0;
-  const finishers = totalParticipants - totalDNF;
+  const {
+    event,
+    parsedTime,
+    rank,
+    percentile,
+    percentileByParticipants,
+    totalParticipants,
+    finishers,
+    courseInfo,
+    recordsAround,
+    eventDate,
+  } = data;
 
-  // sorted-msec 데이터 가져오기 (Blob URL 필수)
-  const yearDetail = event.yearDetails[Number(year)];
-  const sortedBlobUrl = yearDetail?.sortedRecordsBlobUrl;
-
-  if (!sortedBlobUrl) {
-    console.error(`[find-by-record] No Blob URL for ${eventId} ${year}`);
-    notFound();
-  }
-
-  let sortedData: Record<string, number[]> = {};
-  try {
-    const response = await fetch(sortedBlobUrl, { next: { revalidate: 3600 } });
-    if (!response.ok) {
-      throw new Error(`Fetch failed: ${response.statusText}`);
-    }
-    sortedData = await response.json();
-  } catch (error) {
-    console.error(`[find-by-record] Failed to fetch sorted data:`, error);
-    notFound();
-  }
-
-  // course 영문 → 한글 매핑
-  // TODO: 확장성 있게 수정하기. getCourseNameById 사용하면 될 듯
-  const courseMap: Record<string, string> = {
-    granfondo: "그란폰도",
-    mediofondo: "메디오폰도",
-    "challenge-a": "Challenge A",
-    "challenge-b": "Challenge B",
-    rally: "랠리",
+  const eventName = event.name || `${event.location} 그란폰도`;
+  const certificateProps = {
+    year,
+    eventName,
+    category: courseInfo?.name ?? "",
+    distance: courseInfo ? `${courseInfo.distance}km` : "",
+    elevation: courseInfo ? `${courseInfo.elevation}m` : "",
+    parsedTime,
+    rankStr: rank != null ? `${rank}` : "-",
+    participantPct:
+      percentileByParticipants != null
+        ? percentileByParticipants.toFixed(1)
+        : "-",
+    finisherPct: percentile != null ? percentile.toFixed(1) : "-",
+    totalParticipants,
+    finishers,
+    eventDate,
   };
 
-  const courseKey = courseMap[courseId] || courseId;
-  const courseArr: number[] = sortedData[courseKey] || [];
-  const inputMsec = timeToMilliseconds(parsedTime);
-  if (inputMsec < 0) notFound();
-
-  // inputMsec와 가장 가까운 위치 찾기
-  const closestIdx = courseArr.findIndex((msec) => msec > inputMsec);
-  const start = Math.max(0, closestIdx - 10);
-  const end = Math.min(courseArr.length, closestIdx + 10);
-
-  let rank: number | null = null;
-  let percentile: number | null = null;
-  let percentileByParticipants: number | null = null;
-  let resultMsg = null;
-
-  // 주변 기록 배열 준비
-  let recordsAround: { msec: number; isInput: boolean }[] = [];
-  if (courseArr.length > 0 && inputMsec >= 0) {
-    const faster = courseArr.slice(Math.max(0, closestIdx - 10), closestIdx);
-    const slower = courseArr.slice(closestIdx, closestIdx + 10);
-    recordsAround = [
-      ...faster.map((msec) => ({ msec, isInput: false })),
-      { msec: inputMsec, isInput: true },
-      ...slower.map((msec) => ({ msec, isInput: false })),
-    ];
-  }
-
-  if (courseArr.length === 0) {
-    resultMsg = (
+  const resultMsg =
+    rank === null ? (
       <div className="text-lg text-red-500 mb-4">
         해당 코스 완주자 데이터가 없습니다.
       </div>
-    );
-  } else {
-    // 입력 기록보다 빠른 사람 수 + 1 (동일 기록은 같은 순위)
-    rank = courseArr.filter((msec) => msec < inputMsec).length + 1;
-    // 상위 % (완주자 기준)
-    if (courseArr.length > 0) {
-      percentile = ((rank - 1) / courseArr.length) * 100;
-    }
-    // 상위 % (참가자 기준)
-    if (totalParticipants > 0) {
-      percentileByParticipants = ((rank - 1) / totalParticipants) * 100;
-    }
-  }
-
-  const courseInfo = getCourseInfoById(eventId, year, courseId);
+    ) : null;
 
   return (
     <main className="container mx-auto px-0 py-0">
       <StackNavBar />
       <div className="max-w-full px-4 py-4">
         <div className="flex flex-col items-center mb-6">
-          <div className="text-3xl text-muted-foreground font-semibold mb-2">
-            {year}년 {event.name || `${event.location} 그란폰도`}
+          <div className="flex flex-wrap items-center justify-between gap-2 w-full max-w-2xl mx-auto mb-2">
+            <div className="text-2xl sm:text-3xl text-muted-foreground font-semibold">
+              {year}년 {event.name || `${event.location} 그란폰도`}
+            </div>
+            <ShareRecordMenu
+              eventId={eventId}
+              courseId={courseId}
+              year={year}
+              time={time}
+              title={`${year}년 ${eventName} 기록 인증`}
+              description={`완주 기록 ${parsedTime}, 순위 ${rank ?? "-"}위`}
+              certificateProps={certificateProps}
+            />
           </div>
           {courseInfo && (
             <div className="flex gap-2">
@@ -227,58 +188,20 @@ const Card = ({
   </div>
 );
 
-// digit string(05082735) → HH:mm:ss.SS로 변환
-const parseDigitTime = (digit: string): string | null => {
-  if (!/^\d{6,8}$/.test(digit)) return null;
-  if (digit.length === 6) {
-    return `${digit.slice(0, 2)}:${digit.slice(2, 4)}:${digit.slice(4, 6)}`;
-  }
-  if (digit.length === 8) {
-    return `${digit.slice(0, 2)}:${digit.slice(2, 4)}:${digit.slice(
-      4,
-      6
-    )}.${digit.slice(6, 8)}`;
-  }
-  return null;
-};
-
-// HH:mm:ss(.SS) → msec
-const timeToMilliseconds = (time: string): number => {
-  if (!time || time === "DNF" || time === "DNS") return -1;
-  const [h, m, s] = time.split(":");
-  if (!h || !m || !s) return -1;
-  let sec = 0,
-    ms = 0;
-  if (s.includes(".")) {
-    const [secStr, msStr] = s.split(".");
-    sec = parseInt(secStr, 10);
-    ms = parseInt((msStr + "00").slice(0, 3), 10);
-  } else {
-    sec = parseInt(s, 10);
-  }
-  return (
-    parseInt(h, 10) * 3600 * 1000 +
-    parseInt(m, 10) * 60 * 1000 +
-    sec * 1000 +
-    ms
-  );
-};
-
-// msec → HH:mm:ss.SS 변환 함수
-const msecToTimeString = (msec: number): string => {
-  if (msec < 0) return "-";
-  const h = Math.floor(msec / 3600000);
-  const m = Math.floor((msec % 3600000) / 60000);
-  const s = Math.floor((msec % 60000) / 1000);
-  const ms = Math.floor((msec % 1000) / 10);
-  return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s
-    .toString()
-    .padStart(2, "0")}.${ms.toString().padStart(2, "0")}`;
-};
-
 const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const { event: eventId, courseId, year } = await params;
-  return await generateFindRecordMetadata({ eventId, courseId, year });
+  const base = await generateFindRecordMetadata({
+    eventId,
+    courseId,
+    year,
+  });
+  return {
+    ...base,
+    twitter: {
+      ...base.twitter,
+      card: "summary_large_image" as const,
+    },
+  };
 };
 
 export default ResultPage;
