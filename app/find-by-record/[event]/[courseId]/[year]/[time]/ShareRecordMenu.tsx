@@ -134,6 +134,7 @@ export default function ShareRecordMenu({
       a.click();
       URL.revokeObjectURL(objectUrl);
       toast.success("이미지가 다운로드되었습니다.");
+      setImageModalOpen(false);
     } catch {
       toast.error("이미지 다운로드에 실패했습니다.");
     } finally {
