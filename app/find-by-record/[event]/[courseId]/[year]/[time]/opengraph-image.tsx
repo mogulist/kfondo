@@ -2,10 +2,10 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { getFindByRecordData } from "@/lib/find-by-record-data";
-import { RecordCertificatePreview } from "@/components/record-certificate-preview";
+import { RecordOGImageLandscape } from "@/components/record-og-image-landscape";
 
 export const alt = "기록 인증 | K-Fondo";
-export const size = { width: 1080, height: 1350 };
+export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 type Props = {
@@ -64,7 +64,6 @@ export default async function Image(props: Props) {
   const category = courseInfo?.name ?? "";
   const distance = courseInfo ? `${courseInfo.distance}km` : "";
   const elevation = courseInfo ? `${courseInfo.elevation}m` : "";
-  const rankStr = rank != null ? `${rank}` : "-";
   const participantPct =
     percentileByParticipants != null
       ? percentileByParticipants.toFixed(1)
@@ -87,14 +86,14 @@ export default async function Image(props: Props) {
           display: "flex",
         }}
       >
-        <RecordCertificatePreview
+        <RecordOGImageLandscape
           year={year}
           eventName={eventName}
           category={category}
           distance={distance}
           elevation={elevation}
-          parsedTime={parsedTime}
-          rankStr={rankStr}
+          record={parsedTime}
+          rank={rank}
           participantPct={participantPct}
           finisherPct={finisherPct}
           totalParticipants={totalParticipants}
