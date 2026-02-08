@@ -196,13 +196,18 @@ const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
     year,
   });
 
-  // OG 이미지 URL을 명시적으로 설정하여 Facebook 등에서 올바른 이미지를 표시하도록 함
-  const ogImageUrl = `https://www.kfondo.cc/find-by-record/${eventId}/${courseId}/${year}/${time}/opengraph-image`;
+  // 페이지별 URL 설정 (Facebook이 og:url을 기준으로 OG 이미지를 가져옴)
+  const pageUrl = `https://www.kfondo.cc/find-by-record/${eventId}/${courseId}/${year}/${time}`;
+  const ogImageUrl = `${pageUrl}/opengraph-image`;
 
   return {
     ...base,
+    alternates: {
+      canonical: pageUrl,
+    },
     openGraph: {
       ...base.openGraph,
+      url: pageUrl,
       images: [
         {
           url: ogImageUrl,
