@@ -49,28 +49,35 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
         padding: 60,
       }}
     >
-      {/* 배경 장식 */}
-      <svg
+      {/* 배경 장식 - div + borderRadius로 원을 그려서 Satori/브라우저 동일 렌더링 */}
+      {/* 오른쪽 위 원: 대부분 바깥으로 나가고 일부만 보임 */}
+      <div
         style={{
           position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
+          top: -200,
+          right: -200,
+          width: 500,
+          height: 500,
+          borderRadius: "50%",
+          background: "#10b981",
           opacity: 0.1,
           display: "flex",
         }}
-      >
-        <circle cx="900" cy="200" r="300" fill="#10b981" />
-        <circle cx="200" cy="1100" r="250" fill="#34d399" />
-        <path
-          d="M 800 500 Q 900 600 1000 500 T 1200 500"
-          stroke="#10b981"
-          strokeWidth="60"
-          fill="none"
-          opacity="0.3"
-        />
-      </svg>
+      />
+      {/* 왼쪽 아래 원: 대부분 바깥으로 나가고 일부만 보임 */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: -180,
+          left: -180,
+          width: 450,
+          height: 450,
+          borderRadius: "50%",
+          background: "#34d399",
+          opacity: 0.1,
+          display: "flex",
+        }}
+      />
 
       <div
         style={{
