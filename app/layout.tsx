@@ -6,6 +6,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { AnalyticsWithExclusions } from "@/components/analytics-with-exclusions";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,6 +38,7 @@ export default function RootLayout({
             {children}
             <AnalyticsWithExclusions />
             <SpeedInsights />
+            <Toaster />
           </RootLayoutContent>
         </ThemeProvider>
       </body>
