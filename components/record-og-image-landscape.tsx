@@ -105,7 +105,7 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
         }}
       >
         {/* 상단: 브랜드 & 이벤트 */}
-        <div style={{ marginBottom: 30 }}>
+        <div style={{ marginBottom: 30, display: "flex", flexDirection: "column" }}>
           <div
             style={{
               display: "flex",
@@ -163,6 +163,7 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
           >
             <div
               style={{
+                display: "flex",
                 fontSize: 52,
                 color: "#ffffff",
                 fontWeight: 800,
@@ -230,6 +231,9 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
         >
           <div
             style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
               background: "rgba(0, 0, 0, 0.3)",
               borderRadius: 20,
               paddingTop: 40,
@@ -237,7 +241,6 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
               paddingLeft: 80,
               paddingRight: 80,
               border: "2px solid rgba(16, 185, 129, 0.4)",
-              textAlign: "center",
             }}
           >
             <div
@@ -269,6 +272,8 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
           <div
             style={{
               flex: 1,
+              display: "flex",
+              flexDirection: "column",
               background: "rgba(0, 0, 0, 0.3)",
               borderRadius: 16,
               paddingTop: 25,
@@ -321,6 +326,8 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
           <div
             style={{
               flex: 1,
+              display: "flex",
+              flexDirection: "column",
               background: "rgba(0, 0, 0, 0.3)",
               borderRadius: 16,
               paddingTop: 25,
@@ -383,6 +390,8 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
           <div
             style={{
               flex: 1,
+              display: "flex",
+              flexDirection: "column",
               background: "rgba(0, 0, 0, 0.3)",
               borderRadius: 16,
               paddingTop: 25,
