@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { getFindByRecordData } from "@/lib/find-by-record-data";
 import { RecordCertificatePreview } from "@/components/record-certificate-preview";
 
@@ -14,6 +16,12 @@ type Props = {
     time: string;
   }>;
 };
+
+async function loadLocalFont(filename: string) {
+  const fontPath = join(process.cwd(), "public", "fonts", filename);
+  const buffer = await readFile(fontPath);
+  return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
+}
 
 export default async function Image(props: Props) {
   const { event: eventId, courseId, year, time } = await props.params;
@@ -63,6 +71,13 @@ export default async function Image(props: Props) {
       : "-";
   const finisherPct = percentile != null ? percentile.toFixed(1) : "-";
 
+  // SUIT 폰트 로드 (로컬 파일)
+  const [fontSemiBold, fontBold, fontExtraBold] = await Promise.all([
+    loadLocalFont("SUIT-SemiBold.otf"),
+    loadLocalFont("SUIT-Bold.otf"),
+    loadLocalFont("SUIT-ExtraBold.otf"),
+  ]);
+
   return new ImageResponse(
     (
       <div
@@ -88,6 +103,28 @@ export default async function Image(props: Props) {
         />
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        {
+          name: "SUIT",
+          data: fontSemiBold,
+          weight: 600 as const,
+          style: "normal" as const,
+        },
+        {
+          name: "SUIT",
+          data: fontBold,
+          weight: 700 as const,
+          style: "normal" as const,
+        },
+        {
+          name: "SUIT",
+          data: fontExtraBold,
+          weight: 800 as const,
+          style: "normal" as const,
+        },
+      ],
+    }
   );
 }

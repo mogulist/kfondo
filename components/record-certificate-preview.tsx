@@ -43,7 +43,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
           "linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%)",
         position: "relative",
         overflow: "hidden",
-        fontFamily: "system-ui, -apple-system, sans-serif",
+        fontFamily: 'SUIT, -apple-system, system-ui, sans-serif',
         display: "flex",
         flexDirection: "column",
         padding: 60,
@@ -110,7 +110,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
               style={{
                 color: "#10b981",
                 fontSize: 32,
-                fontWeight: 600,
+                fontWeight: 700,
                 letterSpacing: "0.02em",
                 display: "flex",
               }}
@@ -164,7 +164,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   color: "#6ee7b7",
                   borderRadius: 8,
                   fontSize: 26,
-                  fontWeight: 500,
+                  fontWeight: 600,
                   display: "flex",
                 }}
               >
@@ -179,7 +179,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   color: "#6ee7b7",
                   borderRadius: 8,
                   fontSize: 26,
-                  fontWeight: 500,
+                  fontWeight: 600,
                   display: "flex",
                 }}
               >
@@ -194,7 +194,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   color: "#6ee7b7",
                   borderRadius: 8,
                   fontSize: 26,
-                  fontWeight: 500,
+                  fontWeight: 600,
                   display: "flex",
                 }}
               >
@@ -228,7 +228,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                 fontSize: 36,
                 color: "rgba(255,255,255,0.7)",
                 marginBottom: 15,
-                fontWeight: 500,
+                fontWeight: 600,
                 display: "flex",
               }}
             >
@@ -238,7 +238,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
               style={{
                 fontSize: 120,
                 color: "#10b981",
-                fontWeight: 700,
+                fontWeight: 800,
                 letterSpacing: "-0.03em",
                 display: "flex",
               }}
@@ -263,7 +263,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                 fontSize: 36,
                 color: "rgba(255,255,255,0.7)",
                 marginBottom: 15,
-                fontWeight: 500,
+                fontWeight: 600,
                 display: "flex",
               }}
             >
@@ -280,7 +280,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                 style={{
                   fontSize: 120,
                   color: "#ffffff",
-                  fontWeight: 700,
+                  fontWeight: 800,
                   letterSpacing: "-0.03em",
                   lineHeight: 1,
                   display: "flex",
@@ -292,7 +292,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                 style={{
                   fontSize: 64,
                   color: "#ffffff",
-                  fontWeight: 600,
+                  fontWeight: 700,
                   lineHeight: 1,
                   display: "flex",
                 }}
@@ -325,7 +325,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   fontSize: 32,
                   color: "rgba(255,255,255,0.7)",
                   marginBottom: 15,
-                  fontWeight: 500,
+                  fontWeight: 600,
                   display: "flex",
                 }}
               >
@@ -343,7 +343,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   style={{
                     fontSize: 100,
                     color: "#ffffff",
-                    fontWeight: 700,
+                    fontWeight: 800,
                     letterSpacing: "-0.03em",
                     display: "flex",
                   }}
@@ -354,7 +354,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   style={{
                     fontSize: 56,
                     color: "#ffffff",
-                    fontWeight: 600,
+                    fontWeight: 700,
                     display: "flex",
                   }}
                 >
@@ -388,7 +388,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   fontSize: 32,
                   color: "rgba(255,255,255,0.7)",
                   marginBottom: 15,
-                  fontWeight: 500,
+                  fontWeight: 600,
                   display: "flex",
                 }}
               >
@@ -406,7 +406,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   style={{
                     fontSize: 100,
                     color: "#10b981",
-                    fontWeight: 700,
+                    fontWeight: 800,
                     letterSpacing: "-0.03em",
                     display: "flex",
                   }}
@@ -417,7 +417,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   style={{
                     fontSize: 56,
                     color: "#10b981",
-                    fontWeight: 600,
+                    fontWeight: 700,
                     display: "flex",
                   }}
                 >
