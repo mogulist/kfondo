@@ -189,17 +189,33 @@ const Card = ({
 );
 
 const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
-  const { event: eventId, courseId, year } = await params;
+  const { event: eventId, courseId, year, time } = await params;
   const base = await generateFindRecordMetadata({
     eventId,
     courseId,
     year,
   });
+
+  // OG 이미지 URL을 명시적으로 설정하여 Facebook 등에서 올바른 이미지를 표시하도록 함
+  const ogImageUrl = `https://www.kfondo.cc/find-by-record/${eventId}/${courseId}/${year}/${time}/opengraph-image`;
+
   return {
     ...base,
+    openGraph: {
+      ...base.openGraph,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: base.title as string,
+        },
+      ],
+    },
     twitter: {
       ...base.twitter,
       card: "summary_large_image" as const,
+      images: [ogImageUrl],
     },
   };
 };

@@ -17,7 +17,7 @@ export const generateFindRecordMetadata = async ({
 
   if (!event) {
     return {
-      title: "페이지를 찾을 수 없습니다 | FondoScope",
+      title: "페이지를 찾을 수 없습니다 | K-Fondo",
       description: "요청하신 페이지를 찾을 수 없습니다.",
     };
   }
@@ -26,7 +26,7 @@ export const generateFindRecordMetadata = async ({
 
   const title = `${year ? `${year}년 ` : ""}${
     event.location
-  } ${courseName} 기록 찾기 | FondoScope`;
+  } ${courseName} 기록 찾기 | K-Fondo`;
   const description = `${year ? `${year}년 ` : ""}${
     event.location
   } ${courseName}의 기록을 입력하여 순위와 백분율을 확인하세요.`;
