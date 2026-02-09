@@ -47,7 +47,7 @@ export default function ShareRecordMenu({
     typeof window !== "undefined"
       ? `${window.location.origin}${basePath}`
       : "";
-  const getOgImageUrl = () => `${getShareUrl()}/opengraph-image`;
+  const getSaveImageUrl = () => `${getShareUrl()}/certificate-image`;
 
   const isMobile = () =>
     typeof navigator !== "undefined" &&
@@ -128,8 +128,8 @@ export default function ShareRecordMenu({
     if (!url) return;
     setIsDownloading(true);
     try {
-      const ogImageUrl = getOgImageUrl();
-      const res = await fetch(ogImageUrl);
+      const saveImageUrl = getSaveImageUrl();
+      const res = await fetch(saveImageUrl);
       if (!res.ok) throw new Error("Failed to fetch image");
       const blob = await res.blob();
       const filename = `kfondo-record-${eventId}-${year}-${time}.png`;
@@ -149,7 +149,7 @@ export default function ShareRecordMenu({
       }
 
       if (isMobile()) {
-        window.open(ogImageUrl, "_blank");
+        window.open(saveImageUrl, "_blank");
         toast.info("이미지를 길게 눌러 '사진에 저장'을 선택하세요.");
         setImageModalOpen(false);
         return;
