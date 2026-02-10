@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { getFindByRecordData } from "@/lib/find-by-record-data";
 import { RecordCertificatePreview } from "@/components/record-certificate-preview";
 
+export const dynamic = "force-dynamic"; // Ensure dynamic rendering if needed, though usually params make it dynamic
 export const alt = "기록 인증 | K-Fondo";
 export const size = { width: 1080, height: 1350 };
 export const contentType = "image/png";
@@ -23,9 +24,10 @@ async function loadLocalFont(filename: string) {
   return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
 }
 
-export default async function Image(props: Props) {
+export async function GET(request: Request, props: Props) {
   const { event: eventId, courseId, year, time } = await props.params;
   const data = await getFindByRecordData(eventId, courseId, year, time);
+  
   if (!data) {
     return new ImageResponse(
       (
