@@ -47,7 +47,12 @@ export default function ShareRecordMenu({
     typeof window !== "undefined"
       ? `${window.location.origin}${basePath}`
       : "";
-  const getOgImageUrl = () => `${getShareUrl()}/opengraph-image`;
+  const getSaveImageUrl = () => `${getShareUrl()}/certificate-image`;
+
+  const isMobile = () =>
+    typeof navigator !== "undefined" &&
+    navigator.maxTouchPoints > 0 &&
+    /Android|iPhone|iPad|iPod|webOS|Mobile/i.test(navigator.userAgent);
 
   const updateScale = () => {
     if (!containerRef.current) return;
@@ -123,14 +128,37 @@ export default function ShareRecordMenu({
     if (!url) return;
     setIsDownloading(true);
     try {
-      const ogImageUrl = getOgImageUrl();
-      const res = await fetch(ogImageUrl);
+      const saveImageUrl = getSaveImageUrl();
+      const res = await fetch(saveImageUrl);
       if (!res.ok) throw new Error("Failed to fetch image");
       const blob = await res.blob();
+      const filename = `kfondo-record-${eventId}-${year}-${time}.png`;
+      const file = new File([blob], filename, { type: blob.type });
+
+      const shareData = { files: [file], title, text: description };
+      if (typeof navigator !== "undefined" && navigator.canShare?.(shareData)) {
+        try {
+          await navigator.share(shareData);
+          toast.success("이미지가 저장되었습니다.");
+          setImageModalOpen(false);
+          return;
+        } catch (err) {
+          if ((err as Error).name === "AbortError") return;
+          // fall through to download fallback
+        }
+      }
+
+      if (isMobile()) {
+        window.open(saveImageUrl, "_blank");
+        toast.info("이미지를 길게 눌러 '사진에 저장'을 선택하세요.");
+        setImageModalOpen(false);
+        return;
+      }
+
       const objectUrl = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = objectUrl;
-      a.download = `kfondo-record-${eventId}-${year}-${time}.png`;
+      a.download = filename;
       a.click();
       URL.revokeObjectURL(objectUrl);
       toast.success("이미지가 다운로드되었습니다.");
