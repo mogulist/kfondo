@@ -1,5 +1,10 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
+
+type RevalidateBody = {
+  path?: string;
+  tag?: string;
+};
 
 export async function POST(request: Request) {
   const secret = process.env.REVALIDATE_SECRET;
@@ -16,6 +21,16 @@ export async function POST(request: Request) {
     }
   }
 
-  revalidatePath("/");
+  let body: RevalidateBody = {};
+  try {
+    body = (await request.json()) as RevalidateBody;
+  } catch {
+    // no body or invalid JSON: revalidate home only
+  }
+
+  if (body.tag) {
+    revalidateTag(body.tag, "default");
+  }
+  revalidatePath(body.path ?? "/");
   return NextResponse.json({ revalidated: true });
 }
