@@ -2,6 +2,7 @@ import { unstable_cache } from "next/cache";
 import { ParticipantTrendSection } from "./components/ParticipantTrendSection";
 import { StatsSection } from "./components/StatsSection";
 import { TitleSection } from "./components/TitleSection";
+import { UpcomingSection } from "./components/UpcomingSection";
 import { CommentsSection } from "./components/CommentsSection";
 import { getEventById } from "@/lib/db/events";
 import type { Metadata } from "next";
@@ -41,8 +42,11 @@ export default async function EventPage({ params }: Props) {
     <>
       <Header />
       <main className="container mx-auto px-4 py-12">
-        <div className="space-y-12 max-w-full">
-          <TitleSection event={event} />
+        <div className="space-y-8 max-w-full">
+          <div className="space-y-4">
+            <TitleSection event={event} />
+            <UpcomingSection event={event} />
+          </div>
           <div className="space-y-16 md:space-y-20">
             <ParticipantTrendSection event={event} />
             <StatsSection event={event} />

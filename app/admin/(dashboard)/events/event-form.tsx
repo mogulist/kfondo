@@ -116,11 +116,11 @@ function BasicInfoView({
           <div className={readOnlyInputClass}>{data.slug}</div>
         </div>
         <div className="space-y-2">
-          <p className="text-sm font-medium text-muted-foreground">코멘트</p>
-          <div className="min-h-[80px] w-full rounded-md border border-input bg-muted/50 px-3 py-2 text-sm text-foreground whitespace-pre-wrap">
-            {data.comment || "-"}
+            <p className="text-sm font-medium text-muted-foreground">코멘트</p>
+            <div className="min-h-[80px] w-full rounded-md border border-input bg-muted/50 px-3 py-2 text-sm text-foreground whitespace-pre-wrap">
+              {data.comment || "-"}
+            </div>
           </div>
-        </div>
         <div className="space-y-4 border-t pt-4">
           <h3 className="font-medium text-sm text-slate-500">
             메타 정보 (SEO)
