@@ -125,7 +125,7 @@ export const events: Event[] = [
     yearDetails: {
       2026: {
         year: 2026,
-        date: "2026.5.20",
+        date: "2026.6.20",
         status: "upcoming",
         courses: [
           {

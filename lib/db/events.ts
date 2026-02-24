@@ -111,7 +111,9 @@ export async function getEventById(
 
   const { data, error } = await supabase
     .from("events")
-    .select("*, event_editions(*, courses(*))")
+    .select(
+      "*, event_editions(id, year, date, status, url, records_blob_url, sorted_records_blob_url, comment, created_at, updated_at, event_id, courses(*))"
+    )
     .eq("slug", eventSlug) // id 대신 slug로 조회
     .single();
 
