@@ -31,8 +31,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
-import type { CourseRow } from "@/lib/database.types";
+import type {
+  CourseRow,
+  Database,
+} from "@/lib/database.types";
 import type { EventEditionWithCourses } from "./types";
+
+type CourseInsert = Database["public"]["Tables"]["courses"]["Insert"];
+type CourseUpdate = Database["public"]["Tables"]["courses"]["Update"];
 
 const courseSchema = z.object({
   edition_id: z.string().uuid("에디션을 선택하세요"),
@@ -41,6 +47,9 @@ const courseSchema = z.object({
   distance: z.coerce.number().min(0),
   elevation: z.coerce.number().min(0),
   registered_count: z.coerce.number().min(0).optional(),
+  official_site_url: z.string().optional(),
+  strava_url: z.string().optional(),
+  ride_with_gps_url: z.string().optional(),
 });
 
 type CourseFormValues = z.infer<typeof courseSchema>;
@@ -71,6 +80,9 @@ export function CourseFormDialog({
       distance: 0,
       elevation: 0,
       registered_count: 0,
+      official_site_url: "",
+      strava_url: "",
+      ride_with_gps_url: "",
     },
   });
 
@@ -83,6 +95,9 @@ export function CourseFormDialog({
         distance: course.distance,
         elevation: course.elevation,
         registered_count: course.registered_count ?? 0,
+        official_site_url: course.official_site_url ?? "",
+        strava_url: course.strava_url ?? "",
+        ride_with_gps_url: course.ride_with_gps_url ?? "",
       });
     } else if (open && editions.length > 0) {
       form.reset({
@@ -92,6 +107,9 @@ export function CourseFormDialog({
         distance: 0,
         elevation: 0,
         registered_count: 0,
+        official_site_url: "",
+        strava_url: "",
+        ride_with_gps_url: "",
       });
     }
   }, [open, course, editions, form]);
@@ -99,29 +117,39 @@ export function CourseFormDialog({
   async function onSubmit(values: CourseFormValues) {
     try {
       if (course) {
-        const { error } = await supabase
-          .from("courses")
-          .update({
-            edition_id: values.edition_id,
-            course_type: values.course_type,
-            name: values.name,
-            distance: values.distance,
-            elevation: values.elevation,
-            registered_count: values.registered_count ?? 0,
-          })
-          .eq("id", course.id);
-
-        if (error) throw error;
-        toast.success("코스가 수정되었습니다.");
-      } else {
-        const { error } = await supabase.from("courses").insert({
+        const payload: CourseUpdate = {
           edition_id: values.edition_id,
           course_type: values.course_type,
           name: values.name,
           distance: values.distance,
           elevation: values.elevation,
           registered_count: values.registered_count ?? 0,
-        });
+          official_site_url: values.official_site_url?.trim() || null,
+          strava_url: values.strava_url?.trim() || null,
+          ride_with_gps_url: values.ride_with_gps_url?.trim() || null,
+        };
+        const { error } = await supabase
+          .from("courses")
+          .update(payload as never)
+          .eq("id", course.id);
+
+        if (error) throw error;
+        toast.success("코스가 수정되었습니다.");
+      } else {
+        const payload: CourseInsert = {
+          edition_id: values.edition_id,
+          course_type: values.course_type,
+          name: values.name,
+          distance: values.distance,
+          elevation: values.elevation,
+          registered_count: values.registered_count ?? 0,
+          official_site_url: values.official_site_url?.trim() || null,
+          strava_url: values.strava_url?.trim() || null,
+          ride_with_gps_url: values.ride_with_gps_url?.trim() || null,
+        };
+        const { error } = await supabase
+          .from("courses")
+          .insert(payload as never);
 
         if (error) throw error;
         toast.success("코스가 추가되었습니다.");
@@ -268,6 +296,66 @@ export function CourseFormDialog({
                 </FormItem>
               )}
             />
+
+            <div className="space-y-3 border-t pt-4">
+              <h4 className="text-sm font-medium text-muted-foreground">
+                링크 (선택)
+              </h4>
+              <FormField
+                control={form.control}
+                name="official_site_url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>공식 사이트 URL</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="url"
+                        placeholder="https://..."
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="strava_url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Strava URL</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="url"
+                        placeholder="https://www.strava.com/..."
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="ride_with_gps_url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>RideWithGPS URL</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="url"
+                        placeholder="https://ridewithgps.com/..."
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <DialogFooter>
               <Button

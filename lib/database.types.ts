@@ -103,6 +103,9 @@ export type Database = {
           distance: number;
           elevation: number;
           registered_count: number;
+          official_site_url: string | null;
+          strava_url: string | null;
+          ride_with_gps_url: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -114,6 +117,9 @@ export type Database = {
           distance: number;
           elevation: number;
           registered_count?: number;
+          official_site_url?: string | null;
+          strava_url?: string | null;
+          ride_with_gps_url?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -125,6 +131,9 @@ export type Database = {
           distance?: number;
           elevation?: number;
           registered_count?: number;
+          official_site_url?: string | null;
+          strava_url?: string | null;
+          ride_with_gps_url?: string | null;
           created_at?: string;
           updated_at?: string;
         };

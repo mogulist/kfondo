@@ -27,6 +27,9 @@ function mapRowToEvent(row: EventWithRelations): Event {
           distance: course.distance,
           elevation: course.elevation,
           registered: course.registered_count,
+          officialSiteUrl: course.official_site_url?.trim() || undefined,
+          stravaUrl: course.strava_url?.trim() || undefined,
+          rideWithGpsUrl: course.ride_with_gps_url?.trim() || undefined,
         })) || [];
 
       yearDetails[edition.year] = {
