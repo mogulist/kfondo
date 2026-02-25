@@ -30,6 +30,7 @@ function mapRowToEvent(row: EventWithRelations): Event {
           officialSiteUrl: course.official_site_url?.trim() || undefined,
           stravaUrl: course.strava_url?.trim() || undefined,
           rideWithGpsUrl: course.ride_with_gps_url?.trim() || undefined,
+          gpxBlobUrl: course.gpx_blob_url?.trim() || undefined,
         })) || [];
 
       yearDetails[edition.year] = {
