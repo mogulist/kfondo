@@ -71,6 +71,9 @@ export type RaceCategory = {
   elevation?: number; // 고도
   registered?: number; // 등록자 수
   comment?: string;
+  officialSiteUrl?: string;
+  stravaUrl?: string;
+  rideWithGpsUrl?: string;
 };
 
 // 연도별 대회 정보

@@ -33,12 +33,24 @@ Supabase Dashboard → Table Editor → events 테이블에서 데이터 확인
 
 ---
 
+## 마이그레이션: 코스 링크 URL (1단계)
+
+기존 DB에 이미 `courses` 테이블이 있는 경우, Supabase SQL Editor에서 다음 파일을 실행해 컬럼만 추가할 수 있습니다:
+
+- `supabase/migrations/20260225_add_course_link_urls.sql` — `official_site_url`, `strava_url`, `ride_with_gps_url` 컬럼 추가
+
+새로 스키마를 만드는 경우에는 `schema.sql`에 이미 포함되어 있으므로 별도 실행 불필요합니다.
+
+---
+
 ## 파일 구조
 
 ```
 supabase/
 ├── README.md          # 이 파일
-└── schema.sql         # 테이블 스키마
+├── schema.sql         # 테이블 스키마 (전체 초기화용)
+├── migrations/        # 기존 DB에 컬럼만 추가하는 마이그레이션
+│   └── 20260225_add_course_link_urls.sql
 
 lib/
 ├── supabase.ts        # Supabase 클라이언트
