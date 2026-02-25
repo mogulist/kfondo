@@ -49,7 +49,8 @@ export const UpcomingSection = ({ event }: Props) => {
   const officialSiteUrl = getOfficialSiteUrl(event);
   const latestCourses =
     latestDetail?.courses?.filter((c) => c.name?.trim()) ?? [];
-  const hasCourseInfo = latestCourses.length > 0;
+  const coursesWithLinks = latestCourses.filter(hasAnyCourseLink);
+  const hasCourseInfo = coursesWithLinks.length > 0;
 
   if (!showDDayCard && !officialSiteUrl && !hasCourseInfo) return null;
 
@@ -93,8 +94,8 @@ export const UpcomingSection = ({ event }: Props) => {
       {hasCourseInfo && (
         <section className="space-y-3" role="region" aria-label="코스 정보">
           <h2 className="text-lg font-bold text-foreground pl-1">코스 정보</h2>
-          <div className="grid grid-cols-2 gap-4 w-full">
-            {latestCourses.map((course) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+            {coursesWithLinks.map((course) => (
               <CourseCard key={course.id} course={course} />
             ))}
           </div>
@@ -116,43 +117,39 @@ function CourseCard({ course }: { course: RaceCategory }) {
         {course.name}
         {distanceLabel}
       </p>
-      <div className="flex flex-nowrap gap-2">
-        {COURSE_LINK_STYLES.map(({ label, key, btnClass }) => {
+      <div className="flex flex-wrap gap-2">
+        {COURSE_LINK_STYLES.filter(({ key }) => {
           const url = course[key];
-          const hasUrl = typeof url === "string" && url.trim().length > 0;
+          return typeof url === "string" && url.trim().length > 0;
+        }).map(({ label, key, btnClass }) => {
+          const url = course[key]!.trim();
           const pillClass =
             "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors";
-          const content = (
-            <>
+          return (
+            <a
+              key={key}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${btnClass} ${pillClass}`}
+            >
               <MapPin className="size-3.5 shrink-0 opacity-90" aria-hidden />
               {label}
-            </>
-          );
-          if (hasUrl) {
-            return (
-              <a
-                key={key}
-                href={url!.trim()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${btnClass} ${pillClass}`}
-              >
-                {content}
-              </a>
-            );
-          }
-          return (
-            <span
-              key={key}
-              className={`${pillClass} bg-muted text-muted-foreground cursor-not-allowed opacity-60`}
-              aria-disabled="true"
-            >
-              {content}
-            </span>
+            </a>
           );
         })}
       </div>
     </div>
+  );
+}
+
+function hasAnyCourseLink(course: RaceCategory): boolean {
+  const keys: (keyof Pick<
+    RaceCategory,
+    "officialSiteUrl" | "stravaUrl" | "rideWithGpsUrl"
+  >)[] = ["officialSiteUrl", "stravaUrl", "rideWithGpsUrl"];
+  return keys.some(
+    (k) => typeof course[k] === "string" && (course[k] as string).trim().length > 0,
   );
 }
 
