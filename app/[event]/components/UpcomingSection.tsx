@@ -113,7 +113,7 @@ export const UpcomingSection = ({ event }: Props) => {
 const NAVER_MAP_BTN_CLASS =
   "bg-[#03c75a] hover:bg-[#02b350] text-white inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors";
 const NAVER_MAP_BTN_DISABLED_CLASS =
-  "bg-gray-300 text-gray-500 cursor-not-allowed inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap";
+  "border border-slate-400 bg-slate-200 text-slate-600 cursor-not-allowed inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap dark:bg-slate-700 dark:border-slate-500 dark:text-slate-400";
 
 type CourseCardProps = {
   course: RaceCategory;
