@@ -14,7 +14,8 @@ type NaverMapProps = {
 
 const DEFAULT_CENTER = { lat: 35.9, lng: 128.0 };
 const DEFAULT_ZOOM = 8;
-const STROKE_COLOR = "#3388ff";
+/** emerald 보색 계열, 부드러운 로즈 (Tailwind rose-400) */
+const STROKE_COLOR = "#fb7185";
 const STROKE_WEIGHT = 4;
 const BOUNDS_PADDING_FACTOR = 1.2;
 
