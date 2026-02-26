@@ -8,22 +8,35 @@ type NaverMapProps = {
   height?: string;
   /** 각 polyline은 [lat, lng][] 배열. 그리기 후 fitBounds 적용 */
   polylines?: [number, number][][];
+  /** 고도 그래프 등에서 하이라이트할 위치. [lat, lng] 또는 null */
+  highlightPosition?: [number, number] | null;
 };
 
 const DEFAULT_CENTER = { lat: 35.9, lng: 128.0 };
 const DEFAULT_ZOOM = 8;
-const STROKE_COLOR = "#3388ff";
+/** emerald 보색 계열, 부드러운 로즈 (Tailwind rose-400) */
+const STROKE_COLOR = "#fb7185";
 const STROKE_WEIGHT = 4;
 const BOUNDS_PADDING_FACTOR = 1.2;
+
+const HIGHLIGHT_MARKER_SIZE = 16;
+/** 사이트 컬러 emerald (Tailwind emerald-500) */
+const HIGHLIGHT_MARKER_COLOR = "#10b981";
+
+function highlightCircleMarkerHtml(size: number): string {
+  return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${HIGHLIGHT_MARKER_COLOR};border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>`;
+}
 
 export function NaverMap({
   width = "100%",
   height = "100%",
   polylines,
+  highlightPosition = null,
 }: NaverMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<NaverMapInstance | null>(null);
   const polylineInstancesRef = useRef<unknown[]>([]);
+  const highlightMarkerRef = useRef<unknown>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
@@ -131,6 +144,36 @@ export function NaverMap({
     );
     map.fitBounds(paddedBounds);
   }, [isMapLoaded, polylines]);
+
+  useEffect(() => {
+    if (!isMapLoaded || !window.naver?.maps || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+    const maps = window.naver.maps;
+    const prev = highlightMarkerRef.current as { setMap: (m: null) => void } | null;
+    if (prev?.setMap) prev.setMap(null);
+    highlightMarkerRef.current = null;
+    if (highlightPosition) {
+      const [lat, lng] = highlightPosition;
+      const position = new maps.LatLng(lat, lng);
+      const size = HIGHLIGHT_MARKER_SIZE;
+      const anchor = size / 2;
+      const Point = (maps as { Point?: new (x: number, y: number) => unknown }).Point;
+      const markerOptions: { position: unknown; map: unknown; icon?: { content: string; anchor: unknown } } = {
+        position,
+        map: map as unknown,
+      };
+      if (Point) {
+        markerOptions.icon = {
+          content: highlightCircleMarkerHtml(size),
+          anchor: new Point(anchor, anchor),
+        };
+      }
+      const marker = new maps.Marker(
+        markerOptions as { position: unknown; map: unknown }
+      );
+      highlightMarkerRef.current = marker;
+    }
+  }, [isMapLoaded, highlightPosition]);
 
   const handleZoomIn = () => {
     const map = mapInstanceRef.current;
