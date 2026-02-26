@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -50,6 +50,7 @@ const courseSchema = z.object({
   official_site_url: z.string().optional(),
   strava_url: z.string().optional(),
   ride_with_gps_url: z.string().optional(),
+  gpx_blob_url: z.string().optional(),
 });
 
 type CourseFormValues = z.infer<typeof courseSchema>;
@@ -83,8 +84,11 @@ export function CourseFormDialog({
       official_site_url: "",
       strava_url: "",
       ride_with_gps_url: "",
+      gpx_blob_url: "",
     },
   });
+
+  const [gpxUploading, setGpxUploading] = useState(false);
 
   useEffect(() => {
     if (open && course) {
@@ -98,6 +102,7 @@ export function CourseFormDialog({
         official_site_url: course.official_site_url ?? "",
         strava_url: course.strava_url ?? "",
         ride_with_gps_url: course.ride_with_gps_url ?? "",
+        gpx_blob_url: course.gpx_blob_url ?? "",
       });
     } else if (open && editions.length > 0) {
       form.reset({
@@ -110,6 +115,7 @@ export function CourseFormDialog({
         official_site_url: "",
         strava_url: "",
         ride_with_gps_url: "",
+        gpx_blob_url: "",
       });
     }
   }, [open, course, editions, form]);
@@ -127,6 +133,7 @@ export function CourseFormDialog({
           official_site_url: values.official_site_url?.trim() || null,
           strava_url: values.strava_url?.trim() || null,
           ride_with_gps_url: values.ride_with_gps_url?.trim() || null,
+          gpx_blob_url: values.gpx_blob_url?.trim() || null,
         };
         const { error } = await supabase
           .from("courses")
@@ -146,6 +153,7 @@ export function CourseFormDialog({
           official_site_url: values.official_site_url?.trim() || null,
           strava_url: values.strava_url?.trim() || null,
           ride_with_gps_url: values.ride_with_gps_url?.trim() || null,
+          gpx_blob_url: values.gpx_blob_url?.trim() || null,
         };
         const { error } = await supabase
           .from("courses")
@@ -351,6 +359,74 @@ export function CourseFormDialog({
                         value={field.value ?? ""}
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="space-y-3 border-t pt-4">
+              <h4 className="text-sm font-medium text-muted-foreground">
+                경로 (네이버맵)
+              </h4>
+              <FormField
+                control={form.control}
+                name="gpx_blob_url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>GPX 파일</FormLabel>
+                    {field.value ? (
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-sm text-muted-foreground">
+                          현재 경로 있음
+                        </span>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => field.onChange("")}
+                        >
+                          삭제
+                        </Button>
+                      </div>
+                    ) : null}
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept=".gpx,application/gpx+xml,application/xml,text/xml"
+                        disabled={gpxUploading}
+                        onChange={async (e) => {
+                          const f = e.target.files?.[0];
+                          if (!f) return;
+                          setGpxUploading(true);
+                          try {
+                            const fd = new FormData();
+                            fd.set("file", f);
+                            const res = await fetch("/api/courses/gpx-upload", {
+                              method: "POST",
+                              body: fd,
+                            });
+                            if (!res.ok) {
+                              const data = await res.json().catch(() => ({}));
+                              throw new Error(data.error ?? "업로드 실패");
+                            }
+                            const { url } = await res.json();
+                            field.onChange(url);
+                            toast.success("GPX가 업로드되었습니다.");
+                          } catch (err) {
+                            toast.error(
+                              err instanceof Error ? err.message : "업로드 실패"
+                            );
+                          } finally {
+                            setGpxUploading(false);
+                            e.target.value = "";
+                          }
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      GPX 업로드 시 이벤트 상세에서 네이버맵 버튼이 활성화됩니다.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

@@ -74,6 +74,7 @@ export type RaceCategory = {
   officialSiteUrl?: string;
   stravaUrl?: string;
   rideWithGpsUrl?: string;
+  gpxBlobUrl?: string;
 };
 
 // 연도별 대회 정보
