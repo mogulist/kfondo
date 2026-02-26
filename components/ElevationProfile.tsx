@@ -112,8 +112,8 @@ export function ElevationProfile({ data, onPositionChange }: ElevationProfilePro
             ele: {
               label: "고도 (m)",
               theme: {
-                light: "oklch(0.646 0.222 41.116)",
-                dark: "oklch(0.7 0.2 264)",
+                light: "oklch(0.65 0.15 165)",
+                dark: "oklch(0.7 0.14 165)",
               },
             },
           }}

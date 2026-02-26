@@ -18,6 +18,14 @@ const STROKE_COLOR = "#3388ff";
 const STROKE_WEIGHT = 4;
 const BOUNDS_PADDING_FACTOR = 1.2;
 
+const HIGHLIGHT_MARKER_SIZE = 16;
+/** 사이트 컬러 emerald (Tailwind emerald-500) */
+const HIGHLIGHT_MARKER_COLOR = "#10b981";
+
+function highlightCircleMarkerHtml(size: number): string {
+  return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${HIGHLIGHT_MARKER_COLOR};border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>`;
+}
+
 export function NaverMap({
   width = "100%",
   height = "100%",
@@ -145,10 +153,23 @@ export function NaverMap({
     highlightMarkerRef.current = null;
     if (highlightPosition) {
       const [lat, lng] = highlightPosition;
-      const marker = new maps.Marker({
-        position: new maps.LatLng(lat, lng),
+      const position = new maps.LatLng(lat, lng);
+      const size = HIGHLIGHT_MARKER_SIZE;
+      const anchor = size / 2;
+      const Point = (maps as { Point?: new (x: number, y: number) => unknown }).Point;
+      const markerOptions: { position: unknown; map: unknown; icon?: { content: string; anchor: unknown } } = {
+        position,
         map: map as unknown,
-      });
+      };
+      if (Point) {
+        markerOptions.icon = {
+          content: highlightCircleMarkerHtml(size),
+          anchor: new Point(anchor, anchor),
+        };
+      }
+      const marker = new maps.Marker(
+        markerOptions as { position: unknown; map: unknown }
+      );
       highlightMarkerRef.current = marker;
     }
   }, [isMapLoaded, highlightPosition]);
