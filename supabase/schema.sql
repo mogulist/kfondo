@@ -52,6 +52,7 @@ CREATE TABLE courses (
   official_site_url TEXT,
   strava_url TEXT,
   ride_with_gps_url TEXT,
+  gpx_blob_url TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
