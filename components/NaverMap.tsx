@@ -8,6 +8,8 @@ type NaverMapProps = {
   height?: string;
   /** 각 polyline은 [lat, lng][] 배열. 그리기 후 fitBounds 적용 */
   polylines?: [number, number][][];
+  /** 고도 그래프 등에서 하이라이트할 위치. [lat, lng] 또는 null */
+  highlightPosition?: [number, number] | null;
 };
 
 const DEFAULT_CENTER = { lat: 35.9, lng: 128.0 };
@@ -20,10 +22,12 @@ export function NaverMap({
   width = "100%",
   height = "100%",
   polylines,
+  highlightPosition = null,
 }: NaverMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<NaverMapInstance | null>(null);
   const polylineInstancesRef = useRef<unknown[]>([]);
+  const highlightMarkerRef = useRef<unknown>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
@@ -131,6 +135,23 @@ export function NaverMap({
     );
     map.fitBounds(paddedBounds);
   }, [isMapLoaded, polylines]);
+
+  useEffect(() => {
+    if (!isMapLoaded || !window.naver?.maps || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+    const maps = window.naver.maps;
+    const prev = highlightMarkerRef.current as { setMap: (m: null) => void } | null;
+    if (prev?.setMap) prev.setMap(null);
+    highlightMarkerRef.current = null;
+    if (highlightPosition) {
+      const [lat, lng] = highlightPosition;
+      const marker = new maps.Marker({
+        position: new maps.LatLng(lat, lng),
+        map: map as unknown,
+      });
+      highlightMarkerRef.current = marker;
+    }
+  }, [isMapLoaded, highlightPosition]);
 
   const handleZoomIn = () => {
     const map = mapInstanceRef.current;

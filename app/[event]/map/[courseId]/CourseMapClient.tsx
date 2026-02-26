@@ -2,14 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { NaverMap } from "@/components/NaverMap";
-import { fetchGpxAsLatLngs } from "@/lib/gpx";
+import { ElevationProfile } from "@/components/ElevationProfile";
+import { fetchGpxAsPointsWithDistance } from "@/lib/gpx";
+import type { GpxPointWithDistance } from "@/lib/gpx";
 
 type CourseMapClientProps = {
   gpxBlobUrl: string;
 };
 
 export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
-  const [polylines, setPolylines] = useState<[number, number][][]>([]);
+  const [routePoints, setRoutePoints] = useState<GpxPointWithDistance[]>([]);
+  const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -17,10 +20,10 @@ export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
     let cancelled = false;
     setLoading(true);
     setError(null);
-    fetchGpxAsLatLngs(gpxBlobUrl)
+    fetchGpxAsPointsWithDistance(gpxBlobUrl)
       .then((points) => {
         if (!cancelled && points.length > 0) {
-          setPolylines([points]);
+          setRoutePoints(points);
         } else if (!cancelled) {
           setError("경로 포인트를 찾을 수 없습니다.");
         }
@@ -54,9 +57,30 @@ export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
     );
   }
 
+  const polylines: [number, number][][] = [
+    routePoints.map((p) => [p.lat, p.lng] as [number, number]),
+  ];
+  const highlightPosition: [number, number] | null =
+    highlightedIndex != null && routePoints[highlightedIndex]
+      ? [routePoints[highlightedIndex].lat, routePoints[highlightedIndex].lng]
+      : null;
+
   return (
-    <div className="w-full h-full min-h-[70vh]">
-      <NaverMap polylines={polylines} width="100%" height="100%" />
+    <div className="flex flex-col h-full min-h-0 w-full">
+      <div className="flex-1 min-h-0 w-full">
+        <NaverMap
+          polylines={polylines}
+          highlightPosition={highlightPosition}
+          width="100%"
+          height="100%"
+        />
+      </div>
+      <div className="shrink-0 border-t border-border bg-card px-3 py-2 min-h-[140px] h-[22dvh] max-h-[200px]">
+        <ElevationProfile
+          data={routePoints}
+          onPositionChange={setHighlightedIndex}
+        />
+      </div>
     </div>
   );
 }

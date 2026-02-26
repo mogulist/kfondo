@@ -46,10 +46,10 @@ export default async function CourseMapPage({ params, searchParams }: Props) {
       : "";
 
   return (
-    <>
+    <div className="flex flex-col h-dvh">
       <Header />
-      <main className="container mx-auto px-4 py-6">
-        <div className="mb-4 flex items-center gap-3">
+      <main className="flex-1 min-h-0 flex flex-col container mx-auto px-4 py-4">
+        <div className="shrink-0 mb-3 flex items-center gap-3">
           <Link
             href={`/${eventSlug}`}
             className="inline-flex items-center justify-center size-9 rounded-full border border-border bg-card text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-foreground shrink-0"
@@ -67,10 +67,10 @@ export default async function CourseMapPage({ params, searchParams }: Props) {
             </h1>
           </div>
         </div>
-        <div className="w-full h-[70vh] min-h-[400px] rounded-xl border border-border overflow-hidden bg-card shadow-sm">
+        <div className="flex-1 min-h-0 w-full rounded-xl border border-border overflow-hidden bg-card shadow-sm flex flex-col">
           <CourseMapClient gpxBlobUrl={course.gpxBlobUrl} />
         </div>
       </main>
-    </>
+    </div>
   );
 }

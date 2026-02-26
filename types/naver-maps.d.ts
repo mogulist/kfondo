@@ -14,6 +14,10 @@ declare global {
           strokeColor?: string;
           strokeWeight?: number;
         }) => unknown;
+        Marker: new (options: {
+          position: unknown;
+          map: unknown;
+        }) => NaverMarkerInstance;
       };
     };
   }
@@ -27,4 +31,8 @@ export type NaverMapInstance = {
 
 export type NaverLatLngBounds = {
   extend: (point: unknown) => void;
+};
+
+export type NaverMarkerInstance = {
+  setMap: (map: unknown) => void;
 };
