@@ -9,6 +9,7 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   
   const isAdminPath = pathname.startsWith('/admin')
+  const isApiPath = pathname.startsWith('/api')
   const isAuthPath = pathname.startsWith('/admin/login') || pathname.startsWith('/admin/auth')
   
   // 로컬 개발 환경(localhost)이거나 admin 도메인인 경우
@@ -24,7 +25,8 @@ export async function middleware(request: NextRequest) {
 
     // 2. admin 도메인인데 /admin 경로가 아니면 /admin으로 강제 이동
     // (단, 로컬에서는 메인 페이지도 봐야 하므로, 진짜 admin 도메인일 때만 적용)
-    if (host.startsWith('admin.') && !isAdminPath) {
+    // /api 경로(예: GPX 업로드)는 리다이렉트 제외
+    if (host.startsWith('admin.') && !isAdminPath && !isApiPath) {
       const url = request.nextUrl.clone()
       url.pathname = '/admin'
       return NextResponse.redirect(url)
