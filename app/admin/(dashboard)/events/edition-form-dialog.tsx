@@ -37,7 +37,7 @@ import { EDITION_STATUS_LABELS } from "./types";
 const editionSchema = z.object({
   year: z.coerce.number().min(2000).max(2100),
   date: z.string().min(1, "개최일을 입력하세요"),
-  status: z.enum(["upcoming", "completed", "ready", "preparing"]),
+  status: z.enum(["upcoming", "completed", "ready", "preparing", "cancelled"]),
   url: z.string().optional(),
   records_blob_url: z.string().optional(),
   sorted_records_blob_url: z.string().optional(),

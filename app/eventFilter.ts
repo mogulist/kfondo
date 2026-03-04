@@ -123,7 +123,11 @@ export async function getFilteredEvents(): Promise<HomePageFilteredData> {
     
     // Check if it's this year
     if (latestYear === currentYear) {
-      const daysSince = today.diff(eventDate, 'day');
+      if (latestDetail.status === "cancelled") {
+        otherEventsTemp.push(event);
+        return;
+      }
+      const daysSince = today.diff(eventDate, "day");
       const isFuture = eventDate.isAfter(today);
       const hasRecords = latestDetail.totalRegistered > 0;
 
