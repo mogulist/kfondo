@@ -3,7 +3,12 @@
 import { useEffect, useState } from "react";
 import { NaverMap } from "@/components/NaverMap";
 import { ElevationProfile } from "@/components/ElevationProfile";
-import { fetchGpxAsPointsWithDistance } from "@/lib/gpx";
+import { Slider } from "@/components/ui/slider";
+import { useMobile } from "@/hooks/use-mobile";
+import {
+  fetchGpxAsPointsWithDistance,
+  findNearestIndexByDistance,
+} from "@/lib/gpx";
 import type { GpxPointWithDistance } from "@/lib/gpx";
 
 type CourseMapClientProps = {
@@ -11,6 +16,7 @@ type CourseMapClientProps = {
 };
 
 export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
+  const isMobile = useMobile();
   const [routePoints, setRoutePoints] = useState<GpxPointWithDistance[]>([]);
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -65,6 +71,20 @@ export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
       ? [routePoints[highlightedIndex].lat, routePoints[highlightedIndex].lng]
       : null;
 
+  const minKm = routePoints[0]?.distanceKm ?? 0;
+  const maxKm = routePoints[routePoints.length - 1]?.distanceKm ?? 0;
+  const sliderValue =
+    highlightedIndex != null && routePoints[highlightedIndex]
+      ? ((routePoints[highlightedIndex].distanceKm - minKm) / (maxKm - minKm || 1)) * 100
+      : 0;
+
+  const handleSliderChange = (value: number[]) => {
+    const ratio = Math.max(0, Math.min(1, value[0] / 100));
+    const distanceKm = minKm + ratio * (maxKm - minKm);
+    const index = findNearestIndexByDistance(routePoints, distanceKm);
+    setHighlightedIndex(index);
+  };
+
   return (
     <div className="flex flex-col h-full min-h-0 w-full">
       <div className="flex-1 min-h-0 w-full">
@@ -75,11 +95,25 @@ export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
           height="100%"
         />
       </div>
-      <div className="shrink-0 border-t border-border bg-card px-3 py-2 min-h-[140px] h-[22dvh] max-h-[200px]">
-        <ElevationProfile
-          data={routePoints}
-          onPositionChange={setHighlightedIndex}
-        />
+      <div className="shrink-0 border-t border-border bg-card px-3 py-2 min-h-[140px] h-[22dvh] max-h-[200px] flex flex-col min-h-0">
+        <div className="flex-1 min-h-0 overflow-hidden">
+          <ElevationProfile
+            data={routePoints}
+            onPositionChange={setHighlightedIndex}
+            positionIndex={highlightedIndex}
+          />
+        </div>
+        {isMobile && (
+          <div className="shrink-0 mt-2 px-1">
+            <Slider
+              value={[sliderValue]}
+              onValueChange={handleSliderChange}
+              max={100}
+              step={0.5}
+              aria-label="코스 구간 위치 선택"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
