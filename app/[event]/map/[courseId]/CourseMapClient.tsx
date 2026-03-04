@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Mountain, Route } from "lucide-react";
 import { NaverMap } from "@/components/NaverMap";
 import { ElevationProfile } from "@/components/ElevationProfile";
 import { Slider } from "@/components/ui/slider";
@@ -104,14 +105,29 @@ export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
           />
         </div>
         {isMobile && (
-          <div className="shrink-0 mt-2 px-1">
-            <Slider
-              value={[sliderValue]}
-              onValueChange={handleSliderChange}
-              max={100}
-              step={0.5}
-              aria-label="코스 구간 위치 선택"
-            />
+          <div className="shrink-0 mt-2 flex w-full">
+            <div className="w-9 shrink-0" />
+            <div className="flex-1 min-w-0 pr-2 flex flex-col gap-1">
+              {highlightedIndex != null && routePoints[highlightedIndex] != null && (
+                <p className="text-sm text-muted-foreground flex items-center gap-3 flex-wrap">
+                  <span className="inline-flex items-center gap-1.5">
+                    <Route className="size-3.5 shrink-0" aria-hidden />
+                    <span>{routePoints[highlightedIndex].distanceKm.toFixed(2)} km</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <Mountain className="size-3.5 shrink-0" aria-hidden />
+                    <span>{routePoints[highlightedIndex].ele ?? 0} m</span>
+                  </span>
+                </p>
+              )}
+              <Slider
+                value={[sliderValue]}
+                onValueChange={handleSliderChange}
+                max={100}
+                step={0.5}
+                aria-label="코스 구간 위치 선택"
+              />
+            </div>
           </div>
         )}
       </div>

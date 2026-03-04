@@ -47,9 +47,11 @@ export function ElevationProfile({
   positionIndex = null,
 }: ElevationProfileProps) {
   const handleChartMouseMove = useCallback(
-    (state: { activeTooltipIndex?: number }) => {
-      if (state.activeTooltipIndex != null) {
-        onPositionChange(state.activeTooltipIndex);
+    // Recharts의 MouseHandlerDataParam 타입은 string | number 등을 포함하므로 런타임에서 number만 사용.
+    (state: unknown) => {
+      const typed = state as { activeTooltipIndex?: number | null | undefined };
+      if (typeof typed.activeTooltipIndex === "number") {
+        onPositionChange(typed.activeTooltipIndex);
       }
     },
     [onPositionChange]
@@ -153,7 +155,7 @@ export function ElevationProfile({
                   <>
                     <ReferenceLine
                       x={chartData[positionIndex].distanceKm}
-                      stroke="hsl(var(--primary))"
+                      stroke="var(--color-ele)"
                       strokeWidth={1.5}
                       strokeDasharray="4 2"
                     />
@@ -161,7 +163,7 @@ export function ElevationProfile({
                       x={chartData[positionIndex].distanceKm}
                       y={chartData[positionIndex].ele}
                       r={5}
-                      fill="hsl(var(--primary))"
+                      fill="var(--color-ele)"
                       stroke="white"
                       strokeWidth={2}
                     />
