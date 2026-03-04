@@ -1,6 +1,6 @@
-
 import { Calendar, Mountain, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DDayBadge } from "@/components/DDayBadge";
 
 export type EventData = {
   id: string;
@@ -48,11 +48,7 @@ export function EventCard({ event, onClick }: EventCardProps) {
       )}
     >
       {/* Badge */}
-      {isUpcoming && event.dDay !== undefined && (
-        <div className="absolute -top-2.5 right-4 bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-          D-{event.dDay}
-        </div>
-      )}
+      {isUpcoming && <DDayBadge date={event.date} />}
       
       {isRecentlyUpdated && daysSinceUpdate <= 7 && (
         <div className="absolute -top-2.5 right-4 bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-medium">

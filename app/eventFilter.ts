@@ -2,29 +2,31 @@ import dayjs from "dayjs";
 import { getAllEvents } from "@/lib/db/events";
 import type { EventData } from "@/components/EventCard";
 import type { Event } from "@/lib/types";
+import { getDaysUntilEvent, normalizeEventDate } from "@/lib/date";
 
 // Helper to map raw event to EventCard props
 export const mapToEventData = (event: Event): EventData => {
   const latestYear = Math.max(...event.years);
   const latestDetail = event.yearDetails[latestYear];
-  
-  // Normalize date format for Safari (YYYY.MM.DD -> YYYY-MM-DD)
-  const normalizedDate = latestDetail.date.replace(/\./g, '-');
-  
+
+  const normalizedDate = normalizeEventDate(latestDetail.date);
+
   return {
     id: event.id,
     name: event.name || `${event.location} 그란폰도`,
-    status: 'archive',
+    status: "archive",
     date: latestDetail.date,
-    years: event.years.filter(year => event.yearDetails[year]?.status !== 'upcoming').map(String),
-    categories: latestDetail.courses.map(course => ({
+    years: event.years
+      .filter((year) => event.yearDetails[year]?.status !== "upcoming")
+      .map(String),
+    categories: latestDetail.courses.map((course) => ({
       name: course.name,
       distance: course.distance,
-      elevation: course.elevation
+      elevation: course.elevation,
     })),
     updatedAt: latestDetail.date,
     participants: latestDetail.totalRegistered,
-    dDay: dayjs(normalizedDate).diff(dayjs(), 'day')
+    dDay: getDaysUntilEvent(latestDetail.date),
   };
 };
 
