@@ -102,6 +102,7 @@ export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
             data={routePoints}
             onPositionChange={setHighlightedIndex}
             positionIndex={highlightedIndex}
+            isMobile={isMobile}
           />
         </div>
         {isMobile && (
