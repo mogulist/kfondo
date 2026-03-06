@@ -59,7 +59,7 @@ export type Database = {
           event_id: string;
           year: number;
           date: string;
-          status: "upcoming" | "completed" | "ready" | "preparing";
+          status: "upcoming" | "completed" | "ready" | "preparing" | "cancelled";
           url: string | null;
           comment: string | null;
           created_at: string;
@@ -72,7 +72,7 @@ export type Database = {
           event_id: string;
           year: number;
           date: string;
-          status?: "upcoming" | "completed" | "ready" | "preparing";
+          status?: "upcoming" | "completed" | "ready" | "preparing" | "cancelled";
           url?: string | null;
           comment?: string | null;
           created_at?: string;
@@ -85,7 +85,7 @@ export type Database = {
           event_id?: string;
           year?: number;
           date?: string;
-          status?: "upcoming" | "completed" | "ready" | "preparing";
+          status?: "upcoming" | "completed" | "ready" | "preparing" | "cancelled";
           url?: string | null;
           comment?: string | null;
           created_at?: string;

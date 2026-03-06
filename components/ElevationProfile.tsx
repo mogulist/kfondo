@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useCallback } from "react";
 import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 import {
   ResponsiveContainer,
@@ -10,29 +10,30 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  ReferenceLine,
+  ReferenceDot,
 } from "recharts";
 import type { GpxPointWithDistance } from "@/lib/gpx";
 
 type ElevationProfileProps = {
   data: GpxPointWithDistance[];
   onPositionChange: (index: number | null) => void;
+  /** 부모에서 제어하는 현재 위치 인덱스 (슬라이더 등 터치 조작 시 사용) */
+  positionIndex?: number | null;
+  /** 모바일일 때 true. 차트 터치로 위치 갱신 안 함, 툴팁 비표시 */
+  isMobile?: boolean;
 };
 
-function findNearestIndex(
-  data: GpxPointWithDistance[],
-  distanceKm: number
-): number {
-  if (data.length === 0) return 0;
-  let low = 0;
-  let high = data.length - 1;
-  while (low < high - 1) {
-    const mid = Math.floor((low + high) / 2);
-    if (data[mid].distanceKm <= distanceKm) low = mid;
-    else high = mid;
-  }
-  const dl = Math.abs(data[low].distanceKm - distanceKm);
-  const dh = Math.abs(data[high].distanceKm - distanceKm);
-  return dl <= dh ? low : high;
+function normalizeTooltipIndex(
+  value: number | string | null | undefined,
+  dataLength: number
+): number | null {
+  if (value == null || dataLength === 0) return null;
+  const n = typeof value === "number"
+    ? value
+    : Number.parseInt(String(value), 10);
+  if (!Number.isFinite(n) || n < 0 || n >= dataLength) return null;
+  return n;
 }
 
 function computeElevationStats(
@@ -53,30 +54,29 @@ function computeElevationStats(
   return prev != null ? { gain, loss } : null;
 }
 
-export function ElevationProfile({ data, onPositionChange }: ElevationProfileProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const el = containerRef.current;
-      if (!el || data.length === 0) return;
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const width = rect.width;
-      if (width <= 0) return;
-      const minKm = data[0].distanceKm;
-      const maxKm = data[data.length - 1].distanceKm;
-      const t = Math.max(0, Math.min(1, x / width));
-      const distanceKm = minKm + t * (maxKm - minKm);
-      const index = findNearestIndex(data, distanceKm);
-      onPositionChange(index);
+export function ElevationProfile({
+  data,
+  onPositionChange,
+  positionIndex = null,
+  isMobile = false,
+}: ElevationProfileProps) {
+  const handleChartMouseMove = useCallback(
+    (state: unknown) => {
+      if (isMobile) return;
+      const typed = state as { activeTooltipIndex?: number | string | null; activeIndex?: number | string | null };
+      const idx = normalizeTooltipIndex(
+        typed.activeTooltipIndex ?? typed.activeIndex,
+        data.length
+      );
+      if (idx != null) onPositionChange(idx);
     },
-    [data, onPositionChange]
+    [isMobile, data.length, onPositionChange]
   );
 
-  const handleMouseLeave = useCallback(() => {
+  const handleChartMouseLeave = useCallback(() => {
+    if (isMobile) return;
     onPositionChange(null);
-  }, [onPositionChange]);
+  }, [isMobile, onPositionChange]);
 
   if (data.length === 0) return null;
 
@@ -90,12 +90,7 @@ export function ElevationProfile({ data, onPositionChange }: ElevationProfilePro
   const hasElevation = data.some((p) => p.ele != null);
 
   return (
-    <div
-      ref={containerRef}
-      className="w-full h-full min-h-[120px] flex flex-col"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div className="w-full h-full min-h-[120px] flex flex-col">
       {stats && (
         <div className="flex items-center gap-4 text-sm text-muted-foreground mb-1">
           <span>{totalKm.toFixed(1)} km</span>
@@ -123,6 +118,8 @@ export function ElevationProfile({ data, onPositionChange }: ElevationProfilePro
             <AreaChart
               data={chartData}
               margin={{ top: 8, right: 8, left: 0, bottom: 8 }}
+              onMouseMove={handleChartMouseMove}
+              onMouseLeave={handleChartMouseLeave}
             >
               <CartesianGrid strokeDasharray="3 3" className="stroke-border/50" />
               <XAxis
@@ -140,26 +137,29 @@ export function ElevationProfile({ data, onPositionChange }: ElevationProfilePro
                 width={36}
                 label={{ value: "m", angle: -90, position: "insideLeft" }}
               />
-              <Tooltip
-                content={
-                  <ChartTooltipContent
-                    className="text-foreground"
-                    formatter={(value: unknown) =>
-                      typeof value === "number"
-                        ? [`${value} m`, "고도"]
-                        : ["—", "고도"]
-                    }
-                    labelFormatter={(_value, payload) => {
-                      const km =
-                      (payload?.[0] as { payload?: { distanceKm?: number } })
-                        ?.payload?.distanceKm;
-                      return km != null
-                        ? `${Number(km).toFixed(2)} km`
-                        : "";
-                    }}
-                  />
-                }
-              />
+              {!isMobile && (
+                <Tooltip
+                  cursor={false}
+                  content={
+                    <ChartTooltipContent
+                      className="text-foreground"
+                      formatter={(value: unknown) =>
+                        typeof value === "number"
+                          ? [`${value} m`, "고도"]
+                          : ["—", "고도"]
+                      }
+                      labelFormatter={(_value, payload) => {
+                        const km =
+                          (payload?.[0] as { payload?: { distanceKm?: number } })
+                            ?.payload?.distanceKm;
+                        return km != null
+                          ? `${Number(km).toFixed(2)} km`
+                          : "";
+                      }}
+                    />
+                  }
+                />
+              )}
               <Area
                 type="monotone"
                 dataKey="ele"
@@ -167,7 +167,27 @@ export function ElevationProfile({ data, onPositionChange }: ElevationProfilePro
                 fill="var(--color-ele)"
                 fillOpacity={0.35}
                 isAnimationActive={false}
+                activeDot={false}
               />
+              {positionIndex != null &&
+                chartData[positionIndex] != null && (
+                  <>
+                    <ReferenceLine
+                      x={chartData[positionIndex].distanceKm}
+                      stroke="var(--color-ele)"
+                      strokeWidth={1.5}
+                      strokeDasharray="4 2"
+                    />
+                    <ReferenceDot
+                      x={chartData[positionIndex].distanceKm}
+                      y={chartData[positionIndex].ele}
+                      r={5}
+                      fill="var(--color-ele)"
+                      stroke="white"
+                      strokeWidth={2}
+                    />
+                  </>
+                )}
             </AreaChart>
           </ResponsiveContainer>
         </ChartContainer>

@@ -6,6 +6,26 @@ export type GpxPoint = {
 
 export type GpxPointWithDistance = GpxPoint & { distanceKm: number };
 
+/**
+ * distanceKm에 가장 가까운 포인트의 인덱스 반환.
+ */
+export function findNearestIndexByDistance(
+  data: GpxPointWithDistance[],
+  distanceKm: number
+): number {
+  if (data.length === 0) return 0;
+  let low = 0;
+  let high = data.length - 1;
+  while (low < high - 1) {
+    const mid = Math.floor((low + high) / 2);
+    if (data[mid].distanceKm <= distanceKm) low = mid;
+    else high = mid;
+  }
+  const dl = Math.abs(data[low].distanceKm - distanceKm);
+  const dh = Math.abs(data[high].distanceKm - distanceKm);
+  return dl <= dh ? low : high;
+}
+
 const EARTH_RADIUS_KM = 6371;
 
 function haversineDistanceKm(

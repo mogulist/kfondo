@@ -81,7 +81,7 @@ export type RaceCategory = {
 export type EventYearDetail = {
   year: number;
   date: string;
-  status?: "completed" | "upcoming" | "preparing";
+  status?: "completed" | "upcoming" | "preparing" | "cancelled";
   courses: RaceCategory[];
   totalRegistered: number;
   url?: string;

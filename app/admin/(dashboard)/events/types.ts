@@ -18,6 +18,7 @@ export const EDITION_STATUS_LABELS: Record<EventEditionRow["status"], string> =
     completed: "종료",
     ready: "준비",
     preparing: "준비중",
+    cancelled: "취소",
   };
 
 export function formatEditionDate(dateStr: string): string {
