@@ -73,11 +73,6 @@ export function ElevationProfile({
     [isMobile, data.length, onPositionChange]
   );
 
-  const handleChartMouseLeave = useCallback(() => {
-    if (isMobile) return;
-    onPositionChange(null);
-  }, [isMobile, onPositionChange]);
-
   if (data.length === 0) return null;
 
   const chartData = data.map((p) => ({
@@ -119,7 +114,6 @@ export function ElevationProfile({
               data={chartData}
               margin={{ top: 8, right: 8, left: 0, bottom: 8 }}
               onMouseMove={handleChartMouseMove}
-              onMouseLeave={handleChartMouseLeave}
             >
               <CartesianGrid strokeDasharray="3 3" className="stroke-border/50" />
               <XAxis
