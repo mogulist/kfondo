@@ -13,6 +13,7 @@ import {
   findNearestIndexByDistance,
 } from "@/lib/gpx";
 import type { GpxPointWithDistance } from "@/lib/gpx";
+import type { KakaoLocalPlace } from "@/lib/kakao-local";
 
 type CourseMapKakaoPageClientProps = {
   eventSlug: string;
@@ -35,6 +36,9 @@ export function CourseMapKakaoPageClient({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
+  const [nearbyPlaces, setNearbyPlaces] = useState<KakaoLocalPlace[] | null>(null);
+  const [nearbyLoading, setNearbyLoading] = useState(false);
+  const [nearbyError, setNearbyError] = useState<string | null>(null);
   const isMobile = useMobile();
 
   useEffect(() => {
@@ -84,6 +88,31 @@ export function CourseMapKakaoPageClient({
     const distanceKm = minKm + ratio * (maxKm - minKm);
     const index = findNearestIndexByDistance(routePoints, distanceKm);
     setHighlightedIndex(index);
+  };
+
+  const handleSearchNearby = async () => {
+    setNearbyLoading(true);
+    setNearbyError(null);
+    try {
+      const res = await fetch("/api/nearby-pois", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ routePoints }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "검색 실패");
+      setNearbyPlaces(data.places ?? []);
+      const conv = (data.places ?? []).filter((p: KakaoLocalPlace) => p.category_group_code === "CS2");
+      const lodg = (data.places ?? []).filter((p: KakaoLocalPlace) => p.category_group_code === "AD5");
+      console.log(`[보급소·숙소] 편의점 ${conv.length}개, 숙박 ${lodg.length}개`, data.places);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "검색 실패";
+      setNearbyError(msg);
+      setNearbyPlaces(null);
+      console.error("[보급소·숙소 검색]", e);
+    } finally {
+      setNearbyLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -166,6 +195,25 @@ export function CourseMapKakaoPageClient({
                   />
                 </div>
                 <div className="shrink-0 border-t border-border bg-card px-3 py-2 min-h-[140px] h-[22dvh] max-h-[200px] flex flex-col min-h-0">
+                  <div className="shrink-0 mb-2 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleSearchNearby}
+                      disabled={nearbyLoading || routePoints.length === 0}
+                      className="px-3 py-1.5 text-sm font-medium rounded-md border border-border bg-background text-foreground hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {nearbyLoading ? "검색 중..." : "경로 주변 보급소·숙소 찾기"}
+                    </button>
+                    {nearbyError && (
+                      <span className="text-sm text-red-600">{nearbyError}</span>
+                    )}
+                    {nearbyPlaces != null && (
+                      <span className="text-sm text-muted-foreground">
+                        편의점 {nearbyPlaces.filter((p) => p.category_group_code === "CS2").length}개,
+                        숙박 {nearbyPlaces.filter((p) => p.category_group_code === "AD5").length}개
+                      </span>
+                    )}
+                  </div>
                   <div className="flex-1 min-h-0 overflow-hidden">
                     <ElevationProfile
                       data={routePoints}
