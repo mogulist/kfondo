@@ -159,6 +159,17 @@ export function KakaoMap({
     }
   }, [isMapLoaded, highlightPosition]);
 
+  useEffect(() => {
+    if (!isMapLoaded || !containerRef.current || !mapRef.current) return;
+    const map = mapRef.current as { relayout?: () => void };
+    if (typeof map.relayout !== "function") return;
+    const observer = new ResizeObserver(() => {
+      map.relayout?.();
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [isMapLoaded]);
+
   const computeBounds = useCallback(() => {
     if (!polylines?.length || !window.kakao?.maps) return null;
     const { maps } = window.kakao;
