@@ -18,7 +18,8 @@ const DEFAULT_ZOOM = 8;
 /** emerald 보색 계열, 부드러운 로즈 (Tailwind rose-400) */
 const STROKE_COLOR = "#fb7185";
 const STROKE_WEIGHT = 4;
-const BOUNDS_PADDING_FACTOR = 1.2;
+/** fitBounds 시 픽셀 단위 여백 (FitBoundsOptions) */
+const FIT_BOUNDS_PADDING = 24;
 
 const HIGHLIGHT_MARKER_SIZE = 16;
 /** 사이트 컬러 emerald (Tailwind emerald-500) */
@@ -130,20 +131,16 @@ export function NaverMap({
       });
     });
     if (minLat === Infinity) return;
-    const centerLat = (minLat + maxLat) / 2;
-    const centerLng = (minLng + maxLng) / 2;
-    const spanLat = Math.max(maxLat - minLat, 0.001);
-    const spanLng = Math.max(maxLng - minLng, 0.001);
-    const padLat = (spanLat * BOUNDS_PADDING_FACTOR) / 2;
-    const padLng = (spanLng * BOUNDS_PADDING_FACTOR) / 2;
-    const paddedBounds = new maps.LatLngBounds();
-    paddedBounds.extend(
-      new maps.LatLng(centerLat - padLat, centerLng - padLng) as unknown
-    );
-    paddedBounds.extend(
-      new maps.LatLng(centerLat + padLat, centerLng + padLng) as unknown
-    );
-    map.fitBounds(paddedBounds);
+    const bounds = new maps.LatLngBounds();
+    bounds.extend(new maps.LatLng(minLat, minLng) as unknown);
+    bounds.extend(new maps.LatLng(maxLat, maxLng) as unknown);
+    const fitOptions = {
+      top: FIT_BOUNDS_PADDING,
+      right: FIT_BOUNDS_PADDING,
+      bottom: FIT_BOUNDS_PADDING,
+      left: FIT_BOUNDS_PADDING,
+    };
+    map.fitBounds(bounds, fitOptions);
   }, [isMapLoaded, polylines]);
 
   useEffect(() => {
@@ -195,7 +192,7 @@ export function NaverMap({
     return () => observer.disconnect();
   }, [isMapLoaded]);
 
-  const computePaddedBounds = () => {
+  const computeBounds = () => {
     if (!polylines?.length) return null;
     const maps = window.naver?.maps;
     if (!maps) return null;
@@ -212,19 +209,9 @@ export function NaverMap({
       });
     });
     if (minLat === Infinity) return null;
-    const centerLat = (minLat + maxLat) / 2;
-    const centerLng = (minLng + maxLng) / 2;
-    const spanLat = Math.max(maxLat - minLat, 0.001);
-    const spanLng = Math.max(maxLng - minLng, 0.001);
-    const padLat = (spanLat * BOUNDS_PADDING_FACTOR) / 2;
-    const padLng = (spanLng * BOUNDS_PADDING_FACTOR) / 2;
     const bounds = new maps.LatLngBounds();
-    bounds.extend(
-      new maps.LatLng(centerLat - padLat, centerLng - padLng) as unknown
-    );
-    bounds.extend(
-      new maps.LatLng(centerLat + padLat, centerLng + padLng) as unknown
-    );
+    bounds.extend(new maps.LatLng(minLat, minLng) as unknown);
+    bounds.extend(new maps.LatLng(maxLat, maxLng) as unknown);
     return bounds;
   };
 
@@ -251,9 +238,14 @@ export function NaverMap({
 
   const handleFitCourse = () => {
     const map = mapInstanceRef.current;
-    const bounds = computePaddedBounds();
+    const bounds = computeBounds();
     if (!map?.fitBounds || !bounds) return;
-    map.fitBounds(bounds);
+    map.fitBounds(bounds, {
+      top: FIT_BOUNDS_PADDING,
+      right: FIT_BOUNDS_PADDING,
+      bottom: FIT_BOUNDS_PADDING,
+      left: FIT_BOUNDS_PADDING,
+    });
   };
 
   return (

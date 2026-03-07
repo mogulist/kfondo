@@ -28,8 +28,16 @@ export type NaverLatLng = {
   lng: () => number;
 };
 
+export type FitBoundsOptions = {
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+  maxZoom?: number;
+};
+
 export type NaverMapInstance = {
-  fitBounds: (bounds: NaverLatLngBounds) => void;
+  fitBounds: (bounds: NaverLatLngBounds, options?: FitBoundsOptions) => void;
   getZoom: () => number;
   setZoom: (level: number) => void;
   getCenter: () => NaverLatLng;
