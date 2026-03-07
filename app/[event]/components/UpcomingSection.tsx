@@ -97,6 +97,9 @@ const NAVER_MAP_BTN_CLASS =
   "bg-[#03c75a] hover:bg-[#02b350] text-white inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors";
 const NAVER_MAP_BTN_DISABLED_CLASS =
   "border border-slate-400 bg-slate-200 text-slate-600 cursor-not-allowed inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap dark:bg-slate-700 dark:border-slate-500 dark:text-slate-400";
+const KAKAO_MAP_BTN_CLASS =
+  "bg-[#fee500] hover:bg-[#f2d900] text-slate-900 inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors";
+const KAKAO_MAP_BTN_DISABLED_CLASS = NAVER_MAP_BTN_DISABLED_CLASS;
 
 type CourseCardProps = {
   course: RaceCategory;
@@ -111,6 +114,7 @@ function CourseCard({ course, eventSlug, year }: CourseCardProps) {
       : "";
   const hasGpx = typeof course.gpxBlobUrl === "string" && course.gpxBlobUrl.trim().length > 0;
   const mapHref = hasGpx ? `/${eventSlug}/map/${course.id}?year=${year}` : null;
+  const kakaoMapHref = hasGpx ? `/${eventSlug}/map-kakao/${course.id}?year=${year}` : null;
 
   return (
     <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
@@ -153,6 +157,22 @@ function CourseCard({ course, eventSlug, year }: CourseCardProps) {
           <span className={NAVER_MAP_BTN_DISABLED_CLASS} aria-disabled>
             <MapPin className="size-3.5 shrink-0" aria-hidden />
             네이버맵
+          </span>
+        )}
+        {kakaoMapHref ? (
+          <a
+            href={kakaoMapHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={KAKAO_MAP_BTN_CLASS}
+          >
+            <MapPin className="size-3.5 shrink-0 opacity-90" aria-hidden />
+            카카오맵
+          </a>
+        ) : (
+          <span className={KAKAO_MAP_BTN_DISABLED_CLASS} aria-disabled>
+            <MapPin className="size-3.5 shrink-0" aria-hidden />
+            카카오맵
           </span>
         )}
       </div>
