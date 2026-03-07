@@ -7,9 +7,18 @@ type KakaoMapProps = {
   height?: string;
   /** 각 polyline은 [lat, lng][] 배열 */
   polylines?: [number, number][][];
+  /** 고도 그래프 등에서 하이라이트할 위치. [lat, lng] 또는 null */
+  highlightPosition?: [number, number] | null;
 };
 
 const DEFAULT_CENTER = { lat: 35.9, lng: 128.0 };
+const HIGHLIGHT_MARKER_SIZE = 16;
+const HIGHLIGHT_MARKER_COLOR = "#10b981";
+
+function highlightCircleMarkerHtml(size: number): string {
+  return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${HIGHLIGHT_MARKER_COLOR};border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>`;
+}
+
 const DEFAULT_LEVEL = 8;
 const SCRIPT_URL = "https://dapi.kakao.com/v2/maps/sdk.js";
 const STROKE_COLOR = "#fb7185";
@@ -18,10 +27,12 @@ export function KakaoMap({
   width = "100%",
   height = "100%",
   polylines,
+  highlightPosition = null,
 }: KakaoMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<unknown>(null);
   const polylineInstancesRef = useRef<{ setMap: (m: null) => void }[]>([]);
+  const highlightOverlayRef = useRef<{ setMap: (m: null) => void } | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
@@ -126,6 +137,26 @@ export function KakaoMap({
       map.setBounds(bounds);
     }
   }, [isMapLoaded, polylines]);
+
+  useEffect(() => {
+    if (!isMapLoaded || !window.kakao?.maps || !mapRef.current) return;
+    const map = mapRef.current as unknown;
+    const prev = highlightOverlayRef.current;
+    if (prev?.setMap) prev.setMap(null);
+    highlightOverlayRef.current = null;
+    if (highlightPosition) {
+      const [lat, lng] = highlightPosition;
+      const { maps } = window.kakao;
+      const overlay = new maps.CustomOverlay({
+        position: new maps.LatLng(lat, lng),
+        content: highlightCircleMarkerHtml(HIGHLIGHT_MARKER_SIZE),
+        xAnchor: 0.5,
+        yAnchor: 0.5,
+      });
+      overlay.setMap(map as Parameters<typeof overlay.setMap>[0]);
+      highlightOverlayRef.current = overlay;
+    }
+  }, [isMapLoaded, highlightPosition]);
 
   return (
     <div className="relative w-full h-full" style={{ width, height }}>

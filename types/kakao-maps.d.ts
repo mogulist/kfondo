@@ -10,6 +10,7 @@ declare global {
         ) => KakaoMapInstance;
         Polyline: new (options: KakaoPolylineOptions) => KakaoPolylineInstance;
         LatLngBounds: new () => KakaoLatLngBounds;
+        CustomOverlay: new (options: KakaoCustomOverlayOptions) => KakaoCustomOverlayInstance;
       };
     };
   }
@@ -42,5 +43,16 @@ export type KakaoPolylineOptions = {
 };
 
 export type KakaoPolylineInstance = {
+  setMap: (map: KakaoMapInstance | null) => void;
+};
+
+export type KakaoCustomOverlayOptions = {
+  position: KakaoLatLng;
+  content: string | HTMLElement;
+  xAnchor?: number;
+  yAnchor?: number;
+};
+
+export type KakaoCustomOverlayInstance = {
   setMap: (map: KakaoMapInstance | null) => void;
 };
