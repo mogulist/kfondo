@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ChevronLeft, Maximize2, Minimize2 } from "lucide-react";
 import Header from "@/components/Header";
+import { KakaoMap } from "@/components/KakaoMap";
 
 type CourseMapKakaoPageClientProps = {
   eventSlug: string;
@@ -81,14 +82,7 @@ export function CourseMapKakaoPageClient({
               </button>
             )}
 
-            <div className="flex h-full min-h-[400px] w-full items-center justify-center bg-[#fff9d9] px-6 text-center">
-              <div className="max-w-md space-y-2">
-                <p className="text-lg font-semibold text-slate-900">카카오맵 준비 중</p>
-                <p className="text-sm text-slate-700">
-                  Phase 1에서는 진입 페이지와 레이아웃만 먼저 연결했습니다.
-                </p>
-              </div>
-            </div>
+            <KakaoMap width="100%" height="100%" />
           </div>
         </div>
       </main>
