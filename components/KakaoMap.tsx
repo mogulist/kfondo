@@ -5,18 +5,24 @@ import { useEffect, useRef, useState } from "react";
 type KakaoMapProps = {
   width?: string;
   height?: string;
+  /** 각 polyline은 [lat, lng][] 배열 */
+  polylines?: [number, number][][];
 };
 
 const DEFAULT_CENTER = { lat: 35.9, lng: 128.0 };
 const DEFAULT_LEVEL = 8;
 const SCRIPT_URL = "https://dapi.kakao.com/v2/maps/sdk.js";
+const STROKE_COLOR = "#fb7185";
+const STROKE_WEIGHT = 4;
 
 export function KakaoMap({
   width = "100%",
   height = "100%",
+  polylines,
 }: KakaoMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<unknown>(null);
+  const polylineInstancesRef = useRef<{ setMap: (m: null) => void }[]>([]);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
@@ -69,6 +75,32 @@ export function KakaoMap({
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!isMapLoaded || !window.kakao?.maps || !mapRef.current) return;
+    const map = mapRef.current as { setMap?: unknown };
+    polylineInstancesRef.current.forEach((p) => p.setMap(null));
+    polylineInstancesRef.current = [];
+
+    if (polylines?.length) {
+      const { maps } = window.kakao;
+      polylines.forEach((path) => {
+        if (path.length === 0) return;
+        const latlngs = path.map(
+          ([lat, lng]) => new maps.LatLng(lat, lng),
+        );
+        const polyline = new maps.Polyline({
+          path: latlngs,
+          strokeWeight: STROKE_WEIGHT,
+          strokeColor: STROKE_COLOR,
+          strokeOpacity: 1,
+          strokeStyle: "solid",
+        });
+        polyline.setMap(map as Parameters<typeof polyline.setMap>[0]);
+        polylineInstancesRef.current.push(polyline);
+      });
+    }
+  }, [isMapLoaded, polylines]);
 
   return (
     <div className="relative w-full h-full" style={{ width, height }}>

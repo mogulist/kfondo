@@ -8,6 +8,7 @@ declare global {
           container: HTMLElement,
           options: KakaoMapOptions,
         ) => KakaoMapInstance;
+        Polyline: new (options: KakaoPolylineOptions) => KakaoPolylineInstance;
       };
     };
   }
@@ -24,3 +25,15 @@ export type KakaoMapOptions = {
 };
 
 export type KakaoMapInstance = Record<string, unknown>;
+
+export type KakaoPolylineOptions = {
+  path: KakaoLatLng[];
+  strokeWeight?: number;
+  strokeColor?: string;
+  strokeOpacity?: number;
+  strokeStyle?: string;
+};
+
+export type KakaoPolylineInstance = {
+  setMap: (map: KakaoMapInstance | null) => void;
+};

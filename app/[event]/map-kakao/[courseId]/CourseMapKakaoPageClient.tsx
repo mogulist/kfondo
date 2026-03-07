@@ -1,16 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronLeft, Maximize2, Minimize2 } from "lucide-react";
 import Header from "@/components/Header";
 import { KakaoMap } from "@/components/KakaoMap";
+import { fetchGpxAsPointsWithDistance } from "@/lib/gpx";
+import type { GpxPointWithDistance } from "@/lib/gpx";
 
 type CourseMapKakaoPageClientProps = {
   eventSlug: string;
   eventName: string;
   courseName: string;
   distanceLabel: string;
+  gpxBlobUrl: string;
 };
 
 export function CourseMapKakaoPageClient({
@@ -18,8 +21,44 @@ export function CourseMapKakaoPageClient({
   eventName,
   courseName,
   distanceLabel,
+  gpxBlobUrl,
 }: CourseMapKakaoPageClientProps) {
   const [fullscreen, setFullscreen] = useState(false);
+  const [routePoints, setRoutePoints] = useState<GpxPointWithDistance[]>([]);
+  const polylinesRef = useRef<[number, number][][] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    fetchGpxAsPointsWithDistance(gpxBlobUrl)
+      .then((points) => {
+        if (!cancelled && points.length > 0) {
+          setRoutePoints(points);
+          polylinesRef.current = [
+            points.map((p) => [p.lat, p.lng] as [number, number]),
+          ];
+        } else if (!cancelled) {
+          setError("경로 포인트를 찾을 수 없습니다.");
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) {
+          setError(e instanceof Error ? e.message : "경로 로드 실패");
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [gpxBlobUrl]);
+
+  const polylines: [number, number][][] =
+    routePoints.length > 0 ? polylinesRef.current ?? [] : [];
 
   useEffect(() => {
     if (!fullscreen) return;
@@ -82,7 +121,17 @@ export function CourseMapKakaoPageClient({
               </button>
             )}
 
-            <KakaoMap width="100%" height="100%" />
+            {loading ? (
+              <div className="flex items-center justify-center w-full h-full min-h-[400px] bg-gray-100">
+                <span className="text-gray-600">경로를 불러오는 중...</span>
+              </div>
+            ) : error ? (
+              <div className="flex items-center justify-center w-full h-full min-h-[400px] bg-gray-100">
+                <p className="text-red-600">{error}</p>
+              </div>
+            ) : (
+              <KakaoMap width="100%" height="100%" polylines={polylines} />
+            )}
           </div>
         </div>
       </main>

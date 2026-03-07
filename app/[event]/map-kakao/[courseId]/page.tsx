@@ -50,6 +50,7 @@ export default async function CourseMapKakaoPage({ params, searchParams }: Props
       eventName={eventName}
       courseName={courseName}
       distanceLabel={distanceLabel}
+      gpxBlobUrl={course.gpxBlobUrl}
     />
   );
 }
