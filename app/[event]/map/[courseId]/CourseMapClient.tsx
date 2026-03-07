@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Mountain, Route } from "lucide-react";
 import { NaverMap } from "@/components/NaverMap";
 import { ElevationProfile } from "@/components/ElevationProfile";
@@ -19,6 +19,7 @@ type CourseMapClientProps = {
 export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
   const isMobile = useMobile();
   const [routePoints, setRoutePoints] = useState<GpxPointWithDistance[]>([]);
+  const polylinesRef = useRef<[number, number][][] | null>(null);
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -31,6 +32,9 @@ export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
       .then((points) => {
         if (!cancelled && points.length > 0) {
           setRoutePoints(points);
+          polylinesRef.current = [
+            points.map((p) => [p.lat, p.lng] as [number, number]),
+          ];
         } else if (!cancelled) {
           setError("경로 포인트를 찾을 수 없습니다.");
         }
@@ -64,9 +68,8 @@ export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
     );
   }
 
-  const polylines: [number, number][][] = [
-    routePoints.map((p) => [p.lat, p.lng] as [number, number]),
-  ];
+  const polylines: [number, number][][] =
+    routePoints.length > 0 ? polylinesRef.current ?? [] : [];
   const highlightPosition: [number, number] | null =
     highlightedIndex != null && routePoints[highlightedIndex]
       ? [routePoints[highlightedIndex].lat, routePoints[highlightedIndex].lng]

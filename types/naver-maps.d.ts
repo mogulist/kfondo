@@ -23,10 +23,17 @@ declare global {
   }
 }
 
+export type NaverLatLng = {
+  lat: () => number;
+  lng: () => number;
+};
+
 export type NaverMapInstance = {
   fitBounds: (bounds: NaverLatLngBounds) => void;
   getZoom: () => number;
   setZoom: (level: number) => void;
+  getCenter: () => NaverLatLng;
+  setCenter: (center: unknown) => void;
 };
 
 export type NaverLatLngBounds = {

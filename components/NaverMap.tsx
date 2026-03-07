@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Expand, Locate } from "lucide-react";
 import type { NaverMapInstance } from "@/types/naver-maps";
 
 type NaverMapProps = {
@@ -175,6 +176,58 @@ export function NaverMap({
     }
   }, [isMapLoaded, highlightPosition]);
 
+  useEffect(() => {
+    if (!isMapLoaded || !mapRef.current || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+    const observer = new ResizeObserver(() => {
+      if (!map?.getZoom || !map?.setZoom || !map?.getCenter || !map?.setCenter)
+        return;
+      const zoom = map.getZoom();
+      const center = map.getCenter();
+      const autoResize = (map as { autoResize?: () => void }).autoResize;
+      if (typeof autoResize === "function") autoResize.call(map);
+      requestAnimationFrame(() => {
+        map.setZoom(zoom);
+        map.setCenter(center);
+      });
+    });
+    observer.observe(mapRef.current);
+    return () => observer.disconnect();
+  }, [isMapLoaded]);
+
+  const computePaddedBounds = () => {
+    if (!polylines?.length) return null;
+    const maps = window.naver?.maps;
+    if (!maps) return null;
+    let minLat = Infinity;
+    let maxLat = -Infinity;
+    let minLng = Infinity;
+    let maxLng = -Infinity;
+    polylines.forEach((path) => {
+      path.forEach(([lat, lng]) => {
+        if (lat < minLat) minLat = lat;
+        if (lat > maxLat) maxLat = lat;
+        if (lng < minLng) minLng = lng;
+        if (lng > maxLng) maxLng = lng;
+      });
+    });
+    if (minLat === Infinity) return null;
+    const centerLat = (minLat + maxLat) / 2;
+    const centerLng = (minLng + maxLng) / 2;
+    const spanLat = Math.max(maxLat - minLat, 0.001);
+    const spanLng = Math.max(maxLng - minLng, 0.001);
+    const padLat = (spanLat * BOUNDS_PADDING_FACTOR) / 2;
+    const padLng = (spanLng * BOUNDS_PADDING_FACTOR) / 2;
+    const bounds = new maps.LatLngBounds();
+    bounds.extend(
+      new maps.LatLng(centerLat - padLat, centerLng - padLng) as unknown
+    );
+    bounds.extend(
+      new maps.LatLng(centerLat + padLat, centerLng + padLng) as unknown
+    );
+    return bounds;
+  };
+
   const handleZoomIn = () => {
     const map = mapInstanceRef.current;
     if (!map?.getZoom || !map?.setZoom) return;
@@ -185,6 +238,22 @@ export function NaverMap({
     const map = mapInstanceRef.current;
     if (!map?.getZoom || !map?.setZoom) return;
     map.setZoom(Math.max(1, map.getZoom() - 1));
+  };
+
+  const handleCenterOnMarker = () => {
+    const map = mapInstanceRef.current;
+    if (!map?.setCenter || !highlightPosition) return;
+    const [lat, lng] = highlightPosition;
+    const maps = window.naver?.maps;
+    if (!maps) return;
+    map.setCenter(new maps.LatLng(lat, lng));
+  };
+
+  const handleFitCourse = () => {
+    const map = mapInstanceRef.current;
+    const bounds = computePaddedBounds();
+    if (!map?.fitBounds || !bounds) return;
+    map.fitBounds(bounds);
   };
 
   return (
@@ -207,6 +276,24 @@ export function NaverMap({
             aria-label="줌 아웃"
           >
             <span className="text-lg font-medium leading-none">−</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleCenterOnMarker}
+            disabled={!highlightPosition}
+            className="w-9 h-9 flex items-center justify-center bg-white border border-gray-300 rounded shadow hover:bg-gray-50 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+            aria-label="마커로 이동"
+          >
+            <Locate className="size-4" />
+          </button>
+          <button
+            type="button"
+            onClick={handleFitCourse}
+            disabled={!polylines?.length}
+            className="w-9 h-9 flex items-center justify-center bg-white border border-gray-300 rounded shadow hover:bg-gray-50 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+            aria-label="전체 코스 보기"
+          >
+            <Expand className="size-4" />
           </button>
         </div>
       )}
