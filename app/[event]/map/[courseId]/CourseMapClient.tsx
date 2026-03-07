@@ -128,7 +128,7 @@ export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
                 value={[sliderValue]}
                 onValueChange={handleSliderChange}
                 max={100}
-                step={0.5}
+                step={100 / Math.max(100, Math.min(routePoints.length, 2000))}
                 aria-label="코스 구간 위치 선택"
               />
             </div>
