@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Expand, Locate } from "lucide-react";
 
 type KakaoMapProps = {
   width?: string;
@@ -158,9 +159,98 @@ export function KakaoMap({
     }
   }, [isMapLoaded, highlightPosition]);
 
+  const computeBounds = useCallback(() => {
+    if (!polylines?.length || !window.kakao?.maps) return null;
+    const { maps } = window.kakao;
+    let minLat = Infinity;
+    let maxLat = -Infinity;
+    let minLng = Infinity;
+    let maxLng = -Infinity;
+    polylines.forEach((path) => {
+      path.forEach(([lat, lng]) => {
+        if (lat < minLat) minLat = lat;
+        if (lat > maxLat) maxLat = lat;
+        if (lng < minLng) minLng = lng;
+        if (lng > maxLng) maxLng = lng;
+      });
+    });
+    if (minLat === Infinity) return null;
+    const bounds = new maps.LatLngBounds();
+    bounds.extend(new maps.LatLng(minLat, minLng));
+    bounds.extend(new maps.LatLng(maxLat, maxLng));
+    return bounds;
+  }, [polylines]);
+
+  const handleZoomIn = useCallback(() => {
+    const map = mapRef.current as { getLevel?: () => number; setLevel?: (n: number) => void } | null;
+    if (!map?.getLevel || !map?.setLevel) return;
+    const level = map.getLevel();
+    map.setLevel(Math.max(1, level - 1));
+  }, []);
+
+  const handleZoomOut = useCallback(() => {
+    const map = mapRef.current as { getLevel?: () => number; setLevel?: (n: number) => void } | null;
+    if (!map?.getLevel || !map?.setLevel) return;
+    const level = map.getLevel();
+    map.setLevel(Math.min(14, level + 1));
+  }, []);
+
+  const handleCenterOnMarker = useCallback(() => {
+    const map = mapRef.current as { setCenter?: (l: unknown) => void } | null;
+    const maps = window.kakao?.maps;
+    if (!map?.setCenter || !highlightPosition || !maps) return;
+    const [lat, lng] = highlightPosition;
+    map.setCenter(new maps.LatLng(lat, lng));
+  }, [highlightPosition]);
+
+  const handleFitCourse = useCallback(() => {
+    const map = mapRef.current as { setBounds?: (b: unknown) => void } | null;
+    const bounds = computeBounds();
+    if (!map?.setBounds || !bounds) return;
+    map.setBounds(bounds);
+  }, [computeBounds]);
+
   return (
     <div className="relative w-full h-full" style={{ width, height }}>
       <div ref={containerRef} className="w-full h-full min-h-0" />
+      {isMapLoaded && (
+        <div className="absolute top-4 right-4 flex flex-col gap-1 z-10">
+          <button
+            type="button"
+            onClick={handleZoomIn}
+            className="w-9 h-9 flex items-center justify-center bg-white border border-gray-300 rounded shadow hover:bg-gray-50 text-gray-700"
+            aria-label="줌 인"
+          >
+            <span className="text-lg font-medium leading-none">+</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleZoomOut}
+            className="w-9 h-9 flex items-center justify-center bg-white border border-gray-300 rounded shadow hover:bg-gray-50 text-gray-700"
+            aria-label="줌 아웃"
+          >
+            <span className="text-lg font-medium leading-none">−</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleCenterOnMarker}
+            disabled={!highlightPosition}
+            className="w-9 h-9 flex items-center justify-center bg-white border border-gray-300 rounded shadow hover:bg-gray-50 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+            aria-label="마커로 이동"
+          >
+            <Locate className="size-4" />
+          </button>
+          <button
+            type="button"
+            onClick={handleFitCourse}
+            disabled={!polylines?.length}
+            className="w-9 h-9 flex items-center justify-center bg-white border border-gray-300 rounded shadow hover:bg-gray-50 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+            aria-label="전체 코스 보기"
+          >
+            <Expand className="size-4" />
+          </button>
+        </div>
+      )}
       {!isMapLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
           <span className="text-gray-600">지도를 로딩 중...</span>
