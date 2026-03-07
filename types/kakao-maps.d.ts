@@ -9,6 +9,7 @@ declare global {
           options: KakaoMapOptions,
         ) => KakaoMapInstance;
         Polyline: new (options: KakaoPolylineOptions) => KakaoPolylineInstance;
+        LatLngBounds: new () => KakaoLatLngBounds;
       };
     };
   }
@@ -24,7 +25,13 @@ export type KakaoMapOptions = {
   level?: number;
 };
 
-export type KakaoMapInstance = Record<string, unknown>;
+export type KakaoMapInstance = {
+  setBounds?: (bounds: KakaoLatLngBounds) => void;
+} & Record<string, unknown>;
+
+export type KakaoLatLngBounds = {
+  extend: (latlng: KakaoLatLng) => void;
+};
 
 export type KakaoPolylineOptions = {
   path: KakaoLatLng[];

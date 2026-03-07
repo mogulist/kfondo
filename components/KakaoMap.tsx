@@ -14,7 +14,6 @@ const DEFAULT_LEVEL = 8;
 const SCRIPT_URL = "https://dapi.kakao.com/v2/maps/sdk.js";
 const STROKE_COLOR = "#fb7185";
 const STROKE_WEIGHT = 4;
-
 export function KakaoMap({
   width = "100%",
   height = "100%",
@@ -99,6 +98,32 @@ export function KakaoMap({
         polyline.setMap(map as Parameters<typeof polyline.setMap>[0]);
         polylineInstancesRef.current.push(polyline);
       });
+    }
+  }, [isMapLoaded, polylines]);
+
+  useEffect(() => {
+    if (!isMapLoaded || !window.kakao?.maps || !mapRef.current) return;
+    if (!polylines?.length) return;
+    const map = mapRef.current as { setBounds?: (b: unknown, p?: unknown) => void };
+    const { maps } = window.kakao;
+    let minLat = Infinity;
+    let maxLat = -Infinity;
+    let minLng = Infinity;
+    let maxLng = -Infinity;
+    polylines.forEach((path) => {
+      path.forEach(([lat, lng]) => {
+        if (lat < minLat) minLat = lat;
+        if (lat > maxLat) maxLat = lat;
+        if (lng < minLng) minLng = lng;
+        if (lng > maxLng) maxLng = lng;
+      });
+    });
+    if (minLat === Infinity) return;
+    const bounds = new maps.LatLngBounds();
+    bounds.extend(new maps.LatLng(minLat, minLng));
+    bounds.extend(new maps.LatLng(maxLat, maxLng));
+    if (typeof map.setBounds === "function") {
+      map.setBounds(bounds);
     }
   }, [isMapLoaded, polylines]);
 
