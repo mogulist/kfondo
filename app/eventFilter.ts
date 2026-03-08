@@ -2,14 +2,12 @@ import dayjs from "dayjs";
 import { getAllEvents } from "@/lib/db/events";
 import type { EventData } from "@/components/EventCard";
 import type { Event } from "@/lib/types";
-import { getDaysUntilEvent, normalizeEventDate } from "@/lib/date";
+import { getDaysUntilEvent } from "@/lib/date";
 
 // Helper to map raw event to EventCard props
 export const mapToEventData = (event: Event): EventData => {
   const latestYear = Math.max(...event.years);
   const latestDetail = event.yearDetails[latestYear];
-
-  const normalizedDate = normalizeEventDate(latestDetail.date);
 
   return {
     id: event.id,
@@ -32,6 +30,8 @@ export const mapToEventData = (event: Event): EventData => {
 
 const SPLIT_THRESHOLD = 6;
 const MIN_GROUP_SIZE = 3;
+const RECENT_WITH_RECORD_DAYS = 14;
+const UPCOMING_WITHOUT_RECORD_DAYS = 7;
 
 type UpcomingCarousel = { title: string; events: EventData[] };
 
@@ -128,15 +128,18 @@ export async function getFilteredEvents(): Promise<HomePageFilteredData> {
         return;
       }
       const daysSince = today.diff(eventDate, "day");
-      const isFuture = eventDate.isAfter(today);
       const hasRecords = latestDetail.totalRegistered > 0;
 
-      if (hasRecords && daysSince >= 0 && daysSince <= 14) {
+      if (
+        hasRecords &&
+        daysSince >= 0 &&
+        daysSince <= RECENT_WITH_RECORD_DAYS
+      ) {
         recentEvents.push(event);
         return;
       }
 
-      if (!hasRecords && isFuture) {
+      if (!hasRecords && daysSince <= UPCOMING_WITHOUT_RECORD_DAYS) {
         upcomingEvents.push(event);
         return;
       }

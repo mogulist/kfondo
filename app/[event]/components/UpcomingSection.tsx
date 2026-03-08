@@ -1,10 +1,15 @@
 import type { Event, RaceCategory } from "@/lib/types";
 import { getDaysUntilEvent, normalizeEventDate } from "@/lib/date";
 import dayjs from "dayjs";
-import { Calendar, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { DDayCard } from "./DDayCard";
 
 const WEEKDAY_KO = ["일", "월", "화", "수", "목", "금", "토"];
+const UPCOMING_WITHOUT_RECORD_DAYS = 7;
+const RECORD_PENDING_NOTICE =
+  "공식 기록이 아직 공개되지 않았습니다. 보통 대회 당일 오후~수일 내 순차 반영됩니다.";
+const RECORD_COLLECTING_NOTICE =
+  "기록 정리 및 검수 중입니다. 반영까지 시간이 걸릴 수 있습니다.";
 
 type Props = {
   event: Event;
@@ -43,8 +48,27 @@ export const UpcomingSection = ({ event }: Props) => {
     latestDetail?.date &&
     /^\d{4}[.-]\d{1,2}[.-]\d{1,2}$/.test(latestDetail.date.replace(/\./g, "-"));
 
-  const normalizedDate = latestDetail?.date ? normalizeEventDate(latestDetail.date) : "";
+  const normalizedDate = latestDetail?.date
+    ? normalizeEventDate(latestDetail.date)
+    : "";
   const dDay = hasDate ? getDaysUntilEvent(latestDetail!.date) : null;
+  const daysSinceEvent =
+    hasDate && normalizedDate
+      ? dayjs().diff(dayjs(normalizedDate), "day")
+      : null;
+  const hasRecords = (latestDetail?.totalRegistered ?? 0) > 0;
+  const isPreparing = latestDetail?.status === "preparing";
+  const showPendingNotice =
+    !isPreparing &&
+    !hasRecords &&
+    daysSinceEvent !== null &&
+    daysSinceEvent >= 0 &&
+    daysSinceEvent <= UPCOMING_WITHOUT_RECORD_DAYS;
+  const noticeMessage = isPreparing
+    ? RECORD_COLLECTING_NOTICE
+    : showPendingNotice
+    ? RECORD_PENDING_NOTICE
+    : null;
   const dateLabel = hasDate ? formatEventDateLabel(latestDetail!.date) : null;
   const showDDayCard = hasDate && dateLabel && dDay !== null && dDay >= 0;
 
@@ -54,12 +78,22 @@ export const UpcomingSection = ({ event }: Props) => {
   const coursesWithLinks = latestCourses.filter(hasAnyCourseLink);
   const hasCourseInfo = coursesWithLinks.length > 0;
 
-  if (!showDDayCard && !officialSiteUrl && !hasCourseInfo) return null;
+  if (!showDDayCard && !noticeMessage && !officialSiteUrl && !hasCourseInfo) return null;
 
   return (
     <div className="space-y-4">
       {showDDayCard && (
         <DDayCard date={latestDetail!.date} dateLabel={dateLabel!} />
+      )}
+
+      {noticeMessage && (
+        <div
+          className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
+          role="status"
+          aria-live="polite"
+        >
+          {noticeMessage}
+        </div>
       )}
 
       {officialSiteUrl && (
