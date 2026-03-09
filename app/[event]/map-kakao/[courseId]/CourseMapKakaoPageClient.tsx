@@ -1,10 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronLeft, Maximize2, Minimize2, Mountain, Route } from "lucide-react";
+import { toast } from "sonner";
 import Header from "@/components/Header";
-import { KakaoMap, type KakaoMapPoi } from "@/components/KakaoMap";
+import {
+  KakaoMap,
+  type KakaoMapPoi,
+  type KakaoMapViewBounds,
+} from "@/components/KakaoMap";
 import { ElevationProfile } from "@/components/ElevationProfile";
 import { Slider } from "@/components/ui/slider";
 import { useMobile } from "@/hooks/use-mobile";
@@ -39,7 +44,24 @@ export function CourseMapKakaoPageClient({
   const [nearbyPlaces, setNearbyPlaces] = useState<KakaoLocalPlace[] | null>(null);
   const [nearbyLoading, setNearbyLoading] = useState(false);
   const [nearbyError, setNearbyError] = useState<string | null>(null);
+  const [mapZoomLevel, setMapZoomLevel] = useState<number | null>(null);
+  const [mapBounds, setMapBounds] = useState<KakaoMapViewBounds | null>(null);
   const isMobile = useMobile();
+
+  /** 기본 줌 8에서 +3 줌인 = 5. 이 레벨 이상(숫자 이하)일 때만 숙소 찾기 활성화 */
+  const LODGING_SEARCH_MIN_ZOOM_LEVEL = 6;
+  const canSearchLodging =
+    mapZoomLevel != null &&
+    mapZoomLevel <= LODGING_SEARCH_MIN_ZOOM_LEVEL &&
+    routePoints.length > 0;
+
+  const handleMapStateChange = useCallback(
+    (zoomLevel: number, bounds: KakaoMapViewBounds | null) => {
+      setMapZoomLevel(zoomLevel);
+      setMapBounds(bounds);
+    },
+    []
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -103,13 +125,26 @@ export function CourseMapKakaoPageClient({
     setNearbyLoading(true);
     setNearbyError(null);
     try {
+      const body: { routePoints: typeof routePoints; bounds?: KakaoMapViewBounds } =
+        { routePoints };
+      if (mapBounds) body.bounds = mapBounds;
       const res = await fetch("/api/nearby-pois", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ routePoints }),
+        body: JSON.stringify(body),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "검색 실패");
+      const data = (await res.json()) as {
+        places?: KakaoLocalPlace[];
+        error?: string;
+        message?: string;
+      };
+      if (res.status === 429) {
+        toast.error(data.message ?? "API 쿼터 제한에 걸렸습니다. 잠시 후 다시 시도해 주세요.");
+        setNearbyPlaces(null);
+        setNearbyError(null);
+        return;
+      }
+      if (!res.ok) throw new Error(data.error ?? data.message ?? "검색 실패");
       setNearbyPlaces(data.places ?? []);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "검색 실패";
@@ -199,25 +234,28 @@ export function CourseMapKakaoPageClient({
                     polylines={polylines}
                     highlightPosition={highlightPosition}
                     pois={pois}
+                    onMapStateChange={handleMapStateChange}
                   />
                 </div>
                 <div className="shrink-0 border-t border-border bg-card px-3 py-2 min-h-[140px] h-[22dvh] max-h-[200px] flex flex-col min-h-0">
-                  <div className="shrink-0 mb-2 flex items-center gap-2">
+                  <div className="shrink-0 mb-2 flex items-center gap-2 flex-wrap">
+                    <span className="text-xs text-muted-foreground" aria-hidden>
+                      줌 {mapZoomLevel ?? "—"}
+                    </span>
                     <button
                       type="button"
                       onClick={handleSearchNearby}
-                      disabled={nearbyLoading || routePoints.length === 0}
+                      disabled={nearbyLoading || !canSearchLodging}
                       className="px-3 py-1.5 text-sm font-medium rounded-md border border-border bg-background text-foreground hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {nearbyLoading ? "검색 중..." : "경로 주변 보급소·숙소 찾기"}
+                      {nearbyLoading ? "검색 중..." : "숙소 찾기"}
                     </button>
                     {nearbyError && (
                       <span className="text-sm text-red-600">{nearbyError}</span>
                     )}
                     {nearbyPlaces != null && (
                       <span className="text-sm text-muted-foreground">
-                        편의점 {nearbyPlaces.filter((p) => p.category_group_code === "CS2").length}개,
-                        숙박 {nearbyPlaces.filter((p) => p.category_group_code === "AD5").length}개
+                        숙박 {nearbyPlaces.length}개
                       </span>
                     )}
                   </div>

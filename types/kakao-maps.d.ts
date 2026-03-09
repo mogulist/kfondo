@@ -26,6 +26,11 @@ declare global {
             type: string,
             handler: () => void,
           ) => void;
+          removeListener: (
+            target: unknown,
+            type: string,
+            handler: () => void,
+          ) => void;
         };
       };
     };
@@ -75,10 +80,14 @@ export type KakaoMapOptions = {
 
 export type KakaoMapInstance = {
   setBounds?: (bounds: KakaoLatLngBounds) => void;
+  getLevel?: () => number;
+  getBounds?: () => KakaoLatLngBounds;
 } & Record<string, unknown>;
 
 export type KakaoLatLngBounds = {
   extend: (latlng: KakaoLatLng) => void;
+  getSouthWest?: () => KakaoLatLng;
+  getNorthEast?: () => KakaoLatLng;
 };
 
 export type KakaoPolylineOptions = {

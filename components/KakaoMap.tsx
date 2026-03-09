@@ -12,6 +12,14 @@ export type KakaoMapPoi = {
   address?: string;
 };
 
+/** 지도 뷰포트 범위 (남·서·북·동). API 검색 시 사용 */
+export type KakaoMapViewBounds = {
+  south: number;
+  west: number;
+  north: number;
+  east: number;
+};
+
 type KakaoMapProps = {
   width?: string;
   height?: string;
@@ -21,6 +29,8 @@ type KakaoMapProps = {
   highlightPosition?: [number, number] | null;
   /** 보급소·숙소 등 POI 마커 (편의점 CS2, 숙박 AD5) */
   pois?: KakaoMapPoi[];
+  /** 줌 레벨·뷰포트 변경 시 호출 (줌 레벨 1~14, 작을수록 줌인) */
+  onMapStateChange?: (zoomLevel: number, bounds: KakaoMapViewBounds | null) => void;
 };
 
 const DEFAULT_CENTER = { lat: 35.9, lng: 128.0 };
@@ -62,6 +72,7 @@ export function KakaoMap({
   polylines,
   highlightPosition = null,
   pois,
+  onMapStateChange,
 }: KakaoMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<unknown>(null);
@@ -265,6 +276,39 @@ export function KakaoMap({
     observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, [isMapLoaded]);
+
+  useEffect(() => {
+    if (!isMapLoaded || !onMapStateChange || !window.kakao?.maps || !mapRef.current) return;
+    const map = mapRef.current as {
+      getLevel?: () => number;
+      getBounds?: () => {
+        getSouthWest?: () => { getLat: () => number; getLng: () => number };
+        getNorthEast?: () => { getLat: () => number; getLng: () => number };
+      };
+    };
+    const sync = () => {
+      const level = map.getLevel?.() ?? DEFAULT_LEVEL;
+      const b = map.getBounds?.();
+      if (!b?.getSouthWest?.() || !b?.getNorthEast?.()) {
+        onMapStateChange(level, null);
+        return;
+      }
+      const sw = b.getSouthWest();
+      const ne = b.getNorthEast();
+      onMapStateChange(level, {
+        south: sw.getLat(),
+        west: sw.getLng(),
+        north: ne.getLat(),
+        east: ne.getLng(),
+      });
+    };
+    sync();
+    const { event } = window.kakao.maps;
+    event.addListener(map, "idle", sync);
+    return () => {
+      window.kakao?.maps?.event.removeListener(map, "idle", sync);
+    };
+  }, [isMapLoaded, onMapStateChange]);
 
   const computeBounds = useCallback(() => {
     if (!polylines?.length || !window.kakao?.maps) return null;

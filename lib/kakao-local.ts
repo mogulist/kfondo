@@ -1,7 +1,18 @@
 /**
  * 카카오 Local API - 경로 주변 보급소·숙소 검색
  * 서버에서만 사용. KAKAO_REST_API_KEY 필요.
+ *
+ * Rate limit (429): 테스트앱은 별도 쿼터 적용. 일간 쿼터 초과 시 429,
+ * 해제는 다음 날 자정(UTC) 쿼터 초기화 후. 프로덕션 카테고리 검색 일 10만 건 등.
  */
+
+export class KakaoRateLimitError extends Error {
+  readonly statusCode = 429;
+  constructor() {
+    super("Kakao Local API rate limit (429)");
+    this.name = "KakaoRateLimitError";
+  }
+}
 
 export type RoutePoint = { lat: number; lng: number; distanceKm?: number };
 
@@ -26,8 +37,19 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-const CONVENIENCE_CODE = "CS2";
 const LODGING_CODE = "AD5";
+
+/** 지도 뷰포트 범위 (남·서·북·동). 이 범위 내 샘플 포인트만 검색에 사용 */
+export type MapBounds = {
+  south: number;
+  west: number;
+  north: number;
+  east: number;
+};
+
+function isInBounds(lat: number, lng: number, b: MapBounds): boolean {
+  return lat >= b.south && lat <= b.north && lng >= b.west && lng <= b.east;
+}
 
 /**
  * routePoints를 거리 기준으로 샘플링. intervalKm 간격, 최대 maxPoints개.
@@ -101,6 +123,9 @@ async function searchCategoryAtPoint(
   const res = await fetch(`${API_BASE}?${params}`, {
     headers: { Authorization: `KakaoAK ${apiKey}` },
   });
+  if (res.status === 429) {
+    throw new KakaoRateLimitError();
+  }
   if (!res.ok) {
     throw new Error(`Kakao Local API error: ${res.status}`);
   }
@@ -117,39 +142,46 @@ async function searchCategoryAtPoint(
 }
 
 /**
- * 경로 샘플 점들에서 편의점·숙박 검색 후 id 기준 중복 제거하여 반환.
+ * 경로 샘플 점들에서 숙박(AD5)만 검색 후 id 기준 중복 제거하여 반환.
+ * bounds를 주면 뷰포트 안에 있는 샘플 포인트만 사용한다.
  */
 export async function searchNearbyConvenienceAndLodging(
   routePoints: RoutePoint[],
-  apiKey: string
+  apiKey: string,
+  bounds?: MapBounds
 ): Promise<KakaoLocalPlace[]> {
-  const samplePoints = sampleRoutePoints(routePoints);
+  let samplePoints = sampleRoutePoints(routePoints);
   if (samplePoints.length === 0) return [];
+
+  if (bounds) {
+    samplePoints = samplePoints.filter((p) => isInBounds(p.lat, p.lng, bounds));
+    if (samplePoints.length === 0) return [];
+  }
 
   const seen = new Set<string>();
   const results: KakaoLocalPlace[] = [];
 
-  const categories = [CONVENIENCE_CODE, LODGING_CODE];
-
   for (const { lat, lng } of samplePoints) {
-    for (const code of categories) {
-      await sleep(API_CALL_DELAY_MS);
-      try {
-        const places = await searchCategoryAtPoint(
-          apiKey,
-          lng,
-          lat,
-          code
-        );
-        for (const p of places) {
-          if (!seen.has(p.id)) {
-            seen.add(p.id);
-            results.push(p);
-          }
+    await sleep(API_CALL_DELAY_MS);
+    try {
+      const places = await searchCategoryAtPoint(
+        apiKey,
+        lng,
+        lat,
+        LODGING_CODE
+      );
+      for (const p of places) {
+        if (!seen.has(p.id)) {
+          seen.add(p.id);
+          results.push(p);
         }
-      } catch (e) {
-        console.warn("[kakao-local] category search failed:", code, e);
       }
+    } catch (e) {
+      if (e instanceof KakaoRateLimitError) {
+        console.log("[kakao-local] 429 Too Many Requests (quota limit). Stopped.");
+        throw e;
+      }
+      console.warn("[kakao-local] category search failed:", LODGING_CODE, e);
     }
   }
 
