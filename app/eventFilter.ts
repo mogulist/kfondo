@@ -99,8 +99,16 @@ export async function getFilteredEvents(): Promise<HomePageFilteredData> {
   const currentYear = dayjs().year();
   const today = dayjs();
 
+  // 에디션/코스가 모두 삭제된 이벤트(years 없음 또는 yearDetails 없음) 제외
+  const eventsWithDetails = events.filter((e) => {
+    if (e.years.length === 0) return false;
+    const latestYear = Math.max(...e.years);
+    const detail = e.yearDetails[latestYear];
+    return detail?.date != null;
+  });
+
   // Sort events first by latest year's date desc (default sort)
-  const sortedEvents = [...events].sort((a, b) => {
+  const sortedEvents = [...eventsWithDetails].sort((a, b) => {
     const aLatestYear = Math.max(...a.years);
     const bLatestYear = Math.max(...b.years);
     const aDate = dayjs(a.yearDetails[aLatestYear].date);
