@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronLeft, Maximize2, Minimize2, Mountain, Route } from "lucide-react";
 import Header from "@/components/Header";
-import { KakaoMap } from "@/components/KakaoMap";
+import { KakaoMap, type KakaoMapPoi } from "@/components/KakaoMap";
 import { ElevationProfile } from "@/components/ElevationProfile";
 import { Slider } from "@/components/ui/slider";
 import { useMobile } from "@/hooks/use-mobile";
@@ -71,6 +71,15 @@ export function CourseMapKakaoPageClient({
 
   const polylines: [number, number][][] =
     routePoints.length > 0 ? polylinesRef.current ?? [] : [];
+  const pois: KakaoMapPoi[] =
+    nearbyPlaces?.map((p) => ({
+      id: p.id,
+      name: p.place_name,
+      lat: Number.parseFloat(p.y),
+      lng: Number.parseFloat(p.x),
+      category: p.category_group_code,
+      address: p.address_name || undefined,
+    })) ?? [];
   const highlightPosition: [number, number] | null =
     highlightedIndex != null && routePoints[highlightedIndex]
       ? [routePoints[highlightedIndex].lat, routePoints[highlightedIndex].lng]
@@ -102,9 +111,6 @@ export function CourseMapKakaoPageClient({
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "검색 실패");
       setNearbyPlaces(data.places ?? []);
-      const conv = (data.places ?? []).filter((p: KakaoLocalPlace) => p.category_group_code === "CS2");
-      const lodg = (data.places ?? []).filter((p: KakaoLocalPlace) => p.category_group_code === "AD5");
-      console.log(`[보급소·숙소] 편의점 ${conv.length}개, 숙박 ${lodg.length}개`, data.places);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "검색 실패";
       setNearbyError(msg);
@@ -192,6 +198,7 @@ export function CourseMapKakaoPageClient({
                     height="100%"
                     polylines={polylines}
                     highlightPosition={highlightPosition}
+                    pois={pois}
                   />
                 </div>
                 <div className="shrink-0 border-t border-border bg-card px-3 py-2 min-h-[140px] h-[22dvh] max-h-[200px] flex flex-col min-h-0">

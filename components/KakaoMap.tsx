@@ -3,6 +3,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Expand, Locate } from "lucide-react";
 
+export type KakaoMapPoi = {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  category: string;
+  address?: string;
+};
+
 type KakaoMapProps = {
   width?: string;
   height?: string;
@@ -10,6 +19,8 @@ type KakaoMapProps = {
   polylines?: [number, number][][];
   /** 고도 그래프 등에서 하이라이트할 위치. [lat, lng] 또는 null */
   highlightPosition?: [number, number] | null;
+  /** 보급소·숙소 등 POI 마커 (편의점 CS2, 숙박 AD5) */
+  pois?: KakaoMapPoi[];
 };
 
 const DEFAULT_CENTER = { lat: 35.9, lng: 128.0 };
@@ -24,16 +35,41 @@ const DEFAULT_LEVEL = 8;
 const SCRIPT_URL = "https://dapi.kakao.com/v2/maps/sdk.js";
 const STROKE_COLOR = "#fb7185";
 const STROKE_WEIGHT = 4;
+
+/** 카카오맵 공식 예제 이미지: 편의점/주차장/커피 등 카테고리 스프라이트 */
+const POI_IMAGE_CATEGORY =
+  "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png";
+/** 카카오맵 공식 예제: 빨간 핀 (숙박 등 구분용) */
+const POI_IMAGE_MARKER_RED =
+  "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png";
+
+function poiInfowindowHtml(name: string, address: string): string {
+  return `<div style="padding:8px 10px;min-width:120px;max-width:220px;background:white;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);font-size:12px;line-height:1.4;">
+  <div style="font-weight:600;margin-bottom:4px;">${escapeHtml(name)}</div>
+  <div style="color:#6b7280;">${escapeHtml(address)}</div>
+</div>`;
+}
+
+function escapeHtml(s: string): string {
+  const div = document.createElement("div");
+  div.textContent = s;
+  return div.innerHTML;
+}
+
 export function KakaoMap({
   width = "100%",
   height = "100%",
   polylines,
   highlightPosition = null,
+  pois,
 }: KakaoMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<unknown>(null);
   const polylineInstancesRef = useRef<{ setMap: (m: null) => void }[]>([]);
   const highlightOverlayRef = useRef<{ setMap: (m: null) => void } | null>(null);
+  const poiMarkersRef = useRef<{ setMap: (m: null) => void }[]>([]);
+  const poiInfowindowsRef = useRef<unknown[]>([]);
+  const poiInfowindowOpenRef = useRef<{ close: () => void } | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
@@ -158,6 +194,66 @@ export function KakaoMap({
       highlightOverlayRef.current = overlay;
     }
   }, [isMapLoaded, highlightPosition]);
+
+  useEffect(() => {
+    poiInfowindowOpenRef.current?.close();
+    poiInfowindowOpenRef.current = null;
+    poiMarkersRef.current.forEach((m) => m.setMap(null));
+    poiMarkersRef.current = [];
+    poiInfowindowsRef.current = [];
+
+    if (!isMapLoaded || !window.kakao?.maps || !mapRef.current || !pois?.length) return;
+
+    const map = mapRef.current as unknown;
+    const { maps } = window.kakao;
+
+    pois.forEach((poi) => {
+      const latlng = new maps.LatLng(poi.lat, poi.lng);
+
+      const isConvenience = poi.category === "CS2";
+      const isLodging = poi.category === "AD5";
+
+      let markerImage: unknown;
+      if (isConvenience) {
+        const imageSize = new maps.Size(22, 26);
+        const imageOptions = {
+          spriteOrigin: new maps.Point(10, 36),
+          spriteSize: new maps.Size(36, 98),
+        };
+        markerImage = new maps.MarkerImage(POI_IMAGE_CATEGORY, imageSize, imageOptions);
+      } else if (isLodging) {
+        const imageSize = new maps.Size(64, 69);
+        const imageOptions = { offset: new maps.Point(27, 69) };
+        markerImage = new maps.MarkerImage(POI_IMAGE_MARKER_RED, imageSize, imageOptions);
+      } else {
+        const imageSize = new maps.Size(22, 26);
+        markerImage = new maps.MarkerImage(POI_IMAGE_CATEGORY, imageSize, {
+          spriteOrigin: new maps.Point(10, 36),
+          spriteSize: new maps.Size(36, 98),
+        });
+      }
+
+      const marker = new maps.Marker({
+        position: latlng,
+        image: markerImage,
+      });
+      marker.setMap(map as Parameters<typeof marker.setMap>[0]);
+      poiMarkersRef.current.push(marker);
+
+      const iwContent = poiInfowindowHtml(poi.name, poi.address ?? "");
+      const infowindow = new maps.InfoWindow({
+        position: latlng,
+        content: iwContent,
+      });
+      poiInfowindowsRef.current.push(infowindow);
+
+      maps.event.addListener(marker, "click", () => {
+        poiInfowindowOpenRef.current?.close();
+        (infowindow as { open: (m: unknown, marker?: unknown) => void }).open(map, marker);
+        poiInfowindowOpenRef.current = infowindow;
+      });
+    });
+  }, [isMapLoaded, pois]);
 
   useEffect(() => {
     if (!isMapLoaded || !containerRef.current || !mapRef.current) return;

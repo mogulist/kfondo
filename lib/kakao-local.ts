@@ -16,9 +16,15 @@ export type KakaoLocalPlace = {
 };
 
 const SAMPLE_INTERVAL_KM = 5;
-const MAX_SAMPLE_POINTS = 20;
+const MAX_SAMPLE_POINTS = 10;
 const SEARCH_RADIUS_M = 1000;
+/** 카카오 Local API 429 방지: 호출 간 최소 간격(ms) */
+const API_CALL_DELAY_MS = 350;
 const API_BASE = "https://dapi.kakao.com/v2/local/search/category.json";
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 const CONVENIENCE_CODE = "CS2";
 const LODGING_CODE = "AD5";
@@ -127,6 +133,7 @@ export async function searchNearbyConvenienceAndLodging(
 
   for (const { lat, lng } of samplePoints) {
     for (const code of categories) {
+      await sleep(API_CALL_DELAY_MS);
       try {
         const places = await searchCategoryAtPoint(
           apiKey,
