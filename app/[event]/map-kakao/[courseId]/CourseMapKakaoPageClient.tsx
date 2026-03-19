@@ -18,7 +18,25 @@ import {
   findNearestIndexByDistance,
 } from "@/lib/gpx";
 import type { GpxPointWithDistance } from "@/lib/gpx";
-import type { KakaoLocalPlace } from "@/lib/kakao-local";
+import type { KakaoLocalPlace, PoiSearchType } from "@/lib/kakao-local";
+
+const POI_SEARCH_LABELS: Record<PoiSearchType, string> = {
+  food: "음식점",
+  cafe: "카페",
+  convenience: "편의점",
+  mart: "마트",
+  bigMart: "대형마트",
+  lodging: "숙소",
+};
+
+const POI_SEARCH_ORDER: PoiSearchType[] = [
+  "food",
+  "cafe",
+  "convenience",
+  "mart",
+  "bigMart",
+  "lodging",
+];
 
 type CourseMapKakaoPageClientProps = {
   eventSlug: string;
@@ -42,17 +60,18 @@ export function CourseMapKakaoPageClient({
   const [error, setError] = useState<string | null>(null);
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
   const [nearbyPlaces, setNearbyPlaces] = useState<KakaoLocalPlace[] | null>(null);
+  const [nearbySearchType, setNearbySearchType] = useState<PoiSearchType | null>(null);
   const [nearbyLoading, setNearbyLoading] = useState(false);
   const [nearbyError, setNearbyError] = useState<string | null>(null);
   const [mapZoomLevel, setMapZoomLevel] = useState<number | null>(null);
   const [mapBounds, setMapBounds] = useState<KakaoMapViewBounds | null>(null);
   const isMobile = useMobile();
 
-  /** 기본 줌 8에서 +3 줌인 = 5. 이 레벨 이상(숫자 이하)일 때만 숙소 찾기 활성화 */
-  const LODGING_SEARCH_MIN_ZOOM_LEVEL = 6;
-  const canSearchLodging =
+  /** 기본 줌 8에서 +3 줌인 = 5. 이 레벨 이상(숫자 이하)일 때만 주변 POI 검색 활성화 */
+  const POI_SEARCH_MIN_ZOOM_LEVEL = 6;
+  const canSearchNearby =
     mapZoomLevel != null &&
-    mapZoomLevel <= LODGING_SEARCH_MIN_ZOOM_LEVEL &&
+    mapZoomLevel <= POI_SEARCH_MIN_ZOOM_LEVEL &&
     routePoints.length > 0;
 
   const handleMapStateChange = useCallback(
@@ -121,12 +140,15 @@ export function CourseMapKakaoPageClient({
     setHighlightedIndex(index);
   };
 
-  const handleSearchNearby = async () => {
+  const handleSearchNearby = async (searchType: PoiSearchType) => {
     setNearbyLoading(true);
     setNearbyError(null);
     try {
-      const body: { routePoints: typeof routePoints; bounds?: KakaoMapViewBounds } =
-        { routePoints };
+      const body: {
+        routePoints: typeof routePoints;
+        bounds?: KakaoMapViewBounds;
+        searchType: PoiSearchType;
+      } = { routePoints, searchType };
       if (mapBounds) body.bounds = mapBounds;
       const res = await fetch("/api/nearby-pois", {
         method: "POST",
@@ -141,16 +163,19 @@ export function CourseMapKakaoPageClient({
       if (res.status === 429) {
         toast.error(data.message ?? "API 쿼터 제한에 걸렸습니다. 잠시 후 다시 시도해 주세요.");
         setNearbyPlaces(null);
+        setNearbySearchType(null);
         setNearbyError(null);
         return;
       }
       if (!res.ok) throw new Error(data.error ?? data.message ?? "검색 실패");
       setNearbyPlaces(data.places ?? []);
+      setNearbySearchType(searchType);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "검색 실패";
       setNearbyError(msg);
       setNearbyPlaces(null);
-      console.error("[보급소·숙소 검색]", e);
+      setNearbySearchType(null);
+      console.error("[주변 POI 검색]", e);
     } finally {
       setNearbyLoading(false);
     }
@@ -227,7 +252,7 @@ export function CourseMapKakaoPageClient({
               </div>
             ) : (
               <div className="flex flex-col h-full min-h-0 w-full">
-                <div className="flex-1 min-h-0 w-full">
+                <div className="relative flex-1 min-h-0 w-full">
                   <KakaoMap
                     width="100%"
                     height="100%"
@@ -236,26 +261,36 @@ export function CourseMapKakaoPageClient({
                     pois={pois}
                     onMapStateChange={handleMapStateChange}
                   />
+                  <div
+                    className="pointer-events-none absolute top-4 right-[52px] z-20 flex max-w-[5.75rem] flex-col items-end gap-1"
+                    aria-label="주변 시설 검색"
+                  >
+                    {POI_SEARCH_ORDER.map((type) => (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => {
+                          void handleSearchNearby(type);
+                        }}
+                        disabled={nearbyLoading || !canSearchNearby}
+                        className="pointer-events-auto rounded-md border border-border bg-card/95 px-2 py-1 text-xs font-medium text-foreground shadow-sm backdrop-blur-sm hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {POI_SEARCH_LABELS[type]}
+                      </button>
+                    ))}
+                  </div>
                 </div>
                 <div className="shrink-0 border-t border-border bg-card px-3 py-2 min-h-[140px] h-[22dvh] max-h-[200px] flex flex-col min-h-0">
                   <div className="shrink-0 mb-2 flex items-center gap-2 flex-wrap">
                     <span className="text-xs text-muted-foreground" aria-hidden>
                       줌 {mapZoomLevel ?? "—"}
                     </span>
-                    <button
-                      type="button"
-                      onClick={handleSearchNearby}
-                      disabled={nearbyLoading || !canSearchLodging}
-                      className="px-3 py-1.5 text-sm font-medium rounded-md border border-border bg-background text-foreground hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {nearbyLoading ? "검색 중..." : "숙소 찾기"}
-                    </button>
                     {nearbyError && (
                       <span className="text-sm text-red-600">{nearbyError}</span>
                     )}
-                    {nearbyPlaces != null && (
+                    {nearbyPlaces != null && nearbySearchType != null && (
                       <span className="text-sm text-muted-foreground">
-                        숙박 {nearbyPlaces.length}개
+                        {POI_SEARCH_LABELS[nearbySearchType]} {nearbyPlaces.length}개
                       </span>
                     )}
                   </div>

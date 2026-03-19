@@ -27,7 +27,7 @@ type KakaoMapProps = {
   polylines?: [number, number][][];
   /** 고도 그래프 등에서 하이라이트할 위치. [lat, lng] 또는 null */
   highlightPosition?: [number, number] | null;
-  /** 보급소·숙소 등 POI 마커 (편의점 CS2, 숙박 AD5) */
+  /** 주변 POI 마커 (카카오 category_group_code 또는 키워드 마트 MART_KW) */
   pois?: KakaoMapPoi[];
   /** 줌 레벨·뷰포트 변경 시 호출 (줌 레벨 1~14, 작을수록 줌인) */
   onMapStateChange?: (zoomLevel: number, bounds: KakaoMapViewBounds | null) => void;
@@ -52,6 +52,12 @@ const POI_IMAGE_CATEGORY =
 /** 카카오맵 공식 예제: 빨간 핀 (숙박 등 구분용) */
 const POI_IMAGE_MARKER_RED =
   "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png";
+
+/** 키워드 검색으로만 분류된 마트 (서버 `MART_KW`와 동일) */
+const POI_CATEGORY_MART_KEYWORD = "MART_KW";
+
+const CATEGORY_SPRITE_SIZE = { w: 36, h: 98 } as const;
+const CATEGORY_MARKER_SIZE = { w: 22, h: 26 } as const;
 
 function poiInfowindowHtml(name: string, address: string): string {
   return `<div style="padding:8px 10px;min-width:120px;max-width:220px;background:white;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);font-size:12px;line-height:1.4;">
@@ -221,27 +227,32 @@ export function KakaoMap({
     pois.forEach((poi) => {
       const latlng = new maps.LatLng(poi.lat, poi.lng);
 
-      const isConvenience = poi.category === "CS2";
-      const isLodging = poi.category === "AD5";
+      const imageSize = new maps.Size(CATEGORY_MARKER_SIZE.w, CATEGORY_MARKER_SIZE.h);
+      const spriteSize = new maps.Size(CATEGORY_SPRITE_SIZE.w, CATEGORY_SPRITE_SIZE.h);
+      const categorySprite = (ox: number, oy: number) =>
+        new maps.MarkerImage(POI_IMAGE_CATEGORY, imageSize, {
+          spriteOrigin: new maps.Point(ox, oy),
+          spriteSize,
+        });
 
       let markerImage: unknown;
-      if (isConvenience) {
-        const imageSize = new maps.Size(22, 26);
-        const imageOptions = {
-          spriteOrigin: new maps.Point(10, 36),
-          spriteSize: new maps.Size(36, 98),
-        };
-        markerImage = new maps.MarkerImage(POI_IMAGE_CATEGORY, imageSize, imageOptions);
-      } else if (isLodging) {
-        const imageSize = new maps.Size(64, 69);
-        const imageOptions = { offset: new maps.Point(27, 69) };
-        markerImage = new maps.MarkerImage(POI_IMAGE_MARKER_RED, imageSize, imageOptions);
-      } else {
-        const imageSize = new maps.Size(22, 26);
-        markerImage = new maps.MarkerImage(POI_IMAGE_CATEGORY, imageSize, {
-          spriteOrigin: new maps.Point(10, 36),
-          spriteSize: new maps.Size(36, 98),
+      if (poi.category === "AD5") {
+        const lodgingSize = new maps.Size(64, 69);
+        markerImage = new maps.MarkerImage(POI_IMAGE_MARKER_RED, lodgingSize, {
+          offset: new maps.Point(27, 69),
         });
+      } else if (poi.category === "CS2") {
+        markerImage = categorySprite(10, 36);
+      } else if (poi.category === "FD6") {
+        markerImage = categorySprite(0, 0);
+      } else if (poi.category === "CE7") {
+        markerImage = categorySprite(0, 72);
+      } else if (poi.category === "MT1") {
+        markerImage = categorySprite(22, 0);
+      } else if (poi.category === POI_CATEGORY_MART_KEYWORD) {
+        markerImage = categorySprite(22, 72);
+      } else {
+        markerImage = categorySprite(10, 36);
       }
 
       const marker = new maps.Marker({

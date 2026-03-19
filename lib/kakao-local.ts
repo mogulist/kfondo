@@ -1,5 +1,5 @@
 /**
- * 카카오 Local API - 경로 주변 보급소·숙소 검색
+ * 카카오 Local API - 경로 주변 POI 검색
  * 서버에서만 사용. KAKAO_REST_API_KEY 필요.
  *
  * Rate limit (429): 테스트앱은 별도 쿼터 적용. 일간 쿼터 초과 시 429,
@@ -26,18 +26,46 @@ export type KakaoLocalPlace = {
   category_group_code: string;
 };
 
+/** 클라이언트·API와 공유하는 주변 POI 검색 종류 */
+export type PoiSearchType =
+  | "food"
+  | "cafe"
+  | "convenience"
+  | "mart"
+  | "bigMart"
+  | "lodging";
+
+export const POI_SEARCH_TYPES: readonly PoiSearchType[] = [
+  "food",
+  "cafe",
+  "convenience",
+  "mart",
+  "bigMart",
+  "lodging",
+] as const;
+
+/** 키워드 검색만으로 잡은 마트류(카테고리 비어 있을 때 지도 구분용) */
+export const MART_KEYWORD_CATEGORY_CODE = "MART_KW";
+
 const SAMPLE_INTERVAL_KM = 5;
 const MAX_SAMPLE_POINTS = 10;
 const SEARCH_RADIUS_M = 1000;
 /** 카카오 Local API 429 방지: 호출 간 최소 간격(ms) */
 const API_CALL_DELAY_MS = 350;
-const API_BASE = "https://dapi.kakao.com/v2/local/search/category.json";
+const CATEGORY_API = "https://dapi.kakao.com/v2/local/search/category.json";
+const KEYWORD_API = "https://dapi.kakao.com/v2/local/search/keyword.json";
+
+const CATEGORY_FOOD = "FD6";
+const CATEGORY_CAFE = "CE7";
+const CATEGORY_CONVENIENCE = "CS2";
+const CATEGORY_BIG_MART = "MT1";
+const CATEGORY_LODGING = "AD5";
+
+const MART_KEYWORD_QUERIES = ["마트"] as const;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-
-const LODGING_CODE = "AD5";
 
 /** 지도 뷰포트 범위 (남·서·북·동). 이 범위 내 샘플 포인트만 검색에 사용 */
 export type MapBounds = {
@@ -106,6 +134,18 @@ type KakaoCategoryResponse = {
   }>;
 };
 
+type KakaoKeywordResponse = {
+  documents: Array<{
+    id: string;
+    place_name: string;
+    address_name: string;
+    road_address_name?: string;
+    x: string;
+    y: string;
+    category_group_code?: string;
+  }>;
+};
+
 async function searchCategoryAtPoint(
   apiKey: string,
   lng: number,
@@ -120,7 +160,7 @@ async function searchCategoryAtPoint(
     radius: String(radius),
     sort: "distance",
   });
-  const res = await fetch(`${API_BASE}?${params}`, {
+  const res = await fetch(`${CATEGORY_API}?${params}`, {
     headers: { Authorization: `KakaoAK ${apiKey}` },
   });
   if (res.status === 429) {
@@ -141,35 +181,67 @@ async function searchCategoryAtPoint(
   }));
 }
 
-/**
- * 경로 샘플 점들에서 숙박(AD5)만 검색 후 id 기준 중복 제거하여 반환.
- * bounds를 주면 뷰포트 안에 있는 샘플 포인트만 사용한다.
- */
-export async function searchNearbyConvenienceAndLodging(
-  routePoints: RoutePoint[],
+async function searchKeywordAtPoint(
   apiKey: string,
-  bounds?: MapBounds
+  lng: number,
+  lat: number,
+  query: string,
+  radius = SEARCH_RADIUS_M
 ): Promise<KakaoLocalPlace[]> {
+  const params = new URLSearchParams({
+    query,
+    x: String(lng),
+    y: String(lat),
+    radius: String(radius),
+    sort: "distance",
+  });
+  const res = await fetch(`${KEYWORD_API}?${params}`, {
+    headers: { Authorization: `KakaoAK ${apiKey}` },
+  });
+  if (res.status === 429) {
+    throw new KakaoRateLimitError();
+  }
+  if (!res.ok) {
+    throw new Error(`Kakao Local API error: ${res.status}`);
+  }
+  const data = (await res.json()) as KakaoKeywordResponse;
+  return (data.documents ?? []).map((d) => ({
+    id: d.id,
+    place_name: d.place_name,
+    address_name: d.address_name,
+    road_address_name: d.road_address_name,
+    x: d.x,
+    y: d.y,
+    category_group_code: d.category_group_code?.trim()
+      ? d.category_group_code
+      : MART_KEYWORD_CATEGORY_CODE,
+  }));
+}
+
+function resolveSamplePoints(
+  routePoints: RoutePoint[],
+  bounds?: MapBounds
+): { lat: number; lng: number }[] {
   let samplePoints = sampleRoutePoints(routePoints);
   if (samplePoints.length === 0) return [];
-
   if (bounds) {
     samplePoints = samplePoints.filter((p) => isInBounds(p.lat, p.lng, bounds));
-    if (samplePoints.length === 0) return [];
   }
+  return samplePoints;
+}
 
+async function searchCategoryAlongRoute(
+  apiKey: string,
+  samplePoints: { lat: number; lng: number }[],
+  categoryGroupCode: string
+): Promise<KakaoLocalPlace[]> {
   const seen = new Set<string>();
   const results: KakaoLocalPlace[] = [];
 
   for (const { lat, lng } of samplePoints) {
     await sleep(API_CALL_DELAY_MS);
     try {
-      const places = await searchCategoryAtPoint(
-        apiKey,
-        lng,
-        lat,
-        LODGING_CODE
-      );
+      const places = await searchCategoryAtPoint(apiKey, lng, lat, categoryGroupCode);
       for (const p of places) {
         if (!seen.has(p.id)) {
           seen.add(p.id);
@@ -181,9 +253,90 @@ export async function searchNearbyConvenienceAndLodging(
         console.log("[kakao-local] 429 Too Many Requests (quota limit). Stopped.");
         throw e;
       }
-      console.warn("[kakao-local] category search failed:", LODGING_CODE, e);
+      console.warn("[kakao-local] category search failed:", categoryGroupCode, e);
     }
   }
 
   return results;
+}
+
+async function searchMartKeywordsAlongRoute(
+  apiKey: string,
+  samplePoints: { lat: number; lng: number }[]
+): Promise<KakaoLocalPlace[]> {
+  const seen = new Set<string>();
+  const results: KakaoLocalPlace[] = [];
+
+  for (const { lat, lng } of samplePoints) {
+    for (const query of MART_KEYWORD_QUERIES) {
+      await sleep(API_CALL_DELAY_MS);
+      try {
+        const places = await searchKeywordAtPoint(apiKey, lng, lat, query);
+        for (const p of places) {
+          if (!seen.has(p.id)) {
+            seen.add(p.id);
+            results.push(p);
+          }
+        }
+      } catch (e) {
+        if (e instanceof KakaoRateLimitError) {
+          console.log("[kakao-local] 429 Too Many Requests (quota limit). Stopped.");
+          throw e;
+        }
+        console.warn("[kakao-local] keyword search failed:", query, e);
+      }
+    }
+  }
+
+  return results;
+}
+
+function categoryCodeForSearchType(
+  searchType: Exclude<PoiSearchType, "mart">
+): string {
+  switch (searchType) {
+    case "food":
+      return CATEGORY_FOOD;
+    case "cafe":
+      return CATEGORY_CAFE;
+    case "convenience":
+      return CATEGORY_CONVENIENCE;
+    case "bigMart":
+      return CATEGORY_BIG_MART;
+    case "lodging":
+      return CATEGORY_LODGING;
+  }
+}
+
+/**
+ * 경로 샘플 점들에서 지정한 유형의 장소를 검색 후 id 기준 중복 제거하여 반환.
+ * bounds를 주면 뷰포트 안에 있는 샘플 포인트만 사용한다.
+ */
+export async function searchNearbyPois(
+  routePoints: RoutePoint[],
+  apiKey: string,
+  searchType: PoiSearchType,
+  bounds?: MapBounds
+): Promise<KakaoLocalPlace[]> {
+  const samplePoints = resolveSamplePoints(routePoints, bounds);
+  if (samplePoints.length === 0) return [];
+
+  if (searchType === "mart") {
+    return searchMartKeywordsAlongRoute(apiKey, samplePoints);
+  }
+
+  return searchCategoryAlongRoute(
+    apiKey,
+    samplePoints,
+    categoryCodeForSearchType(searchType)
+  );
+}
+
+/** @deprecated searchNearbyPois(..., "lodging") 사용 */
+export async function searchNearbyConvenienceAndLodging(
+  routePoints: RoutePoint[],
+  apiKey: string,
+  bounds?: MapBounds
+): Promise<KakaoLocalPlace[]> {
+  return searchNearbyPois(routePoints, apiKey, "lodging", bounds);
 }

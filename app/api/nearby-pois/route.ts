@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
 import {
   KakaoRateLimitError,
-  searchNearbyConvenienceAndLodging,
+  POI_SEARCH_TYPES,
+  searchNearbyPois,
   type MapBounds,
+  type PoiSearchType,
   type RoutePoint,
 } from "@/lib/kakao-local";
+
+function isPoiSearchType(v: unknown): v is PoiSearchType {
+  return typeof v === "string" && (POI_SEARCH_TYPES as readonly string[]).includes(v);
+}
 
 export async function POST(request: Request) {
   const apiKey = process.env.KAKAO_REST_API_KEY;
@@ -15,7 +21,7 @@ export async function POST(request: Request) {
     );
   }
 
-  let body: { routePoints: RoutePoint[]; bounds?: MapBounds };
+  let body: { routePoints: RoutePoint[]; bounds?: MapBounds; searchType?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -25,7 +31,15 @@ export async function POST(request: Request) {
     );
   }
 
-  const { routePoints, bounds } = body;
+  const { routePoints, bounds, searchType: rawSearchType } = body;
+
+  if (!isPoiSearchType(rawSearchType)) {
+    return NextResponse.json(
+      { error: "searchType is required and must be a valid POI search type" },
+      { status: 400 }
+    );
+  }
+  const searchType = rawSearchType;
   if (!Array.isArray(routePoints) || routePoints.length === 0) {
     return NextResponse.json(
       { error: "routePoints must be a non-empty array" },
@@ -64,9 +78,10 @@ export async function POST(request: Request) {
       : undefined;
 
   try {
-    const places = await searchNearbyConvenienceAndLodging(
+    const places = await searchNearbyPois(
       validPoints,
       apiKey,
+      searchType,
       validBounds
     );
     return NextResponse.json({ places });
