@@ -16,8 +16,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files
+# env files (실제 비밀은 .env* — 예시 템플릿만 추적)
 .env*
+!.env.example
 
 # vercel
 .vercel

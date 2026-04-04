@@ -9,13 +9,16 @@ type DisqusCommentsProps = {
 
 export function DisqusComments({ eventId, eventTitle }: DisqusCommentsProps) {
   const disqusShortname = process.env.NEXT_PUBLIC_DISQUS_SHORTNAME;
-  
-  if (!disqusShortname) {
+  const publicSiteBase =
+    process.env.NEXT_PUBLIC_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+
+  if (!disqusShortname || !publicSiteBase) {
     return null;
   }
 
   const disqusConfig = {
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/event/${eventId}`,
+    url: `${publicSiteBase}/${eventId}`,
     identifier: eventId,
     title: eventTitle,
   };
