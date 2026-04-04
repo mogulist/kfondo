@@ -100,7 +100,9 @@ export async function getFindByRecordData(
     return null;
   }
 
-  const courseKey = COURSE_MAP[courseId] || courseId;
+  const courseRow = yearDetail?.courses?.find((c) => c.id === courseId);
+  const courseKey =
+    courseRow?.name ?? COURSE_MAP[courseId] ?? courseId;
   const courseArr: number[] = sortedData[courseKey] || [];
   const inputMsec = timeToMilliseconds(parsedTime);
   if (inputMsec < 0) return null;
