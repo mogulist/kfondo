@@ -174,14 +174,21 @@ const TableSection = ({ data }: any) => (
   </div>
 );
 
-// 커스텀 범례 렌더러
+const LEGEND_ORDER = ["registered", "participants", "dnf"] as const;
+
+// 커스텀 범례 렌더러 (Recharts 기본 payload 순서가 뒤섞일 수 있어 고정)
 const CustomLegend = (props: any) => {
   const { payload } = props;
   if (!payload || payload.length === 0) return null;
+  const ordered = [...payload].sort(
+    (a, b) =>
+      LEGEND_ORDER.indexOf(a.dataKey as (typeof LEGEND_ORDER)[number]) -
+      LEGEND_ORDER.indexOf(b.dataKey as (typeof LEGEND_ORDER)[number])
+  );
   return (
     <div className="flex flex-wrap justify-center gap-4 text-sm mt-2">
-      {payload.map((entry: any, index: number) => (
-        <div key={`item-${index}`} className="flex items-center gap-1">
+      {ordered.map((entry: any, index: number) => (
+        <div key={`item-${entry.dataKey ?? index}`} className="flex items-center gap-1">
           <div
             className="w-3 h-3 rounded-sm"
             style={{ backgroundColor: entry.color }}
@@ -193,12 +200,15 @@ const CustomLegend = (props: any) => {
   );
 };
 
+const tooltipValue = (payload: any[] | undefined, dataKey: string) =>
+  payload?.find((p) => p.dataKey === dataKey)?.value ?? 0;
+
 // 커스텀 툴팁 컴포넌트
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
-    const registered = payload[0].value;
-    const participants = payload[1].value;
-    const dnf = payload.length > 2 ? payload[2].value : 0;
+    const registered = tooltipValue(payload, "registered");
+    const participants = tooltipValue(payload, "participants");
+    const dnf = tooltipValue(payload, "dnf");
     const participationRate =
       registered > 0 ? ((participants / registered) * 100).toFixed(1) : "-";
     const completionRate =
