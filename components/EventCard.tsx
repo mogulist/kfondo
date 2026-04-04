@@ -88,9 +88,11 @@ export function EventCard({ event, onClick }: EventCardProps) {
             key={idx}
             className={cn(
               "flex items-center justify-between p-2 rounded-lg",
-              isUpcoming 
-                ? "bg-emerald-50 dark:bg-slate-700" 
-                : "bg-gray-50 dark:bg-slate-700"
+              isUpcoming
+                ? "bg-emerald-50 dark:bg-slate-700"
+                : isRecentlyUpdated
+                  ? "bg-white border border-emerald-100 dark:border-emerald-800 dark:bg-slate-700"
+                  : "bg-white border border-border dark:border-slate-600 dark:bg-slate-700"
             )}
           >
             <span className="text-sm font-medium text-gray-900 dark:text-gray-200">
