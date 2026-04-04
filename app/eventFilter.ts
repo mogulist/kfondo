@@ -1,8 +1,17 @@
 import dayjs from "dayjs";
 import { getAllEvents } from "@/lib/db/events";
 import type { EventData } from "@/components/EventCard";
-import type { Event } from "@/lib/types";
+import type { Event, EventYearDetail } from "@/lib/types";
 import { getDaysUntilEvent } from "@/lib/date";
+
+function yearDetailHasPublishedRecords(detail: EventYearDetail | undefined): boolean {
+  if (!detail) return false;
+  return (
+    (detail.totalRegistered ?? 0) > 0 ||
+    Boolean(detail.recordsBlobUrl?.trim()) ||
+    Boolean(detail.sortedRecordsBlobUrl?.trim())
+  );
+}
 
 // Helper to map raw event to EventCard props
 export const mapToEventData = (event: Event): EventData => {
@@ -15,7 +24,12 @@ export const mapToEventData = (event: Event): EventData => {
     status: "archive",
     date: latestDetail.date,
     years: event.years
-      .filter((year) => event.yearDetails[year]?.status !== "upcoming")
+      .filter((year) => {
+        const d = event.yearDetails[year];
+        if (!d) return false;
+        if (d.status !== "upcoming") return true;
+        return yearDetailHasPublishedRecords(d);
+      })
       .map(String),
     categories: latestDetail.courses.map((course) => ({
       name: course.name,
@@ -136,10 +150,7 @@ export async function getFilteredEvents(): Promise<HomePageFilteredData> {
         return;
       }
       const daysSince = today.diff(eventDate, "day");
-      const hasRecords =
-        latestDetail.totalRegistered > 0 ||
-        Boolean(latestDetail.recordsBlobUrl?.trim()) ||
-        Boolean(latestDetail.sortedRecordsBlobUrl?.trim());
+      const hasRecords = yearDetailHasPublishedRecords(latestDetail);
 
       if (
         hasRecords &&
