@@ -3,6 +3,7 @@ import { getAllEvents } from "@/lib/db/events";
 import type { EventData } from "@/components/EventCard";
 import type { Event, EventYearDetail } from "@/lib/types";
 import { getDaysUntilEvent } from "@/lib/date";
+import { getTotalParticipantCountForYear } from "@/lib/participant-records-blob";
 
 function yearDetailHasPublishedRecords(detail: EventYearDetail | undefined): boolean {
   if (!detail) return false;
@@ -37,7 +38,7 @@ export const mapToEventData = (event: Event): EventData => {
       elevation: course.elevation,
     })),
     updatedAt: latestDetail.date,
-    participants: latestDetail.totalRegistered,
+    participants: undefined,
     dDay: getDaysUntilEvent(latestDetail.date),
   };
 };
@@ -192,11 +193,19 @@ export async function getFilteredEvents(): Promise<HomePageFilteredData> {
     return aDate.valueOf() - bDate.valueOf();
   });
 
-  const recentData = recentEvents.map(e => {
-    const data = mapToEventData(e);
-    data.status = 'recently_updated';
-    return data;
-  });
+  const recentData = await Promise.all(
+    recentEvents.map(async (e) => {
+      const data = mapToEventData(e);
+      data.status = "recently_updated";
+      const latestYear = Math.max(...e.years);
+      const detail = e.yearDetails[latestYear];
+      if (detail.recordsBlobUrl?.trim()) {
+        const total = await getTotalParticipantCountForYear(e, latestYear);
+        if (total > 0) data.participants = total;
+      }
+      return data;
+    })
+  );
 
   const upcomingData = upcomingEvents.map(e => {
     const data = mapToEventData(e);

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
-import type { Event, GranMedio } from "./types";
-import { timeToSeconds } from "./utils"; // 필요한 경우 추가
+import type { Event } from "./types";
+import { tryFetchParticipantRecordsFromBlob } from "./participant-records-blob";
 
 type Participant = {
   BIB_NO: number;
@@ -11,18 +11,16 @@ type Participant = {
   Status: string;
 };
 
-// Blob URL에서 데이터 fetch (lib/stats.ts와 로직 유사하지만 독립적)
 async function fetchParticipants(event: Event, year: number): Promise<Participant[]> {
   const blobUrl = event.yearDetails[year]?.recordsBlobUrl;
 
   if (blobUrl) {
-    try {
-      const response = await fetch(blobUrl, { next: { revalidate: 3600 } });
-      if (!response.ok) throw new Error(`Fetch failed: ${response.statusText}`);
-      return await response.json();
-    } catch (error) {
-      console.warn(`[Participants] Blob fetch failed for ${event.id} ${year}`, error);
-    }
+    const fromBlob = await tryFetchParticipantRecordsFromBlob(
+      blobUrl,
+      event.id,
+      year
+    );
+    if (fromBlob !== null) return fromBlob;
   }
 
   // 로컬 파일 폴백
