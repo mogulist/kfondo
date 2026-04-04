@@ -56,7 +56,10 @@ export const UpcomingSection = ({ event }: Props) => {
     hasDate && normalizedDate
       ? dayjs().diff(dayjs(normalizedDate), "day")
       : null;
-  const hasRecords = (latestDetail?.totalRegistered ?? 0) > 0;
+  const hasRecords =
+    (latestDetail?.totalRegistered ?? 0) > 0 ||
+    Boolean(latestDetail?.recordsBlobUrl?.trim()) ||
+    Boolean(latestDetail?.sortedRecordsBlobUrl?.trim());
   const isPreparing = latestDetail?.status === "preparing";
   const showPendingNotice =
     !isPreparing &&

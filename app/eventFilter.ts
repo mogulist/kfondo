@@ -136,7 +136,10 @@ export async function getFilteredEvents(): Promise<HomePageFilteredData> {
         return;
       }
       const daysSince = today.diff(eventDate, "day");
-      const hasRecords = latestDetail.totalRegistered > 0;
+      const hasRecords =
+        latestDetail.totalRegistered > 0 ||
+        Boolean(latestDetail.recordsBlobUrl?.trim()) ||
+        Boolean(latestDetail.sortedRecordsBlobUrl?.trim());
 
       if (
         hasRecords &&
