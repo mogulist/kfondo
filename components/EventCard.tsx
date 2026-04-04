@@ -1,4 +1,6 @@
 import { Calendar, Mountain, Users } from "lucide-react";
+import dayjs from "dayjs";
+import { normalizeEventDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { DDayBadge } from "@/components/DDayBadge";
 
@@ -31,10 +33,10 @@ export function EventCard({ event, onClick }: EventCardProps) {
   const isUpcoming = event.status === 'upcoming';
   const isRecentlyUpdated = event.status === 'recently_updated';
   
-  // Calculate days since update
-  const daysSinceUpdate = Math.floor(
-    (new Date().getTime() - new Date(event.updatedAt).getTime()) / (1000 * 60 * 60 * 24)
-  );
+  const updatedDay = dayjs(normalizeEventDate(event.updatedAt));
+  const daysSinceUpdate = updatedDay.isValid()
+    ? dayjs().startOf("day").diff(updatedDay.startOf("day"), "day")
+    : 0;
   
   return (
     <div
