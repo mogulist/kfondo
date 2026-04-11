@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import RecordInput, { isValidRecordFormat } from "./RecordInput";
 import type { Event } from "@/lib/types";
-import { getCourseInfoById } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
 type Props = {
@@ -39,7 +38,8 @@ const FindMyRecordSection = ({ event, eventName, courseId, year }: Props) => {
     router.push(`/find-by-record/${event.id}/${courseId}/${year}/${digit}`);
   };
 
-  const courseInfo = getCourseInfoById(event.id, year, courseId);
+  const yearDetail = event.yearDetails[Number(year)];
+  const courseInfo = yearDetail?.courses.find((course) => course.id === courseId);
 
   return (
     <div className="max-w-full px-4 py-4">
@@ -52,9 +52,11 @@ const FindMyRecordSection = ({ event, eventName, courseId, year }: Props) => {
           <Badge className="bg-green-600 text-white">
             {courseInfo.distance}km
           </Badge>
-          <Badge className="bg-orange-500 text-white">
-            {courseInfo.elevation}m
-          </Badge>
+          {typeof courseInfo.elevation === "number" && (
+            <Badge className="bg-orange-500 text-white">
+              {courseInfo.elevation}m
+            </Badge>
+          )}
         </div>
       )}
       <RecordInput
