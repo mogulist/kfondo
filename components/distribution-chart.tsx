@@ -42,12 +42,14 @@ export function DistributionChart({
   course,
   year,
 }: DistributionChartProps) {
+  const findByRecordHref = `/find-by-record/${eventId}/${course}/${year}`;
+
   return (
     <div className={isMobile ? "h-[350px]" : "h-full w-full"}>
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-medium">{title}</h3>
         <Button asChild variant="outline" size="sm" className="ml-2 text-xs font-normal">
-          <Link href={`/find-by-record/${eventId}/${course}/${year}`}>
+          <Link href={findByRecordHref}>
             기록 찾기
           </Link>
         </Button>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { events } from "@/events.config";
-import type { Event } from "@/lib/types";
+import { getEventById } from "@/lib/db/events";
 import StackNavBar from "../../../../../components/StackNavBar";
 import FindMyRecordSection from "./FindMyRecordSection";
 import { generateFindRecordMetadata } from "@/lib/metadata";
@@ -16,7 +15,8 @@ type Props = {
 
 const FindMyRecordPage = async ({ params }: Props) => {
   const { event: eventId, courseId, year } = await params;
-  const event = events.find((e) => e.id === eventId) as Event | undefined;
+  const event = await getEventById(eventId);
+
   if (!event) {
     notFound();
   }
