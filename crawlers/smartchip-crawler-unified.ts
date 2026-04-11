@@ -1,7 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
 import * as fs from "fs";
-import { URLSearchParams } from "url";
 import { CrawlerRecord } from "./types";
 
 async function delay(ms: number): Promise<void> {
@@ -13,19 +12,48 @@ function formatTime(timeStr: string): string {
   return timeStr.trim();
 }
 
+function parseHmsToSeconds(hms: string): number {
+  const m = hms.trim().match(/^(\d{1,2}):(\d{2}):(\d{2})$/);
+  if (!m) return 0;
+  return (
+    parseInt(m[1], 10) * 3600 + parseInt(m[2], 10) * 60 + parseInt(m[3], 10)
+  );
+}
+
+function formatSecondsToHms(totalSeconds: number): string {
+  const h = Math.floor(totalSeconds / 3600);
+  const min = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  return `${String(h).padStart(2, "0")}:${String(min).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
+
 async function scrapeRecord(
   usedata: string,
   bibNo: number
 ): Promise<CrawlerRecord> {
   const url = `https://smartchip.co.kr/Expectedrecord_data.asp?usedata=${usedata}&nameorbibno=${bibNo}`;
+  const referer = `https://smartchip.co.kr/return_data_livephoto.asp?nameorbibno=${bibNo}&usedata=${usedata}`;
 
   try {
     const response = await axios.get(url, {
       headers: {
+        Referer: referer,
         "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       },
     });
+
+    if (response.data.includes("잘못된 접속 경로입니다")) {
+      return {
+        BIB_NO: bibNo,
+        Gender: "",
+        Event: "",
+        Time: "",
+        Status: "",
+        StartTime: "",
+        FinishTime: "",
+      };
+    }
 
     const $ = cheerio.load(response.data);
 
@@ -68,12 +96,14 @@ async function scrapeRecord(
     let name = "";
 
     // 이름 파싱 (콘솔 출력용)
-    const nameMatch = response.data.match(
+    const nameMatchLegacy = response.data.match(
       /<font face="맑은고딕" size="3px">([^<]+)&nbsp;<\/font>/
     );
-    if (nameMatch) {
-      name = nameMatch[1].trim();
-    }
+    const nameMatchJamsil = response.data.match(
+      /class="jamsil-bold-center"[^>]*style="color:\s*white;"[^>]*>([^<&]+)/i
+    );
+    if (nameMatchLegacy) name = nameMatchLegacy[1].trim();
+    else if (nameMatchJamsil) name = nameMatchJamsil[1].replace(/\s+/g, "").trim();
 
     // 이름이 "예비"인 경우 테스트 데이터로 간주하고 제외
     if (name === "예비") {
@@ -90,10 +120,13 @@ async function scrapeRecord(
     }
 
     // Event 파싱 (Granfondo 또는 Mediofondo)
-    // class="green"으로 표시된 실제 참가 코스를 찾아야 함
-    const eventMatch = response.data.match(
+    const eventMatchGreen = response.data.match(
       /class="green"[^>]*>(Granfondo|Mediofondo)/i
     );
+    const eventMatchJamsil = response.data.match(
+      /class="jamsil-bold-center">(Granfondo|Mediofondo)/i
+    );
+    const eventMatch = eventMatchGreen || eventMatchJamsil;
     if (eventMatch) {
       if (eventMatch[1].toLowerCase() === "granfondo") {
         event = "그란폰도";
@@ -115,6 +148,7 @@ async function scrapeRecord(
     let checkpointIndex = 1;
     let hasEmptyPass = false;
     let hasStartTime = false;
+    let finishSectorSecondsSum = 0;
 
     // 테이블에서 모든 POINT 행 추출
     $("table tr").each((_, row) => {
@@ -127,6 +161,10 @@ async function scrapeRecord(
 
         // POINT가 비어있지 않은 경우만 처리
         if (pointText && pointText !== "-") {
+          if (pointText.endsWith("_Finish")) {
+            const sec = parseHmsToSeconds(timeText);
+            if (sec > 0) finishSectorSecondsSum += sec;
+          }
           // 체크포인트 데이터 저장
           checkpoints[
             `CP_${checkpointIndex.toString().padStart(2, "0")}_NAME`
@@ -169,6 +207,10 @@ async function scrapeRecord(
         }
       }
     });
+
+    if (!time && finishSectorSecondsSum > 0) {
+      time = formatSecondsToHms(finishSectorSecondsSum);
+    }
 
     // Start 기록이 없으면 DNS로 간주하고 데이터에서 제외
     if (!hasStartTime) {
