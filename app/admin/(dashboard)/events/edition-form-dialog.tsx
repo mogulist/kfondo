@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -29,10 +29,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
-import type { EventEditionRow } from "@/lib/database.types";
+import type { Database, EventEditionRow } from "@/lib/database.types";
 import { EDITION_STATUS_LABELS } from "./types";
+import { Loader2 } from "lucide-react";
 
 const editionSchema = z.object({
   year: z.coerce.number().min(2000).max(2100),
@@ -45,6 +47,8 @@ const editionSchema = z.object({
 });
 
 type EditionFormValues = z.infer<typeof editionSchema>;
+type EventEditionUpdate = Database["public"]["Tables"]["event_editions"]["Update"];
+type EventEditionInsert = Database["public"]["Tables"]["event_editions"]["Insert"];
 
 type EditionFormDialogProps = {
   open: boolean;
@@ -62,6 +66,9 @@ export function EditionFormDialog({
   onSuccess,
 }: EditionFormDialogProps) {
   const supabase = createClient();
+  const [recordsFile, setRecordsFile] = useState<File | null>(null);
+  const [sortedRecordsFile, setSortedRecordsFile] = useState<File | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const form = useForm<EditionFormValues>({
     resolver: zodResolver(editionSchema),
@@ -88,6 +95,8 @@ export function EditionFormDialog({
         sorted_records_blob_url: edition.sorted_records_blob_url ?? "",
         comment: edition.comment ?? "",
       });
+      setRecordsFile(null);
+      setSortedRecordsFile(null);
     } else if (open && !edition) {
       form.reset({
         year: new Date().getFullYear(),
@@ -98,29 +107,40 @@ export function EditionFormDialog({
         sorted_records_blob_url: "",
         comment: "",
       });
+      setRecordsFile(null);
+      setSortedRecordsFile(null);
     }
   }, [open, edition, form]);
 
   async function onSubmit(values: EditionFormValues) {
+    setIsSaving(true);
     try {
+      if (!edition && (recordsFile || sortedRecordsFile)) {
+        throw new Error(
+          "에디션을 먼저 생성한 뒤, 수정 모드에서 JSON 파일을 업로드해 주세요."
+        );
+      }
+
+      let editionId = edition?.id;
       if (edition) {
+        const payload: EventEditionUpdate = {
+          year: values.year,
+          date: values.date,
+          status: values.status,
+          url: values.url || null,
+          records_blob_url: values.records_blob_url || null,
+          sorted_records_blob_url: values.sorted_records_blob_url || null,
+          comment: values.comment || null,
+        };
+
         const { error } = await supabase
           .from("event_editions")
-          .update({
-            year: values.year,
-            date: values.date,
-            status: values.status,
-            url: values.url || null,
-            records_blob_url: values.records_blob_url || null,
-            sorted_records_blob_url: values.sorted_records_blob_url || null,
-            comment: values.comment || null,
-          })
+          .update(payload as never)
           .eq("id", edition.id);
 
         if (error) throw error;
-        toast.success("에디션이 수정되었습니다.");
       } else {
-        const { error } = await supabase.from("event_editions").insert({
+        const payload: EventEditionInsert = {
           event_id: eventId,
           year: values.year,
           date: values.date,
@@ -129,21 +149,70 @@ export function EditionFormDialog({
           records_blob_url: values.records_blob_url || null,
           sorted_records_blob_url: values.sorted_records_blob_url || null,
           comment: values.comment || null,
-        });
+        };
+
+        const { data, error } = await supabase
+          .from("event_editions")
+          .insert(payload as never)
+          .select("id")
+          .single();
 
         if (error) throw error;
-        toast.success("에디션이 추가되었습니다.");
+        const insertedEdition = data as unknown as { id?: string } | null;
+        if (!insertedEdition?.id) {
+          throw new Error("에디션 생성 결과를 확인할 수 없습니다.");
+        }
+        editionId = insertedEdition.id;
       }
+
+      if ((recordsFile || sortedRecordsFile) && editionId) {
+        const uploadFormData = new FormData();
+        if (recordsFile) uploadFormData.append("recordsFile", recordsFile);
+        if (sortedRecordsFile) uploadFormData.append("sortedRecordsFile", sortedRecordsFile);
+
+        const response = await fetch(
+          `/api/admin/event-editions/${editionId}/records-upload`,
+          {
+            method: "POST",
+            body: uploadFormData,
+          }
+        );
+        const payload = (await response.json()) as {
+          error?: string;
+          recordsBlobUrl?: string;
+          sortedRecordsBlobUrl?: string;
+        };
+        if (!response.ok) {
+          throw new Error(payload.error ?? "파일 업로드에 실패했습니다.");
+        }
+
+        if (payload.recordsBlobUrl) {
+          form.setValue("records_blob_url", payload.recordsBlobUrl);
+        }
+        if (payload.sortedRecordsBlobUrl) {
+          form.setValue("sorted_records_blob_url", payload.sortedRecordsBlobUrl);
+        }
+      }
+
+      toast.success("에디션이 저장되었습니다.");
       onSuccess();
       onOpenChange(false);
     } catch (err) {
       console.error(err);
-      toast.error("저장에 실패했습니다.");
+      toast.error(err instanceof Error ? err.message : "저장에 실패했습니다.");
+    } finally {
+      setIsSaving(false);
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (isSaving) return;
+        onOpenChange(nextOpen);
+      }}
+    >
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>
@@ -152,6 +221,7 @@ export function EditionFormDialog({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <fieldset disabled={isSaving} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -251,6 +321,23 @@ export function EditionFormDialog({
                 </FormItem>
               )}
             />
+            <div className="space-y-2">
+              <Label htmlFor="records-json-file">원본 기록 JSON 파일 업로드</Label>
+              <Input
+                id="records-json-file"
+                type="file"
+                accept=".json,application/json"
+                disabled={!edition}
+                onChange={(event) => {
+                  setRecordsFile(event.target.files?.[0] ?? null);
+                }}
+              />
+              {!edition ? (
+                <p className="text-sm text-muted-foreground">
+                  에디션을 먼저 저장한 뒤 편집에서 업로드할 수 있습니다.
+                </p>
+              ) : null}
+            </div>
 
             <FormField
               control={form.control}
@@ -269,6 +356,20 @@ export function EditionFormDialog({
                 </FormItem>
               )}
             />
+            <div className="space-y-2">
+              <Label htmlFor="sorted-records-json-file">
+                정렬 기록 JSON 파일 업로드
+              </Label>
+              <Input
+                id="sorted-records-json-file"
+                type="file"
+                accept=".json,application/json"
+                disabled={!edition}
+                onChange={(event) => {
+                  setSortedRecordsFile(event.target.files?.[0] ?? null);
+                }}
+              />
+            </div>
 
             <FormField
               control={form.control}
@@ -287,20 +388,30 @@ export function EditionFormDialog({
                 </FormItem>
               )}
             />
+            </fieldset>
 
             <DialogFooter>
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
+                disabled={isSaving}
               >
                 취소
               </Button>
               <Button
                 type="submit"
                 className="bg-primary text-primary-foreground"
+                disabled={isSaving}
               >
-                저장
+                {isSaving ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    저장 중...
+                  </>
+                ) : (
+                  "저장"
+                )}
               </Button>
             </DialogFooter>
           </form>
