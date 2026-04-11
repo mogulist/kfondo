@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -29,7 +29,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import type { Database, EventEditionRow } from "@/lib/database.types";
@@ -69,6 +68,8 @@ export function EditionFormDialog({
   const [recordsFile, setRecordsFile] = useState<File | null>(null);
   const [sortedRecordsFile, setSortedRecordsFile] = useState<File | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const recordsFileInputRef = useRef<HTMLInputElement | null>(null);
+  const sortedRecordsFileInputRef = useRef<HTMLInputElement | null>(null);
 
   const form = useForm<EditionFormValues>({
     resolver: zodResolver(editionSchema),
@@ -82,6 +83,8 @@ export function EditionFormDialog({
       comment: "",
     },
   });
+  const recordsBlobUrl = form.watch("records_blob_url");
+  const sortedRecordsBlobUrl = form.watch("sorted_records_blob_url");
 
   useEffect(() => {
     if (open && edition) {
@@ -205,6 +208,18 @@ export function EditionFormDialog({
     }
   }
 
+  const clearRecordsInput = () => {
+    setRecordsFile(null);
+    form.setValue("records_blob_url", "", { shouldDirty: true });
+    if (recordsFileInputRef.current) recordsFileInputRef.current.value = "";
+  };
+
+  const clearSortedRecordsInput = () => {
+    setSortedRecordsFile(null);
+    form.setValue("sorted_records_blob_url", "", { shouldDirty: true });
+    if (sortedRecordsFileInputRef.current) sortedRecordsFileInputRef.current.value = "";
+  };
+
   return (
     <Dialog
       open={open}
@@ -310,34 +325,57 @@ export function EditionFormDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>원본 기록 파일 URL</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="https://..."
-                      {...field}
-                      value={field.value ?? ""}
-                    />
-                  </FormControl>
+                  <div className="flex items-start gap-2">
+                    <FormControl>
+                      <Input
+                        placeholder="https://..."
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={!edition || isSaving}
+                      onClick={() => recordsFileInputRef.current?.click()}
+                    >
+                      업로드
+                    </Button>
+                    {recordsBlobUrl || recordsFile ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        disabled={isSaving}
+                        onClick={clearRecordsInput}
+                      >
+                        삭제
+                      </Button>
+                    ) : null}
+                  </div>
+                  <input
+                    ref={recordsFileInputRef}
+                    className="hidden"
+                    type="file"
+                    accept=".json,application/json"
+                    disabled={!edition || isSaving}
+                    onChange={(event) => {
+                      setRecordsFile(event.target.files?.[0] ?? null);
+                    }}
+                  />
+                  {recordsFile ? (
+                    <p className="text-sm text-muted-foreground">
+                      선택 파일: {recordsFile.name}
+                    </p>
+                  ) : null}
+                  {!edition ? (
+                    <p className="text-sm text-muted-foreground">
+                      에디션을 먼저 저장한 뒤 편집에서 업로드할 수 있습니다.
+                    </p>
+                  ) : null}
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="space-y-2">
-              <Label htmlFor="records-json-file">원본 기록 JSON 파일 업로드</Label>
-              <Input
-                id="records-json-file"
-                type="file"
-                accept=".json,application/json"
-                disabled={!edition}
-                onChange={(event) => {
-                  setRecordsFile(event.target.files?.[0] ?? null);
-                }}
-              />
-              {!edition ? (
-                <p className="text-sm text-muted-foreground">
-                  에디션을 먼저 저장한 뒤 편집에서 업로드할 수 있습니다.
-                </p>
-              ) : null}
-            </div>
 
             <FormField
               control={form.control}
@@ -345,31 +383,52 @@ export function EditionFormDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>정렬된 기록 파일 URL</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="https://..."
-                      {...field}
-                      value={field.value ?? ""}
-                    />
-                  </FormControl>
+                  <div className="flex items-start gap-2">
+                    <FormControl>
+                      <Input
+                        placeholder="https://..."
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={!edition || isSaving}
+                      onClick={() => sortedRecordsFileInputRef.current?.click()}
+                    >
+                      업로드
+                    </Button>
+                    {sortedRecordsBlobUrl || sortedRecordsFile ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        disabled={isSaving}
+                        onClick={clearSortedRecordsInput}
+                      >
+                        삭제
+                      </Button>
+                    ) : null}
+                  </div>
+                  <input
+                    ref={sortedRecordsFileInputRef}
+                    className="hidden"
+                    type="file"
+                    accept=".json,application/json"
+                    disabled={!edition || isSaving}
+                    onChange={(event) => {
+                      setSortedRecordsFile(event.target.files?.[0] ?? null);
+                    }}
+                  />
+                  {sortedRecordsFile ? (
+                    <p className="text-sm text-muted-foreground">
+                      선택 파일: {sortedRecordsFile.name}
+                    </p>
+                  ) : null}
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="space-y-2">
-              <Label htmlFor="sorted-records-json-file">
-                정렬 기록 JSON 파일 업로드
-              </Label>
-              <Input
-                id="sorted-records-json-file"
-                type="file"
-                accept=".json,application/json"
-                disabled={!edition}
-                onChange={(event) => {
-                  setSortedRecordsFile(event.target.files?.[0] ?? null);
-                }}
-              />
-            </div>
 
             <FormField
               control={form.control}
