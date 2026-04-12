@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
 import axios from "axios";
+import dotenv from "dotenv";
 import * as fs from "fs";
 import * as path from "path";
 import { Command } from "commander";
+
+dotenv.config({ path: ".env.local" });
+dotenv.config();
 
 type Record = {
   BIB_NO: string;
@@ -30,7 +34,26 @@ type RaceResultRow = {
   speed: string;
   result: string;
   category: string;
+  eventLabel: string;
 };
+
+type FieldIndices = {
+  bib: number;
+  lastName: number;
+  group: number;
+  start: number;
+  komStart: number;
+  komFinish: number;
+  komChip: number;
+  finish: number;
+  speed: number;
+  result: number;
+};
+
+const OKJEONGHO_RESULTS_LISTS: { listname: string; eventLabel: string }[] = [
+  { listname: "Online|그란폰도", eventLabel: "그란폰도" },
+  { listname: "Online|메디오폰도", eventLabel: "메디오폰도" },
+];
 
 async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -45,6 +68,38 @@ function resolveOutputFile(outputPath?: string): string {
   return path.join(process.cwd(), "data", "iksan_2025.json");
 }
 
+function buildFieldIndices(dataFields: string[]): FieldIndices {
+  const req = (name: string): number => {
+    const i = dataFields.indexOf(name);
+    if (i < 0) throw new Error(`DataFields missing required column: ${name}`);
+    return i;
+  };
+  const komStart = dataFields.findIndex((f) => /^Kom\d+start\.TOD$/i.test(f));
+  const komFinish = dataFields.findIndex((f) => /^Kom\d+finish\.TOD$/i.test(f));
+  const komChip = dataFields.findIndex((f) => /^Kom\d+\.TOD$/i.test(f));
+  const speed = dataFields.indexOf("Finish.SPEED");
+
+  return {
+    bib: req("BIB"),
+    lastName: req("LASTNAME"),
+    group: req("Group"),
+    start: req("Start.TOD"),
+    komStart,
+    komFinish,
+    komChip,
+    finish: req("Finish.TOD"),
+    speed,
+    result: req("Finish.CHIP"),
+  };
+}
+
+function inferEventFromListName(listName: string): string {
+  const lower = listName.toLowerCase();
+  if (lower.includes("medio") || listName.includes("메디오")) return "메디오폰도";
+  if (lower.includes("gran") || listName.includes("그란")) return "그란폰도";
+  return "메디오폰도";
+}
+
 async function fetchConfig(eventId: string): Promise<{
   key: string;
   server: string;
@@ -55,7 +110,17 @@ async function fetchConfig(eventId: string): Promise<{
   return response.data;
 }
 
-async function fetchListData(
+function listRequestHeaders(): Record<string, string> {
+  return {
+    Accept: "*/*",
+    Origin: "https://my.raceresult.com",
+    Referer: "https://my.raceresult.com/",
+    "User-Agent":
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  };
+}
+
+async function fetchListDataRrpublish(
   eventId: string,
   server: string,
   key: string,
@@ -66,7 +131,7 @@ async function fetchListData(
   const url = `https://${server}/${eventId}/RRPublish/data/list?key=${key}&listname=${listname}&page=results&contest=0&r=leaders&l=${limit}`;
 
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url, { headers: listRequestHeaders() });
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 404) {
@@ -78,27 +143,62 @@ async function fetchListData(
   }
 }
 
-function parseListData(apiResponse: any): RaceResultRow[] {
+async function fetchListDataResultsList(
+  eventId: string,
+  server: string,
+  key: string,
+  listName: string,
+  limit: number = 9999
+): Promise<any> {
+  const params = new URLSearchParams({
+    key,
+    listname: listName,
+    page: "results",
+    contest: "0",
+    r: "leaders",
+    l: String(limit),
+    openedGroups: "{}",
+    term: "",
+  });
+  const url = `https://${server}/${eventId}/results/list?${params.toString()}`;
+
+  try {
+    const response = await axios.get(url, { headers: listRequestHeaders() });
+    return response.data;
+  } catch (error: any) {
+    if (error.response?.status === 404) {
+      console.warn(`List not found: ${listName}, skipping...`);
+      return null;
+    }
+    console.error(`Error fetching results/list for ${listName}:`, error.message);
+    return null;
+  }
+}
+
+function parseListData(
+  apiResponse: any,
+  eventLabel: string
+): RaceResultRow[] {
   const rows: RaceResultRow[] = [];
 
   if (!apiResponse || !apiResponse.data) {
     return rows;
   }
 
-  // DataFields: ["BIB","ID","LASTNAME","Group","Start.TOD","Kom1Start.TOD","Kom1Finish.TOD","Finish.TOD","Kom1.TOD","Finish.SPEED","Finish.CHIP"]
-  const dataFields = apiResponse.DataFields || [];
-  const bibIndex = 0; // BIB
-  const lastNameIndex = 2; // LASTNAME
-  const groupIndex = 3; // Group
-  const startIndex = 4; // Start.TOD
-  const kom1StartIndex = 5; // Kom1Start.TOD
-  const kom1ArriveIndex = 6; // Kom1Finish.TOD
-  const finishIndex = 7; // Finish.TOD
-  const kom1Index = 8; // Kom1.TOD
-  const speedIndex = 9; // Finish.SPEED
-  const resultIndex = 10; // Finish.CHIP
+  const dataFields: string[] = apiResponse.DataFields || [];
+  if (dataFields.length === 0) {
+    console.warn("parseListData: empty DataFields");
+    return rows;
+  }
 
-  // data 구조: { "#1_MedioFondo": { "#1_메디오폰도-사이클(여)": [...], "#2_메디오폰도-사이클(남)": [...] } }
+  let indices: FieldIndices;
+  try {
+    indices = buildFieldIndices(dataFields);
+  } catch (e) {
+    console.error("parseListData: failed to map DataFields", e);
+    return rows;
+  }
+
   const data = apiResponse.data;
 
   for (const contestKey in data) {
@@ -107,27 +207,30 @@ function parseListData(apiResponse: any): RaceResultRow[] {
       const categoryRows = contestData[categoryKey];
       if (!Array.isArray(categoryRows)) continue;
 
-      // 카테고리명 추출 (예: "#1_메디오폰도-사이클(여)" -> "메디오폰도-사이클(여)")
       const category = categoryKey.replace(/^#\d+_/, "");
 
-      // 마지막 요소는 총 개수이므로 제외
       for (let i = 0; i < categoryRows.length - 1; i++) {
         const row = categoryRows[i];
         if (!Array.isArray(row) || row.length === 0) continue;
 
-        // 마지막 요소가 숫자 하나면 총 개수이므로 스킵
         if (row.length === 1 && typeof row[0] === "number") continue;
 
-        const bib = row[bibIndex]?.toString().trim() || "";
-        const lastName = row[lastNameIndex]?.toString().trim() || "";
-        const group = row[groupIndex]?.toString().trim() || "";
-        const start = row[startIndex]?.toString().trim() || "";
-        const kom1Start = row[kom1StartIndex]?.toString().trim() || "";
-        const kom1Arrive = row[kom1ArriveIndex]?.toString().trim() || "";
-        const finish = row[finishIndex]?.toString().trim() || "";
-        const kom1 = row[kom1Index]?.toString().trim() || "";
-        const speed = row[speedIndex]?.toString().trim() || "";
-        const result = row[resultIndex]?.toString().trim() || "";
+        const cell = (idx: number) =>
+          idx >= 0 && idx < row.length
+            ? row[idx]?.toString().trim() || ""
+            : "";
+
+        const bib = cell(indices.bib);
+        const lastName = cell(indices.lastName);
+        const group = cell(indices.group);
+        const start = cell(indices.start);
+        const kom1Start = cell(indices.komStart);
+        const kom1Arrive = cell(indices.komFinish);
+        const finish = cell(indices.finish);
+        const kom1 = cell(indices.komChip);
+        const speed =
+          indices.speed >= 0 ? cell(indices.speed) : "";
+        const result = cell(indices.result);
 
         if (bib && lastName && bib.match(/^\d+$/)) {
           rows.push({
@@ -142,6 +245,7 @@ function parseListData(apiResponse: any): RaceResultRow[] {
             speed,
             result,
             category,
+            eventLabel,
           });
         }
       }
@@ -157,16 +261,24 @@ function convertToRecord(row: RaceResultRow): Record {
     : row.category.includes("(남)")
     ? "M"
     : "";
-  const event = "메디오폰도";
+  const event = row.eventLabel;
 
   const hasStartTime =
     row.start && row.start !== "" && !row.start.includes("_");
   const hasFinishTime =
     row.finish && row.finish !== "" && !row.finish.includes("_");
-  const hasTime = row.result && row.result !== "" && !row.result.includes("_");
+  const chipOk =
+    row.result && row.result !== "" && !row.result.includes("_");
+  // DataFields의 Kom2.TOD(그란) / Kom1.TOD(메디오) — 구간 칩이 있어야 해당 코스 완주로 본다
+  const komChipOk =
+    row.kom1 && row.kom1 !== "" && !row.kom1.includes("_");
+  const needsKomForFinish =
+    event === "그란폰도" || event === "메디오폰도";
+  const hasTime =
+    chipOk && (!needsKomForFinish || komChipOk);
 
   let status = "";
-  if (!hasTime && !hasFinishTime) {
+  if (!hasTime) {
     status = hasStartTime ? "DNF" : "DNS";
   }
 
@@ -180,15 +292,25 @@ function convertToRecord(row: RaceResultRow): Record {
     FinishTime: hasFinishTime ? row.finish : undefined,
     Name: row.name,
     Speed: row.speed ? `${row.speed}km/h` : undefined,
-    KOM_TIME: row.kom1 && !row.kom1.includes("_") ? row.kom1 : undefined,
+    KOM_TIME: komChipOk ? row.kom1 : undefined,
   };
 }
 
+function recordDedupeKey(r: Record): string {
+  return `${r.BIB_NO}\t${r.Event}`;
+}
+
+type ScrapeOptions = {
+  useResultsList: boolean;
+  listHostOverride?: string;
+};
+
 async function scrapeRaceResult(
   eventId: string,
-  key: string,
+  keyArg: string,
   outputPath?: string,
-  maxRetries: number = 3
+  maxRetries: number = 3,
+  scrapeOptions: ScrapeOptions = { useResultsList: false }
 ): Promise<void> {
   const outputFile = resolveOutputFile(outputPath);
   let records: Record[] = [];
@@ -212,12 +334,12 @@ async function scrapeRaceResult(
     fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
   }
 
-  const processedBibs = new Set(records.map((record) => record.BIB_NO));
+  const processedKeys = new Set(records.map(recordDedupeKey));
 
   console.log(`Starting to scrape Race Result event ${eventId}`);
   console.log(`Results will be saved to: ${outputFile}`);
   console.log(
-    `Already processed records: ${processedBibs.size} (will be skipped)`
+    `Already processed records: ${processedKeys.size} (will be skipped)`
   );
 
   let lastError: Error | null = null;
@@ -227,53 +349,89 @@ async function scrapeRaceResult(
       console.log(`Fetching config (attempt ${attempt + 1}/${maxRetries})...`);
       const config = await fetchConfig(eventId);
 
-      const server = config.server || "my3.raceresult.com";
-      const apiKey = key || config.key;
+      const server =
+        scrapeOptions.listHostOverride ||
+        process.env.RACERESULT_LIST_HOST ||
+        config.server ||
+        "my3.raceresult.com";
+      const apiKey =
+        keyArg ||
+        process.env.RACERESULT_KEY ||
+        config.key;
 
       if (!apiKey) {
-        throw new Error("API key not found in config");
+        throw new Error(
+          "API key not found: pass key argument, set RACERESULT_KEY, or rely on public config.key"
+        );
       }
 
-      console.log(`Server: ${server}, Key: ${apiKey}`);
-      console.log(
-        `Available lists: ${
-          config.lists?.map((l: any) => l.Name).join(", ") || "none"
-        }`
-      );
+      console.log(`Server: ${server}`);
+      console.log(`Using results/list API: ${scrapeOptions.useResultsList}`);
 
-      // 모든 리스트에서 데이터 가져오기
       const allRows: RaceResultRow[] = [];
 
-      for (const list of config.lists || []) {
-        console.log(`Fetching data from list: ${list.Name} (${list.ID})...`);
-        const listData = await fetchListData(
-          eventId,
-          server,
-          apiKey,
-          list.Name,
-          9999
-        );
-        if (!listData) {
-          console.log(`Skipping list: ${list.Name}`);
-          continue;
+      if (scrapeOptions.useResultsList) {
+        for (const { listname, eventLabel } of OKJEONGHO_RESULTS_LISTS) {
+          console.log(`Fetching results/list: ${listname} (${eventLabel})...`);
+          const listData = await fetchListDataResultsList(
+            eventId,
+            server,
+            apiKey,
+            listname,
+            9999
+          );
+          if (!listData) {
+            console.log(`Skipping list: ${listname}`);
+            continue;
+          }
+          const rows = parseListData(listData, eventLabel);
+          console.log(`Found ${rows.length} rows from ${listname}`);
+          allRows.push(...rows);
+          await delay(500);
         }
-        const rows = parseListData(listData);
-        console.log(`Found ${rows.length} rows from ${list.Name}`);
-        allRows.push(...rows);
-        await delay(500); // API 호출 간격
+      } else {
+        console.log(
+          `Available lists: ${
+            config.lists?.map((l: { Name: string }) => l.Name).join(", ") ||
+            "none"
+          }`
+        );
+
+        for (const list of config.lists || []) {
+          const eventLabel = inferEventFromListName(list.Name);
+          console.log(
+            `Fetching RRPublish list: ${list.Name} (${list.ID}) → Event "${eventLabel}"...`
+          );
+          const listData = await fetchListDataRrpublish(
+            eventId,
+            server,
+            apiKey,
+            list.Name,
+            9999
+          );
+          if (!listData) {
+            console.log(`Skipping list: ${list.Name}`);
+            continue;
+          }
+          const rows = parseListData(listData, eventLabel);
+          console.log(`Found ${rows.length} rows from ${list.Name}`);
+          allRows.push(...rows);
+          await delay(500);
+        }
       }
 
       console.log(`Total rows found: ${allRows.length}`);
 
       let newRecordsCount = 0;
       for (const row of allRows) {
-        if (processedBibs.has(row.bib)) {
+        const record = convertToRecord(row);
+        const k = recordDedupeKey(record);
+        if (processedKeys.has(k)) {
           continue;
         }
 
-        const record = convertToRecord(row);
         records.push(record);
-        processedBibs.add(record.BIB_NO);
+        processedKeys.add(k);
         newRecordsCount++;
 
         console.log(
@@ -309,19 +467,33 @@ async function main() {
     .name("raceresult-crawler")
     .description("Crawl Race Result platform results")
     .argument("<event_id>", "Event ID (e.g., 370186)")
-    .argument("<key>", "Event key (e.g., 291eb0e2d0d3234a709871c9da0b0fd2)")
+    .argument(
+      "[key]",
+      "Event key (optional if RACERESULT_KEY or config exposes key)"
+    )
     .option(
       "-o, --output <path>",
       "Output file path (default: data/iksan_2025.json)"
+    )
+    .option(
+      "--results-list",
+      "Use /{eventId}/results/list (Online|그란폰도 + Online|메디오폰도)"
+    )
+    .option(
+      "--list-host <host>",
+      "Override list server host (e.g. my-hk-1.raceresult.com); else config.server or RACERESULT_LIST_HOST"
     );
 
   program.parse();
 
   const options = program.opts();
-  const [eventId, key] = program.args as [string, string];
+  const [eventId, key] = program.args as [string, string | undefined];
 
   try {
-    await scrapeRaceResult(eventId, key, options.output);
+    await scrapeRaceResult(eventId, key ?? "", options.output, 3, {
+      useResultsList: Boolean(options.resultsList),
+      listHostOverride: options.listHost,
+    });
   } catch (error) {
     console.error("Fatal error:", error);
     process.exit(1);
@@ -331,3 +503,14 @@ async function main() {
 if (require.main === module) {
   main().catch(console.error);
 }
+
+export {
+  buildFieldIndices,
+  convertToRecord,
+  fetchConfig,
+  fetchListDataResultsList,
+  fetchListDataRrpublish,
+  inferEventFromListName,
+  parseListData,
+  scrapeRaceResult,
+};

@@ -138,28 +138,36 @@ bun run crawlers/marazone_crawler.ts "2025 스캇통영" 2025 A000 C9999 --outpu
 
 Race Result 플랫폼(`my.raceresult.com`)에서 대회 결과를 수집하는 크롤러입니다. 브라우저 자동화 없이 API를 직접 호출하여 데이터를 수집합니다.
 
+대회 직후에는 일부 시간 값이 `_` 등으로 **마스킹**되거나 타이밍이 아직 **정리되지 않은** 상태일 수 있습니다. 보통 **하루 정도 지나면** 데이터가 정리되고 마스킹이 사라지는 경우가 많으니, 최종 수집·검증·통계 반영 전에는 하루 정도 두고 다시 확인하는 것을 권장합니다.
+
 ```
-bun run crawl:raceresult <event_id> <key> [options]
+bun run crawl:raceresult <event_id> [key] [options]
 ```
 
 또는
 
 ```
-bun x tsx crawlers/raceresult_crawler.ts <event_id> <key> [options]
+bun x tsx crawlers/raceresult_crawler.ts <event_id> [key] [options]
 ```
 
 - `event_id`: 대회 ID (예: `370186`)
   - Race Result 결과 페이지 URL에서 확인 가능: `https://my.raceresult.com/{event_id}/`
-- `key`: 대회 키 (예: `291eb0e2d0d3234a709871c9da0b0fd2`)
-  - 결과 페이지 URL의 쿼리 파라미터에서 확인 가능: `https://my.raceresult.com/{event_id}/results?key={key}`
-  - 또는 Config API 응답에서 자동으로 가져올 수 있습니다 (key 파라미터 생략 시)
+- `key` (선택): 대회 키. 생략 시 `RACERESULT_KEY` 환경변수 또는 Config API 응답의 `key` 사용
 - 옵션
   - `-o, --output`: 결과 저장 경로 (기본값: `data/iksan_2025.json`)
+  - `--results-list`: `/{event_id}/results/list` 엔드포인트 사용. `Online|그란폰도`·`Online|메디오폰도` 두 리스트를 순회 (2026 옥정호 등)
+  - `--list-host <host>`: 리스트 요청 호스트 재정의 (예: `my-hk-1.raceresult.com`). 생략 시 Config의 `server` 또는 `RACERESULT_LIST_HOST`
 
-#### 예시 (익산 메디오폰도 2025)
+#### 예시 (익산 메디오폰도 2025, 기본 RRPublish API)
 
 ```
 bun run crawl:raceresult 370186 291eb0e2d0d3234a709871c9da0b0fd2 -o data/iksan_2025.json
+```
+
+#### 예시 (2026 옥정호 그란폰도·메디오폰도, `results/list`)
+
+```
+bun run crawl:raceresult 392736 --results-list -o data/okjeongho_2026.json
 ```
 
 #### 동작 방식
@@ -169,44 +177,37 @@ bun run crawl:raceresult 370186 291eb0e2d0d3234a709871c9da0b0fd2 -o data/iksan_2
    - 엔드포인트: `https://my.raceresult.com/{event_id}/RRPublish/data/config?lang=en&page=results&v=1`
    - 응답에서 `server`, `key`, `lists` 정보를 추출합니다
 
-2. **List API 호출**: 각 리스트의 전체 데이터를 가져옵니다
+2. **List API 호출** (모드에 따라 하나 선택)
 
-   - 엔드포인트: `https://{server}/{event_id}/RRPublish/data/list?key={key}&listname={listname}&page=results&contest=0&r=leaders&l=9999`
-   - `listname`은 Config API에서 받은 `lists[].Name`을 URL 인코딩하여 사용합니다
-   - `limit`은 기본값 9999로 설정하여 모든 데이터를 한 번에 가져옵니다
+   - **기본 (`RRPublish`)**: `https://{server}/{event_id}/RRPublish/data/list?key={key}&listname={listname}&page=results&contest=0&r=leaders&l=9999`
+     - `listname`은 Config의 `lists[].Name`을 순회합니다.
+   - **`--results-list`**: `https://{server}/{event_id}/results/list?key=...&listname=Online%7C그란폰도` (및 메디오폰도) — 브라우저와 동일한 엔드포인트
+   - `limit`은 기본 9999로 전량 요청합니다.
 
 3. **데이터 파싱**: API 응답의 중첩 구조를 파싱합니다
 
-   - 응답 구조: `{ data: { "#1_ContestName": { "#1_CategoryName": [[...], ...] } } }`
+   - 응답 구조: `{ DataFields: [...], data: { "#1_ContestName": { "#1_CategoryName": [[...], ...] } } }`
    - 각 카테고리별로 데이터를 추출하고, 마지막 요소(총 개수)는 제외합니다
-   - 데이터 필드 인덱스:
-     - `[0]`: BIB (배번)
-     - `[2]`: LASTNAME (성)
-     - `[3]`: Group (그룹)
-     - `[4]`: Start.TOD (출발 시간)
-     - `[5]`: Kom1Start.TOD (KOM1 출발 시간)
-     - `[6]`: Kom1Finish.TOD (KOM1 도착 시간)
-     - `[7]`: Finish.TOD (도착 시간)
-     - `[8]`: Kom1.TOD (KOM1 기록)
-     - `[9]`: Finish.SPEED (속도)
-     - `[10]`: Finish.CHIP (완주 기록)
+   - 컬럼 위치는 **`DataFields` 배열의 필드명**으로 매핑합니다 (대회마다 `Kom1`/`Kom2`, `ClubRank` 유무 등이 다를 수 있음)
 
 4. **데이터 변환**: Race Result 형식을 표준 Record 형식으로 변환합니다
 
    - 카테고리명에서 성별 추출: `(여)` → `F`, `(남)` → `M`
-   - Event는 모든 종목을 "메디오폰도"로 통일 (필요시 수정 가능)
+   - **Event**: `--results-list`일 때 리스트별로 `그란폰도` / `메디오폰도`. 기본 모드에서는 `lists[].Name`에 `그란`/`메디오` 포함 여부로 추정 (기본값 `메디오폰도`)
    - Status 판단:
-     - 완주 기록이 없고 도착 시간도 없으면 `DNF` (출발 시간이 있으면) 또는 `DNS` (출발 시간도 없으면)
-     - 완주 기록이 있으면 빈 문자열
+     - **그란폰도**: `Finish.CHIP`(총 기록)만으로는 완주로 보지 않으며, **KOM2 구간 칩(`Kom2.TOD`)**이 있어야 `Time`을 넣는다. 없으면 출발이 있으면 `DNF`.
+     - **메디오폰도**: **KOM1 구간 칩(`Kom1.TOD`)**이 있어야 완주로 본다.
+     - 그 외: 칩 완주 기록이 없고 도착 시간도 없으면 `DNF` / `DNS`
+     - 완주 시 `Status`는 빈 문자열
 
-5. **파일 저장**: 기존 파일이 있으면 이어서 수집하고, 중복 배번은 제외합니다
+5. **파일 저장**: 기존 파일이 있으면 이어서 수집하고, **`배번 + Event` 조합**으로 중복을 제외합니다
 
 #### 주요 특징
 
 - **API 기반 수집**: 브라우저 자동화 없이 HTTP 요청만으로 데이터 수집
 - **자동 재시도**: 네트워크 오류 시 최대 3회 재시도
 - **증분 수집**: 기존 파일이 있으면 새 데이터만 추가
-- **중복 제거**: 배번 기준으로 중복 레코드 제거
+- **중복 제거**: `배번` + `Event` 기준(같은 배번이 그란/메디오에 동시에 있을 수 있음)
 - **에러 처리**: 404 오류(리스트 없음)는 경고만 출력하고 계속 진행
 
 #### event_id와 key 찾는 방법
