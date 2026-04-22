@@ -25,7 +25,7 @@ K-Fondo에 **이미 등록된 대회**의 새 연도 기록을 넣거나, 신규
 2. **크롤링** → `data/preliminary/{이름}.json`
 3. **Event 필드 정제** → DB 코스 **표시명·종류**와 맞춤 → `data/{slug}_{연도}.json`
 4. **`sorted-msec` 생성** → `data/sorted-msec/{slug}_{연도}.json`
-5. Blob에 **원본** / **정렬본** 업로드 → 에디션에 URL 입력
+5. Blob에 **원본** / **정렬본** 업로드 → 에디션에 URL 반영 (아래 §5)
 6. **접수 인원**(`registered_count`)·에디션 **상태** 정리
 7. 로컬·프로덕션에서 화면 검증
 
@@ -93,16 +93,35 @@ bun run scripts/generate_sorted_msec.ts
 
 ## 5. Vercel Blob 업로드 & 에디션 URL
 
-어드민에는 **JSON 파일을 직접 업로드하는 기능이 없습니다.**  
-Vercel Blob 스토어(예: `records/`, `sorted-records/` 폴더)에 업로드한 뒤 **공개 URL**을 복사합니다.
+원본·정렬 JSON은 **Vercel Blob**에 올리고, `event_editions`의 `records_blob_url` / `sorted_records_blob_url`에 반영합니다. Blob 객체 경로 접두어는 보통 `records/` · `sorted-records/` 입니다(업로드 시 자동 생성).
 
-| 구분           | 권장 경로 예시              | 에디션 필드              |
-|----------------|-----------------------------|---------------------------|
-| 원본 기록      | `records/...json`           | `records_blob_url`        |
-| 정렬된 기록    | `sorted-records/...json`    | `sorted_records_blob_url` |
+### 방법 A — 어드민 UI (권장: 수동 검토)
 
-- 파일명은 자유이나, **한 에디션에 위 두 URL이 올바르게 연결**되면 됩니다.
+1. 어드민 **이벤트 상세 → 개최정보**에서 해당 연도 에디션 **수정**을 엽니다.
+2. **원본 기록 JSON** / **정렬 기록 JSON** 파일을 선택해 저장합니다.  
+   - 내부적으로 `POST /api/admin/event-editions/[editionId]/records-upload`가 Blob에 올린 뒤 에디션 URL을 갱신합니다. (관리자 로그인·`admin_whitelist` 필요)
+
+### 방법 B — CLI (원격·자동화)
+
+`.env.local`에 `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `BLOB_READ_WRITE_TOKEN`을 두고:
+
+```bash
+bun run publish:edition-records -- \
+  --slug <이벤트 slug> --year <연도> \
+  --records ./data/<slug>_<연도>.json \
+  --sorted ./data/sorted-msec/<slug>_<연도>.json \
+  --status completed
+```
+
+또는 에디션 UUID를 이미 알면 `--edition-id <uuid>` 만으로 지정할 수 있습니다. 상세·주의사항은 [`docs/PLAN_CLI_RECORDS_UPLOAD.md`](PLAN_CLI_RECORDS_UPLOAD.md)를 참고합니다.
+
+| 구분           | Blob 경로 접두(예)         | 에디션 컬럼                |
+|----------------|----------------------------|----------------------------|
+| 원본 기록      | `records/...json`          | `records_blob_url`         |
+| 정렬된 기록    | `sorted-records/...json`   | `sorted_records_blob_url`  |
+
 - **원본**이 있어야 참가자 수 집계·추세 차트 등이 동작합니다. 정렬본만 있으면 일부 기능이 비거나 제한됩니다.
+- 서비스 롤 키는 RLS를 우회하므로 **저장소·본인 머신에서만** 사용하고 커밋하지 않습니다.
 
 ---
 
@@ -150,6 +169,6 @@ Vercel Blob 스토어(예: `records/`, `sorted-records/` 폴더)에 업로드한
 | **이 문서(`ADD_EVENT.md`)** | 단일 진실 공급원. 절차·용어·주의사항을 여기만 유지하면 됩니다. |
 | **Cursor Rule (짧게)** | 예: 「기록 반영·신규 대회 데이터 작업 시 `docs/ADD_EVENT.md`를 따른다」한 줄 — 에이전트가 문서를 먼저 읽게 유도. |
 | **Skill** | 4월처럼 **같은 패턴이 매우 잦을 때**, 스킬 본문에 체크리스트만 두고 **상세는 이 문서 링크**로 위임하면 중복 관리가 줄어듭니다. |
-| **자동화 스크립트** | `package.json`에 `records:publish` 같은 래퍼를 나중에 추가할 수는 있으나, Blob 업로드·어드민 입력은 보통 수동이므로 **문서 + 필요 시 룰**이 비용 대비 효과가 큽니다. |
+| **자동화 스크립트** | `bun run publish:edition-records` — Blob 업로드 및 에디션 URL·(선택) 상태 갱신(§5 방법 B). 시크릿은 `.env.local`에만 둡니다. |
 
 **권장**: 지금은 **문서를 최신으로 유지**하고, 반복이 확실해지면 **짧은 Cursor rule로 이 문서를 가리키기**만 해도 충분한 경우가 많습니다. 스킬은 문서와 내용이 겹치면 **양쪽을 같이 고쳐야** 하므로, 스킬을 만들더라도 **상세 절차는 이 MD에만** 두는 편이 안전합니다.

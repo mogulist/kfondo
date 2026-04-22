@@ -18,7 +18,8 @@
     "crawl:smartchip": "bun run crawlers/smartchip-crawler.ts",
     "crawl:marazone": "bun run crawlers/marazone_crawler.ts",
     "crawl:raceresult": "bun x tsx crawlers/raceresult_crawler.ts",
-    "generate:sorted-msec": "bun run scripts/generate_sorted_msec.ts"
+    "generate:sorted-msec": "bun run scripts/generate_sorted_msec.ts",
+    "publish:edition-records": "bun run scripts/publish-edition-records.ts"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",

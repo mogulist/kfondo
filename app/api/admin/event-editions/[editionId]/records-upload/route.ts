@@ -1,5 +1,6 @@
 import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
+import { buildRecordsBlobPath } from "@/lib/records-blob-path";
 import { createClient } from "@/lib/supabase/server";
 
 const MAX_SIZE_BYTES = 30 * 1024 * 1024; // 30MB
@@ -9,9 +10,6 @@ const isValidJsonFile = (file: File): boolean => {
   const name = file.name?.toLowerCase() ?? "";
   return type.includes("json") || name.endsWith(".json");
 };
-
-const buildBlobPath = (editionId: string, category: "records" | "sorted-records") =>
-  `${category}/${editionId}-${Date.now()}-${crypto.randomUUID()}.json`;
 
 export async function POST(
   request: Request,
@@ -93,7 +91,7 @@ export async function POST(
     let sortedRecordsBlobUrl: string | undefined;
 
     if (recordsFile instanceof File) {
-      const blob = await put(buildBlobPath(editionId, "records"), recordsFile, {
+      const blob = await put(buildRecordsBlobPath(editionId, "records"), recordsFile, {
         access: "public",
         contentType: "application/json",
         addRandomSuffix: false,
@@ -103,7 +101,7 @@ export async function POST(
 
     if (sortedRecordsFile instanceof File) {
       const blob = await put(
-        buildBlobPath(editionId, "sorted-records"),
+        buildRecordsBlobPath(editionId, "sorted-records"),
         sortedRecordsFile,
         {
           access: "public",
@@ -123,7 +121,7 @@ export async function POST(
 
     const { error } = await supabase
       .from("event_editions")
-      .update(patch)
+      .update(patch as never)
       .eq("id", editionId);
 
     if (error) throw error;
