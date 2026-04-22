@@ -5,6 +5,9 @@ import * as fs from "fs";
 import * as path from "path";
 import { Command } from "commander";
 
+const RACERESULT_BASE = "https://raceresult.co.kr";
+const NUMERIC_BIB_MAX = 9999;
+
 type Record = {
   BIB_NO: string;
   Gender: string;
@@ -87,16 +90,16 @@ export async function scrapeRecord(
   year: string,
   bibNo: string
 ): Promise<Record> {
-  const url = "http://54.180.176.16/api/record-info";
+  const url = `${RACERESULT_BASE}/api/record-info`;
   const headers = {
     Accept: "application/json, text/plain, */*",
     "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
     "Cache-Control": "no-cache",
     Connection: "keep-alive",
     "Content-Type": "application/json",
-    Origin: "http://54.180.176.16",
+    Origin: RACERESULT_BASE,
     Pragma: "no-cache",
-    Referer: "http://54.180.176.16/record",
+    Referer: `${RACERESULT_BASE}/record`,
     "User-Agent":
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
   };
@@ -227,6 +230,10 @@ function getMaxNumber(digits: number): number {
   return parseInt("9".repeat(digits), 10);
 }
 
+function isNumericBibRange(startBib: string, endBib: string): boolean {
+  return /^\d+$/.test(startBib) && /^\d+$/.test(endBib);
+}
+
 async function scrapeYear(
   location: string,
   year: string,
@@ -270,6 +277,51 @@ async function scrapeYear(
     `API call period: ${period}ms (${1000 / period} calls per second)`
   );
 
+  const processBib = async (bibNo: string, detail?: string) => {
+    const suffix = detail ? ` (${detail})` : "";
+    console.log(`Processing bib ${bibNo} for ${location} ${year}${suffix}`);
+
+    if (processedBibs.has(bibNo)) {
+      return;
+    }
+
+    const apiStart = Date.now();
+    const record = await scrapeRecord(location, year, bibNo);
+
+    console.log(
+      `${record.BIB_NO},${record.Gender},${record.Event},${record.Time},${record.Status}`
+    );
+
+    if (record.Time || record.Status) {
+      records.push(record);
+      processedBibs.add(bibNo);
+      fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
+    }
+
+    const fetchAndWriteFileDuration = Date.now() - apiStart;
+    const delayMs = Math.max(0, period - fetchAndWriteFileDuration);
+    await delay(delayMs);
+  };
+
+  if (isNumericBibRange(startBib, endBib)) {
+    let n0 = parseInt(startBib, 10);
+    let n1 = parseInt(endBib, 10);
+    if (n0 > n1) {
+      [n0, n1] = [n1, n0];
+    }
+    n0 = Math.max(0, Math.min(NUMERIC_BIB_MAX, n0));
+    n1 = Math.max(0, Math.min(NUMERIC_BIB_MAX, n1));
+
+    console.log(`Numeric bib range: ${n0}–${n1} (max ${NUMERIC_BIB_MAX})`);
+
+    for (let bibNum = n0; bibNum <= n1; bibNum++) {
+      await processBib(String(bibNum));
+    }
+
+    console.log(`Scraping completed for ${location} ${year}!`);
+    return;
+  }
+
   const startLetter = startBib.charAt(0);
   const endLetter = endBib.charAt(0);
   const startNumberString = startBib.substring(1);
@@ -301,33 +353,7 @@ async function scrapeYear(
 
     for (let bibNum = numStart; bibNum <= numEnd; bibNum++) {
       const bibNo = `${letter}${bibNum.toString().padStart(padding, "0")}`;
-
-      console.log(
-        `Processing bib ${bibNo} for ${location} ${year} (padding: ${padding})`
-      );
-
-      if (processedBibs.has(bibNo)) {
-        continue;
-      }
-
-      const apiStart = Date.now();
-      const record = await scrapeRecord(location, year, bibNo);
-
-      // 항상 콘솔에 표시
-      console.log(
-        `${record.BIB_NO},${record.Gender},${record.Event},${record.Time},${record.Status}`
-      );
-
-      // 파일에는 조건을 만족하는 레코드만 저장
-      if (record.Time || record.Status) {
-        records.push(record);
-        processedBibs.add(bibNo);
-        fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
-      }
-
-      const fetchAndWriteFileDuration = Date.now() - apiStart;
-      const delayMs = Math.max(0, period - fetchAndWriteFileDuration);
-      await delay(delayMs);
+      await processBib(bibNo, `padding: ${padding}`);
     }
   }
 
@@ -342,8 +368,14 @@ async function main() {
     .description("Crawl Marazone Granfondo results")
     .argument("<location>", "Location of the event (e.g., 트렉가평자라섬)")
     .argument("[year]", "Year of the event (e.g., 2024)")
-    .argument("[startBib]", "Starting bib number (e.g., A500)")
-    .argument("[endBib]", "Ending bib number (e.g., A600)")
+    .argument(
+      "[startBib]",
+      "Start bib: letter+digits (e.g. A500) or numeric only 0–9999 (e.g. 2100)"
+    )
+    .argument(
+      "[endBib]",
+      "End bib: letter+digits or numeric only (both args must use the same style)"
+    )
     .option(
       "-p, --period <number>",
       "API call period in milliseconds (default: 200)",
