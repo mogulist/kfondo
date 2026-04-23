@@ -142,6 +142,21 @@ const resolveEditionId = async (
   return editionRow.id;
 };
 
+const resolveEventSlug = async (
+  supabase: ReturnType<typeof createClient<Database>>,
+  editionId: string,
+  args: CliArgs
+): Promise<string | null> => {
+  if (args.slug) return args.slug;
+  const { data } = await supabase
+    .from("event_editions")
+    .select("events(slug)")
+    .eq("id", editionId)
+    .single();
+  const slug = (data?.events as { slug?: string } | null)?.slug;
+  return slug ?? null;
+};
+
 const main = async () => {
   const argv = process.argv.slice(2);
   let args: CliArgs;
@@ -240,6 +255,23 @@ const main = async () => {
 
   if (args.status) console.log("✓ status:", args.status);
   console.log("✓ event_editions 갱신 완료. edition id:", editionId);
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (siteUrl) {
+    const slug = await resolveEventSlug(supabase, editionId, args);
+    if (slug) {
+      const revalidateUrl = `${siteUrl.replace(/\/$/, "")}/api/revalidate`;
+      const secret = process.env.REVALIDATE_SECRET;
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (secret) headers["Authorization"] = `Bearer ${secret}`;
+      await fetch(revalidateUrl, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ path: `/${slug}`, tag: `event-${slug}` }),
+      });
+      console.log("✓ 캐시 revalidate:", slug);
+    }
+  }
 };
 
 main().catch((e) => {

@@ -31,6 +31,11 @@ export async function POST(request: Request) {
   if (body.tag) {
     revalidateTag(body.tag, "default");
   }
-  revalidatePath(body.path ?? "/");
+  if (body.path) {
+    revalidatePath(body.path);
+  } else {
+    // 전체 revalidate
+    revalidatePath("/", "layout");
+  }
   return NextResponse.json({ revalidated: true });
 }
