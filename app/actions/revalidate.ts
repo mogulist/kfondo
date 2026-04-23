@@ -27,9 +27,8 @@ export async function revalidateHomePage() {
 }
 
 export async function revalidateEventPage(slug: string) {
-  const path = `/${slug}`;
   const tag = `event-${slug}`;
-  revalidateTag(tag, "default");
-  revalidatePath(path);
-  await revalidateStaging({ path, tag });
+  revalidateTag(tag);
+  revalidatePath("/", "layout");
+  await revalidateStaging({ tag });
 }

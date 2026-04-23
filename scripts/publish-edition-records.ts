@@ -267,9 +267,9 @@ const main = async () => {
       await fetch(revalidateUrl, {
         method: "POST",
         headers,
-        body: JSON.stringify({ path: `/${slug}`, tag: `event-${slug}` }),
+        body: JSON.stringify({}),
       });
-      console.log("✓ 캐시 revalidate:", slug);
+      console.log("✓ 캐시 revalidate (전체):", slug);
     }
   }
 };
