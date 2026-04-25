@@ -15,7 +15,8 @@ function formatTime(timeStr: string): string {
 function generateUrl(eventNo: string, bibNo: number): string {
   const bibStr = bibNo.toString().padStart(6, "0");
   // 2025년은 https를 사용
-  const protocol = eventNo.startsWith("2025") ? "https" : "http";
+  const year = parseInt(eventNo.slice(0, 4), 10);
+  const protocol = year >= 2025 ? "https" : "http";
 
   // 모든 이벤트에 대해 새로운 URL 형식 사용 (E와 B 파라미터)
   return `${protocol}://time.spct.kr/m2.php?E=${eventNo}&B=${bibStr}`;

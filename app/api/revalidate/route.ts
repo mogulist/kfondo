@@ -29,7 +29,7 @@ export async function POST(request: Request) {
   }
 
   if (body.tag) {
-    revalidateTag(body.tag, "default");
+    revalidateTag(body.tag);
   }
   if (body.path) {
     revalidatePath(body.path);

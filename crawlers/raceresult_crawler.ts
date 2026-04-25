@@ -35,6 +35,7 @@ type RaceResultRow = {
   result: string;
   category: string;
   eventLabel: string;
+  genderField: string;
 };
 
 type FieldIndices = {
@@ -48,6 +49,7 @@ type FieldIndices = {
   finish: number;
   speed: number;
   result: number;
+  gender: number;
 };
 
 const OKJEONGHO_RESULTS_LISTS: { listname: string; eventLabel: string }[] = [
@@ -68,10 +70,20 @@ function resolveOutputFile(outputPath?: string): string {
   return path.join(process.cwd(), "data", "iksan_2025.json");
 }
 
+function findField(dataFields: string[], ...candidates: (string | RegExp)[]): number {
+  for (const c of candidates) {
+    const i = typeof c === "string"
+      ? dataFields.indexOf(c)
+      : dataFields.findIndex((f) => c.test(f));
+    if (i >= 0) return i;
+  }
+  return -1;
+}
+
 function buildFieldIndices(dataFields: string[]): FieldIndices {
-  const req = (name: string): number => {
-    const i = dataFields.indexOf(name);
-    if (i < 0) throw new Error(`DataFields missing required column: ${name}`);
+  const req = (...candidates: (string | RegExp)[]): number => {
+    const i = findField(dataFields, ...candidates);
+    if (i < 0) throw new Error(`DataFields missing required column: ${candidates.join(" | ")}`);
     return i;
   };
   const komStart = dataFields.findIndex((f) => /^Kom\d+start\.TOD$/i.test(f));
@@ -83,13 +95,14 @@ function buildFieldIndices(dataFields: string[]): FieldIndices {
     bib: req("BIB"),
     lastName: req("LASTNAME"),
     group: req("Group"),
-    start: req("Start.TOD"),
+    start: req("Start.TOD", /Format\(\[Start/i),
     komStart,
     komFinish,
     komChip,
-    finish: req("Finish.TOD"),
+    finish: req("Finish.TOD", /Format\(\[Finish/i),
     speed,
-    result: req("Finish.CHIP"),
+    result: req("Finish.CHIP", "Race Time Total"),
+    gender: findField(dataFields, "GenderMF"),
   };
 }
 
@@ -231,6 +244,7 @@ function parseListData(
         const speed =
           indices.speed >= 0 ? cell(indices.speed) : "";
         const result = cell(indices.result);
+        const genderField = indices.gender >= 0 ? cell(indices.gender) : "";
 
         if (bib && lastName && bib.match(/^\d+$/)) {
           rows.push({
@@ -246,6 +260,7 @@ function parseListData(
             result,
             category,
             eventLabel,
+            genderField,
           });
         }
       }
@@ -259,6 +274,10 @@ function convertToRecord(row: RaceResultRow): Record {
   const gender = row.category.includes("(여)")
     ? "F"
     : row.category.includes("(남)")
+    ? "M"
+    : row.genderField === "F" || row.genderField === "W"
+    ? "F"
+    : row.genderField === "M"
     ? "M"
     : "";
   const event = row.eventLabel;
@@ -303,6 +322,7 @@ function recordDedupeKey(r: Record): string {
 type ScrapeOptions = {
   useResultsList: boolean;
   listHostOverride?: string;
+  eventLabelOverride?: string;
 };
 
 async function scrapeRaceResult(
@@ -371,8 +391,19 @@ async function scrapeRaceResult(
       const allRows: RaceResultRow[] = [];
 
       if (scrapeOptions.useResultsList) {
-        for (const { listname, eventLabel } of OKJEONGHO_RESULTS_LISTS) {
-          console.log(`Fetching results/list: ${listname} (${eventLabel})...`);
+        // config lists를 우선 사용, 없으면 옥정호 하드코딩 폴백
+        const listsToFetch: { listname: string; eventLabel: string }[] =
+          config.lists?.length
+            ? config.lists.map((l: { Name: string }) => ({
+                listname: l.Name,
+                eventLabel: scrapeOptions.eventLabelOverride ?? inferEventFromListName(l.Name),
+              }))
+            : OKJEONGHO_RESULTS_LISTS;
+
+        console.log(`Available lists: ${listsToFetch.map((l) => l.listname).join(", ")}`);
+
+        for (const { listname, eventLabel } of listsToFetch) {
+          console.log(`Fetching results/list: ${listname} → Event "${eventLabel}"...`);
           const listData = await fetchListDataResultsList(
             eventId,
             server,
@@ -398,7 +429,7 @@ async function scrapeRaceResult(
         );
 
         for (const list of config.lists || []) {
-          const eventLabel = inferEventFromListName(list.Name);
+          const eventLabel = scrapeOptions.eventLabelOverride ?? inferEventFromListName(list.Name);
           console.log(
             `Fetching RRPublish list: ${list.Name} (${list.ID}) → Event "${eventLabel}"...`
           );
@@ -482,6 +513,10 @@ async function main() {
     .option(
       "--list-host <host>",
       "Override list server host (e.g. my-hk-1.raceresult.com); else config.server or RACERESULT_LIST_HOST"
+    )
+    .option(
+      "--event-label <label>",
+      "Override event label for all lists (e.g. 그란폰도). Useful for single-course events."
     );
 
   program.parse();
@@ -493,6 +528,7 @@ async function main() {
     await scrapeRaceResult(eventId, key ?? "", options.output, 3, {
       useResultsList: Boolean(options.resultsList),
       listHostOverride: options.listHost,
+      eventLabelOverride: options.eventLabel,
     });
   } catch (error) {
     console.error("Fatal error:", error);

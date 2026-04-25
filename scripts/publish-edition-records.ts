@@ -264,12 +264,19 @@ const main = async () => {
       const secret = process.env.REVALIDATE_SECRET;
       const headers: Record<string, string> = { "Content-Type": "application/json" };
       if (secret) headers["Authorization"] = `Bearer ${secret}`;
+      // 전체 경로 revalidate
       await fetch(revalidateUrl, {
         method: "POST",
         headers,
         body: JSON.stringify({}),
       });
-      console.log("✓ 캐시 revalidate (전체):", slug);
+      // 이벤트 캐시 태그 revalidate
+      await fetch(revalidateUrl, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ tag: `event-${slug}` }),
+      });
+      console.log("✓ 캐시 revalidate (전체 + 태그 event-" + slug + "):", slug);
     }
   }
 };
