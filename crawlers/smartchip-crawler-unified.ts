@@ -7,24 +7,54 @@ async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function formatTime(timeStr: string): string {
-  if (!timeStr) return "";
-  return timeStr.trim();
-}
-
-function parseHmsToSeconds(hms: string): number {
-  const m = hms.trim().match(/^(\d{1,2}):(\d{2}):(\d{2})$/);
-  if (!m) return 0;
-  return (
-    parseInt(m[1], 10) * 3600 + parseInt(m[2], 10) * 60 + parseInt(m[3], 10)
-  );
-}
+type CheckpointTableRow = {
+  pointText: string;
+  timeText: string;
+  passText: string;
+  speedPaceText: string;
+};
 
 function formatSecondsToHms(totalSeconds: number): string {
   const h = Math.floor(totalSeconds / 3600);
   const min = Math.floor((totalSeconds % 3600) / 60);
   const s = totalSeconds % 60;
   return `${String(h).padStart(2, "0")}:${String(min).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
+
+function parseClockHmsToSeconds(clock: string): number | null {
+  const m = clock.trim().match(/^(\d{1,2}):(\d{2}):(\d{2})$/);
+  if (!m) return null;
+  return (
+    parseInt(m[1], 10) * 3600 + parseInt(m[2], 10) * 60 + parseInt(m[3], 10)
+  );
+}
+
+function extractTodFromPass(passText: string): string {
+  const m = passText.match(/\d{2}:\d{2}:\d{2}/);
+  return m ? m[0] : "";
+}
+
+function elapsedHmsFromTod(startTod: string, finishTod: string): string {
+  const a = parseClockHmsToSeconds(startTod);
+  const b = parseClockHmsToSeconds(finishTod);
+  if (a === null || b === null) return "";
+  let delta = b - a;
+  if (delta < 0) delta += 24 * 3600;
+  return formatSecondsToHms(delta);
+}
+
+function maxStageFinishNumber(rows: CheckpointTableRow[]): number {
+  const re = /^Stage(\d+)_Finish$/i;
+  let maxN = 0;
+  for (const r of rows) {
+    const m = r.pointText.match(re);
+    if (m) maxN = Math.max(maxN, parseInt(m[1], 10));
+  }
+  return maxN;
+}
+
+function isTableHeaderRow(pointText: string): boolean {
+  return pointText === "POINT" || pointText === "TIME" || pointText === "PASS";
 }
 
 async function scrapeRecord(
@@ -135,22 +165,7 @@ async function scrapeRecord(
       }
     }
 
-    // Total Records 파싱
-    const totalRecordsMatch = response.data.match(
-      /Total Records.*?(\d{2}:\d{2}:\d{2})/s
-    );
-    if (totalRecordsMatch) {
-      time = totalRecordsMatch[1];
-    }
-
-    // 체크포인트 테이블 파싱
-    const checkpoints: { [key: string]: string } = {};
-    let checkpointIndex = 1;
-    let hasEmptyPass = false;
-    let hasStartTime = false;
-    let finishSectorSecondsSum = 0;
-
-    // 테이블에서 모든 POINT 행 추출
+    const tableRows: CheckpointTableRow[] = [];
     $("table tr").each((_, row) => {
       const cells = $(row).find("td");
       if (cells.length >= 4) {
@@ -158,61 +173,61 @@ async function scrapeRecord(
         const timeText = $(cells[1]).text().trim();
         const passText = $(cells[2]).text().trim();
         const speedPaceText = $(cells[3]).text().trim();
-
-        // POINT가 비어있지 않은 경우만 처리
         if (pointText && pointText !== "-") {
-          if (pointText.endsWith("_Finish")) {
-            const sec = parseHmsToSeconds(timeText);
-            if (sec > 0) finishSectorSecondsSum += sec;
-          }
-          // 체크포인트 데이터 저장
-          checkpoints[
-            `CP_${checkpointIndex.toString().padStart(2, "0")}_NAME`
-          ] = pointText;
-          checkpoints[
-            `CP_${checkpointIndex.toString().padStart(2, "0")}_TIME`
-          ] = timeText || "-";
-          checkpoints[`CP_${checkpointIndex.toString().padStart(2, "0")}_TOD`] =
-            passText || "-";
-          checkpoints[
-            `CP_${checkpointIndex.toString().padStart(2, "0")}_SPEED_PACE`
-          ] = speedPaceText || "-";
-
-          // StartTime과 FinishTime 추출
-          if (pointText.includes("Stage1_Start")) {
-            const timeMatch = passText.match(/\d{2}:\d{2}:\d{2}/);
-            if (timeMatch) {
-              startTime = timeMatch[0];
-              hasStartTime = true;
-            }
-          }
-          if (pointText.includes("Stage2_Finish")) {
-            const timeMatch = passText.match(/\d{2}:\d{2}:\d{2}/);
-            if (timeMatch) {
-              finishTime = timeMatch[0];
-            }
-          }
-
-          // PASS 값이 비어있거나 "00.00 / 00:00" 형태인지 확인
-          if (
-            !passText ||
-            passText === "" ||
-            passText === "-" ||
-            passText.includes("00.00 / 00:00")
-          ) {
-            hasEmptyPass = true;
-          }
-
-          checkpointIndex++;
+          tableRows.push({ pointText, timeText, passText, speedPaceText });
         }
       }
     });
 
-    if (!time && finishSectorSecondsSum > 0) {
-      time = formatSecondsToHms(finishSectorSecondsSum);
+    const checkpoints: { [key: string]: string } = {};
+    let checkpointIndex = 1;
+    let hasEmptyPass = false;
+
+    for (const r of tableRows) {
+      checkpoints[`CP_${checkpointIndex.toString().padStart(2, "0")}_NAME`] =
+        r.pointText;
+      checkpoints[`CP_${checkpointIndex.toString().padStart(2, "0")}_TIME`] =
+        r.timeText || "-";
+      checkpoints[`CP_${checkpointIndex.toString().padStart(2, "0")}_TOD`] =
+        r.passText || "-";
+      checkpoints[
+        `CP_${checkpointIndex.toString().padStart(2, "0")}_SPEED_PACE`
+      ] = r.speedPaceText || "-";
+
+      if (!isTableHeaderRow(r.pointText)) {
+        if (
+          !r.passText ||
+          r.passText === "" ||
+          r.passText === "-" ||
+          r.passText.includes("00.00 / 00:00")
+        ) {
+          hasEmptyPass = true;
+        }
+      }
+
+      checkpointIndex++;
     }
 
-    // Start 기록이 없으면 DNS로 간주하고 데이터에서 제외
+    const lastStageFinishN = maxStageFinishNumber(tableRows);
+    const stage1StartRow = tableRows.find((r) => r.pointText === "Stage1_Start");
+    const finishPointName =
+      lastStageFinishN > 0 ? `Stage${lastStageFinishN}_Finish` : "";
+    const lastStageFinishRow = finishPointName
+      ? tableRows.find((r) => r.pointText === finishPointName)
+      : undefined;
+
+    startTime = stage1StartRow
+      ? extractTodFromPass(stage1StartRow.passText)
+      : "";
+    const hasStartTime = Boolean(startTime);
+
+    const finishTod = lastStageFinishRow
+      ? extractTodFromPass(lastStageFinishRow.passText)
+      : "";
+    finishTime = finishTod;
+
+    const hasValidFinishTod = Boolean(finishTod);
+
     if (!hasStartTime) {
       return {
         BIB_NO: bibNo,
@@ -225,16 +240,12 @@ async function scrapeRecord(
       };
     }
 
-    // DNF 판정 로직
-    if (hasEmptyPass) {
-      // 중간 기록이 하나라도 비어있으면 DNF
+    if (hasEmptyPass || !hasValidFinishTod || lastStageFinishN === 0) {
       status = "DNF";
-    } else if (time) {
-      // 총 기록이 있고 중간 기록이 모두 있으면 정상 완주
-      status = "";
+      time = "";
     } else {
-      // 총 기록이 없으면 DNF
-      status = "DNF";
+      status = "";
+      time = elapsedHmsFromTod(startTime, finishTod);
     }
 
     // 결과 객체 생성
