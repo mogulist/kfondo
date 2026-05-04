@@ -2,7 +2,7 @@
  * 에디션에 원본/정렬 기록 JSON을 Vercel Blob에 올리고 event_editions URL·(선택) 상태를 갱신합니다.
  * (어드민 records-upload API와 동일한 Blob 경로 규칙: lib/records-blob-path.ts)
  *
- * 필요 환경 변수(.env.local):
+ * 필요 환경 변수(.env.local 우선, 없으면 .env에서 보조 로드):
  * - NEXT_PUBLIC_SUPABASE_URL
  * - SUPABASE_SERVICE_ROLE_KEY
  * - BLOB_READ_WRITE_TOKEN
@@ -25,6 +25,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, "..");
 
 dotenv.config({ path: path.join(REPO_ROOT, ".env.local") });
+dotenv.config({ path: path.join(REPO_ROOT, ".env") });
 
 const MAX_SIZE_BYTES = 30 * 1024 * 1024;
 
@@ -181,12 +182,14 @@ const main = async () => {
   const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
   if (!supabaseUrl || !supabaseKey) {
     console.error(
-      "❌ .env.local 에 NEXT_PUBLIC_SUPABASE_URL과 SUPABASE_SERVICE_ROLE_KEY가 필요합니다."
+      "❌ .env.local 또는 .env 에 NEXT_PUBLIC_SUPABASE_URL과 SUPABASE_SERVICE_ROLE_KEY가 필요합니다."
     );
     process.exit(1);
   }
   if (!blobToken) {
-    console.error("❌ .env.local 에 BLOB_READ_WRITE_TOKEN 이 필요합니다.");
+    console.error(
+      "❌ .env.local 또는 .env 에 BLOB_READ_WRITE_TOKEN 이 필요합니다."
+    );
     process.exit(1);
   }
 
