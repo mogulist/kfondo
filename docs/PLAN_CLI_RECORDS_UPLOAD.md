@@ -17,7 +17,7 @@
 
 즉 “파일만”은 API로 가능하지만, “상태까지”는 지금은 **브라우저 세션 기반 Supabase 쓰기**에 묶여 있다.
 
-[`docs/ADD_EVENT.md`](ADD_EVENT.md) 94~97행 근처의 “어드민에 JSON 직접 업로드 없음” 서술은 **현재 코드와 불일치**할 수 있다(다이얼로그가 위 API를 호출). [`ADD_EVENT.md`](ADD_EVENT.md)는 추후 한 줄 정도 맞추면 된다.
+과거 문서에 “어드민에 JSON 직접 업로드 없음”처럼 적혀 있었다면 **현재 코드와 불일치**할 수 있다(다이얼로그가 위 API를 호출). 업로드 절차는 [`docs/events/blob-publish.md`](events/blob-publish.md)를 기준으로 한다.
 
 ```mermaid
 flowchart LR
@@ -92,4 +92,4 @@ flowchart LR
 - [x] 서비스 롤 스크립트(Mac Studio `.env`) — 채택. 내부 시크릿 API는 필요 시 후속
 - [x] Blob `put` + `event_editions` patch — `buildRecordsBlobPath`와 `records-upload` API 정합
 - [x] `slug` + `year`로 edition id 조회 — `--slug` / `--year`
-- [x] `docs/ADD_EVENT.md` — §5·표 갱신
+- [x] `docs/events/blob-publish.md` — Blob·에디션 URL 표·절차 갱신
