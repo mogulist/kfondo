@@ -9,6 +9,7 @@ import {
 } from "recharts";
 import React from "react";
 import Link from "next/link";
+import posthog from "posthog-js";
 import { Button } from "@/components/ui/button";
 
 export type DistributionChartProps = {
@@ -49,7 +50,17 @@ export function DistributionChart({
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-medium">{title}</h3>
         <Button asChild variant="outline" size="sm" className="ml-2 text-xs font-normal">
-          <Link href={findByRecordHref}>
+          <Link
+            href={findByRecordHref}
+            onClick={() =>
+              posthog.capture("find_by_record_entry_clicked", {
+                event_id: eventId,
+                course_id: course,
+                year: String(year),
+                is_past_year: year !== new Date().getFullYear(),
+              })
+            }
+          >
             기록 찾기
           </Link>
         </Button>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronLeft, Maximize2, Minimize2 } from "lucide-react";
 import Header from "@/components/Header";
 import { CourseMapClient } from "./CourseMapClient";
+import posthog from "posthog-js";
 
 type CourseMapPageClientProps = {
   eventSlug: string;
@@ -68,7 +69,7 @@ export function CourseMapPageClient({
             {fullscreen ? (
               <button
                 type="button"
-                onClick={() => setFullscreen(false)}
+                onClick={() => { setFullscreen(false); posthog.capture("course_map_fullscreen_toggled", { event_slug: eventSlug, course_name: courseName, fullscreen: false }); }}
                 className="absolute top-3 left-4 z-10 inline-flex items-center justify-center min-w-9 min-h-9 px-2.5 py-2 rounded-md border border-border bg-card text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-foreground shrink-0"
                 aria-label="풀스크린 종료"
               >
@@ -77,7 +78,7 @@ export function CourseMapPageClient({
             ) : (
               <button
                 type="button"
-                onClick={() => setFullscreen(true)}
+                onClick={() => { setFullscreen(true); posthog.capture("course_map_fullscreen_toggled", { event_slug: eventSlug, course_name: courseName, fullscreen: true }); }}
                 className="absolute top-3 left-4 z-10 inline-flex items-center justify-center min-w-9 min-h-9 px-2.5 py-2 rounded-md border border-border bg-card text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-foreground shrink-0"
                 aria-label="풀스크린"
               >

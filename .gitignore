@@ -34,3 +34,7 @@ test-results
 
 data/
 .env*.local
+.env.local
+
+# PostHog wizard report (local notes only)
+posthog-setup-report.md

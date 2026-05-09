@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 
 type Props = {
   initialQuery?: string;
@@ -35,6 +36,7 @@ export function SearchBar({ initialQuery = "" }: Props) {
   const handleSearch = () => {
     const query = inputValue.trim();
     if (query) {
+      posthog.capture("event_searched", { query });
       window.location.hash = `q=${encodeURIComponent(query)}`;
     } else {
       window.location.hash = "";

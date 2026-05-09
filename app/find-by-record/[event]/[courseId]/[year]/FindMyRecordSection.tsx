@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import RecordInput, { isValidRecordFormat } from "./RecordInput";
 import type { Event } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
+import posthog from "posthog-js";
 
 type Props = {
   event: Event;
@@ -35,6 +36,12 @@ const FindMyRecordSection = ({ event, eventName, courseId, year }: Props) => {
   const handleSubmit = () => {
     if (!record || error) return;
     const digit = toDigitString(record);
+    posthog.capture("record_lookup_submitted", {
+      event_id: event.id,
+      course_id: courseId,
+      year,
+      is_past_year: Number(year) !== new Date().getFullYear(),
+    });
     router.push(`/find-by-record/${event.id}/${courseId}/${year}/${digit}`);
   };
 

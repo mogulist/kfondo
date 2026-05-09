@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Github } from "lucide-react";
 import { useState } from "react";
+import posthog from "posthog-js";
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +19,7 @@ export default function LoginPage() {
 
   const handleGithubLogin = async () => {
     setIsLoading(true);
+    posthog.capture("admin_login_attempted", { provider: "github" });
     const baseUrl =
       typeof window !== "undefined"
         ? process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
@@ -30,6 +32,7 @@ export default function LoginPage() {
 
     if (error) {
       console.error("로그인 오류:", error);
+      posthog.captureException(error);
       alert("로그인 중 오류가 발생했습니다.");
       setIsLoading(false);
     }

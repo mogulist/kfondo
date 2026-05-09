@@ -2,6 +2,7 @@ import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { buildRecordsBlobPath } from "@/lib/records-blob-path";
 import { createClient } from "@/lib/supabase/server";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 const MAX_SIZE_BYTES = 30 * 1024 * 1024; // 30MB
 
@@ -125,6 +126,17 @@ export async function POST(
       .eq("id", editionId);
 
     if (error) throw error;
+
+    const posthog = getPostHogClient();
+    posthog.capture({
+      distinctId: user.email,
+      event: "records_upload_completed",
+      properties: {
+        edition_id: editionId,
+        uploaded_records: !!recordsBlobUrl,
+        uploaded_sorted_records: !!sortedRecordsBlobUrl,
+      },
+    });
 
     return NextResponse.json({
       recordsBlobUrl,

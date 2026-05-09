@@ -8,6 +8,7 @@ import {
   msecToTimeString,
 } from "@/lib/find-by-record-data";
 import ShareRecordMenu from "./ShareRecordMenu";
+import TrackResultViewed from "./TrackResultViewed";
 
 type Props = {
   params: { event: string; courseId: string; year: string; time: string };
@@ -61,6 +62,12 @@ const ResultPage = async (props: Props) => {
 
   return (
     <main className="container mx-auto px-0 py-0">
+      <TrackResultViewed
+        eventId={eventId}
+        courseId={courseId}
+        year={year}
+        time={time}
+      />
       <StackNavBar />
       <div className="max-w-full px-4 py-4">
         <div className="flex flex-col items-center mb-6">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import posthog from "posthog-js";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Dialog,
@@ -41,6 +42,16 @@ export default function ShareRecordMenu({
   const [isDownloading, setIsDownloading] = useState(false);
   const [scale, setScale] = useState(0.2);
   const containerRef = useRef<HTMLDivElement>(null);
+  const shareActionTakenRef = useRef(false);
+
+  const isPastYear = Number(year) !== new Date().getFullYear();
+  const captureProps = {
+    event_id: eventId,
+    course_id: courseId,
+    year,
+    time,
+    is_past_year: isPastYear,
+  };
 
   const basePath = `/find-by-record/${eventId}/${courseId}/${year}/${time}`;
   const getShareUrl = () =>
@@ -89,6 +100,8 @@ export default function ShareRecordMenu({
     if (!url) return;
     try {
       await navigator.clipboard.writeText(url);
+      posthog.capture("record_share_link_copied", captureProps);
+      shareActionTakenRef.current = true;
       toast.success("링크가 복사되었습니다.");
       setOpen(false);
     } catch {
@@ -106,6 +119,8 @@ export default function ShareRecordMenu({
           text: description,
           url,
         });
+        posthog.capture("record_share_native_shared", captureProps);
+        shareActionTakenRef.current = true;
         toast.success("공유되었습니다.");
         setOpen(false);
       } catch (err) {
@@ -119,8 +134,20 @@ export default function ShareRecordMenu({
   };
 
   const openImageModal = () => {
+    shareActionTakenRef.current = true;
     setOpen(false);
     setImageModalOpen(true);
+    posthog.capture("record_certificate_modal_opened", captureProps);
+  };
+
+  const handleShareMenuOpenChange = (next: boolean) => {
+    setOpen(next);
+    if (next) {
+      shareActionTakenRef.current = false;
+      posthog.capture("record_share_menu_opened", captureProps);
+    } else if (!shareActionTakenRef.current) {
+      posthog.capture("record_share_menu_dismissed", captureProps);
+    }
   };
 
   const handleConfirmDownload = async () => {
@@ -161,6 +188,7 @@ export default function ShareRecordMenu({
       a.download = filename;
       a.click();
       URL.revokeObjectURL(objectUrl);
+      posthog.capture("record_certificate_image_downloaded", captureProps);
       toast.success("이미지가 다운로드되었습니다.");
       setImageModalOpen(false);
     } catch {
@@ -172,7 +200,7 @@ export default function ShareRecordMenu({
 
   return (
     <>
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleShareMenuOpenChange}>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="gap-2 shrink-0">
           <Share2 className="h-4 w-4" />
