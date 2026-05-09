@@ -135,6 +135,8 @@ export async function scrapeRecord(
     let status = "";
     if (!hasTime && !hasFinishTime) {
       status = hasStartTime ? "DNF" : "DNS";
+    } else if (!hasTime && !hasStartTime && hasFinishTime) {
+      status = "INVALID";
     }
 
     return {

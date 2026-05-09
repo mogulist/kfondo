@@ -46,7 +46,9 @@ export async function getTotalParticipantCountForYear(
   return courseIdsNames.reduce((sum, curr) => {
     const count = records.filter(
       (p) =>
-        (p.Event === curr.id || p.Event === curr.name) && p.Status !== "DNS"
+        (p.Event === curr.id || p.Event === curr.name) &&
+        p.Status !== "DNS" &&
+        p.Status !== "INVALID"
     ).length;
     return sum + count;
   }, 0);

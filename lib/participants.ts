@@ -56,7 +56,8 @@ export async function calculateParticipants(
     const count = participants.filter(
       (participant) =>
         (participant.Event === curr.id || participant.Event === curr.name) &&
-        participant.Status !== "DNS"
+        participant.Status !== "DNS" &&
+        participant.Status !== "INVALID"
     ).length;
     acc[curr.id] = count;
     return acc;
@@ -110,7 +111,8 @@ function calculateParticipantsForData(
       (participant.Event === course.id ||
         participant.Event === courseNameForYear ||
         participant.Event === course.name) &&
-      participant.Status !== "DNS"
+      participant.Status !== "DNS" &&
+      participant.Status !== "INVALID"
     ) {
       participantsCount++;
     }
