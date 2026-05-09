@@ -93,7 +93,9 @@ export async function getFindByRecordData(
 
   let sortedData: Record<string, number[]> = {};
   try {
-    const response = await fetch(sortedBlobUrl, { next: { revalidate: 3600 } });
+    const response = await fetch(sortedBlobUrl, {
+      next: { revalidate: 3600, tags: [`event-${eventId}`] },
+    });
     if (!response.ok) return null;
     sortedData = await response.json();
   } catch {

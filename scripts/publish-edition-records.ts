@@ -260,26 +260,61 @@ const main = async () => {
   console.log("✓ event_editions 갱신 완료. edition id:", editionId);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (!siteUrl) {
+    console.warn(
+      "⚠ NEXT_PUBLIC_SITE_URL 이 없어 /api/revalidate 를 호출하지 않았습니다. 프로덕션 사이트 캐시가 갱신되지 않을 수 있습니다."
+    );
+  }
+
+  const assertRevalidateOk = async (res: Response, label: string) => {
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error(
+        `revalidate 실패 (${label}): HTTP ${res.status}${text ? ` — ${text}` : ""}`
+      );
+    }
+  };
+
   if (siteUrl) {
     const slug = await resolveEventSlug(supabase, editionId, args);
     if (slug) {
       const revalidateUrl = `${siteUrl.replace(/\/$/, "")}/api/revalidate`;
       const secret = process.env.REVALIDATE_SECRET;
-      const headers: Record<string, string> = { "Content-Type": "application/json" };
-      if (secret) headers["Authorization"] = `Bearer ${secret}`;
-      // 전체 경로 revalidate
-      await fetch(revalidateUrl, {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+      if (secret) headers.Authorization = `Bearer ${secret}`;
+      else {
+        console.warn(
+          "⚠ REVALIDATE_SECRET 가 없습니다. 프로덕 /api/revalidate 가 시크릿을 요구하면 401이 납니다."
+        );
+      }
+
+      const fullRevalidate = await fetch(revalidateUrl, {
         method: "POST",
         headers,
         body: JSON.stringify({}),
       });
-      // 이벤트 캐시 태그 revalidate
-      await fetch(revalidateUrl, {
+      await assertRevalidateOk(fullRevalidate, "layout 전체");
+
+      const tagRes = await fetch(revalidateUrl, {
         method: "POST",
         headers,
         body: JSON.stringify({ tag: `event-${slug}` }),
       });
-      console.log("✓ 캐시 revalidate (전체 + 태그 event-" + slug + "):", slug);
+      await assertRevalidateOk(tagRes, `tag event-${slug}`);
+
+      const pathRes = await fetch(revalidateUrl, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ path: `/${slug}` }),
+      });
+      await assertRevalidateOk(pathRes, `path /${slug}`);
+
+      console.log(
+        `✓ 캐시 revalidate (layout + tag event-${slug} + path /${slug})`,
+        slug
+      );
     }
   }
 };

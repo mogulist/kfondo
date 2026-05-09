@@ -19,7 +19,9 @@ export async function tryFetchParticipantRecordsFromBlob(
   year: number
 ): Promise<ParticipantRecord[] | null> {
   try {
-    const response = await fetch(blobUrl, { next: { revalidate: 3600 } });
+    const response = await fetch(blobUrl, {
+      next: { revalidate: 3600, tags: [`event-${eventId}`] },
+    });
     if (!response.ok) throw new Error(`Fetch failed: ${response.statusText}`);
     return await response.json();
   } catch (error) {

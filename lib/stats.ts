@@ -32,7 +32,9 @@ async function fetchRecords(
   // 1. Blob URL 사용
   if (blobUrl) {
     try {
-      const response = await fetch(blobUrl, { next: { revalidate: 3600 } }); // 1시간 캐시
+      const response = await fetch(blobUrl, {
+        next: { revalidate: 3600, tags: [`event-${event.id}`] },
+      });
       if (!response.ok) throw new Error(`Fetch failed: ${response.statusText}`);
       const rawRecords = await response.json();
       return parseRecords(rawRecords);
