@@ -7,18 +7,9 @@ import { Inter } from "next/font/google";
 import { AnalyticsWithExclusions } from "@/components/analytics-with-exclusions";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/sonner";
+import { Footer } from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
-
-const FOOTER = (
-  <footer className="border-t mt-12">
-    <div className="max-w-screen-xl mx-auto px-4 py-8">
-      <p className="text-center text-sm text-muted-foreground">
-        © 2025-{new Date().getFullYear()} K-Fondo. All rights reserved.
-      </p>
-    </div>
-  </footer>
-);
 
 export default function RootLayout({
   children,
@@ -34,7 +25,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <RootLayoutContent footer={FOOTER}>
+          <RootLayoutContent footer={<Footer />}>
             {children}
             <AnalyticsWithExclusions />
             <SpeedInsights />
