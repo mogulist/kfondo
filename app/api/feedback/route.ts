@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   }
 
   const { error } = await resend.emails.send({
-    from: 'K-Fondo 피드백 <feedback@kfondo.com>',
+    from: 'K-Fondo 피드백 <feedback@kfondo.cc>',
     to: process.env.FEEDBACK_TO_EMAIL!,
     replyTo: email || undefined,
     subject: `[K-Fondo 피드백] ${name || '익명'}`,
