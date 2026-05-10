@@ -50,7 +50,7 @@ export default async function EventPage({ params }: Props) {
           <div className="space-y-16 md:space-y-20">
             <ParticipantTrendSection event={event} />
             <StatsSection event={event} />
-            <CommentsSection event={event} eventId={eventSlug} />
+            <CommentsSection eventId={eventSlug} />
           </div>
         </div>
       </main>

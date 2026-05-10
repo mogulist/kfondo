@@ -1,19 +1,14 @@
-import { DisqusComments } from "@/components/disqus-comments";
-import type { Event } from "@/lib/types";
+import { ReactionButtons } from '@/components/reaction-buttons';
 
 type Props = {
-  event: Event;
   eventId: string;
 };
 
-export const CommentsSection = ({ event, eventId }: Props) => {
+export const CommentsSection = ({ eventId }: Props) => {
   return (
     <section className="space-y-4">
-      <h2 className="text-2xl font-semibold">댓글</h2>
-      <DisqusComments
-        eventId={eventId}
-        eventTitle={event.name || `${event.location} 그란폰도`}
-      />
+      <h2 className="text-2xl font-semibold">반응</h2>
+      <ReactionButtons eventId={eventId} />
     </section>
   );
 };
