@@ -26,27 +26,40 @@ export function ReactionButtons({ eventId }: { eventId: string }) {
 
     fetch(`/api/reactions?eventId=${eventId}`)
       .then(r => r.json())
-      .then(data => setCounts(data))
+      .then(data => setCounts(prev => ({ ...prev, ...data })))
       .finally(() => setLoading(false));
   }, [eventId]);
 
   const handleReaction = async (type: ReactionType) => {
-    if (reacted[type]) return;
+    const isReacted = reacted[type];
+    const action = isReacted ? 'remove' : 'add';
+    const delta = isReacted ? -1 : 1;
 
-    setCounts(prev => ({ ...prev, [type]: prev[type] + 1 }));
-    setReacted(prev => ({ ...prev, [type]: true }));
-    localStorage.setItem(`reaction-${eventId}-${type}`, 'true');
+    // 낙관적 업데이트
+    setCounts(prev => ({ ...prev, [type]: Math.max((prev[type] ?? 0) + delta, 0) }));
+    setReacted(prev => ({ ...prev, [type]: !isReacted }));
+
+    if (isReacted) {
+      localStorage.removeItem(`reaction-${eventId}-${type}`);
+    } else {
+      localStorage.setItem(`reaction-${eventId}-${type}`, 'true');
+    }
 
     try {
       await fetch('/api/reactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ eventId, type }),
+        body: JSON.stringify({ eventId, type, action }),
       });
     } catch {
-      setCounts(prev => ({ ...prev, [type]: prev[type] - 1 }));
-      setReacted(prev => ({ ...prev, [type]: false }));
-      localStorage.removeItem(`reaction-${eventId}-${type}`);
+      // 실패 시 롤백
+      setCounts(prev => ({ ...prev, [type]: Math.max((prev[type] ?? 0) - delta, 0) }));
+      setReacted(prev => ({ ...prev, [type]: isReacted }));
+      if (isReacted) {
+        localStorage.setItem(`reaction-${eventId}-${type}`, 'true');
+      } else {
+        localStorage.removeItem(`reaction-${eventId}-${type}`);
+      }
     }
   };
 
@@ -56,11 +69,11 @@ export function ReactionButtons({ eventId }: { eventId: string }) {
         <button
           key={type}
           onClick={() => handleReaction(type)}
-          disabled={reacted[type] || loading}
+          disabled={loading}
           className={cn(
             'flex items-center gap-2 px-5 py-2.5 rounded-full border text-sm font-medium transition-all',
             reacted[type]
-              ? 'bg-primary text-primary-foreground border-primary'
+              ? 'bg-emerald-500 text-white border-emerald-500'
               : 'bg-background hover:bg-accent border-border disabled:opacity-50'
           )}
         >
@@ -68,7 +81,7 @@ export function ReactionButtons({ eventId }: { eventId: string }) {
           <span>{label}</span>
           {!loading && (
             <span className={cn('text-xs', reacted[type] ? 'opacity-80' : 'opacity-50')}>
-              {counts[type].toLocaleString()}
+              {(counts[type] ?? 0).toLocaleString()}
             </span>
           )}
         </button>

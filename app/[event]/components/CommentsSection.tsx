@@ -6,9 +6,11 @@ type Props = {
 
 export const CommentsSection = ({ eventId }: Props) => {
   return (
-    <section className="space-y-4">
-      <h2 className="text-2xl font-semibold">반응</h2>
-      <ReactionButtons eventId={eventId} />
+    <section>
+      <hr className="border-border/40" />
+      <div className="flex justify-center pt-6">
+        <ReactionButtons eventId={eventId} />
+      </div>
     </section>
   );
 };
