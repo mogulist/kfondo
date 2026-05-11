@@ -16,7 +16,7 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
 
   return (
     <Tabs defaultValue={defaultYear} className="w-full">
-      <div className="sticky top-16 z-40 -mx-4 border-b border-border bg-background px-4 py-2 sm:mx-0 sm:px-0">
+      <div className="sticky top-12 z-40 -mx-4 border-b border-border bg-background px-4 py-2 sm:mx-0 sm:px-0">
         <div className="overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <TabsList className="inline-flex h-auto min-h-10 w-max max-w-full flex-nowrap justify-start gap-1">
             {yearlyStats.map(({ year }) => (
