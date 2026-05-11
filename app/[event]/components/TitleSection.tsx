@@ -6,7 +6,7 @@ type Props = {
 
 export const TitleSection = ({ event }: Props) => {
   return (
-    <h1 className="text-4xl font-bold tracking-tight">
+    <h1 id="page-title" className="text-4xl font-bold tracking-tight">
       {event.name || `${event.location} 그란폰도`}
     </h1>
   );

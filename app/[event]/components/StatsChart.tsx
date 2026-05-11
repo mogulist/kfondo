@@ -1,21 +1,37 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
+import posthog from "posthog-js";
 import { useMobile } from "@/hooks/use-mobile";
-import type { EventYearStats, EventYearStatsWithCourses } from "@/lib/types";
+import type { EventYearStatsWithCourses, RaceCategory } from "@/lib/types";
 import { DistributionChart } from "../../../components/distribution-chart";
+import { Button } from "@/components/ui/button";
 import dayjs from "dayjs";
+import { CourseViewSelect } from "./course-view-select";
 
 const colors = ["hsl(215, 90%, 50%)", "hsl(150, 80%, 40%)", "hsl(0, 80%, 60%)"];
 
 type Props = {
   statistics: EventYearStatsWithCourses[];
   eventId: string;
+  courses?: RaceCategory[];
 };
 
-export const StatsChart = ({ statistics, eventId }: Props) => {
+function formatCourseStatsLine(course: RaceCategory | undefined): string | null {
+  if (!course) return null;
+  const parts: string[] = [];
+  if (typeof course.distance === "number" && course.distance > 0)
+    parts.push(`${course.distance}km`);
+  if (typeof course.elevation === "number" && course.elevation > 0)
+    parts.push(
+      `${course.elevation.toLocaleString("ko-KR", { maximumFractionDigits: 1 })}m`,
+    );
+  return parts.length > 0 ? parts.join(" · ") : null;
+}
+
+export const StatsChart = ({ statistics, eventId, courses }: Props) => {
   const isMobile = useMobile();
-  const isTablet = useMobile(1024);
 
   if (!statistics || statistics.length === 0) return null;
 
@@ -24,17 +40,13 @@ export const StatsChart = ({ statistics, eventId }: Props) => {
       {statistics.map((yearData) => {
         return (
           <motion.div
-            className="h-full w-full"
+            className="w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
             key={yearData.year}
           >
-            <div
-              className={`${
-                isTablet ? "flex flex-col gap-8" : "grid grid-cols-2 gap-12"
-              } h-full`}
-            >
+            <div className="flex w-full flex-col gap-12">
               {yearData.distributions.map((distribution, index) => {
                 const start =
                   distribution.distribution[0]?.timeRange.split(" - ")[0];
@@ -44,19 +56,67 @@ export const StatsChart = ({ statistics, eventId }: Props) => {
                 const interval =
                   start && end ? getTickIntervalByRange(start, end) : 10;
                 const color = colors[index];
+                const courseMeta = courses?.find(
+                  (c) => c.id === distribution.courseId,
+                );
+                const statsLine = formatCourseStatsLine(courseMeta);
+                const findByRecordHref = `/find-by-record/${eventId}/${distribution.courseId}/${yearData.year}`;
+
+                const toolbar = (
+                  <div className="flex flex-row items-start justify-between gap-2 sm:gap-4">
+                    <div className="min-w-0 flex-1 space-y-0.5 pr-1">
+                      <h3 className="text-lg font-semibold text-foreground">
+                        {distribution.courseName}
+                      </h3>
+                      {statsLine ? (
+                        <p className="text-xs text-muted-foreground sm:text-sm">
+                          {statsLine}
+                        </p>
+                      ) : null}
+                    </div>
+                    <div className="flex shrink-0 flex-nowrap items-center gap-2">
+                      {courseMeta ? (
+                        <CourseViewSelect
+                          course={courseMeta}
+                          eventSlug={eventId}
+                          year={yearData.year}
+                        />
+                      ) : null}
+                      <Button
+                        asChild
+                        variant="outline"
+                        size="sm"
+                        className="text-xs font-normal sm:text-sm"
+                      >
+                        <Link
+                          href={findByRecordHref}
+                          onClick={() =>
+                            posthog.capture("find_by_record_entry_clicked", {
+                              event_id: eventId,
+                              course_id: distribution.courseId,
+                              year: String(yearData.year),
+                              is_past_year:
+                                yearData.year !== new Date().getFullYear(),
+                            })
+                          }
+                        >
+                          기록 찾기
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                );
 
                 return (
                   <DistributionChart
                     key={distribution.courseId}
-                    title={`${distribution.courseName} (${yearData.year}년)`}
-                    eventId={eventId}
-                    course={distribution.courseId}
-                    year={yearData.year}
+                    ariaLabel={`${distribution.courseName} ${yearData.year}년 기록 분포`}
+                    toolbar={toolbar}
                     data={distribution.distribution}
                     color={color}
                     interval={interval}
                     isMobile={isMobile}
-                    comment={yearData.comment}
+                    comment={index === 0 ? yearData.comment : undefined}
                     formatXAxisTick={formatXAxisTick}
                     CustomTooltip={CustomTooltip}
                   />

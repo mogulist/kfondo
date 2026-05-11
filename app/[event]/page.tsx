@@ -7,7 +7,7 @@ import { CommentsSection } from "./components/CommentsSection";
 import { getEventById } from "@/lib/db/events";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
+import { EventHeader } from "@/components/EventHeader";
 
 /** 30일 (Next.js segment config는 리터럴만 허용) */
 export const revalidate = 2592000;
@@ -38,9 +38,11 @@ export default async function EventPage({ params }: Props) {
     notFound();
   }
 
+  const eventTitle = event.name || `${event.location} 그란폰도`;
+
   return (
     <>
-      <Header />
+      <EventHeader eventTitle={eventTitle} />
       <main className="container mx-auto px-4 py-12">
         <div className="space-y-8 max-w-full">
           <div className="space-y-4">

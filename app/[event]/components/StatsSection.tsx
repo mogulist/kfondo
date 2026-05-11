@@ -1,6 +1,6 @@
 import path from "path";
 import type { Event } from "@/lib/types";
-import { StatsChart } from "./StatsChart";
+import { EventYearTabs } from "./EventYearTabs";
 import { getYearStatsWithCourses } from "@/lib/stats";
 
 type Props = {
@@ -12,11 +12,8 @@ export const StatsSection = async ({ event }: Props) => {
   const yearlyStats = await getYearStatsWithCourses(event, dataDir);
 
   return (
-    <section className="space-y-4">
-      <h2 className="text-2xl font-semibold">기록 분포</h2>
-      <div className="w-full">
-        <StatsChart statistics={yearlyStats} eventId={event.id} />
-      </div>
+    <section aria-label="연도별 기록 분포" className="w-full">
+      <EventYearTabs event={event} yearlyStats={yearlyStats} />
     </section>
   );
 };
