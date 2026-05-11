@@ -36,10 +36,14 @@ type CourseCardProps = {
 };
 
 export function CourseCard({ course, eventSlug, year }: CourseCardProps) {
-  const distanceLabel =
-    typeof course.distance === "number" && course.distance > 0
-      ? ` (${course.distance}km)`
-      : "";
+  const statsParts: string[] = [];
+  if (typeof course.distance === "number" && course.distance > 0)
+    statsParts.push(`${course.distance}km`);
+  if (typeof course.elevation === "number" && course.elevation > 0)
+    statsParts.push(
+      `${course.elevation.toLocaleString("ko-KR", { maximumFractionDigits: 1 })}m`,
+    );
+  const statsLabel = statsParts.length > 0 ? ` (${statsParts.join(" · ")})` : "";
   const hasGpx =
     typeof course.gpxBlobUrl === "string" && course.gpxBlobUrl.trim().length > 0;
   const mapHref = hasGpx ? `/${eventSlug}/map/${course.id}?year=${year}` : null;
@@ -48,7 +52,7 @@ export function CourseCard({ course, eventSlug, year }: CourseCardProps) {
     <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
       <p className="font-semibold text-foreground mb-3">
         {course.name}
-        {distanceLabel}
+        {statsLabel}
       </p>
       <div className="flex flex-wrap gap-2">
         {COURSE_LINK_STYLES.filter(({ key }) => {
