@@ -28,6 +28,9 @@ export const UpcomingSection = ({ event }: Props) => {
     ? normalizeEventDate(latestDetail.date)
     : "";
   const dDay = hasDate ? getDaysUntilEvent(latestDetail!.date) : null;
+  const isPastEvent = hasDate && dDay !== null && dDay < 0;
+  if (isPastEvent) return null;
+
   const daysSinceEvent =
     hasDate && normalizedDate
       ? dayjs().diff(dayjs(normalizedDate), "day")

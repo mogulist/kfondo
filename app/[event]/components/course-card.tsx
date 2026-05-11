@@ -28,8 +28,6 @@ const COURSE_LINK_STYLES: {
 
 const NAVER_MAP_BTN_CLASS =
   "bg-[#03c75a] hover:bg-[#02b350] text-white inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors";
-const NAVER_MAP_BTN_DISABLED_CLASS =
-  "border border-slate-400 bg-slate-200 text-slate-600 cursor-not-allowed inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap dark:bg-slate-700 dark:border-slate-500 dark:text-slate-400";
 
 type CourseCardProps = {
   course: RaceCategory;
@@ -83,12 +81,7 @@ export function CourseCard({ course, eventSlug, year }: CourseCardProps) {
             <MapPin className="size-3.5 shrink-0 opacity-90" aria-hidden />
             네이버맵
           </a>
-        ) : (
-          <span className={NAVER_MAP_BTN_DISABLED_CLASS} aria-disabled>
-            <MapPin className="size-3.5 shrink-0" aria-hidden />
-            네이버맵
-          </span>
-        )}
+        ) : null}
       </div>
     </div>
   );
@@ -117,14 +110,17 @@ export function CourseInfoGrid({
   courses,
 }: CourseInfoGridProps) {
   const withName = courses?.filter((c) => c.name?.trim()) ?? [];
-  const coursesWithLinks = withName.filter(hasAnyCourseLink);
-  if (coursesWithLinks.length === 0) return null;
+  if (withName.length === 0) return null;
 
   return (
-    <section className="space-y-3 mb-8" role="region" aria-label="코스 정보">
-      <h2 className="text-lg font-bold text-foreground pl-1">코스 정보</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-        {coursesWithLinks.map((course) => (
+    <section
+      className="mb-8 scroll-mt-28 space-y-3"
+      role="region"
+      aria-label="코스 정보"
+    >
+      <h2 className="pl-1 text-lg font-bold text-foreground">코스 정보</h2>
+      <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
+        {withName.map((course) => (
           <CourseCard
             key={course.id}
             course={course}

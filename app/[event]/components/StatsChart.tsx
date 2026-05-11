@@ -24,7 +24,7 @@ export const StatsChart = ({ statistics, eventId }: Props) => {
       {statistics.map((yearData) => {
         return (
           <motion.div
-            className="h-full w-full"
+            className="w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -33,7 +33,7 @@ export const StatsChart = ({ statistics, eventId }: Props) => {
             <div
               className={`${
                 isTablet ? "flex flex-col gap-8" : "grid grid-cols-2 gap-12"
-              } h-full`}
+              } w-full`}
             >
               {yearData.distributions.map((distribution, index) => {
                 const start =
