@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useMobile } from "@/hooks/use-mobile";
-import type { EventYearStats, EventYearStatsWithCourses } from "@/lib/types";
+import type { EventYearStatsWithCourses } from "@/lib/types";
 import { DistributionChart } from "../../../components/distribution-chart";
 import dayjs from "dayjs";
 
@@ -48,7 +48,7 @@ export const StatsChart = ({ statistics, eventId }: Props) => {
                 return (
                   <DistributionChart
                     key={distribution.courseId}
-                    title={`${distribution.courseName} (${yearData.year}년)`}
+                    title={distribution.courseName}
                     eventId={eventId}
                     course={distribution.courseId}
                     year={yearData.year}

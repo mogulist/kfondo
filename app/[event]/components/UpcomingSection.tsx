@@ -1,8 +1,9 @@
-import type { Event, RaceCategory } from "@/lib/types";
+import type { Event } from "@/lib/types";
 import { getDaysUntilEvent, normalizeEventDate } from "@/lib/date";
 import dayjs from "dayjs";
 import { MapPin } from "lucide-react";
 import { DDayCard } from "./DDayCard";
+import { CourseCard, hasAnyCourseLink } from "./course-card";
 
 const WEEKDAY_KO = ["일", "월", "화", "수", "목", "금", "토"];
 const UPCOMING_WITHOUT_RECORD_DAYS = 7;
@@ -14,31 +15,6 @@ const RECORD_COLLECTING_NOTICE =
 type Props = {
   event: Event;
 };
-
-const COURSE_LINK_STYLES: {
-  label: string;
-  key: keyof Pick<
-    RaceCategory,
-    "officialSiteUrl" | "stravaUrl" | "rideWithGpsUrl"
-  >;
-  btnClass: string;
-}[] = [
-  {
-    label: "공식 사이트",
-    key: "officialSiteUrl",
-    btnClass: "bg-slate-500 hover:bg-slate-700 text-white",
-  },
-  {
-    label: "Strava",
-    key: "stravaUrl",
-    btnClass: "bg-[#fc4c02] hover:bg-[#e04502] text-white",
-  },
-  {
-    label: "RideWithGPS",
-    key: "rideWithGpsUrl",
-    btnClass: "bg-[#2d7dd2] hover:bg-[#2569b8] text-white",
-  },
-];
 
 export const UpcomingSection = ({ event }: Props) => {
   const latestYear = event.years.length > 0 ? Math.max(...event.years) : null;
@@ -81,7 +57,8 @@ export const UpcomingSection = ({ event }: Props) => {
   const coursesWithLinks = latestCourses.filter(hasAnyCourseLink);
   const hasCourseInfo = coursesWithLinks.length > 0;
 
-  if (!showDDayCard && !noticeMessage && !officialSiteUrl && !hasCourseInfo) return null;
+  if (!showDDayCard && !noticeMessage && !officialSiteUrl && !hasCourseInfo)
+    return null;
 
   return (
     <div className="space-y-4">
@@ -129,83 +106,6 @@ export const UpcomingSection = ({ event }: Props) => {
     </div>
   );
 };
-
-const NAVER_MAP_BTN_CLASS =
-  "bg-[#03c75a] hover:bg-[#02b350] text-white inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors";
-const NAVER_MAP_BTN_DISABLED_CLASS =
-  "border border-slate-400 bg-slate-200 text-slate-600 cursor-not-allowed inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap dark:bg-slate-700 dark:border-slate-500 dark:text-slate-400";
-
-type CourseCardProps = {
-  course: RaceCategory;
-  eventSlug: string;
-  year: number;
-};
-
-function CourseCard({ course, eventSlug, year }: CourseCardProps) {
-  const distanceLabel =
-    typeof course.distance === "number" && course.distance > 0
-      ? ` (${course.distance}km)`
-      : "";
-  const hasGpx = typeof course.gpxBlobUrl === "string" && course.gpxBlobUrl.trim().length > 0;
-  const mapHref = hasGpx ? `/${eventSlug}/map/${course.id}?year=${year}` : null;
-
-  return (
-    <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-      <p className="font-semibold text-foreground mb-3">
-        {course.name}
-        {distanceLabel}
-      </p>
-      <div className="flex flex-wrap gap-2">
-        {COURSE_LINK_STYLES.filter(({ key }) => {
-          const url = course[key];
-          return typeof url === "string" && url.trim().length > 0;
-        }).map(({ label, key, btnClass }) => {
-          const url = course[key]!.trim();
-          const pillClass =
-            "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors";
-          return (
-            <a
-              key={key}
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${btnClass} ${pillClass}`}
-            >
-              <MapPin className="size-3.5 shrink-0 opacity-90" aria-hidden />
-              {label}
-            </a>
-          );
-        })}
-        {mapHref ? (
-          <a
-            href={mapHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={NAVER_MAP_BTN_CLASS}
-          >
-            <MapPin className="size-3.5 shrink-0 opacity-90" aria-hidden />
-            네이버맵
-          </a>
-        ) : (
-          <span className={NAVER_MAP_BTN_DISABLED_CLASS} aria-disabled>
-            <MapPin className="size-3.5 shrink-0" aria-hidden />
-            네이버맵
-          </span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function hasAnyCourseLink(course: RaceCategory): boolean {
-  const keys: (keyof Pick<
-    RaceCategory,
-    "officialSiteUrl" | "stravaUrl" | "rideWithGpsUrl" | "gpxBlobUrl"
-  >)[] = ["officialSiteUrl", "stravaUrl", "rideWithGpsUrl", "gpxBlobUrl"];
-  return keys.some(
-    (k) => typeof course[k] === "string" && (course[k] as string).trim().length > 0,
-  );
-}
 
 function getOfficialSiteUrl(event: Event): string | undefined {
   const yearsWithUrl = event.years.filter((y) =>
