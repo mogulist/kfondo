@@ -8,12 +8,10 @@ import {
   YAxis,
 } from "recharts";
 import React from "react";
-import Link from "next/link";
-import posthog from "posthog-js";
-import { Button } from "@/components/ui/button";
-
 export type DistributionChartProps = {
-  title: string;
+  /** 접근성용(차트 영역 라벨). 헤더는 `toolbar`에서 렌더링합니다. */
+  ariaLabel: string;
+  toolbar: React.ReactNode;
   data: any[];
   color: string;
   interval: number;
@@ -25,13 +23,11 @@ export type DistributionChartProps = {
     interval: number
   ) => string;
   CustomTooltip: React.FC<any>;
-  eventId: string;
-  course: string;
-  year: number;
 };
 
 export function DistributionChart({
-  title,
+  ariaLabel,
+  toolbar,
   data,
   color,
   interval,
@@ -39,34 +35,14 @@ export function DistributionChart({
   comment,
   formatXAxisTick,
   CustomTooltip,
-  eventId,
-  course,
-  year,
 }: DistributionChartProps) {
-  const findByRecordHref = `/find-by-record/${eventId}/${course}/${year}`;
-
   return (
-    <div className={isMobile ? "h-[350px] w-full" : "h-[400px] w-full"}>
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-medium">{title}</h3>
-        <Button asChild variant="outline" size="sm" className="ml-2 text-xs font-normal">
-          <Link
-            href={findByRecordHref}
-            onClick={() =>
-              posthog.capture("find_by_record_entry_clicked", {
-                event_id: eventId,
-                course_id: course,
-                year: String(year),
-                is_past_year: year !== new Date().getFullYear(),
-              })
-            }
-          >
-            기록 찾기
-          </Link>
-        </Button>
-      </div>
+    <div className="flex w-full flex-col">
+      <div className="mb-4">{toolbar}</div>
       <div
-        className={`h-[calc(100%-2rem)] w-full${
+        role="img"
+        aria-label={ariaLabel}
+        className={`${isMobile ? "h-[300px]" : "h-[360px]"} w-full${
           isMobile ? " overflow-x-auto overscroll-contain touch-pan-x" : ""
         }`}
       >
@@ -129,12 +105,10 @@ export function DistributionChart({
             </AreaChart>
           </ResponsiveContainer>
         </ChartContainer>
-        {comment && (
-          <p className="text-xs text-muted-foreground mt-1 mb-8 text-center">
-            {comment}
-          </p>
-        )}
       </div>
+      {comment ? (
+        <p className="mt-2 text-center text-xs text-muted-foreground">{comment}</p>
+      ) : null}
     </div>
   );
 }

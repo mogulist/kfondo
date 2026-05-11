@@ -2,7 +2,6 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Event, EventYearStatsWithCourses } from "@/lib/types";
-import { CourseInfoGrid } from "./course-card";
 import { StatsChart } from "./StatsChart";
 
 type Props = {
@@ -36,12 +35,11 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
             value={String(yearData.year)}
             className="mt-6"
           >
-            <CourseInfoGrid
-              eventSlug={event.id}
-              year={yearData.year}
+            <StatsChart
+              statistics={[yearData]}
+              eventId={event.id}
               courses={courses}
             />
-            <StatsChart statistics={[yearData]} eventId={event.id} />
           </TabsContent>
         );
       })}
