@@ -46,7 +46,7 @@ export const StatsChart = ({ statistics, eventId, courses }: Props) => {
             transition={{ duration: 0.5 }}
             key={yearData.year}
           >
-            <div className="flex w-full flex-col gap-12">
+            <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
               {yearData.distributions.map((distribution, index) => {
                 const start =
                   distribution.distribution[0]?.timeRange.split(" - ")[0];
