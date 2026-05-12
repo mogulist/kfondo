@@ -7,19 +7,7 @@ import type {
   RaceRecord,
 } from "./types";
 import { generateTimeDistributionFromRecords } from "./record-stats";
-import { timeToSeconds } from "./utils";
-
-// 레코드 파싱 헬퍼 함수
-function parseRecords(rawRecords: any[]): RaceRecord[] {
-  return rawRecords.map((r: any) => ({
-    bibNo: String(r.BIB_NO),
-    gender: r.Gender,
-    event: r.Event,
-    time: r.Time,
-    status: r.Status,
-    timeInSeconds: r.Time ? timeToSeconds(r.Time) : undefined,
-  }));
-}
+import { parseJsonRecordsToRaceRecords } from "./race-records-parse";
 
 // 레코드 가져오기 (Blob URL 우선, 로컬 파일 폴백)
 async function fetchRecords(
@@ -37,7 +25,7 @@ async function fetchRecords(
       });
       if (!response.ok) throw new Error(`Fetch failed: ${response.statusText}`);
       const rawRecords = await response.json();
-      return parseRecords(rawRecords);
+      return parseJsonRecordsToRaceRecords(rawRecords);
     } catch (error) {
       console.warn(
         `[Stats] Blob fetch failed for ${event.id} ${year}, falling back to local file.`,
@@ -46,12 +34,14 @@ async function fetchRecords(
     }
   }
 
-  // 2. 로컬 파일 폴백 (서버 환경에서만)
-  if (typeof window === "undefined") {
+  // 2. 로컬 파일 폴백 (Node SSR 또는 jest jsdom 등에서 로컬 JSON 사용)
+  const canUseFilesystem =
+    typeof window === "undefined" || Boolean(process.env.JEST_WORKER_ID);
+  if (canUseFilesystem) {
     const filePath = path.join(dataDir, `${event.id}_${year}.json`);
     if (fs.existsSync(filePath)) {
       const raw = fs.readFileSync(filePath, "utf-8");
-      return parseRecords(JSON.parse(raw));
+      return parseJsonRecordsToRaceRecords(JSON.parse(raw));
     }
   }
 
