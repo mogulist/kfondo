@@ -184,9 +184,8 @@ const YearChartsSection = ({
                   onValueChange={(value) => {
                     if (value) setGenderSegment(value as GenderSegment);
                   }}
-                  variant="outline"
                   size="sm"
-                  className="w-fit justify-start gap-0 overflow-hidden rounded-md border border-input bg-background p-0 shadow-sm"
+                  className="w-fit justify-start gap-0 rounded-md bg-muted p-1 text-muted-foreground"
                   aria-label="기록 분포 성별"
                 >
                   {SEGMENT_ITEMS.map(({ segment, label }) => {
@@ -201,7 +200,7 @@ const YearChartsSection = ({
                         value={segment}
                         disabled={disableNonOpen}
                         title={titleHint}
-                        className="h-8 py-0 leading-none rounded-none border-0 border-r border-input shadow-none ring-offset-0 last:border-r-0 focus-visible:z-10"
+                        className="h-7 rounded-sm bg-transparent px-3 py-0 leading-none shadow-none ring-offset-0 hover:bg-transparent hover:text-foreground data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-sm focus-visible:z-10"
                       >
                         {label}
                       </ToggleGroupItem>
