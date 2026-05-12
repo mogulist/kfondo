@@ -1,9 +1,13 @@
 "use client";
 
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import * as React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  fetchRaceRecordsBlob,
+  raceRecordsBlobQueryKey,
+} from "@/lib/race-records-blob-query";
 import type { Event, EventYearStatsWithCourses, RaceRecord } from "@/lib/types";
-import { parseJsonRecordsToRaceRecords } from "@/lib/race-records-parse";
 import { StatsChart, type RaceRecordsClientState } from "./StatsChart";
 
 type Props = {
@@ -11,76 +15,63 @@ type Props = {
   yearlyStats: EventYearStatsWithCourses[];
 };
 
-export function EventYearTabs({ event, yearlyStats }: Props) {
-  const defaultYearStr = String(yearlyStats[0].year);
-  const [tab, setTab] = React.useState(defaultYearStr);
+const BLOB_STALE_MS = Number.POSITIVE_INFINITY;
+const BLOB_GC_MS = 1000 * 60 * 60 * 24 * 7;
 
-  const activeYear = Number(tab);
+export function EventYearTabs({ event, yearlyStats }: Props) {
+  const hasYearStats = yearlyStats.length > 0;
+  const defaultYearStr = hasYearStats ? String(yearlyStats[0].year) : "";
+  const [tab, setTab] = React.useState(defaultYearStr);
+  const queryClient = useQueryClient();
+
+  const activeYear = hasYearStats ? Number(tab) : 0;
   const activeBlobUrl =
     event.yearDetails[activeYear]?.recordsBlobUrl?.trim() ?? "";
 
-  const [recordsByYear, setRecordsByYear] = React.useState<
-    Partial<Record<number, RaceRecordsClientState>>
-  >({});
+  const recordsQuery = useQuery({
+    queryKey: raceRecordsBlobQueryKey(event.id, activeYear),
+    queryFn: ({ signal }) => fetchRaceRecordsBlob(activeBlobUrl, signal),
+    enabled: hasYearStats && Boolean(activeBlobUrl),
+    staleTime: BLOB_STALE_MS,
+    gcTime: BLOB_GC_MS,
+  });
 
-  const recordsByYearRef = React.useRef(recordsByYear);
-  recordsByYearRef.current = recordsByYear;
-
-  React.useEffect(() => {
-    let cancelled = false;
-    const year = activeYear;
-    const blobUrl = activeBlobUrl;
-
-    const existing = recordsByYearRef.current[year];
-    if (existing?.status === "loaded") return;
-
-    if (!blobUrl) {
-      setRecordsByYear((prev) => {
-        if (prev[year]?.status === "loaded") return prev;
-        return { ...prev, [year]: { status: "no_blob" } };
-      });
-      return;
-    }
-
-    setRecordsByYear((prev) => {
-      const cur = prev[year];
-      if (cur?.status === "loaded") return prev;
-      if (cur?.status === "loading") return prev;
-      return { ...prev, [year]: { status: "loading" } };
-    });
-
-    fetch(blobUrl)
-      .then((res) => {
-        if (!res.ok) throw new Error(String(res.status));
-        return res.json();
-      })
-      .then((raw) => {
-        if (cancelled) return;
-        const records: RaceRecord[] = parseJsonRecordsToRaceRecords(
-          Array.isArray(raw) ? raw : [],
-        );
-        setRecordsByYear((prev) => ({
-          ...prev,
-          [year]: { status: "loaded", records },
-        }));
-      })
-      .catch(() => {
-        if (cancelled) return;
-        setRecordsByYear((prev) => ({ ...prev, [year]: { status: "error" } }));
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [activeYear, activeBlobUrl, event.id]);
-
-  if (yearlyStats.length === 0) return null;
+  const { data: recordsData, isError, isLoading } = recordsQuery;
 
   const getRaceRecordsState = React.useCallback(
-    (year: number): RaceRecordsClientState =>
-      recordsByYear[year] ?? { status: "pending" },
-    [recordsByYear],
+    (year: number): RaceRecordsClientState => {
+      const blobUrl = event.yearDetails[year]?.recordsBlobUrl?.trim() ?? "";
+      if (!blobUrl) return { status: "no_blob" };
+
+      if (year === activeYear) {
+        if (!activeBlobUrl) return { status: "no_blob" };
+        if (recordsData !== undefined)
+          return { status: "loaded", records: recordsData };
+        if (isError) return { status: "error" };
+        if (isLoading) return { status: "loading" };
+        return { status: "pending" };
+      }
+
+      const cached = queryClient.getQueryData<RaceRecord[]>(
+        raceRecordsBlobQueryKey(event.id, year),
+      );
+      if (cached !== undefined) return { status: "loaded", records: cached };
+
+      return { status: "pending" };
+    },
+    [
+      event.id,
+      event.yearDetails,
+      activeYear,
+      activeBlobUrl,
+      queryClient,
+      recordsData,
+      isError,
+      isLoading,
+    ],
   );
+
+  if (!hasYearStats) return null;
 
   return (
     <Tabs value={tab} onValueChange={setTab} className="w-full">

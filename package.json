@@ -54,6 +54,7 @@
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.93.1",
     "@tailwindcss/postcss": "latest",
+    "@tanstack/react-query": "^5.100.10",
     "@tanstack/react-table": "^8.21.3",
     "@vercel/analytics": "^1.5.0",
     "@vercel/blob": "^2.0.1",

@@ -8,6 +8,7 @@ import { AnalyticsWithExclusions } from "@/components/analytics-with-exclusions"
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "@/components/footer";
+import { ReactQueryProvider } from "@/components/react-query-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,12 +26,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <RootLayoutContent footer={<Footer />}>
-            {children}
-            <AnalyticsWithExclusions />
-            <SpeedInsights />
-            <Toaster />
-          </RootLayoutContent>
+          <ReactQueryProvider>
+            <RootLayoutContent footer={<Footer />}>
+              {children}
+              <AnalyticsWithExclusions />
+              <SpeedInsights />
+              <Toaster />
+            </RootLayoutContent>
+          </ReactQueryProvider>
         </ThemeProvider>
       </body>
     </html>
