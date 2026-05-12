@@ -1,26 +1,89 @@
 "use client";
 
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import * as React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { Event, EventYearStatsWithCourses } from "@/lib/types";
-import { StatsChart } from "./StatsChart";
+import {
+  fetchRaceRecordsBlob,
+  raceRecordsBlobQueryKey,
+} from "@/lib/race-records-blob-query";
+import type { Event, EventYearStatsWithCourses, RaceRecord } from "@/lib/types";
+import { StatsChart, type RaceRecordsClientState } from "./StatsChart";
 
 type Props = {
   event: Event;
   yearlyStats: EventYearStatsWithCourses[];
 };
 
-export function EventYearTabs({ event, yearlyStats }: Props) {
-  if (yearlyStats.length === 0) return null;
+const BLOB_STALE_MS = Number.POSITIVE_INFINITY;
+const BLOB_GC_MS = 1000 * 60 * 60 * 24 * 7;
 
-  const defaultYear = String(yearlyStats[0].year);
+export function EventYearTabs({ event, yearlyStats }: Props) {
+  const hasYearStats = yearlyStats.length > 0;
+  const defaultYearStr = hasYearStats ? String(yearlyStats[0].year) : "";
+  const [tab, setTab] = React.useState(defaultYearStr);
+  const queryClient = useQueryClient();
+
+  const activeYear = hasYearStats ? Number(tab) : 0;
+  const activeBlobUrl =
+    event.yearDetails[activeYear]?.recordsBlobUrl?.trim() ?? "";
+
+  const recordsQuery = useQuery({
+    queryKey: raceRecordsBlobQueryKey(event.id, activeYear),
+    queryFn: ({ signal }) => fetchRaceRecordsBlob(activeBlobUrl, signal),
+    enabled: hasYearStats && Boolean(activeBlobUrl),
+    staleTime: BLOB_STALE_MS,
+    gcTime: BLOB_GC_MS,
+  });
+
+  const { data: recordsData, isError, isLoading } = recordsQuery;
+
+  const getRaceRecordsState = React.useCallback(
+    (year: number): RaceRecordsClientState => {
+      const blobUrl = event.yearDetails[year]?.recordsBlobUrl?.trim() ?? "";
+      if (!blobUrl) return { status: "no_blob" };
+
+      if (year === activeYear) {
+        if (!activeBlobUrl) return { status: "no_blob" };
+        if (recordsData !== undefined)
+          return { status: "loaded", records: recordsData };
+        if (isError) return { status: "error" };
+        if (isLoading) return { status: "loading" };
+        return { status: "pending" };
+      }
+
+      const cached = queryClient.getQueryData<RaceRecord[]>(
+        raceRecordsBlobQueryKey(event.id, year),
+      );
+      if (cached !== undefined) return { status: "loaded", records: cached };
+
+      return { status: "pending" };
+    },
+    [
+      event.id,
+      event.yearDetails,
+      activeYear,
+      activeBlobUrl,
+      queryClient,
+      recordsData,
+      isError,
+      isLoading,
+    ],
+  );
+
+  if (!hasYearStats) return null;
 
   return (
-    <Tabs defaultValue={defaultYear} className="w-full">
-      <div className="sticky top-12 z-40 -mx-4 border-b border-border bg-background px-4 py-2 sm:mx-0 sm:px-0">
-        <div className="overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <TabsList className="inline-flex h-auto min-h-10 w-max max-w-full flex-nowrap justify-start gap-1">
+    <Tabs value={tab} onValueChange={setTab} className="w-full">
+      <div className="sticky top-12 z-40 -mx-4 bg-background px-4 py-2 sm:mx-0 sm:px-0">
+        <div className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <TabsList className="flex w-max min-w-full flex-nowrap justify-start gap-0 sm:inline-flex sm:w-auto sm:min-w-0 sm:gap-1">
             {yearlyStats.map(({ year }) => (
-              <TabsTrigger key={year} value={String(year)} className="shrink-0">
+              <TabsTrigger
+                key={year}
+                value={String(year)}
+                className="min-w-[76px] flex-1 whitespace-nowrap px-3 sm:flex-none sm:min-w-[88px] sm:px-5"
+              >
                 {year}년
               </TabsTrigger>
             ))}
@@ -37,8 +100,10 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
           >
             <StatsChart
               statistics={[yearData]}
+              event={event}
               eventId={event.id}
               courses={courses}
+              getRaceRecordsState={getRaceRecordsState}
             />
           </TabsContent>
         );

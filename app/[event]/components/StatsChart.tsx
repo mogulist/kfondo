@@ -3,22 +3,46 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import posthog from "posthog-js";
-import { useMobile } from "@/hooks/use-mobile";
-import type { EventYearStatsWithCourses, RaceCategory } from "@/lib/types";
-import { DistributionChart } from "../../../components/distribution-chart";
+import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import dayjs from "dayjs";
+import { useMobile } from "@/hooks/use-mobile";
+import {
+  filterRaceRecordsByGender,
+  type GenderSegment,
+} from "@/lib/record-gender-filter";
+import { generateTimeDistributionFromRecords } from "@/lib/record-stats";
+import type {
+  Event,
+  EventYearStatsWithCourses,
+  RaceCategory,
+  RaceRecord,
+  TimeDistribution,
+} from "@/lib/types";
+import { DistributionChart } from "../../../components/distribution-chart";
 import { CourseViewSelect } from "./course-view-select";
 
 const colors = ["hsl(215, 90%, 50%)", "hsl(150, 80%, 40%)", "hsl(0, 80%, 60%)"];
 
+export type RaceRecordsClientState =
+  | { status: "pending" }
+  | { status: "loading" }
+  | { status: "loaded"; records: RaceRecord[] }
+  | { status: "no_blob" }
+  | { status: "error" };
+
 type Props = {
   statistics: EventYearStatsWithCourses[];
+  event: Event;
   eventId: string;
   courses?: RaceCategory[];
+  getRaceRecordsState: (year: number) => RaceRecordsClientState;
 };
 
-function formatCourseStatsLine(course: RaceCategory | undefined): string | null {
+function formatCourseStatsLine(
+  course: RaceCategory | undefined,
+): string | null {
   if (!course) return null;
   const parts: string[] = [];
   if (typeof course.distance === "number" && course.distance > 0)
@@ -30,113 +54,214 @@ function formatCourseStatsLine(course: RaceCategory | undefined): string | null 
   return parts.length > 0 ? parts.join(" · ") : null;
 }
 
-export const StatsChart = ({ statistics, eventId, courses }: Props) => {
+const SEGMENT_ITEMS: readonly { segment: GenderSegment; label: string }[] = [
+  { segment: "open", label: "통합" },
+  { segment: "male", label: "남" },
+  { segment: "female", label: "여" },
+] as const;
+
+type YearChartsSectionProps = {
+  yearData: EventYearStatsWithCourses;
+  eventId: string;
+  event: Event;
+  courses?: RaceCategory[];
+  raceRecordsState: RaceRecordsClientState;
+  isMobile: boolean;
+};
+
+const YearChartsSection = ({
+  yearData,
+  eventId,
+  event,
+  courses,
+  raceRecordsState,
+  isMobile,
+}: YearChartsSectionProps) => {
+  const [genderSegment, setGenderSegment] =
+    React.useState<GenderSegment>("open");
+
+  React.useEffect(() => {
+    if (
+      genderSegment !== "open" &&
+      (raceRecordsState.status === "error" ||
+        raceRecordsState.status === "no_blob")
+    )
+      setGenderSegment("open");
+  }, [genderSegment, raceRecordsState.status]);
+
+  const canFilterByGender =
+    raceRecordsState.status === "loaded" &&
+    Boolean(event.yearDetails[yearData.year]?.recordsBlobUrl?.trim());
+
+  return (
+    <motion.div
+      className="w-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      key={yearData.year}
+    >
+      <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
+        {yearData.distributions.map((distribution, index) => {
+          let chartData: TimeDistribution[];
+
+          if (genderSegment === "open") {
+            chartData = distribution.distribution;
+          } else if (raceRecordsState.status === "loaded") {
+            const filtered = filterRaceRecordsByGender(
+              raceRecordsState.records,
+              genderSegment,
+            );
+            chartData = generateTimeDistributionFromRecords(
+              filtered,
+              distribution.courseName,
+              2,
+              yearData.year,
+            );
+          } else {
+            chartData = distribution.distribution;
+          }
+
+          const start = chartData[0]?.timeRange.split(" - ")[0];
+          const end = chartData.at(-1)?.timeRange.split(" - ")[0];
+          const interval =
+            start && end ? getTickIntervalByRange(start, end) : 10;
+          const color = colors[index];
+          const courseMeta = courses?.find(
+            (c) => c.id === distribution.courseId,
+          );
+          const statsLine = formatCourseStatsLine(courseMeta);
+          const findByRecordHref = `/find-by-record/${eventId}/${distribution.courseId}/${yearData.year}`;
+
+          const toolbar = (
+            <>
+              <div className="flex flex-row items-start justify-between gap-2 sm:gap-4">
+                <div className="min-w-0 flex-1 space-y-0.5 pr-1">
+                  <h3 className="text-lg font-semibold text-foreground">
+                    {distribution.courseName}
+                  </h3>
+                  {statsLine ? (
+                    <p className="text-xs text-muted-foreground sm:text-sm">
+                      {statsLine}
+                    </p>
+                  ) : null}
+                </div>
+                <div className="flex shrink-0 flex-nowrap items-center gap-2">
+                  {courseMeta ? (
+                    <CourseViewSelect
+                      course={courseMeta}
+                      eventSlug={eventId}
+                      year={yearData.year}
+                    />
+                  ) : null}
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="text-xs font-normal sm:text-sm"
+                  >
+                    <Link
+                      href={findByRecordHref}
+                      onClick={() =>
+                        posthog.capture("find_by_record_entry_clicked", {
+                          event_id: eventId,
+                          course_id: distribution.courseId,
+                          year: String(yearData.year),
+                          is_past_year:
+                            yearData.year !== new Date().getFullYear(),
+                        })
+                      }
+                    >
+                      기록 찾기
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+              <div className="mt-3 flex justify-start">
+                <ToggleGroup
+                  type="single"
+                  value={genderSegment}
+                  onValueChange={(value) => {
+                    if (value) setGenderSegment(value as GenderSegment);
+                  }}
+                  size="sm"
+                  className="w-fit justify-start gap-0 rounded-md bg-muted/60 p-0.5 text-muted-foreground"
+                  aria-label="기록 분포 성별"
+                >
+                  {SEGMENT_ITEMS.map(({ segment, label }) => {
+                    const disableNonOpen =
+                      segment !== "open" && !canFilterByGender;
+                    const titleHint = disableNonOpen
+                      ? "기록 원본을 불러올 수 없을 때는 통합만 볼 수 있습니다."
+                      : undefined;
+                    return (
+                      <ToggleGroupItem
+                        key={`${distribution.courseId}-${segment}`}
+                        value={segment}
+                        disabled={disableNonOpen}
+                        title={titleHint}
+                        className="h-7 min-h-7 rounded-sm border border-transparent bg-transparent px-2.5 py-0 text-sm font-medium leading-none shadow-none ring-offset-0 hover:bg-transparent hover:text-foreground data-[state=on]:border-input data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-none focus-visible:z-10"
+                      >
+                        {label}
+                      </ToggleGroupItem>
+                    );
+                  })}
+                </ToggleGroup>
+              </div>
+            </>
+          );
+
+          return (
+            <DistributionChart
+              key={distribution.courseId}
+              ariaLabel={`${distribution.courseName} ${yearData.year}년 기록 분포`}
+              toolbar={toolbar}
+              data={chartData}
+              color={color}
+              interval={interval}
+              isMobile={isMobile}
+              comment={index === 0 ? yearData.comment : undefined}
+              formatXAxisTick={formatXAxisTick}
+              CustomTooltip={CustomTooltip}
+            />
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+};
+
+export const StatsChart = ({
+  statistics,
+  event,
+  eventId,
+  courses,
+  getRaceRecordsState,
+}: Props) => {
   const isMobile = useMobile();
 
   if (!statistics || statistics.length === 0) return null;
 
   return (
     <div className="flex flex-col gap-12">
-      {statistics.map((yearData) => {
-        return (
-          <motion.div
-            className="w-full"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            key={yearData.year}
-          >
-            <div className="flex w-full flex-col gap-12">
-              {yearData.distributions.map((distribution, index) => {
-                const start =
-                  distribution.distribution[0]?.timeRange.split(" - ")[0];
-                const end = distribution.distribution
-                  .at(-1)
-                  ?.timeRange.split(" - ")[0];
-                const interval =
-                  start && end ? getTickIntervalByRange(start, end) : 10;
-                const color = colors[index];
-                const courseMeta = courses?.find(
-                  (c) => c.id === distribution.courseId,
-                );
-                const statsLine = formatCourseStatsLine(courseMeta);
-                const findByRecordHref = `/find-by-record/${eventId}/${distribution.courseId}/${yearData.year}`;
-
-                const toolbar = (
-                  <div className="flex flex-row items-start justify-between gap-2 sm:gap-4">
-                    <div className="min-w-0 flex-1 space-y-0.5 pr-1">
-                      <h3 className="text-lg font-semibold text-foreground">
-                        {distribution.courseName}
-                      </h3>
-                      {statsLine ? (
-                        <p className="text-xs text-muted-foreground sm:text-sm">
-                          {statsLine}
-                        </p>
-                      ) : null}
-                    </div>
-                    <div className="flex shrink-0 flex-nowrap items-center gap-2">
-                      {courseMeta ? (
-                        <CourseViewSelect
-                          course={courseMeta}
-                          eventSlug={eventId}
-                          year={yearData.year}
-                        />
-                      ) : null}
-                      <Button
-                        asChild
-                        variant="outline"
-                        size="sm"
-                        className="text-xs font-normal sm:text-sm"
-                      >
-                        <Link
-                          href={findByRecordHref}
-                          onClick={() =>
-                            posthog.capture("find_by_record_entry_clicked", {
-                              event_id: eventId,
-                              course_id: distribution.courseId,
-                              year: String(yearData.year),
-                              is_past_year:
-                                yearData.year !== new Date().getFullYear(),
-                            })
-                          }
-                        >
-                          기록 찾기
-                        </Link>
-                      </Button>
-                    </div>
-                  </div>
-                );
-
-                return (
-                  <DistributionChart
-                    key={distribution.courseId}
-                    ariaLabel={`${distribution.courseName} ${yearData.year}년 기록 분포`}
-                    toolbar={toolbar}
-                    data={distribution.distribution}
-                    color={color}
-                    interval={interval}
-                    isMobile={isMobile}
-                    comment={index === 0 ? yearData.comment : undefined}
-                    formatXAxisTick={formatXAxisTick}
-                    CustomTooltip={CustomTooltip}
-                  />
-                );
-              })}
-            </div>
-          </motion.div>
-        );
-      })}
+      {statistics.map((yearData) => (
+        <YearChartsSection
+          key={yearData.year}
+          yearData={yearData}
+          eventId={eventId}
+          event={event}
+          courses={courses}
+          raceRecordsState={getRaceRecordsState(yearData.year)}
+          isMobile={isMobile}
+        />
+      ))}
     </div>
   );
 };
 
-// 툴팁 시간 범위를 명확하게 포맷팅하는 함수
 const formatTooltipTimeRange = (timeRange: string, intervalMinutes = 2) => {
-  // timeRange: "4:30 - 4:32" 형태
   const [start, end] = timeRange.split(" - ");
-  // 시작 시간 파싱
   const startTime = dayjs(`2000-01-01 ${start.padStart(5, "0")}:00`);
-  // interval 계산 (기존 구간의 분 차이, 기본값 2분)
   let interval = intervalMinutes;
   if (start && end) {
     const [sh, sm] = start.split(":").map(Number);
@@ -148,17 +273,15 @@ const formatTooltipTimeRange = (timeRange: string, intervalMinutes = 2) => {
   return `${startTime.format("HH:mm:00")} - ${endTime.format("HH:mm:ss")}`;
 };
 
-// 커스텀 툴팁 컴포넌트
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
-    // label이 timeRange임
     const timeRange = formatTooltipTimeRange(
       label,
-      payload[0]?.payload?.interval || 2
+      payload[0]?.payload?.interval || 2,
     );
     const participants = payload[0].value;
-    const percentile = payload[0].payload.percentile; // 누적 %
-    const cumulativeCount = payload[0].payload.cumulativeCount; // 누적 명수
+    const percentile = payload[0].payload.percentile;
+    const cumulativeCount = payload[0].payload.cumulativeCount;
 
     return (
       <div className="bg-background border border-border rounded-md shadow-md p-3 text-sm">
@@ -176,32 +299,30 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-// 시간 문자열("4:00" 등)을 분 단위로 변환
 const timeStringToMinutes = (time: string) => {
   const [hours, minutes] = time.split(":").map(Number);
   return hours * 60 + minutes;
 };
 
-// 분포의 시작~끝 시간 차이에 따라 interval 결정
 const getTickIntervalByRange = (start: string, end: string) => {
   const startMin = timeStringToMinutes(start);
   const endMin = timeStringToMinutes(end);
   const diff = endMin - startMin;
-  if (diff >= 600) return 60; // 10시간 이상
-  if (diff >= 360) return 30; // 6시간 이상
-  if (diff >= 240) return 20; // 4시간 이상
-  if (diff >= 180) return 12; // 3시간 이상
-  return 10; // 그 외
+  if (diff >= 600) return 60;
+  if (diff >= 360) return 30;
+  if (diff >= 240) return 20;
+  if (diff >= 180) return 12;
+  return 10;
 };
 
 const formatXAxisTick = (
   value: string,
   isMobile: boolean,
-  intervalMinutes: number
+  intervalMinutes: number,
 ) => {
   const parts = value.split(" - ");
   const time = parts[0];
-  const [hours, minutes] = time.split(":");
+  const [, minutes] = time.split(":");
   if (parseInt(minutes, 10) % intervalMinutes === 0) {
     return time;
   }
