@@ -75,11 +75,15 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
 
   return (
     <Tabs value={tab} onValueChange={setTab} className="w-full">
-      <div className="sticky top-12 z-40 -mx-4 border-b border-border bg-background px-4 py-2 sm:mx-0 sm:px-0">
-        <div className="overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <TabsList className="inline-flex h-auto min-h-10 w-max max-w-full flex-nowrap justify-start gap-1">
+      <div className="sticky top-12 z-40 -mx-4 border-b border-border bg-background px-4 py-2 shadow-sm sm:mx-0 sm:px-0">
+        <div className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <TabsList className="flex w-full min-w-max flex-nowrap justify-start gap-0 sm:w-auto sm:gap-1">
             {yearlyStats.map(({ year }) => (
-              <TabsTrigger key={year} value={String(year)} className="shrink-0">
+              <TabsTrigger
+                key={year}
+                value={String(year)}
+                className="h-10 flex-1 shrink-0 px-4 sm:flex-none sm:min-w-[88px]"
+              >
                 {year}년
               </TabsTrigger>
             ))}
