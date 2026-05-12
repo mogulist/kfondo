@@ -5,6 +5,7 @@ import Link from "next/link";
 import posthog from "posthog-js";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import dayjs from "dayjs";
 import { useMobile } from "@/hooks/use-mobile";
 import {
@@ -39,7 +40,9 @@ type Props = {
   getRaceRecordsState: (year: number) => RaceRecordsClientState;
 };
 
-function formatCourseStatsLine(course: RaceCategory | undefined): string | null {
+function formatCourseStatsLine(
+  course: RaceCategory | undefined,
+): string | null {
   if (!course) return null;
   const parts: string[] = [];
   if (typeof course.distance === "number" && course.distance > 0)
@@ -174,39 +177,37 @@ const YearChartsSection = ({
                   </Button>
                 </div>
               </div>
-              <div
-                className="mt-3 flex justify-start sm:justify-end"
-                role="radiogroup"
-                aria-label="기록 분포 성별"
-              >
-                <div className="inline-flex overflow-hidden rounded-md border border-border text-xs sm:text-sm">
+              <div className="mt-3 flex justify-start">
+                <ToggleGroup
+                  type="single"
+                  value={genderSegment}
+                  onValueChange={(value) => {
+                    if (value) setGenderSegment(value as GenderSegment);
+                  }}
+                  variant="outline"
+                  size="sm"
+                  className="w-fit justify-start gap-0 overflow-hidden rounded-md border border-input bg-background p-0 shadow-sm"
+                  aria-label="기록 분포 성별"
+                >
                   {SEGMENT_ITEMS.map(({ segment, label }) => {
-                    const isSelected = genderSegment === segment;
                     const disableNonOpen =
                       segment !== "open" && !canFilterByGender;
                     const titleHint = disableNonOpen
                       ? "기록 원본을 불러올 수 없을 때는 통합만 볼 수 있습니다."
                       : undefined;
                     return (
-                      <button
+                      <ToggleGroupItem
                         key={`${distribution.courseId}-${segment}`}
-                        type="button"
-                        role="radio"
-                        aria-checked={isSelected}
+                        value={segment}
                         disabled={disableNonOpen}
                         title={titleHint}
-                        className={`px-3 py-1.5 transition-colors disabled:opacity-45 ${
-                          isSelected
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted/40 text-muted-foreground hover:bg-muted"
-                        }`}
-                        onClick={() => setGenderSegment(segment)}
+                        className="h-8 py-0 leading-none rounded-none border-0 border-r border-input shadow-none ring-offset-0 last:border-r-0 focus-visible:z-10"
                       >
                         {label}
-                      </button>
+                      </ToggleGroupItem>
                     );
                   })}
-                </div>
+                </ToggleGroup>
               </div>
             </>
           );
