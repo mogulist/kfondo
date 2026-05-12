@@ -20,7 +20,7 @@ export type DistributionChartProps = {
   formatXAxisTick: (
     value: string,
     isMobile: boolean,
-    interval: number
+    interval: number,
   ) => string;
   CustomTooltip: React.FC<any>;
 };
@@ -72,6 +72,7 @@ export function DistributionChart({
                 textAnchor="end"
                 height={isMobile ? 80 : 70}
                 tick={{ fontSize: isMobile ? 11 : 12 }}
+                tickMargin={10}
                 tickFormatter={(value) =>
                   formatXAxisTick(value, isMobile, interval)
                 }
@@ -107,7 +108,9 @@ export function DistributionChart({
         </ChartContainer>
       </div>
       {comment ? (
-        <p className="mt-2 text-center text-xs text-muted-foreground">{comment}</p>
+        <p className="mt-2 text-center text-xs text-muted-foreground">
+          {comment}
+        </p>
       ) : null}
     </div>
   );
