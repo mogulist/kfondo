@@ -53,11 +53,9 @@ export function generateTimeDistributionFromRecords(
   minTime = Math.max(0, minTime - paddingTime);
   maxTime = maxTime + paddingTime;
 
-  // minTime을 항상 짝수분(0,2,4,...)으로 보정
-  const minMinutes = Math.floor(minTime / 60);
-  if (minMinutes % 2 !== 0) {
-    minTime += 60; // 1분 추가해서 짝수분으로 맞춤
-  }
+  const intervalSeconds = intervalMinutes * 60;
+  // 구간 시작을 intervalMinutes 그리드에 맞춤 (2분·5분·1분 등)
+  minTime = Math.floor(minTime / intervalSeconds) * intervalSeconds;
 
   // 시간을 시간 단위로 변환
   const minHours = minTime / 3600;
@@ -68,7 +66,6 @@ export function generateTimeDistributionFromRecords(
 
   // 각 구간별 참가자 수 카운트
   const distribution: TimeDistribution[] = [];
-  const intervalSeconds = intervalMinutes * 60;
 
   for (let i = 0; i < intervals; i++) {
     const startSeconds = minTime + i * intervalSeconds;
@@ -96,6 +93,7 @@ export function generateTimeDistributionFromRecords(
       participants,
       percentile: 0, // 나중에 계산
       cumulativeCount: 0, // 초기값 0
+      interval: intervalMinutes,
     });
   }
 

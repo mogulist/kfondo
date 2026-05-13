@@ -185,7 +185,7 @@ const YearChartsSection = ({
                 chartData = generateTimeDistributionFromRecords(
                   effectiveState.records,
                   distribution.courseName,
-                  2,
+                  1,
                   yearData.year,
                   undefined,
                   komOpts,
@@ -198,7 +198,7 @@ const YearChartsSection = ({
                 chartData = generateTimeDistributionFromRecords(
                   filtered,
                   distribution.courseName,
-                  2,
+                  1,
                   yearData.year,
                   undefined,
                   komOpts,
@@ -227,7 +227,11 @@ const YearChartsSection = ({
           const start = chartData[0]?.timeRange.split(" - ")[0];
           const end = chartData.at(-1)?.timeRange.split(" - ")[0];
           const interval =
-            start && end ? getTickIntervalByRange(start, end) : 10;
+            start && end
+              ? courseScope === "kom"
+                ? getTickIntervalByRangeKom(start, end)
+                : getTickIntervalByRange(start, end)
+              : 10;
           const color = colors[index];
           const courseMeta = courses?.find(
             (c) => c.id === distribution.courseId,
@@ -408,7 +412,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const timeRange = formatTooltipTimeRange(
       label,
-      payload[0]?.payload?.interval || 2,
+      payload[0]?.payload?.interval ?? 2,
     );
     const participants = payload[0].value;
     const percentile = payload[0].payload.percentile;
@@ -433,6 +437,15 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 const timeStringToMinutes = (time: string) => {
   const [hours, minutes] = time.split(":").map(Number);
   return hours * 60 + minutes;
+};
+
+const getTickIntervalByRangeKom = (start: string, end: string) => {
+  const startMin = timeStringToMinutes(start);
+  const endMin = timeStringToMinutes(end);
+  const diff = endMin - startMin;
+  if (diff >= 120) return 10;
+  if (diff >= 30) return 5;
+  return 2;
 };
 
 const getTickIntervalByRange = (start: string, end: string) => {

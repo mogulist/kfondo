@@ -35,6 +35,8 @@ export type TimeDistribution = {
   participants: number;
   percentile: number;
   cumulativeCount?: number;
+  /** `generateTimeDistributionFromRecords` 구간 길이(분), 툴팁 등 */
+  interval?: number;
 };
 
 export type EventYearStats = {
