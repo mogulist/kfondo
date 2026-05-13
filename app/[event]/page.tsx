@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import { ParticipantTrendSection } from "./components/ParticipantTrendSection";
 import { StatsSection } from "./components/StatsSection";
 import { TitleSection } from "./components/TitleSection";
@@ -18,21 +17,13 @@ type Props = {
   }>;
 };
 
-function getCachedEvent(slug: string) {
-  return unstable_cache(
-    () => getEventById(slug),
-    [`event-${slug}`],
-    { revalidate: 2592000, tags: [`event-${slug}`] }
-  );
-}
-
 export async function generateStaticParams() {
   return [];
 }
 
 export default async function EventPage({ params }: Props) {
   const { event: eventSlug } = await params;
-  const event = await getCachedEvent(eventSlug)();
+  const event = await getEventById(eventSlug);
 
   if (!event) {
     notFound();
@@ -62,7 +53,7 @@ export default async function EventPage({ params }: Props) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { event: eventSlug } = await params;
-  const event = await getCachedEvent(eventSlug)();
+  const event = await getEventById(eventSlug);
 
   if (!event) {
     return {
