@@ -96,8 +96,10 @@ export function EventCarousel({ title, icon, events }: EventCarouselProps) {
               <CarouselItem 
                 key={event.id} 
                 className={cn(
-                  "pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3",
-                  hasMultipleSlides ? "basis-[88%]" : "basis-full"
+                  "pl-2 md:pl-4",
+                  hasMultipleSlides
+                    ? "basis-[88%] md:basis-[46%] lg:basis-[30%]"
+                    : "basis-full md:basis-1/2 lg:basis-1/3"
                 )}
               >
                 <Link href={`/${event.id}`} className="block h-full">
