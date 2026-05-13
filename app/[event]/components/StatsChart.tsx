@@ -38,6 +38,7 @@ type Props = {
   eventId: string;
   courses?: RaceCategory[];
   getRaceRecordsState: (year: number) => RaceRecordsClientState;
+  getKomRaceRecordsState: (year: number) => RaceRecordsClientState;
 };
 
 function formatCourseStatsLine(
@@ -60,12 +61,20 @@ const SEGMENT_ITEMS: readonly { segment: GenderSegment; label: string }[] = [
   { segment: "female", label: "여" },
 ] as const;
 
+type RecordScope = "full" | "kom";
+
+const RECORD_SCOPE_ITEMS: readonly { scope: RecordScope; label: string }[] = [
+  { scope: "full", label: "전체" },
+  { scope: "kom", label: "KOM" },
+] as const;
+
 type YearChartsSectionProps = {
   yearData: EventYearStatsWithCourses;
   eventId: string;
   event: Event;
   courses?: RaceCategory[];
   raceRecordsState: RaceRecordsClientState;
+  komRaceRecordsState: RaceRecordsClientState;
   isMobile: boolean;
 };
 
@@ -75,23 +84,34 @@ const YearChartsSection = ({
   event,
   courses,
   raceRecordsState,
+  komRaceRecordsState,
   isMobile,
 }: YearChartsSectionProps) => {
+  const hasKomRecords = Boolean(
+    event.yearDetails[yearData.year]?.komRecordsBlobUrl?.trim(),
+  );
+
+  const [recordScope, setRecordScope] = React.useState<RecordScope>("full");
   const [genderSegment, setGenderSegment] =
     React.useState<GenderSegment>("open");
 
   React.useEffect(() => {
+    if (!hasKomRecords && recordScope === "kom") setRecordScope("full");
+  }, [hasKomRecords, recordScope]);
+
+  const effectiveState =
+    recordScope === "kom" ? komRaceRecordsState : raceRecordsState;
+
+  React.useEffect(() => {
     if (
       genderSegment !== "open" &&
-      (raceRecordsState.status === "error" ||
-        raceRecordsState.status === "no_blob")
+      (effectiveState.status === "error" ||
+        effectiveState.status === "no_blob")
     )
       setGenderSegment("open");
-  }, [genderSegment, raceRecordsState.status]);
+  }, [genderSegment, effectiveState.status]);
 
-  const canFilterByGender =
-    raceRecordsState.status === "loaded" &&
-    Boolean(event.yearDetails[yearData.year]?.recordsBlobUrl?.trim());
+  const canFilterByGender = effectiveState.status === "loaded";
 
   return (
     <motion.div
@@ -105,7 +125,36 @@ const YearChartsSection = ({
         {yearData.distributions.map((distribution, index) => {
           let chartData: TimeDistribution[];
 
-          if (genderSegment === "open") {
+          if (recordScope === "kom") {
+            const komOpts = { matchKomEventLabel: true } as const;
+            if (effectiveState.status === "loaded") {
+              if (genderSegment === "open") {
+                chartData = generateTimeDistributionFromRecords(
+                  effectiveState.records,
+                  distribution.courseName,
+                  2,
+                  yearData.year,
+                  undefined,
+                  komOpts,
+                );
+              } else {
+                const filtered = filterRaceRecordsByGender(
+                  effectiveState.records,
+                  genderSegment,
+                );
+                chartData = generateTimeDistributionFromRecords(
+                  filtered,
+                  distribution.courseName,
+                  2,
+                  yearData.year,
+                  undefined,
+                  komOpts,
+                );
+              }
+            } else {
+              chartData = [];
+            }
+          } else if (genderSegment === "open") {
             chartData = distribution.distribution;
           } else if (raceRecordsState.status === "loaded") {
             const filtered = filterRaceRecordsByGender(
@@ -177,7 +226,29 @@ const YearChartsSection = ({
                   </Button>
                 </div>
               </div>
-              <div className="mt-3 flex justify-start">
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                {hasKomRecords ? (
+                  <ToggleGroup
+                    type="single"
+                    value={recordScope}
+                    onValueChange={(value) => {
+                      if (value) setRecordScope(value as RecordScope);
+                    }}
+                    size="sm"
+                    className="w-fit justify-start gap-0 rounded-md bg-muted/60 p-0.5 text-muted-foreground"
+                    aria-label="기록 구간"
+                  >
+                    {RECORD_SCOPE_ITEMS.map(({ scope, label }) => (
+                      <ToggleGroupItem
+                        key={`${distribution.courseId}-scope-${scope}`}
+                        value={scope}
+                        className="h-7 min-h-7 rounded-sm border border-transparent bg-transparent px-2.5 py-0 text-sm font-medium leading-none shadow-none ring-offset-0 hover:bg-transparent hover:text-foreground data-[state=on]:border-input data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-none focus-visible:z-10"
+                      >
+                        {label}
+                      </ToggleGroupItem>
+                    ))}
+                  </ToggleGroup>
+                ) : null}
                 <ToggleGroup
                   type="single"
                   value={genderSegment}
@@ -211,10 +282,11 @@ const YearChartsSection = ({
             </>
           );
 
+          const scopeLabel = recordScope === "kom" ? " KOM" : "";
           return (
             <DistributionChart
               key={distribution.courseId}
-              ariaLabel={`${distribution.courseName} ${yearData.year}년 기록 분포`}
+              ariaLabel={`${distribution.courseName} ${yearData.year}년${scopeLabel} 기록 분포`}
               toolbar={toolbar}
               data={chartData}
               color={color}
@@ -237,6 +309,7 @@ export const StatsChart = ({
   eventId,
   courses,
   getRaceRecordsState,
+  getKomRaceRecordsState,
 }: Props) => {
   const isMobile = useMobile();
 
@@ -252,6 +325,7 @@ export const StatsChart = ({
           event={event}
           courses={courses}
           raceRecordsState={getRaceRecordsState(yearData.year)}
+          komRaceRecordsState={getKomRaceRecordsState(yearData.year)}
           isMobile={isMobile}
         />
       ))}

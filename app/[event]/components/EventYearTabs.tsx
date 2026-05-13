@@ -38,7 +38,7 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
     gcTime: BLOB_GC_MS,
   });
 
-  useQuery({
+  const komRecordsQuery = useQuery({
     queryKey: raceRecordsBlobQueryKey(event.id, activeYear, "kom"),
     queryFn: ({ signal }) => fetchRaceRecordsBlob(activeKomBlobUrl, signal),
     enabled: hasYearStats && Boolean(activeKomBlobUrl),
@@ -46,7 +46,16 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
     gcTime: BLOB_GC_MS,
   });
 
-  const { data: recordsData, isError, isLoading } = recordsQuery;
+  const {
+    data: recordsData,
+    isError,
+    isLoading,
+  } = recordsQuery;
+  const {
+    data: komRecordsData,
+    isError: komIsError,
+    isLoading: komIsLoading,
+  } = komRecordsQuery;
 
   const getRaceRecordsState = React.useCallback(
     (year: number): RaceRecordsClientState => {
@@ -78,6 +87,40 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
       recordsData,
       isError,
       isLoading,
+    ],
+  );
+
+  const getKomRaceRecordsState = React.useCallback(
+    (year: number): RaceRecordsClientState => {
+      const komUrl =
+        event.yearDetails[year]?.komRecordsBlobUrl?.trim() ?? "";
+      if (!komUrl) return { status: "no_blob" };
+
+      if (year === activeYear) {
+        if (!activeKomBlobUrl) return { status: "no_blob" };
+        if (komRecordsData !== undefined)
+          return { status: "loaded", records: komRecordsData };
+        if (komIsError) return { status: "error" };
+        if (komIsLoading) return { status: "loading" };
+        return { status: "pending" };
+      }
+
+      const cached = queryClient.getQueryData<RaceRecord[]>(
+        raceRecordsBlobQueryKey(event.id, year, "kom"),
+      );
+      if (cached !== undefined) return { status: "loaded", records: cached };
+
+      return { status: "pending" };
+    },
+    [
+      event.id,
+      event.yearDetails,
+      activeYear,
+      activeKomBlobUrl,
+      queryClient,
+      komRecordsData,
+      komIsError,
+      komIsLoading,
     ],
   );
 
@@ -114,6 +157,7 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
               eventId={event.id}
               courses={courses}
               getRaceRecordsState={getRaceRecordsState}
+              getKomRaceRecordsState={getKomRaceRecordsState}
             />
           </TabsContent>
         );

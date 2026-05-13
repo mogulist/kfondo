@@ -1,17 +1,34 @@
 // 레코드 배열에서 시간 분포 데이터를 생성하는 함수
 import type { RaceRecord, TimeDistribution } from "./types";
 
+export type GenerateTimeDistributionFromRecordsOptions = {
+  /** true면 `r.event`가 courseName 또는 `courseName(kom)`(대소문자 무시)인 행만 포함 */
+  matchKomEventLabel?: boolean;
+};
+
+const recordEventMatchesCourse = (
+  record: RaceRecord,
+  courseName: string,
+  opts?: GenerateTimeDistributionFromRecordsOptions,
+): boolean => {
+  const ev = record.event?.trim() ?? "";
+  if (!opts?.matchKomEventLabel) return ev === courseName;
+  if (ev === courseName) return true;
+  return ev.toLowerCase() === `${courseName}(kom)`.toLowerCase();
+};
+
 export function generateTimeDistributionFromRecords(
   records: RaceRecord[],
   eventType: string,
   intervalMinutes = 5, // 기본값을 5분으로 변경
   year?: number, // 연도 정보 추가
-  totalParticipants?: number // 참가자 수를 외부에서 받을 수 있게 추가
+  totalParticipants?: number, // 참가자 수를 외부에서 받을 수 있게 추가
+  options?: GenerateTimeDistributionFromRecordsOptions,
 ): TimeDistribution[] {
   // 해당 이벤트 타입의 완주 기록만 필터링
   const filteredRecords = records.filter(
     (r) =>
-      r.event === eventType &&
+      recordEventMatchesCourse(r, eventType, options) &&
       r.status !== "DNF" &&
       r.status !== "DNS" &&
       r.timeInSeconds &&
@@ -84,7 +101,8 @@ export function generateTimeDistributionFromRecords(
 
   // 전체 참가자 수(완주+DNF, DNS 제외)
   const allParticipants = records.filter(
-    (r) => r.event === eventType && r.status !== "DNS"
+    (r) =>
+      recordEventMatchesCourse(r, eventType, options) && r.status !== "DNS"
   ).length;
 
   let cumulativeParticipants = 0;
