@@ -1,5 +1,8 @@
 import type { RaceRecord } from "./types";
-import { filterRaceRecordsByGender } from "./record-gender-filter";
+import {
+  filterRaceRecordsByGender,
+  normalizeGenderLabel,
+} from "./record-gender-filter";
 
 const mk = (gender: string): RaceRecord => ({
   bibNo: "1",
@@ -8,6 +11,28 @@ const mk = (gender: string): RaceRecord => ({
   time: "03:00:00",
   status: "",
   timeInSeconds: 10800,
+});
+
+describe("normalizeGenderLabel", () => {
+  it("maps common male labels", () => {
+    expect(normalizeGenderLabel("M")).toBe("male");
+    expect(normalizeGenderLabel("m")).toBe("male");
+    expect(normalizeGenderLabel("male")).toBe("male");
+    expect(normalizeGenderLabel("남")).toBe("male");
+  });
+
+  it("maps common female labels", () => {
+    expect(normalizeGenderLabel("F")).toBe("female");
+    expect(normalizeGenderLabel("W")).toBe("female");
+    expect(normalizeGenderLabel("female")).toBe("female");
+    expect(normalizeGenderLabel("여")).toBe("female");
+  });
+
+  it("returns null for empty or unknown", () => {
+    expect(normalizeGenderLabel("")).toBe(null);
+    expect(normalizeGenderLabel("  ")).toBe(null);
+    expect(normalizeGenderLabel("???")).toBe(null);
+  });
 });
 
 describe("filterRaceRecordsByGender", () => {
