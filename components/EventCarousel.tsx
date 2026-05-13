@@ -66,10 +66,12 @@ export function EventCarousel({ title, icon, events }: EventCarouselProps) {
   }, [api, dotCount]);
 
   if (events.length === 0) return null;
-  
+
+  const hasMultipleSlides = events.length > 1;
+
   // Generate unique ID from title for accessibility
   const sectionId = title.toLowerCase().replace(/\s+/g, '-');
-  
+
   return (
     <section className="py-4" aria-labelledby={sectionId}>
       <div className="container mx-auto px-4">
@@ -85,7 +87,7 @@ export function EventCarousel({ title, icon, events }: EventCarouselProps) {
           opts={{
             align: "start",
             loop: false,
-            containScroll: "trimSnaps",
+            ...(hasMultipleSlides ? { containScroll: "trimSnaps" as const } : {}),
           }}
           className="w-full"
         >
@@ -93,7 +95,10 @@ export function EventCarousel({ title, icon, events }: EventCarouselProps) {
             {events.map((event) => (
               <CarouselItem 
                 key={event.id} 
-                className="pl-2 md:pl-4 basis-[88%] md:basis-1/2 lg:basis-1/3"
+                className={cn(
+                  "pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3",
+                  hasMultipleSlides ? "basis-[88%]" : "basis-full"
+                )}
               >
                 <Link href={`/${event.id}`} className="block h-full">
                   <EventCard event={event} />
