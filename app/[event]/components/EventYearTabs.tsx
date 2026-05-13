@@ -27,11 +27,21 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
   const activeYear = hasYearStats ? Number(tab) : 0;
   const activeBlobUrl =
     event.yearDetails[activeYear]?.recordsBlobUrl?.trim() ?? "";
+  const activeKomBlobUrl =
+    event.yearDetails[activeYear]?.komRecordsBlobUrl?.trim() ?? "";
 
   const recordsQuery = useQuery({
-    queryKey: raceRecordsBlobQueryKey(event.id, activeYear),
+    queryKey: raceRecordsBlobQueryKey(event.id, activeYear, "full"),
     queryFn: ({ signal }) => fetchRaceRecordsBlob(activeBlobUrl, signal),
     enabled: hasYearStats && Boolean(activeBlobUrl),
+    staleTime: BLOB_STALE_MS,
+    gcTime: BLOB_GC_MS,
+  });
+
+  useQuery({
+    queryKey: raceRecordsBlobQueryKey(event.id, activeYear, "kom"),
+    queryFn: ({ signal }) => fetchRaceRecordsBlob(activeKomBlobUrl, signal),
+    enabled: hasYearStats && Boolean(activeKomBlobUrl),
     staleTime: BLOB_STALE_MS,
     gcTime: BLOB_GC_MS,
   });
@@ -53,7 +63,7 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
       }
 
       const cached = queryClient.getQueryData<RaceRecord[]>(
-        raceRecordsBlobQueryKey(event.id, year),
+        raceRecordsBlobQueryKey(event.id, year, "full"),
       );
       if (cached !== undefined) return { status: "loaded", records: cached };
 
