@@ -31,6 +31,7 @@ function mapRowToEvent(row: EventWithRelations): Event {
           stravaUrl: course.strava_url?.trim() || undefined,
           rideWithGpsUrl: course.ride_with_gps_url?.trim() || undefined,
           gpxBlobUrl: course.gpx_blob_url?.trim() || undefined,
+          hasKom: course.has_kom === true,
         })) || [];
 
       yearDetails[edition.year] = {
@@ -40,6 +41,8 @@ function mapRowToEvent(row: EventWithRelations): Event {
         url: edition.url || undefined,
         recordsBlobUrl: edition.records_blob_url || undefined,
         sortedRecordsBlobUrl: edition.sorted_records_blob_url || undefined,
+        komRecordsBlobUrl: edition.kom_records_blob_url || undefined,
+        komSortedRecordsBlobUrl: edition.kom_sorted_records_blob_url || undefined,
         courses: courses,
         totalRegistered: courses.reduce(
           (sum, c) => sum + (c.registered || 0),
@@ -116,7 +119,7 @@ export async function getEventById(
   const { data, error } = await supabase
     .from("events")
     .select(
-      "*, event_editions(id, year, date, status, url, records_blob_url, sorted_records_blob_url, comment, created_at, updated_at, event_id, courses(*))"
+      "*, event_editions(id, year, date, status, url, records_blob_url, sorted_records_blob_url, kom_records_blob_url, kom_sorted_records_blob_url, comment, created_at, updated_at, event_id, courses(*))"
     )
     .eq("slug", eventSlug) // id 대신 slug로 조회
     .single();

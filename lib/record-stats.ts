@@ -1,17 +1,34 @@
 // 레코드 배열에서 시간 분포 데이터를 생성하는 함수
 import type { RaceRecord, TimeDistribution } from "./types";
 
+export type GenerateTimeDistributionFromRecordsOptions = {
+  /** true면 `r.event`가 courseName 또는 `courseName(kom)`(대소문자 무시)인 행만 포함 */
+  matchKomEventLabel?: boolean;
+};
+
+const recordEventMatchesCourse = (
+  record: RaceRecord,
+  courseName: string,
+  opts?: GenerateTimeDistributionFromRecordsOptions,
+): boolean => {
+  const ev = record.event?.trim() ?? "";
+  if (!opts?.matchKomEventLabel) return ev === courseName;
+  if (ev === courseName) return true;
+  return ev.toLowerCase() === `${courseName}(kom)`.toLowerCase();
+};
+
 export function generateTimeDistributionFromRecords(
   records: RaceRecord[],
   eventType: string,
   intervalMinutes = 5, // 기본값을 5분으로 변경
   year?: number, // 연도 정보 추가
-  totalParticipants?: number // 참가자 수를 외부에서 받을 수 있게 추가
+  totalParticipants?: number, // 참가자 수를 외부에서 받을 수 있게 추가
+  options?: GenerateTimeDistributionFromRecordsOptions,
 ): TimeDistribution[] {
   // 해당 이벤트 타입의 완주 기록만 필터링
   const filteredRecords = records.filter(
     (r) =>
-      r.event === eventType &&
+      recordEventMatchesCourse(r, eventType, options) &&
       r.status !== "DNF" &&
       r.status !== "DNS" &&
       r.timeInSeconds &&
@@ -36,11 +53,9 @@ export function generateTimeDistributionFromRecords(
   minTime = Math.max(0, minTime - paddingTime);
   maxTime = maxTime + paddingTime;
 
-  // minTime을 항상 짝수분(0,2,4,...)으로 보정
-  const minMinutes = Math.floor(minTime / 60);
-  if (minMinutes % 2 !== 0) {
-    minTime += 60; // 1분 추가해서 짝수분으로 맞춤
-  }
+  const intervalSeconds = intervalMinutes * 60;
+  // 구간 시작을 intervalMinutes 그리드에 맞춤 (2분·5분·1분 등)
+  minTime = Math.floor(minTime / intervalSeconds) * intervalSeconds;
 
   // 시간을 시간 단위로 변환
   const minHours = minTime / 3600;
@@ -51,7 +66,6 @@ export function generateTimeDistributionFromRecords(
 
   // 각 구간별 참가자 수 카운트
   const distribution: TimeDistribution[] = [];
-  const intervalSeconds = intervalMinutes * 60;
 
   for (let i = 0; i < intervals; i++) {
     const startSeconds = minTime + i * intervalSeconds;
@@ -79,12 +93,14 @@ export function generateTimeDistributionFromRecords(
       participants,
       percentile: 0, // 나중에 계산
       cumulativeCount: 0, // 초기값 0
+      interval: intervalMinutes,
     });
   }
 
   // 전체 참가자 수(완주+DNF, DNS 제외)
   const allParticipants = records.filter(
-    (r) => r.event === eventType && r.status !== "DNS"
+    (r) =>
+      recordEventMatchesCourse(r, eventType, options) && r.status !== "DNS"
   ).length;
 
   let cumulativeParticipants = 0;

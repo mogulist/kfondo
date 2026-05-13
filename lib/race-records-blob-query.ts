@@ -1,8 +1,13 @@
 import { parseJsonRecordsToRaceRecords } from "./race-records-parse";
 import type { RaceRecord } from "./types";
 
-export const raceRecordsBlobQueryKey = (eventId: string, year: number) =>
-  ["race-records-blob", eventId, year] as const;
+export type RaceRecordsBlobVariant = "full" | "kom";
+
+export const raceRecordsBlobQueryKey = (
+  eventId: string,
+  year: number,
+  variant: RaceRecordsBlobVariant = "full",
+) => ["race-records-blob", eventId, year, variant] as const;
 
 export async function fetchRaceRecordsBlob(
   blobUrl: string,

@@ -116,6 +116,7 @@ export function CoursesTab({ eventSlug, editions }: CoursesTabProps) {
                     <TableHead>거리 (km)</TableHead>
                     <TableHead>고도 (m)</TableHead>
                     <TableHead>접수 인원</TableHead>
+                    <TableHead className="w-[72px] text-center">KOM</TableHead>
                     <TableHead className="w-[100px]">작업</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -123,7 +124,7 @@ export function CoursesTab({ eventSlug, editions }: CoursesTabProps) {
                   {edition.courses.length === 0 ? (
                     <TableRow>
                       <TableCell
-                        colSpan={6}
+                        colSpan={7}
                         className="text-center text-muted-foreground"
                       >
                         코스가 없습니다.
@@ -143,6 +144,9 @@ export function CoursesTab({ eventSlug, editions }: CoursesTabProps) {
                           {course.elevation.toLocaleString()}
                         </TableCell>
                         <TableCell>{course.registered_count}명</TableCell>
+                        <TableCell className="text-center text-muted-foreground">
+                          {course.has_kom ? "○" : "—"}
+                        </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Button

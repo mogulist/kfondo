@@ -27,16 +27,35 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
   const activeYear = hasYearStats ? Number(tab) : 0;
   const activeBlobUrl =
     event.yearDetails[activeYear]?.recordsBlobUrl?.trim() ?? "";
+  const activeKomBlobUrl =
+    event.yearDetails[activeYear]?.komRecordsBlobUrl?.trim() ?? "";
 
   const recordsQuery = useQuery({
-    queryKey: raceRecordsBlobQueryKey(event.id, activeYear),
+    queryKey: raceRecordsBlobQueryKey(event.id, activeYear, "full"),
     queryFn: ({ signal }) => fetchRaceRecordsBlob(activeBlobUrl, signal),
     enabled: hasYearStats && Boolean(activeBlobUrl),
     staleTime: BLOB_STALE_MS,
     gcTime: BLOB_GC_MS,
   });
 
-  const { data: recordsData, isError, isLoading } = recordsQuery;
+  const komRecordsQuery = useQuery({
+    queryKey: raceRecordsBlobQueryKey(event.id, activeYear, "kom"),
+    queryFn: ({ signal }) => fetchRaceRecordsBlob(activeKomBlobUrl, signal),
+    enabled: hasYearStats && Boolean(activeKomBlobUrl),
+    staleTime: BLOB_STALE_MS,
+    gcTime: BLOB_GC_MS,
+  });
+
+  const {
+    data: recordsData,
+    isError,
+    isLoading,
+  } = recordsQuery;
+  const {
+    data: komRecordsData,
+    isError: komIsError,
+    isLoading: komIsLoading,
+  } = komRecordsQuery;
 
   const getRaceRecordsState = React.useCallback(
     (year: number): RaceRecordsClientState => {
@@ -53,7 +72,7 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
       }
 
       const cached = queryClient.getQueryData<RaceRecord[]>(
-        raceRecordsBlobQueryKey(event.id, year),
+        raceRecordsBlobQueryKey(event.id, year, "full"),
       );
       if (cached !== undefined) return { status: "loaded", records: cached };
 
@@ -68,6 +87,40 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
       recordsData,
       isError,
       isLoading,
+    ],
+  );
+
+  const getKomRaceRecordsState = React.useCallback(
+    (year: number): RaceRecordsClientState => {
+      const komUrl =
+        event.yearDetails[year]?.komRecordsBlobUrl?.trim() ?? "";
+      if (!komUrl) return { status: "no_blob" };
+
+      if (year === activeYear) {
+        if (!activeKomBlobUrl) return { status: "no_blob" };
+        if (komRecordsData !== undefined)
+          return { status: "loaded", records: komRecordsData };
+        if (komIsError) return { status: "error" };
+        if (komIsLoading) return { status: "loading" };
+        return { status: "pending" };
+      }
+
+      const cached = queryClient.getQueryData<RaceRecord[]>(
+        raceRecordsBlobQueryKey(event.id, year, "kom"),
+      );
+      if (cached !== undefined) return { status: "loaded", records: cached };
+
+      return { status: "pending" };
+    },
+    [
+      event.id,
+      event.yearDetails,
+      activeYear,
+      activeKomBlobUrl,
+      queryClient,
+      komRecordsData,
+      komIsError,
+      komIsLoading,
     ],
   );
 
@@ -104,6 +157,7 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
               eventId={event.id}
               courses={courses}
               getRaceRecordsState={getRaceRecordsState}
+              getKomRaceRecordsState={getKomRaceRecordsState}
             />
           </TabsContent>
         );

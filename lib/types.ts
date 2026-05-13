@@ -35,6 +35,8 @@ export type TimeDistribution = {
   participants: number;
   percentile: number;
   cumulativeCount?: number;
+  /** `generateTimeDistributionFromRecords` 구간 길이(분), 툴팁 등 */
+  interval?: number;
 };
 
 export type EventYearStats = {
@@ -75,6 +77,8 @@ export type RaceCategory = {
   stravaUrl?: string;
   rideWithGpsUrl?: string;
   gpxBlobUrl?: string;
+  /** 에디션에 KOM Blob이 있을 때 이 코스에만 [전체/KOM] 노출 */
+  hasKom?: boolean;
 };
 
 // 연도별 대회 정보
@@ -87,4 +91,6 @@ export type EventYearDetail = {
   url?: string;
   recordsBlobUrl?: string; // Phase 3: Vercel Blob URL (원본 기록)
   sortedRecordsBlobUrl?: string; // Phase 3: Vercel Blob URL (정렬된 기록)
+  komRecordsBlobUrl?: string; // KOM 원본 기록 Blob URL
+  komSortedRecordsBlobUrl?: string; // KOM 정렬 기록 Blob URL
 };

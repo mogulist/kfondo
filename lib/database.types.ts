@@ -66,6 +66,8 @@ export type Database = {
           updated_at: string;
           records_blob_url: string | null;
           sorted_records_blob_url: string | null;
+          kom_records_blob_url: string | null;
+          kom_sorted_records_blob_url: string | null;
         };
         Insert: {
           id?: string;
@@ -79,6 +81,8 @@ export type Database = {
           updated_at?: string;
           records_blob_url?: string | null;
           sorted_records_blob_url?: string | null;
+          kom_records_blob_url?: string | null;
+          kom_sorted_records_blob_url?: string | null;
         };
         Update: {
           id?: string;
@@ -92,6 +96,8 @@ export type Database = {
           updated_at?: string;
           records_blob_url?: string | null;
           sorted_records_blob_url?: string | null;
+          kom_records_blob_url?: string | null;
+          kom_sorted_records_blob_url?: string | null;
         };
       };
       courses: {
@@ -103,6 +109,7 @@ export type Database = {
           distance: number;
           elevation: number;
           registered_count: number;
+          has_kom: boolean;
           official_site_url: string | null;
           strava_url: string | null;
           ride_with_gps_url: string | null;
@@ -118,6 +125,7 @@ export type Database = {
           distance: number;
           elevation: number;
           registered_count?: number;
+          has_kom?: boolean;
           official_site_url?: string | null;
           strava_url?: string | null;
           ride_with_gps_url?: string | null;
@@ -133,6 +141,7 @@ export type Database = {
           distance?: number;
           elevation?: number;
           registered_count?: number;
+          has_kom?: boolean;
           official_site_url?: string | null;
           strava_url?: string | null;
           ride_with_gps_url?: string | null;

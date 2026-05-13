@@ -38,6 +38,7 @@ type Props = {
   eventId: string;
   courses?: RaceCategory[];
   getRaceRecordsState: (year: number) => RaceRecordsClientState;
+  getKomRaceRecordsState: (year: number) => RaceRecordsClientState;
 };
 
 function formatCourseStatsLine(
@@ -60,12 +61,20 @@ const SEGMENT_ITEMS: readonly { segment: GenderSegment; label: string }[] = [
   { segment: "female", label: "여" },
 ] as const;
 
+type RecordScope = "full" | "kom";
+
+const RECORD_SCOPE_ITEMS: readonly { scope: RecordScope; label: string }[] = [
+  { scope: "full", label: "전체" },
+  { scope: "kom", label: "KOM" },
+] as const;
+
 type YearChartsSectionProps = {
   yearData: EventYearStatsWithCourses;
   eventId: string;
   event: Event;
   courses?: RaceCategory[];
   raceRecordsState: RaceRecordsClientState;
+  komRaceRecordsState: RaceRecordsClientState;
   isMobile: boolean;
 };
 
@@ -75,23 +84,85 @@ const YearChartsSection = ({
   event,
   courses,
   raceRecordsState,
+  komRaceRecordsState,
   isMobile,
 }: YearChartsSectionProps) => {
+  const hasKomBlob = Boolean(
+    event.yearDetails[yearData.year]?.komRecordsBlobUrl?.trim(),
+  );
+
+  const courseAllowsKom = React.useCallback(
+    (courseId: string) => {
+      if (!hasKomBlob) return false;
+      const meta = courses?.find((c) => c.id === courseId);
+      return meta?.hasKom === true;
+    },
+    [hasKomBlob, courses],
+  );
+
+  const [recordScopeByCourseId, setRecordScopeByCourseId] = React.useState<
+    Record<string, RecordScope>
+  >({});
   const [genderSegment, setGenderSegment] =
     React.useState<GenderSegment>("open");
 
   React.useEffect(() => {
-    if (
-      genderSegment !== "open" &&
-      (raceRecordsState.status === "error" ||
-        raceRecordsState.status === "no_blob")
-    )
-      setGenderSegment("open");
-  }, [genderSegment, raceRecordsState.status]);
+    if (!hasKomBlob) {
+      setRecordScopeByCourseId({});
+      return;
+    }
+    setRecordScopeByCourseId((prev) => {
+      let changed = false;
+      const next = { ...prev };
+      for (const id of Object.keys(next)) {
+        if (next[id] !== "kom") continue;
+        const meta = courses?.find((c) => c.id === id);
+        if (meta?.hasKom !== true) {
+          delete next[id];
+          changed = true;
+        }
+      }
+      return changed ? next : prev;
+    });
+  }, [hasKomBlob, courses, yearData.year]);
 
-  const canFilterByGender =
-    raceRecordsState.status === "loaded" &&
-    Boolean(event.yearDetails[yearData.year]?.recordsBlobUrl?.trim());
+  const scopeForDistribution = (courseId: string): RecordScope => {
+    if (!courseAllowsKom(courseId)) return "full";
+    return recordScopeByCourseId[courseId] ?? "full";
+  };
+
+  const stateForScope = (
+    scope: RecordScope,
+  ): RaceRecordsClientState =>
+    scope === "kom" ? komRaceRecordsState : raceRecordsState;
+
+  const canFilterByGender = yearData.distributions.every((d) => {
+    const scope = scopeForDistribution(d.courseId);
+    return stateForScope(scope).status === "loaded";
+  });
+
+  React.useEffect(() => {
+    if (genderSegment === "open") return;
+    const broken = yearData.distributions.some((d) => {
+      const allowKom =
+        hasKomBlob && courses?.find((c) => c.id === d.courseId)?.hasKom === true;
+      const scope =
+        allowKom && recordScopeByCourseId[d.courseId] === "kom"
+          ? "kom"
+          : "full";
+      const st = scope === "kom" ? komRaceRecordsState : raceRecordsState;
+      return st.status === "error" || st.status === "no_blob";
+    });
+    if (broken) setGenderSegment("open");
+  }, [
+    genderSegment,
+    yearData.distributions,
+    recordScopeByCourseId,
+    komRaceRecordsState,
+    raceRecordsState,
+    hasKomBlob,
+    courses,
+  ]);
 
   return (
     <motion.div
@@ -103,9 +174,40 @@ const YearChartsSection = ({
     >
       <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
         {yearData.distributions.map((distribution, index) => {
+          const courseScope = scopeForDistribution(distribution.courseId);
+          const effectiveState = stateForScope(courseScope);
           let chartData: TimeDistribution[];
 
-          if (genderSegment === "open") {
+          if (courseScope === "kom") {
+            const komOpts = { matchKomEventLabel: true } as const;
+            if (effectiveState.status === "loaded") {
+              if (genderSegment === "open") {
+                chartData = generateTimeDistributionFromRecords(
+                  effectiveState.records,
+                  distribution.courseName,
+                  1,
+                  yearData.year,
+                  undefined,
+                  komOpts,
+                );
+              } else {
+                const filtered = filterRaceRecordsByGender(
+                  effectiveState.records,
+                  genderSegment,
+                );
+                chartData = generateTimeDistributionFromRecords(
+                  filtered,
+                  distribution.courseName,
+                  1,
+                  yearData.year,
+                  undefined,
+                  komOpts,
+                );
+              }
+            } else {
+              chartData = [];
+            }
+          } else if (genderSegment === "open") {
             chartData = distribution.distribution;
           } else if (raceRecordsState.status === "loaded") {
             const filtered = filterRaceRecordsByGender(
@@ -125,7 +227,11 @@ const YearChartsSection = ({
           const start = chartData[0]?.timeRange.split(" - ")[0];
           const end = chartData.at(-1)?.timeRange.split(" - ")[0];
           const interval =
-            start && end ? getTickIntervalByRange(start, end) : 10;
+            start && end
+              ? courseScope === "kom"
+                ? getTickIntervalByRangeKom(start, end)
+                : getTickIntervalByRange(start, end)
+              : 10;
           const color = colors[index];
           const courseMeta = courses?.find(
             (c) => c.id === distribution.courseId,
@@ -177,7 +283,33 @@ const YearChartsSection = ({
                   </Button>
                 </div>
               </div>
-              <div className="mt-3 flex justify-start">
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                {courseAllowsKom(distribution.courseId) ? (
+                  <ToggleGroup
+                    type="single"
+                    value={recordScopeByCourseId[distribution.courseId] ?? "full"}
+                    onValueChange={(value) => {
+                      if (!value) return;
+                      setRecordScopeByCourseId((prev) => ({
+                        ...prev,
+                        [distribution.courseId]: value as RecordScope,
+                      }));
+                    }}
+                    size="sm"
+                    className="w-fit justify-start gap-0 rounded-md bg-muted/60 p-0.5 text-muted-foreground"
+                    aria-label="기록 구간"
+                  >
+                    {RECORD_SCOPE_ITEMS.map(({ scope, label }) => (
+                      <ToggleGroupItem
+                        key={`${distribution.courseId}-scope-${scope}`}
+                        value={scope}
+                        className="h-7 min-h-7 rounded-sm border border-transparent bg-transparent px-2.5 py-0 text-sm font-medium leading-none shadow-none ring-offset-0 hover:bg-transparent hover:text-foreground data-[state=on]:border-input data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-none focus-visible:z-10"
+                      >
+                        {label}
+                      </ToggleGroupItem>
+                    ))}
+                  </ToggleGroup>
+                ) : null}
                 <ToggleGroup
                   type="single"
                   value={genderSegment}
@@ -211,10 +343,11 @@ const YearChartsSection = ({
             </>
           );
 
+          const scopeLabel = courseScope === "kom" ? " KOM" : "";
           return (
             <DistributionChart
               key={distribution.courseId}
-              ariaLabel={`${distribution.courseName} ${yearData.year}년 기록 분포`}
+              ariaLabel={`${distribution.courseName} ${yearData.year}년${scopeLabel} 기록 분포`}
               toolbar={toolbar}
               data={chartData}
               color={color}
@@ -237,6 +370,7 @@ export const StatsChart = ({
   eventId,
   courses,
   getRaceRecordsState,
+  getKomRaceRecordsState,
 }: Props) => {
   const isMobile = useMobile();
 
@@ -252,6 +386,7 @@ export const StatsChart = ({
           event={event}
           courses={courses}
           raceRecordsState={getRaceRecordsState(yearData.year)}
+          komRaceRecordsState={getKomRaceRecordsState(yearData.year)}
           isMobile={isMobile}
         />
       ))}
@@ -277,7 +412,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const timeRange = formatTooltipTimeRange(
       label,
-      payload[0]?.payload?.interval || 2,
+      payload[0]?.payload?.interval ?? 2,
     );
     const participants = payload[0].value;
     const percentile = payload[0].payload.percentile;
@@ -302,6 +437,15 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 const timeStringToMinutes = (time: string) => {
   const [hours, minutes] = time.split(":").map(Number);
   return hours * 60 + minutes;
+};
+
+const getTickIntervalByRangeKom = (start: string, end: string) => {
+  const startMin = timeStringToMinutes(start);
+  const endMin = timeStringToMinutes(end);
+  const diff = endMin - startMin;
+  if (diff >= 120) return 10;
+  if (diff >= 30) return 5;
+  return 2;
 };
 
 const getTickIntervalByRange = (start: string, end: string) => {

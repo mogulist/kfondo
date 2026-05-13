@@ -34,6 +34,8 @@ CREATE TABLE event_editions (
   url TEXT, -- 대회 공식 홈페이지 등
   records_blob_url TEXT, -- Vercel Blob URL (원본 기록) [Phase 3 NEW]
   sorted_records_blob_url TEXT, -- Vercel Blob URL (정렬된 기록) [Phase 3 NEW]
+  kom_records_blob_url TEXT, -- Vercel Blob URL (KOM 원본 기록)
+  kom_sorted_records_blob_url TEXT, -- Vercel Blob URL (KOM 정렬 기록)
   comment TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -49,6 +51,7 @@ CREATE TABLE courses (
   distance DOUBLE PRECISION NOT NULL, -- km
   elevation INTEGER NOT NULL, -- m
   registered_count INTEGER DEFAULT 0, -- 접수 인원
+  has_kom BOOLEAN NOT NULL DEFAULT false, -- 해당 코스에 KOM 기록/토글 노출
   official_site_url TEXT,
   strava_url TEXT,
   ride_with_gps_url TEXT,
