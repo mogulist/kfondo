@@ -42,6 +42,8 @@ const editionSchema = z.object({
   url: z.string().optional(),
   records_blob_url: z.string().optional(),
   sorted_records_blob_url: z.string().optional(),
+  kom_records_blob_url: z.string().optional(),
+  kom_sorted_records_blob_url: z.string().optional(),
   comment: z.string().optional(),
 });
 
@@ -67,9 +69,15 @@ export function EditionFormDialog({
   const supabase = createClient();
   const [recordsFile, setRecordsFile] = useState<File | null>(null);
   const [sortedRecordsFile, setSortedRecordsFile] = useState<File | null>(null);
+  const [komRecordsFile, setKomRecordsFile] = useState<File | null>(null);
+  const [komSortedRecordsFile, setKomSortedRecordsFile] = useState<File | null>(
+    null
+  );
   const [isSaving, setIsSaving] = useState(false);
   const recordsFileInputRef = useRef<HTMLInputElement | null>(null);
   const sortedRecordsFileInputRef = useRef<HTMLInputElement | null>(null);
+  const komRecordsFileInputRef = useRef<HTMLInputElement | null>(null);
+  const komSortedRecordsFileInputRef = useRef<HTMLInputElement | null>(null);
 
   const form = useForm<EditionFormValues>({
     resolver: zodResolver(editionSchema),
@@ -80,11 +88,15 @@ export function EditionFormDialog({
       url: "",
       records_blob_url: "",
       sorted_records_blob_url: "",
+      kom_records_blob_url: "",
+      kom_sorted_records_blob_url: "",
       comment: "",
     },
   });
   const recordsBlobUrl = form.watch("records_blob_url");
   const sortedRecordsBlobUrl = form.watch("sorted_records_blob_url");
+  const komRecordsBlobUrl = form.watch("kom_records_blob_url");
+  const komSortedRecordsBlobUrl = form.watch("kom_sorted_records_blob_url");
 
   useEffect(() => {
     if (open && edition) {
@@ -96,10 +108,15 @@ export function EditionFormDialog({
         url: edition.url ?? "",
         records_blob_url: edition.records_blob_url ?? "",
         sorted_records_blob_url: edition.sorted_records_blob_url ?? "",
+        kom_records_blob_url: edition.kom_records_blob_url ?? "",
+        kom_sorted_records_blob_url:
+          edition.kom_sorted_records_blob_url ?? "",
         comment: edition.comment ?? "",
       });
       setRecordsFile(null);
       setSortedRecordsFile(null);
+      setKomRecordsFile(null);
+      setKomSortedRecordsFile(null);
     } else if (open && !edition) {
       form.reset({
         year: new Date().getFullYear(),
@@ -108,17 +125,27 @@ export function EditionFormDialog({
         url: "",
         records_blob_url: "",
         sorted_records_blob_url: "",
+        kom_records_blob_url: "",
+        kom_sorted_records_blob_url: "",
         comment: "",
       });
       setRecordsFile(null);
       setSortedRecordsFile(null);
+      setKomRecordsFile(null);
+      setKomSortedRecordsFile(null);
     }
   }, [open, edition, form]);
 
   async function onSubmit(values: EditionFormValues) {
     setIsSaving(true);
     try {
-      if (!edition && (recordsFile || sortedRecordsFile)) {
+      if (
+        !edition &&
+        (recordsFile ||
+          sortedRecordsFile ||
+          komRecordsFile ||
+          komSortedRecordsFile)
+      ) {
         throw new Error(
           "에디션을 먼저 생성한 뒤, 수정 모드에서 JSON 파일을 업로드해 주세요."
         );
@@ -133,6 +160,9 @@ export function EditionFormDialog({
           url: values.url || null,
           records_blob_url: values.records_blob_url || null,
           sorted_records_blob_url: values.sorted_records_blob_url || null,
+          kom_records_blob_url: values.kom_records_blob_url || null,
+          kom_sorted_records_blob_url:
+            values.kom_sorted_records_blob_url || null,
           comment: values.comment || null,
         };
 
@@ -151,6 +181,9 @@ export function EditionFormDialog({
           url: values.url || null,
           records_blob_url: values.records_blob_url || null,
           sorted_records_blob_url: values.sorted_records_blob_url || null,
+          kom_records_blob_url: values.kom_records_blob_url || null,
+          kom_sorted_records_blob_url:
+            values.kom_sorted_records_blob_url || null,
           comment: values.comment || null,
         };
 
@@ -168,10 +201,21 @@ export function EditionFormDialog({
         editionId = insertedEdition.id;
       }
 
-      if ((recordsFile || sortedRecordsFile) && editionId) {
+      if (
+        (recordsFile ||
+          sortedRecordsFile ||
+          komRecordsFile ||
+          komSortedRecordsFile) &&
+        editionId
+      ) {
         const uploadFormData = new FormData();
         if (recordsFile) uploadFormData.append("recordsFile", recordsFile);
-        if (sortedRecordsFile) uploadFormData.append("sortedRecordsFile", sortedRecordsFile);
+        if (sortedRecordsFile)
+          uploadFormData.append("sortedRecordsFile", sortedRecordsFile);
+        if (komRecordsFile)
+          uploadFormData.append("komRecordsFile", komRecordsFile);
+        if (komSortedRecordsFile)
+          uploadFormData.append("komSortedRecordsFile", komSortedRecordsFile);
 
         const response = await fetch(
           `/api/admin/event-editions/${editionId}/records-upload`,
@@ -184,6 +228,8 @@ export function EditionFormDialog({
           error?: string;
           recordsBlobUrl?: string;
           sortedRecordsBlobUrl?: string;
+          komRecordsBlobUrl?: string;
+          komSortedRecordsBlobUrl?: string;
         };
         if (!response.ok) {
           throw new Error(payload.error ?? "파일 업로드에 실패했습니다.");
@@ -194,6 +240,15 @@ export function EditionFormDialog({
         }
         if (payload.sortedRecordsBlobUrl) {
           form.setValue("sorted_records_blob_url", payload.sortedRecordsBlobUrl);
+        }
+        if (payload.komRecordsBlobUrl) {
+          form.setValue("kom_records_blob_url", payload.komRecordsBlobUrl);
+        }
+        if (payload.komSortedRecordsBlobUrl) {
+          form.setValue(
+            "kom_sorted_records_blob_url",
+            payload.komSortedRecordsBlobUrl
+          );
         }
       }
 
@@ -218,6 +273,19 @@ export function EditionFormDialog({
     setSortedRecordsFile(null);
     form.setValue("sorted_records_blob_url", "", { shouldDirty: true });
     if (sortedRecordsFileInputRef.current) sortedRecordsFileInputRef.current.value = "";
+  };
+
+  const clearKomRecordsInput = () => {
+    setKomRecordsFile(null);
+    form.setValue("kom_records_blob_url", "", { shouldDirty: true });
+    if (komRecordsFileInputRef.current) komRecordsFileInputRef.current.value = "";
+  };
+
+  const clearKomSortedRecordsInput = () => {
+    setKomSortedRecordsFile(null);
+    form.setValue("kom_sorted_records_blob_url", "", { shouldDirty: true });
+    if (komSortedRecordsFileInputRef.current)
+      komSortedRecordsFileInputRef.current.value = "";
   };
 
   return (
@@ -423,6 +491,119 @@ export function EditionFormDialog({
                   {sortedRecordsFile ? (
                     <p className="text-sm text-muted-foreground">
                       선택 파일: {sortedRecordsFile.name}
+                    </p>
+                  ) : null}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="kom_records_blob_url"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>KOM 원본 기록 파일 URL</FormLabel>
+                  <div className="flex items-start gap-2">
+                    <FormControl>
+                      <Input
+                        placeholder="https://..."
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={!edition || isSaving}
+                      onClick={() => komRecordsFileInputRef.current?.click()}
+                    >
+                      업로드
+                    </Button>
+                    {komRecordsBlobUrl || komRecordsFile ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        disabled={isSaving}
+                        onClick={clearKomRecordsInput}
+                      >
+                        삭제
+                      </Button>
+                    ) : null}
+                  </div>
+                  <input
+                    ref={komRecordsFileInputRef}
+                    className="hidden"
+                    type="file"
+                    accept=".json,application/json"
+                    disabled={!edition || isSaving}
+                    onChange={(event) => {
+                      setKomRecordsFile(event.target.files?.[0] ?? null);
+                    }}
+                  />
+                  {komRecordsFile ? (
+                    <p className="text-sm text-muted-foreground">
+                      선택 파일: {komRecordsFile.name}
+                    </p>
+                  ) : null}
+                  {!edition ? (
+                    <p className="text-sm text-muted-foreground">
+                      에디션을 먼저 저장한 뒤 편집에서 업로드할 수 있습니다.
+                    </p>
+                  ) : null}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="kom_sorted_records_blob_url"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>KOM 정렬 기록 파일 URL</FormLabel>
+                  <div className="flex items-start gap-2">
+                    <FormControl>
+                      <Input
+                        placeholder="https://..."
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={!edition || isSaving}
+                      onClick={() =>
+                        komSortedRecordsFileInputRef.current?.click()
+                      }
+                    >
+                      업로드
+                    </Button>
+                    {komSortedRecordsBlobUrl || komSortedRecordsFile ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        disabled={isSaving}
+                        onClick={clearKomSortedRecordsInput}
+                      >
+                        삭제
+                      </Button>
+                    ) : null}
+                  </div>
+                  <input
+                    ref={komSortedRecordsFileInputRef}
+                    className="hidden"
+                    type="file"
+                    accept=".json,application/json"
+                    disabled={!edition || isSaving}
+                    onChange={(event) => {
+                      setKomSortedRecordsFile(event.target.files?.[0] ?? null);
+                    }}
+                  />
+                  {komSortedRecordsFile ? (
+                    <p className="text-sm text-muted-foreground">
+                      선택 파일: {komSortedRecordsFile.name}
                     </p>
                   ) : null}
                   <FormMessage />

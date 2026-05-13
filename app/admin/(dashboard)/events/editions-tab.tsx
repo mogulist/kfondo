@@ -47,6 +47,7 @@ const STATUS_VARIANT: Record<
   completed: "secondary",
   ready: "outline",
   preparing: "outline",
+  cancelled: "outline",
 };
 
 export function EditionsTab({
@@ -105,11 +106,16 @@ export function EditionsTab({
 
   function recordsDisplay(edition: EventEditionWithCourses) {
     const hasRecords =
-      edition.records_blob_url || edition.sorted_records_blob_url;
+      edition.records_blob_url ||
+      edition.sorted_records_blob_url ||
+      edition.kom_records_blob_url ||
+      edition.kom_sorted_records_blob_url;
     if (!hasRecords) return "-";
     const parts: string[] = [];
     if (edition.records_blob_url) parts.push("원본");
     if (edition.sorted_records_blob_url) parts.push("정렬본");
+    if (edition.kom_records_blob_url) parts.push("KOM원본");
+    if (edition.kom_sorted_records_blob_url) parts.push("KOM정렬");
     return parts.join(" ");
   }
 

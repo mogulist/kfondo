@@ -9,6 +9,7 @@
  *
  * 사용 예:
  *   bun run publish:edition-records -- --edition-id <uuid> --records ./data/jeosu_2026.json --sorted ./data/sorted-msec/jeosu_2026.json --status completed
+ *   bun run publish:edition-records -- --slug jeosu --year 2026 --kom-records ./data/preliminary/hongcheon_2026_kom.json --kom-sorted ./data/sorted-msec/hongcheon_2026_kom.json
  *   bun run publish:edition-records -- --slug jeosu --year 2026 --records ./data/jeosu_2026.json --sorted ./data/sorted-msec/jeosu_2026.json
  */
 
@@ -45,6 +46,8 @@ type CliArgs = {
   year?: number;
   records?: string;
   sorted?: string;
+  komRecords?: string;
+  komSorted?: string;
   status?: EditionStatus;
 };
 
@@ -61,6 +64,8 @@ Usage:
 파일 (하나 이상):
   --records <path>            원본 기록 JSON
   --sorted <path>              sorted-msec JSON
+  --kom-records <path>        KOM 원본 기록 JSON
+  --kom-sorted <path>         KOM sorted-msec JSON
 
 선택:
   --status <status>            ${EDITION_STATUS_VALUES.join(" | ")}
@@ -83,6 +88,10 @@ const parseArgs = (argv: string[]): CliArgs => {
       out.records = argv[++i];
     } else if (a === "--sorted") {
       out.sorted = argv[++i];
+    } else if (a === "--kom-records") {
+      out.komRecords = argv[++i];
+    } else if (a === "--kom-sorted") {
+      out.komSorted = argv[++i];
     } else if (a === "--status") {
       const s = argv[++i] as EditionStatus;
       if (!EDITION_STATUS_VALUES.includes(s)) {
@@ -169,13 +178,17 @@ const main = async () => {
     process.exit(1);
   }
 
-  if (!args.records && !args.sorted) {
-    console.error("❌ --records 와/또는 --sorted 가 필요합니다.\n");
+  if (!args.records && !args.sorted && !args.komRecords && !args.komSorted) {
+    console.error(
+      "❌ --records, --sorted, --kom-records, --kom-sorted 중 하나 이상이 필요합니다.\n"
+    );
     printUsage();
     process.exit(1);
   }
   if (args.records) assertJsonPath(args.records, "원본");
   if (args.sorted) assertJsonPath(args.sorted, "정렬");
+  if (args.komRecords) assertJsonPath(args.komRecords, "KOM 원본");
+  if (args.komSorted) assertJsonPath(args.komSorted, "KOM 정렬");
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -198,6 +211,8 @@ const main = async () => {
 
   let recordsBlobUrl: string | undefined;
   let sortedRecordsBlobUrl: string | undefined;
+  let komRecordsBlobUrl: string | undefined;
+  let komSortedRecordsBlobUrl: string | undefined;
 
   if (args.records) {
     const abs = path.isAbsolute(args.records)
@@ -241,9 +256,54 @@ const main = async () => {
     console.log("✓ sorted_records_blob_url:", sortedRecordsBlobUrl);
   }
 
+  if (args.komRecords) {
+    const abs = path.isAbsolute(args.komRecords)
+      ? args.komRecords
+      : path.join(process.cwd(), args.komRecords);
+    const st = await stat(abs);
+    if (st.size > MAX_SIZE_BYTES) {
+      throw new Error(`KOM 원본 파일 용량이 너무 큽니다(최대 30MB): ${abs}`);
+    }
+    const buf = await readFile(abs);
+    const blob = await put(buildRecordsBlobPath(editionId, "kom-records"), buf, {
+      access: "public",
+      contentType: "application/json",
+      addRandomSuffix: false,
+      token: blobToken,
+    });
+    komRecordsBlobUrl = blob.url;
+    console.log("✓ kom_records_blob_url:", komRecordsBlobUrl);
+  }
+
+  if (args.komSorted) {
+    const abs = path.isAbsolute(args.komSorted)
+      ? args.komSorted
+      : path.join(process.cwd(), args.komSorted);
+    const st = await stat(abs);
+    if (st.size > MAX_SIZE_BYTES) {
+      throw new Error(`KOM 정렬 파일 용량이 너무 큽니다(최대 30MB): ${abs}`);
+    }
+    const buf = await readFile(abs);
+    const blob = await put(
+      buildRecordsBlobPath(editionId, "kom-sorted-records"),
+      buf,
+      {
+        access: "public",
+        contentType: "application/json",
+        addRandomSuffix: false,
+        token: blobToken,
+      }
+    );
+    komSortedRecordsBlobUrl = blob.url;
+    console.log("✓ kom_sorted_records_blob_url:", komSortedRecordsBlobUrl);
+  }
+
   const patch: Database["public"]["Tables"]["event_editions"]["Update"] = {};
   if (recordsBlobUrl) patch.records_blob_url = recordsBlobUrl;
   if (sortedRecordsBlobUrl) patch.sorted_records_blob_url = sortedRecordsBlobUrl;
+  if (komRecordsBlobUrl) patch.kom_records_blob_url = komRecordsBlobUrl;
+  if (komSortedRecordsBlobUrl)
+    patch.kom_sorted_records_blob_url = komSortedRecordsBlobUrl;
   if (args.status) patch.status = args.status;
 
   if (Object.keys(patch).length === 0) {
