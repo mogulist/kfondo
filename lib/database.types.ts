@@ -66,6 +66,8 @@ export type Database = {
           updated_at: string;
           records_blob_url: string | null;
           sorted_records_blob_url: string | null;
+          kom_records_blob_url: string | null;
+          kom_sorted_records_blob_url: string | null;
         };
         Insert: {
           id?: string;
@@ -79,6 +81,8 @@ export type Database = {
           updated_at?: string;
           records_blob_url?: string | null;
           sorted_records_blob_url?: string | null;
+          kom_records_blob_url?: string | null;
+          kom_sorted_records_blob_url?: string | null;
         };
         Update: {
           id?: string;
@@ -92,6 +96,8 @@ export type Database = {
           updated_at?: string;
           records_blob_url?: string | null;
           sorted_records_blob_url?: string | null;
+          kom_records_blob_url?: string | null;
+          kom_sorted_records_blob_url?: string | null;
         };
       };
       courses: {

@@ -34,6 +34,8 @@ CREATE TABLE event_editions (
   url TEXT, -- 대회 공식 홈페이지 등
   records_blob_url TEXT, -- Vercel Blob URL (원본 기록) [Phase 3 NEW]
   sorted_records_blob_url TEXT, -- Vercel Blob URL (정렬된 기록) [Phase 3 NEW]
+  kom_records_blob_url TEXT, -- Vercel Blob URL (KOM 원본 기록)
+  kom_sorted_records_blob_url TEXT, -- Vercel Blob URL (KOM 정렬 기록)
   comment TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

@@ -87,4 +87,6 @@ export type EventYearDetail = {
   url?: string;
   recordsBlobUrl?: string; // Phase 3: Vercel Blob URL (원본 기록)
   sortedRecordsBlobUrl?: string; // Phase 3: Vercel Blob URL (정렬된 기록)
+  komRecordsBlobUrl?: string; // KOM 원본 기록 Blob URL
+  komSortedRecordsBlobUrl?: string; // KOM 정렬 기록 Blob URL
 };
