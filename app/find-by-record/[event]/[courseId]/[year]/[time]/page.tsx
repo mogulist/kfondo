@@ -27,6 +27,10 @@ const ResultPage = async (props: Props) => {
     rank,
     percentile,
     percentileByParticipants,
+    rankMale,
+    rankFemale,
+    finishersMale,
+    finishersFemale,
     totalParticipants,
     finishers,
     courseInfo,
@@ -59,6 +63,8 @@ const ResultPage = async (props: Props) => {
         해당 코스 완주자 데이터가 없습니다.
       </div>
     ) : null;
+
+  const hasGenderRankSection = rankMale != null || rankFemale != null;
 
   return (
     <main className="container mx-auto px-0 py-0">
@@ -108,7 +114,11 @@ const ResultPage = async (props: Props) => {
             </div>
             {/* 3개 카드: PC에서는 가로, 모바일에서는 세로 */}
             <div className="flex flex-col sm:flex-row gap-4 w-full">
-              <Card main={`${rank ?? "-"}위`} label="순위" testId="rank" />
+              <Card
+                main={`${rank ?? "-"}위`}
+                label="통합 순위"
+                testId="rank"
+              />
               <Card
                 main={`${
                   percentileByParticipants !== null
@@ -126,6 +136,26 @@ const ResultPage = async (props: Props) => {
                 testId="finisher"
               />
             </div>
+            {hasGenderRankSection ? (
+              <div className="flex flex-col sm:flex-row gap-4 w-full">
+                {rankMale != null ? (
+                  <Card
+                    main={`${rankMale}위`}
+                    label="남자 순위"
+                    subLabel={`${finishersMale.toLocaleString()}명 기준`}
+                    testId="rank-male"
+                  />
+                ) : null}
+                {rankFemale != null ? (
+                  <Card
+                    main={`${rankFemale}위`}
+                    label="여자 순위"
+                    subLabel={`${finishersFemale.toLocaleString()}명 기준`}
+                    testId="rank-female"
+                  />
+                ) : null}
+              </div>
+            ) : null}
           </div>
         </div>
         {resultMsg ? (
