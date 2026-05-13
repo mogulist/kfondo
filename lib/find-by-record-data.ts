@@ -62,6 +62,12 @@ export type FindByRecordData = {
   rank: number | null;
   percentile: number | null;
   percentileByParticipants: number | null;
+  rankMale: number | null;
+  rankFemale: number | null;
+  percentileMale: number | null;
+  percentileFemale: number | null;
+  finishersMale: number;
+  finishersFemale: number;
   totalParticipants: number;
   finishers: number;
   courseInfo: { name: string; distance: number; elevation: number } | undefined;
@@ -106,8 +112,13 @@ export async function getFindByRecordData(
   const courseKey =
     courseRow?.name ?? COURSE_MAP[courseId] ?? courseId;
   const courseArr: number[] = sortedData[courseKey] || [];
+  const maleArr: number[] = sortedData[`${courseKey}_M`] || [];
+  const femaleArr: number[] = sortedData[`${courseKey}_F`] || [];
   const inputMsec = timeToMilliseconds(parsedTime);
   if (inputMsec < 0) return null;
+
+  const maleStats = rankAndPercentileFromSorted(maleArr, inputMsec);
+  const femaleStats = rankAndPercentileFromSorted(femaleArr, inputMsec);
 
   const closestIdx = courseArr.findIndex((msec) => msec > inputMsec);
   let rank: number | null = null;
@@ -116,9 +127,12 @@ export async function getFindByRecordData(
   let recordsAround: { msec: number; isInput: boolean }[] = [];
 
   if (courseArr.length > 0) {
-    rank = courseArr.filter((msec) => msec < inputMsec).length + 1;
-    percentile = ((rank - 1) / courseArr.length) * 100;
-    if (totalParticipants > 0) {
+    const combined = rankAndPercentileFromSorted(courseArr, inputMsec);
+    if (combined) {
+      rank = combined.rank;
+      percentile = combined.percentile;
+    }
+    if (totalParticipants > 0 && rank != null) {
       percentileByParticipants = ((rank - 1) / totalParticipants) * 100;
     }
     const faster = courseArr.slice(Math.max(0, closestIdx - 10), closestIdx);
@@ -145,10 +159,26 @@ export async function getFindByRecordData(
     rank,
     percentile,
     percentileByParticipants,
+    rankMale: maleStats?.rank ?? null,
+    rankFemale: femaleStats?.rank ?? null,
+    percentileMale: maleStats?.percentile ?? null,
+    percentileFemale: femaleStats?.percentile ?? null,
+    finishersMale: maleArr.length,
+    finishersFemale: femaleArr.length,
     totalParticipants,
     finishers,
     courseInfo,
     recordsAround,
     eventDate,
   };
+}
+
+function rankAndPercentileFromSorted(
+  sortedMs: number[],
+  inputMsec: number
+): { rank: number; percentile: number } | null {
+  if (sortedMs.length === 0) return null;
+  const rank = sortedMs.filter((msec) => msec < inputMsec).length + 1;
+  const percentile = ((rank - 1) / sortedMs.length) * 100;
+  return { rank, percentile };
 }

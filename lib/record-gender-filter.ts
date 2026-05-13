@@ -2,9 +2,10 @@ import type { RaceRecord } from "./types";
 
 export type GenderSegment = "open" | "male" | "female";
 
-type NormalizedGender = "male" | "female" | null;
+export type NormalizedGenderLabel = "male" | "female" | null;
 
-const normalizeRaceGender = (raw: string): NormalizedGender => {
+/** 원본 `Gender` 문자열을 남/여로 정규화. 미분류·알 수 없음은 `null`. */
+export const normalizeGenderLabel = (raw: string): NormalizedGenderLabel => {
   const s = raw.trim();
   if (!s) return null;
   const lower = s.toLowerCase();
@@ -26,6 +27,6 @@ export const filterRaceRecordsByGender = (
 ): RaceRecord[] => {
   if (segment === "open") return records;
 
-  const want: NormalizedGender = segment;
-  return records.filter((r) => normalizeRaceGender(r.gender) === want);
+  const want: NormalizedGenderLabel = segment;
+  return records.filter((r) => normalizeGenderLabel(r.gender) === want);
 };
