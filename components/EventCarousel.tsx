@@ -85,6 +85,7 @@ export function EventCarousel({ title, icon, events }: EventCarouselProps) {
           opts={{
             align: "start",
             loop: false,
+            containScroll: "trimSnaps",
           }}
           className="w-full"
         >
@@ -92,7 +93,7 @@ export function EventCarousel({ title, icon, events }: EventCarouselProps) {
             {events.map((event) => (
               <CarouselItem 
                 key={event.id} 
-                className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3"
+                className="pl-2 md:pl-4 basis-[88%] md:basis-1/2 lg:basis-1/3"
               >
                 <Link href={`/${event.id}`} className="block h-full">
                   <EventCard event={event} />
