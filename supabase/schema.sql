@@ -51,6 +51,7 @@ CREATE TABLE courses (
   distance DOUBLE PRECISION NOT NULL, -- km
   elevation INTEGER NOT NULL, -- m
   registered_count INTEGER DEFAULT 0, -- 접수 인원
+  has_kom BOOLEAN NOT NULL DEFAULT false, -- 해당 코스에 KOM 기록/토글 노출
   official_site_url TEXT,
   strava_url TEXT,
   ride_with_gps_url TEXT,

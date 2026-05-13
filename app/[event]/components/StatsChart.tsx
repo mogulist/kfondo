@@ -87,31 +87,82 @@ const YearChartsSection = ({
   komRaceRecordsState,
   isMobile,
 }: YearChartsSectionProps) => {
-  const hasKomRecords = Boolean(
+  const hasKomBlob = Boolean(
     event.yearDetails[yearData.year]?.komRecordsBlobUrl?.trim(),
   );
 
-  const [recordScope, setRecordScope] = React.useState<RecordScope>("full");
+  const courseAllowsKom = React.useCallback(
+    (courseId: string) => {
+      if (!hasKomBlob) return false;
+      const meta = courses?.find((c) => c.id === courseId);
+      return meta?.hasKom === true;
+    },
+    [hasKomBlob, courses],
+  );
+
+  const [recordScopeByCourseId, setRecordScopeByCourseId] = React.useState<
+    Record<string, RecordScope>
+  >({});
   const [genderSegment, setGenderSegment] =
     React.useState<GenderSegment>("open");
 
   React.useEffect(() => {
-    if (!hasKomRecords && recordScope === "kom") setRecordScope("full");
-  }, [hasKomRecords, recordScope]);
+    if (!hasKomBlob) {
+      setRecordScopeByCourseId({});
+      return;
+    }
+    setRecordScopeByCourseId((prev) => {
+      let changed = false;
+      const next = { ...prev };
+      for (const id of Object.keys(next)) {
+        if (next[id] !== "kom") continue;
+        const meta = courses?.find((c) => c.id === id);
+        if (meta?.hasKom !== true) {
+          delete next[id];
+          changed = true;
+        }
+      }
+      return changed ? next : prev;
+    });
+  }, [hasKomBlob, courses, yearData.year]);
 
-  const effectiveState =
-    recordScope === "kom" ? komRaceRecordsState : raceRecordsState;
+  const scopeForDistribution = (courseId: string): RecordScope => {
+    if (!courseAllowsKom(courseId)) return "full";
+    return recordScopeByCourseId[courseId] ?? "full";
+  };
+
+  const stateForScope = (
+    scope: RecordScope,
+  ): RaceRecordsClientState =>
+    scope === "kom" ? komRaceRecordsState : raceRecordsState;
+
+  const canFilterByGender = yearData.distributions.every((d) => {
+    const scope = scopeForDistribution(d.courseId);
+    return stateForScope(scope).status === "loaded";
+  });
 
   React.useEffect(() => {
-    if (
-      genderSegment !== "open" &&
-      (effectiveState.status === "error" ||
-        effectiveState.status === "no_blob")
-    )
-      setGenderSegment("open");
-  }, [genderSegment, effectiveState.status]);
-
-  const canFilterByGender = effectiveState.status === "loaded";
+    if (genderSegment === "open") return;
+    const broken = yearData.distributions.some((d) => {
+      const allowKom =
+        hasKomBlob && courses?.find((c) => c.id === d.courseId)?.hasKom === true;
+      const scope =
+        allowKom && recordScopeByCourseId[d.courseId] === "kom"
+          ? "kom"
+          : "full";
+      const st = scope === "kom" ? komRaceRecordsState : raceRecordsState;
+      return st.status === "error" || st.status === "no_blob";
+    });
+    if (broken) setGenderSegment("open");
+  }, [
+    genderSegment,
+    yearData.distributions,
+    recordScopeByCourseId,
+    komRaceRecordsState,
+    raceRecordsState,
+    hasKomBlob,
+    courses,
+  ]);
 
   return (
     <motion.div
@@ -123,9 +174,11 @@ const YearChartsSection = ({
     >
       <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
         {yearData.distributions.map((distribution, index) => {
+          const courseScope = scopeForDistribution(distribution.courseId);
+          const effectiveState = stateForScope(courseScope);
           let chartData: TimeDistribution[];
 
-          if (recordScope === "kom") {
+          if (courseScope === "kom") {
             const komOpts = { matchKomEventLabel: true } as const;
             if (effectiveState.status === "loaded") {
               if (genderSegment === "open") {
@@ -227,12 +280,16 @@ const YearChartsSection = ({
                 </div>
               </div>
               <div className="mt-3 flex flex-wrap items-center gap-2">
-                {hasKomRecords ? (
+                {courseAllowsKom(distribution.courseId) ? (
                   <ToggleGroup
                     type="single"
-                    value={recordScope}
+                    value={recordScopeByCourseId[distribution.courseId] ?? "full"}
                     onValueChange={(value) => {
-                      if (value) setRecordScope(value as RecordScope);
+                      if (!value) return;
+                      setRecordScopeByCourseId((prev) => ({
+                        ...prev,
+                        [distribution.courseId]: value as RecordScope,
+                      }));
                     }}
                     size="sm"
                     className="w-fit justify-start gap-0 rounded-md bg-muted/60 p-0.5 text-muted-foreground"
@@ -282,7 +339,7 @@ const YearChartsSection = ({
             </>
           );
 
-          const scopeLabel = recordScope === "kom" ? " KOM" : "";
+          const scopeLabel = courseScope === "kom" ? " KOM" : "";
           return (
             <DistributionChart
               key={distribution.courseId}

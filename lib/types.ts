@@ -75,6 +75,8 @@ export type RaceCategory = {
   stravaUrl?: string;
   rideWithGpsUrl?: string;
   gpxBlobUrl?: string;
+  /** 에디션에 KOM Blob이 있을 때 이 코스에만 [전체/KOM] 노출 */
+  hasKom?: boolean;
 };
 
 // 연도별 대회 정보

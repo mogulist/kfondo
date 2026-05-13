@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import type {
@@ -51,6 +52,7 @@ const courseSchema = z.object({
   strava_url: z.string().optional(),
   ride_with_gps_url: z.string().optional(),
   gpx_blob_url: z.string().optional(),
+  has_kom: z.boolean().optional(),
 });
 
 type CourseFormValues = z.infer<typeof courseSchema>;
@@ -85,6 +87,7 @@ export function CourseFormDialog({
       strava_url: "",
       ride_with_gps_url: "",
       gpx_blob_url: "",
+      has_kom: false,
     },
   });
 
@@ -103,6 +106,7 @@ export function CourseFormDialog({
         strava_url: course.strava_url ?? "",
         ride_with_gps_url: course.ride_with_gps_url ?? "",
         gpx_blob_url: course.gpx_blob_url ?? "",
+        has_kom: course.has_kom === true,
       });
     } else if (open && editions.length > 0) {
       form.reset({
@@ -116,6 +120,7 @@ export function CourseFormDialog({
         strava_url: "",
         ride_with_gps_url: "",
         gpx_blob_url: "",
+        has_kom: false,
       });
     }
   }, [open, course, editions, form]);
@@ -134,6 +139,7 @@ export function CourseFormDialog({
           strava_url: values.strava_url?.trim() || null,
           ride_with_gps_url: values.ride_with_gps_url?.trim() || null,
           gpx_blob_url: values.gpx_blob_url?.trim() || null,
+          has_kom: values.has_kom === true,
         };
         const { error } = await supabase
           .from("courses")
@@ -154,6 +160,7 @@ export function CourseFormDialog({
           strava_url: values.strava_url?.trim() || null,
           ride_with_gps_url: values.ride_with_gps_url?.trim() || null,
           gpx_blob_url: values.gpx_blob_url?.trim() || null,
+          has_kom: values.has_kom === true,
         };
         const { error } = await supabase
           .from("courses")
@@ -301,6 +308,28 @@ export function CourseFormDialog({
                     />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="has_kom"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+                  <div className="space-y-0.5">
+                    <FormLabel>KOM 구간 기록</FormLabel>
+                    <FormDescription>
+                      에디션에 KOM 기록 파일이 있을 때, 이 코스에만 [전체/KOM]
+                      전환이 표시됩니다.
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value === true}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />

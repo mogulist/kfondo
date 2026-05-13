@@ -31,6 +31,7 @@ function mapRowToEvent(row: EventWithRelations): Event {
           stravaUrl: course.strava_url?.trim() || undefined,
           rideWithGpsUrl: course.ride_with_gps_url?.trim() || undefined,
           gpxBlobUrl: course.gpx_blob_url?.trim() || undefined,
+          hasKom: course.has_kom === true,
         })) || [];
 
       yearDetails[edition.year] = {
