@@ -26,8 +26,8 @@ K-Fondo에 **이미 등록된 대회**의 새 연도 기록을 넣거나, 신규
 1. [DB(어드민) 준비](./events/supabase-prep.md) — 이벤트 / 에디션 / 코스, `Event`·코스명 정합
 2. [데이터 크롤링](./events/crawl-records.md) — `data/preliminary/{이름}.json`
 3. [Event 필드 정제](./events/refine-records.md) — `data/{slug}_{연도}.json`
-4. [sorted-msec 생성](./events/sorted-msec.md) — `data/sorted-msec/{slug}_{연도}.json`
-5. [Blob 업로드 및 에디션 URL](./events/blob-publish.md)
+4. [sorted-msec 생성](./events/sorted-msec.md) — `data/sorted-msec/{slug}_{연도}.json` (KOM 별도 JSON이 있으면 동 문서의 KOM 경로)
+5. [Blob 업로드 및 에디션 URL](./events/blob-publish.md) — 일반 기록 + (선택) **KOM Blob과 `--has-kom`** (`blob-publish.md`의 KOM 절 필독)
 6. [에디션·코스 마무리](./events/edition-wrap-up.md)
 7. [검증 체크리스트](./events/verify-checklist.md)
 
@@ -46,7 +46,7 @@ K-Fondo에 **이미 등록된 대회**의 새 연도 기록을 넣거나, 신규
 - 검증용 BIB·기대 기록: ...
 ```
 
-정제·배포까지 포함할 때는 `refine-records.md`, `sorted-msec.md`, `blob-publish.md`를 단계에 맞게 추가합니다.
+정제·배포까지 포함할 때는 `refine-records.md`, `sorted-msec.md`, `blob-publish.md`를 단계에 맞게 추가합니다. **KOM 구간 기록**이 있으면 `blob-publish.md`의 KOM 절과 **`--has-kom`**을 반드시 포함합니다.
 
 ---
 
@@ -56,4 +56,4 @@ K-Fondo에 **이미 등록된 대회**의 새 연도 기록을 넣거나, 신규
 |------|------|
 | **이 허브(`ADD_EVENT.md`) + `docs/events/*.md`** | 절차의 단일 근거. 상세는 주제별 파일만 갱신하면 됨 |
 | **프로젝트 스킬** `add-new-records` | 통상 **어드민에 에디션·코스가 이미 있는 경우** 기록 수집·정제·배포용 **행동 체크리스트**. slug·제공처·검증 BIB 요청, SmartChip 샘플 검증 등. DB 메타 신규 생성은 [supabase-prep](./events/supabase-prep.md) 참고(스킬 기본 범위 밖) |
-| **스크립트** | `bun run publish:edition-records` — Blob 업로드 및 에디션 URL·(선택) 상태 갱신. 시크릿은 `.env.local`에만 둡니다 |
+| **스크립트** | `bun run publish:edition-records` — Blob 업로드 및 에디션 URL·(선택) 상태 갱신. **KOM** 업로드 시 `--has-kom <course_type>`까지 포함(누락 시 UI에서 KOM 비활성). 시크릿은 `.env.local`에만 둡니다 |

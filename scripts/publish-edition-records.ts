@@ -9,9 +9,11 @@
  *
  * 사용 예:
  *   bun run publish:edition-records -- --edition-id <uuid> --records ./data/jeosu_2026.json --sorted ./data/sorted-msec/jeosu_2026.json --status completed
- *   bun run publish:edition-records -- --slug jeosu --year 2026 --kom-records ./data/preliminary/hongcheon_2026_kom.json --kom-sorted ./data/sorted-msec/hongcheon_2026_kom.json
+ *   bun run publish:edition-records -- --slug jeosu --year 2026 --kom-records ./data/preliminary/hongcheon_2026_kom.json --kom-sorted ./data/sorted-msec/hongcheon_2026_kom.json --has-kom granfondo
  *   bun run publish:edition-records -- --slug hongcheon --year 2026 --has-kom granfondo
  *   bun run publish:edition-records -- --slug jeosu --year 2026 --records ./data/jeosu_2026.json --sorted ./data/sorted-msec/jeosu_2026.json
+ *
+ * KOM: --kom-records/--kom-sorted 만으로는 에디션 Blob URL만 갱신됩니다. UI에서 KOM을 쓰려면 --has-kom <course_type> 까지 포함하세요 (docs/events/blob-publish.md).
  */
 
 import { readFile, stat } from "node:fs/promises";

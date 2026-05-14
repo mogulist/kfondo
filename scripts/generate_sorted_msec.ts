@@ -4,6 +4,7 @@ import { buildSortedMsecFromRecords } from "../lib/build-sorted-msec-from-record
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const OUTPUT_DIR = path.join(DATA_DIR, "sorted-msec");
+const PRELIMINARY_DIR = path.join(DATA_DIR, "preliminary");
 
 function parseArgs(argv: string[]) {
   let force = false;
@@ -39,6 +40,30 @@ function main() {
     const courseMap = buildSortedMsecFromRecords(records);
     fs.writeFileSync(outputFile, JSON.stringify(courseMap, null, 2));
     console.log(`[GENERATED] ${outputFile}`);
+  }
+
+  if (fs.existsSync(PRELIMINARY_DIR)) {
+    const komFiles = fs
+      .readdirSync(PRELIMINARY_DIR)
+      .filter((f) => f.endsWith("_kom.json"));
+    for (const file of komFiles) {
+      const outputFile = path.join(OUTPUT_DIR, file);
+      if (fs.existsSync(outputFile) && !force) {
+        console.log(`[SKIP] ${outputFile} already exists.`);
+        continue;
+      }
+      const raw = fs.readFileSync(path.join(PRELIMINARY_DIR, file), "utf-8");
+      let records: unknown[] = [];
+      try {
+        records = JSON.parse(raw) as unknown[];
+      } catch {
+        console.error(`[ERROR] Failed to parse preliminary/${file}`);
+        continue;
+      }
+      const courseMap = buildSortedMsecFromRecords(records);
+      fs.writeFileSync(outputFile, JSON.stringify(courseMap, null, 2));
+      console.log(`[GENERATED] ${outputFile} (from preliminary/${file})`);
+    }
   }
 }
 
