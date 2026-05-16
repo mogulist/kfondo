@@ -309,7 +309,7 @@ export function EditionFormDialog({
           >
             <fieldset
               disabled={isSaving}
-              className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden pr-1"
+              className="hide-scrollbar min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden"
             >
             <div className="grid grid-cols-2 gap-4">
               <FormField

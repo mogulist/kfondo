@@ -33,6 +33,14 @@ import { EditionFormDialog } from "./edition-form-dialog";
 import type { EventEditionWithCourses } from "./types";
 import { EDITION_STATUS_LABELS, formatEditionDate } from "./types";
 
+type RecordSlotSpec = {
+  key: string;
+  label: string;
+  present: boolean;
+  titleDone: string;
+  titleMissing: string;
+};
+
 type EditionsTabProps = {
   eventId: string;
   eventSlug: string;
@@ -49,6 +57,76 @@ const STATUS_VARIANT: Record<
   preparing: "outline",
   cancelled: "outline",
 };
+
+function shouldShowKomSlots(edition: EventEditionWithCourses): boolean {
+  const anyCourseKom = edition.courses.some((c) => c.has_kom);
+  const anyKomBlob =
+    Boolean(edition.kom_records_blob_url) ||
+    Boolean(edition.kom_sorted_records_blob_url);
+  return anyCourseKom || anyKomBlob;
+}
+
+function buildRecordSlots(edition: EventEditionWithCourses): RecordSlotSpec[] {
+  const base: RecordSlotSpec[] = [
+    {
+      key: "records",
+      label: "원본",
+      present: Boolean(edition.records_blob_url),
+      titleDone: "원본 기록 파일이 등록되어 있습니다.",
+      titleMissing: "원본 기록 파일이 없습니다.",
+    },
+    {
+      key: "sorted",
+      label: "정렬",
+      present: Boolean(edition.sorted_records_blob_url),
+      titleDone: "정렬된 기록 파일이 등록되어 있습니다.",
+      titleMissing: "정렬된 기록 파일이 없습니다.",
+    },
+  ];
+  if (!shouldShowKomSlots(edition)) return base;
+  return [
+    ...base,
+    {
+      key: "kom",
+      label: "KOM",
+      present: Boolean(edition.kom_records_blob_url),
+      titleDone: "KOM 원본 기록이 등록되어 있습니다.",
+      titleMissing: "KOM 원본 기록이 없습니다.",
+    },
+    {
+      key: "komSorted",
+      label: "KOM정렬",
+      present: Boolean(edition.kom_sorted_records_blob_url),
+      titleDone: "KOM 정렬 기록이 등록되어 있습니다.",
+      titleMissing: "KOM 정렬 기록이 없습니다.",
+    },
+  ];
+}
+
+function EditionRecordBadges({ edition }: { edition: EventEditionWithCourses }) {
+  const slots = buildRecordSlots(edition);
+  return (
+    <div
+      className="flex max-w-[220px] flex-wrap gap-1"
+      aria-label="기록 파일 등록 상태"
+    >
+      {slots.map((slot) => (
+        <Badge
+          key={slot.key}
+          variant={slot.present ? "default" : "outline"}
+          title={slot.present ? slot.titleDone : slot.titleMissing}
+          className={
+            slot.present
+              ? "border-transparent bg-emerald-600 text-white hover:bg-emerald-600/90"
+              : "border-dashed text-muted-foreground"
+          }
+        >
+          {slot.label}
+        </Badge>
+      ))}
+    </div>
+  );
+}
 
 export function EditionsTab({
   eventId,
@@ -104,21 +182,6 @@ export function EditionsTab({
     }
   }
 
-  function recordsDisplay(edition: EventEditionWithCourses) {
-    const hasRecords =
-      edition.records_blob_url ||
-      edition.sorted_records_blob_url ||
-      edition.kom_records_blob_url ||
-      edition.kom_sorted_records_blob_url;
-    if (!hasRecords) return "-";
-    const parts: string[] = [];
-    if (edition.records_blob_url) parts.push("원본");
-    if (edition.sorted_records_blob_url) parts.push("정렬본");
-    if (edition.kom_records_blob_url) parts.push("KOM원본");
-    if (edition.kom_sorted_records_blob_url) parts.push("KOM정렬");
-    return parts.join(" ");
-  }
-
   return (
     <div className="rounded-lg border bg-card p-6">
       <div className="mb-4 flex justify-end">
@@ -134,7 +197,7 @@ export function EditionsTab({
             <TableHead>개최일</TableHead>
             <TableHead>상태</TableHead>
             <TableHead>URL</TableHead>
-            <TableHead>기록 파일</TableHead>
+            <TableHead className="min-w-[200px]">기록</TableHead>
             <TableHead>코멘트</TableHead>
             <TableHead className="w-[100px]">작업</TableHead>
           </TableRow>
@@ -173,9 +236,15 @@ export function EditionsTab({
                     "-"
                   )}
                 </TableCell>
-                <TableCell>{recordsDisplay(edition)}</TableCell>
+                <TableCell>
+                  <EditionRecordBadges edition={edition} />
+                </TableCell>
                 <TableCell className="max-w-[200px] truncate">
-                  {edition.comment || "-"}
+                  {edition.comment ? (
+                    <span title={edition.comment}>{edition.comment}</span>
+                  ) : (
+                    "-"
+                  )}
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
