@@ -42,8 +42,8 @@ export default async function EventPage({ params }: Props) {
           </div>
           <div className="space-y-16 md:space-y-20">
             <ParticipantTrendSection event={event} />
-            <StatsSection event={event} />
             <CommentsSection eventId={eventSlug} />
+            <StatsSection event={event} />
           </div>
         </div>
       </main>

@@ -7,8 +7,7 @@ type Props = {
 export const CommentsSection = ({ eventId }: Props) => {
   return (
     <section>
-      <hr className="border-border/40" />
-      <div className="flex justify-center pt-6">
+      <div className="flex justify-center">
         <ReactionButtons eventId={eventId} />
       </div>
     </section>
