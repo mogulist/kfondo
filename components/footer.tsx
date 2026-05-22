@@ -49,11 +49,7 @@ export function Footer() {
 
   return (
     <footer className="border-t mt-12">
-      <div className="max-w-screen-xl mx-auto px-4 py-8 flex items-center justify-center gap-4">
-        <p className="text-center text-sm text-muted-foreground">
-          © 2025-{new Date().getFullYear()} K-Fondo. All rights reserved.
-        </p>
-        <span className="text-muted-foreground/40 text-sm">·</span>
+      <div className="max-w-screen-xl mx-auto px-4 py-8 flex flex-col items-center gap-2">
         <Dialog open={open} onOpenChange={handleOpenChange}>
           <DialogTrigger asChild>
             <button className="text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -112,6 +108,9 @@ export function Footer() {
             )}
           </DialogContent>
         </Dialog>
+        <p className="text-center text-sm text-muted-foreground">
+          © 2025-{new Date().getFullYear()} K-Fondo. All rights reserved.
+        </p>
       </div>
     </footer>
   );
