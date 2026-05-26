@@ -16,6 +16,10 @@ export type RecordOGImageLandscapeProps = {
   totalParticipants: number;
   finishers: number;
   eventDate: string;
+  recordLabel?: string;
+  rankLabel?: string;
+  participantLabel?: string;
+  finisherLabel?: string;
 };
 
 export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
@@ -32,6 +36,10 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
     totalParticipants,
     finishers,
     eventDate,
+    recordLabel = "완주 기록",
+    rankLabel = "순위",
+    participantLabel = "참가자 기준",
+    finisherLabel = "완주자 기준",
   } = props;
 
   const rankStr = rank != null ? String(rank) : "-";
@@ -251,7 +259,7 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
                 fontWeight: 700,
               }}
             >
-              완주 기록
+              {recordLabel}
             </div>
             <div
               style={{
@@ -291,7 +299,7 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
                 fontWeight: 700,
               }}
             >
-              순위
+              {rankLabel}
             </div>
             <div
               style={{
@@ -345,7 +353,7 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
                 fontWeight: 700,
               }}
             >
-              참가자 기준
+              {participantLabel}
             </div>
             <div
               style={{
@@ -409,7 +417,7 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
                 fontWeight: 700,
               }}
             >
-              완주자 기준
+              {finisherLabel}
             </div>
             <div
               style={{

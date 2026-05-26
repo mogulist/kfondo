@@ -26,7 +26,14 @@ async function loadLocalFont(filename: string) {
 
 export async function GET(request: Request, props: Props) {
   const { event: eventId, courseId, year, time } = await props.params;
-  const data = await getFindByRecordData(eventId, courseId, year, time);
+  const scope = new URL(request.url).searchParams.get("scope");
+  const data = await getFindByRecordData(
+    eventId,
+    courseId,
+    year,
+    time,
+    scope === "kom" ? "kom" : "full",
+  );
   
   if (!data) {
     return new ImageResponse(
@@ -60,6 +67,7 @@ export async function GET(request: Request, props: Props) {
     finishers,
     courseInfo,
     eventDate,
+    recordScope,
   } = data;
 
   const eventName = event.name || `${event.location} 그란폰도`;
@@ -72,6 +80,7 @@ export async function GET(request: Request, props: Props) {
       : "-";
   const finisherPct = percentile != null ? percentile.toFixed(1) : "-";
   const rankStr = rank != null ? String(rank) : "-";
+  const scopeLabel = recordScope === "kom" ? "KOM" : "완주";
 
   const [fontBold, fontExtraBold, fontHeavy] = await Promise.all([
     loadLocalFont("SUIT-Bold.otf"),
@@ -101,6 +110,22 @@ export async function GET(request: Request, props: Props) {
           totalParticipants={totalParticipants}
           finishers={finishers}
           eventDate={eventDate}
+          recordLabel={`${scopeLabel} 기록`}
+          rankLabel={`${scopeLabel} 순위`}
+          participantLabel={
+            recordScope === "kom" ? "KOM 참가자 기준" : "참가자 기준"
+          }
+          finisherLabel={recordScope === "kom" ? "KOM 완주자 기준" : "완주자 기준"}
+          participantBaseLabel={
+            recordScope === "kom"
+              ? `KOM ${totalParticipants.toLocaleString()}명 기준`
+              : `${totalParticipants.toLocaleString()}명 기준`
+          }
+          finisherBaseLabel={
+            recordScope === "kom"
+              ? `KOM ${finishers.toLocaleString()}명 기준`
+              : `${finishers.toLocaleString()}명 기준`
+          }
         />
       </div>
     ),

@@ -11,10 +11,15 @@ type Props = {
     courseId: string;
     year: string;
   };
+  searchParams: Promise<{ scope?: string }>;
 };
 
-const FindMyRecordPage = async ({ params }: Props) => {
+const parseScope = (scope?: string): "full" | "kom" =>
+  scope === "kom" ? "kom" : "full";
+
+const FindMyRecordPage = async ({ params, searchParams }: Props) => {
   const { event: eventId, courseId, year } = await params;
+  const { scope } = await searchParams;
   const event = await getEventById(eventId);
 
   if (!event) {
@@ -30,6 +35,7 @@ const FindMyRecordPage = async ({ params }: Props) => {
         eventName={eventName}
         courseId={courseId}
         year={year}
+        initialScope={parseScope(scope)}
       />
     </main>
   );

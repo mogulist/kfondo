@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import StackNavBar from "@/components/StackNavBar";
 import { Badge } from "@/components/ui/badge";
 import { generateFindRecordMetadata } from "@/lib/metadata";
 import {
   getFindByRecordData,
+  type FindByRecordScope,
   msecToTimeString,
 } from "@/lib/find-by-record-data";
 import ShareRecordMenu from "./ShareRecordMenu";
@@ -12,17 +14,30 @@ import TrackResultViewed from "./TrackResultViewed";
 
 type Props = {
   params: { event: string; courseId: string; year: string; time: string };
+  searchParams: Promise<{ scope?: string }>;
 };
+
+const parseScope = (scope?: string): FindByRecordScope =>
+  scope === "kom" ? "kom" : "full";
 
 const ResultPage = async (props: Props) => {
   const awaitedParams = await props.params;
+  const awaitedSearchParams = await props.searchParams;
   const { event: eventId, courseId, year, time } = awaitedParams;
+  const requestedScope = parseScope(awaitedSearchParams.scope);
 
-  const data = await getFindByRecordData(eventId, courseId, year, time);
+  const data = await getFindByRecordData(
+    eventId,
+    courseId,
+    year,
+    time,
+    requestedScope,
+  );
   if (!data) notFound();
 
   const {
     event,
+    recordScope,
     parsedTime,
     rank,
     percentile,
@@ -39,6 +54,13 @@ const ResultPage = async (props: Props) => {
   } = data;
 
   const eventName = event.name || `${event.location} 그란폰도`;
+  const isKomScope = recordScope === "kom";
+  const scopeLabel = isKomScope ? "KOM" : "완주";
+  const scopeRecordLabel = isKomScope ? "KOM 기록" : "완주 기록";
+  const scopeRankLabel = isKomScope ? "KOM 통합 순위" : "완주 통합 순위";
+  const scopePeoplePrefix = isKomScope ? "KOM " : "";
+  const backToInputHref = `/find-by-record/${eventId}/${courseId}/${year}?scope=${recordScope}`;
+  const toFullResultHref = `/find-by-record/${eventId}/${courseId}/${year}/${time}`;
   const certificateProps = {
     year,
     eventName,
@@ -59,8 +81,17 @@ const ResultPage = async (props: Props) => {
 
   const resultMsg =
     rank === null ? (
-      <div className="text-lg text-red-500 mb-4">
-        해당 코스 완주자 데이터가 없습니다.
+      <div className="mb-4 flex flex-col items-center gap-2">
+        <div className="text-lg text-red-500">
+          {isKomScope
+            ? "해당 코스의 KOM 완주자 데이터가 없습니다."
+            : "해당 코스 완주자 데이터가 없습니다."}
+        </div>
+        {isKomScope ? (
+          <Link className="text-sm text-primary underline" href={toFullResultHref}>
+            완주 기록으로 다시 보기
+          </Link>
+        ) : null}
       </div>
     ) : null;
 
@@ -73,11 +104,12 @@ const ResultPage = async (props: Props) => {
         courseId={courseId}
         year={year}
         time={time}
+        recordScope={recordScope}
       />
       <StackNavBar />
       <div className="max-w-full px-4 py-4">
-        <div className="flex flex-col items-center mb-6">
-          <div className="flex flex-wrap items-center justify-between gap-2 w-full max-w-2xl mx-auto mb-2">
+        <div className="flex flex-col items-center gap-4 mb-4 w-full max-w-2xl mx-auto">
+          <div className="flex flex-wrap items-center justify-between gap-2 w-full">
             <div className="text-2xl sm:text-3xl text-muted-foreground font-semibold">
               {year}년 {event.name || `${event.location} 그란폰도`}
             </div>
@@ -86,15 +118,25 @@ const ResultPage = async (props: Props) => {
               courseId={courseId}
               year={year}
               time={time}
+              recordScope={recordScope}
               title={`${year}년 ${eventName} 기록 인증`}
-              description={`완주 기록 ${parsedTime}, 순위 ${rank ?? "-"}위`}
+              description={`${scopeRecordLabel} ${parsedTime}, 순위 ${rank ?? "-"}위`}
               certificateProps={certificateProps}
             />
           </div>
           {courseInfo && (
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2 w-full">
               <Badge className="bg-blue-600 text-white">
                 {courseInfo.name}
+              </Badge>
+              <Badge
+                className={
+                  isKomScope
+                    ? "border border-violet-500 bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-200"
+                    : "bg-emerald-600 text-white"
+                }
+              >
+                {scopeLabel}
               </Badge>
               <Badge className="bg-green-600 text-white">
                 {courseInfo.distance}km
@@ -110,13 +152,13 @@ const ResultPage = async (props: Props) => {
           <div className="flex flex-col gap-4 w-full">
             {/* 입력 기록 카드: PC에서는 한 줄 전체, 모바일에서는 첫 번째 카드 */}
             <div className="sm:w-full">
-              <Card main={parsedTime} label="입력 기록" />
+              <Card main={parsedTime} label={scopeRecordLabel} />
             </div>
             {/* 3개 카드: PC에서는 가로, 모바일에서는 세로 */}
             <div className="flex flex-col sm:flex-row gap-4 w-full">
               <Card
                 main={`${rank ?? "-"}위`}
-                label="통합 순위"
+                label={scopeRankLabel}
                 testId="rank"
               />
               <Card
@@ -126,13 +168,13 @@ const ResultPage = async (props: Props) => {
                     : "-"
                 }%`}
                 label="참가자 기준"
-                subLabel={`${totalParticipants.toLocaleString()}명 기준`}
+                subLabel={`${scopePeoplePrefix}${totalParticipants.toLocaleString()}명 기준`}
                 testId="participant"
               />
               <Card
                 main={`${percentile !== null ? percentile.toFixed(1) : "-"}%`}
                 label="완주자 기준"
-                subLabel={`${finishers.toLocaleString()}명 기준`}
+                subLabel={`${scopePeoplePrefix}${finishers.toLocaleString()}명 기준`}
                 testId="finisher"
               />
             </div>
@@ -142,7 +184,7 @@ const ResultPage = async (props: Props) => {
                   <Card
                     main={`${rankMale}위`}
                     label="남자 순위"
-                    subLabel={`${finishersMale.toLocaleString()}명 기준`}
+                    subLabel={`${scopePeoplePrefix}${finishersMale.toLocaleString()}명 기준`}
                     testId="rank-male"
                   />
                 ) : null}
@@ -150,7 +192,7 @@ const ResultPage = async (props: Props) => {
                   <Card
                     main={`${rankFemale}위`}
                     label="여자 순위"
-                    subLabel={`${finishersFemale.toLocaleString()}명 기준`}
+                    subLabel={`${scopePeoplePrefix}${finishersFemale.toLocaleString()}명 기준`}
                     testId="rank-female"
                   />
                 ) : null}
@@ -163,6 +205,9 @@ const ResultPage = async (props: Props) => {
         ) : (
           <>
             <div className="w-full border-t border-muted-foreground/20 my-8" />
+            <div className="mb-2 text-center text-sm text-muted-foreground">
+              {scopeRecordLabel} 주변 기록
+            </div>
             <div className="flex flex-col items-center gap-1">
               {recordsAround.map((rec, idx) => (
                 <div
@@ -179,6 +224,11 @@ const ResultPage = async (props: Props) => {
             </div>
           </>
         )}
+        <div className="mt-8 text-center">
+          <Link className="text-sm text-primary underline" href={backToInputHref}>
+            다른 기록으로 찾기
+          </Link>
+        </div>
       </div>
     </main>
   );
@@ -225,8 +275,13 @@ const Card = ({
   </div>
 );
 
-const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+const generateMetadata = async ({
+  params,
+  searchParams,
+}: Props): Promise<Metadata> => {
   const { event: eventId, courseId, year, time } = await params;
+  const { scope } = await searchParams;
+  const recordScope = parseScope(scope);
   const base = await generateFindRecordMetadata({
     eventId,
     courseId,
@@ -234,20 +289,30 @@ const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   });
 
   // 페이지별 URL 설정 (Facebook이 og:url을 기준으로 OG 이미지를 가져옴)
-  const pageUrl = `https://www.kfondo.cc/find-by-record/${eventId}/${courseId}/${year}/${time}`;
-  const ogImageUrl = `${pageUrl}/opengraph-image`;
+  const pageUrl = new URL(
+    `https://www.kfondo.cc/find-by-record/${eventId}/${courseId}/${year}/${time}`,
+  );
+  if (recordScope === "kom") {
+    pageUrl.searchParams.set("scope", "kom");
+  }
+  const ogImageUrl = new URL(
+    `https://www.kfondo.cc/find-by-record/${eventId}/${courseId}/${year}/${time}/opengraph-image`,
+  );
+  if (recordScope === "kom") {
+    ogImageUrl.searchParams.set("scope", "kom");
+  }
 
   return {
     ...base,
     alternates: {
-      canonical: pageUrl,
+      canonical: pageUrl.toString(),
     },
     openGraph: {
       ...base.openGraph,
-      url: pageUrl,
+      url: pageUrl.toString(),
       images: [
         {
-          url: ogImageUrl,
+          url: ogImageUrl.toString(),
           width: 1200,
           height: 630,
           alt: base.title as string,
@@ -257,7 +322,7 @@ const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
     twitter: {
       ...base.twitter,
       card: "summary_large_image" as const,
-      images: [ogImageUrl],
+      images: [ogImageUrl.toString()],
     },
   };
 };

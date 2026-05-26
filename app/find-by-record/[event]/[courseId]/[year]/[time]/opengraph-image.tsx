@@ -15,6 +15,7 @@ type Props = {
     year: string;
     time: string;
   }>;
+  searchParams: Promise<{ scope?: string }>;
 };
 
 async function loadLocalFont(filename: string) {
@@ -25,7 +26,14 @@ async function loadLocalFont(filename: string) {
 
 export default async function Image(props: Props) {
   const { event: eventId, courseId, year, time } = await props.params;
-  const data = await getFindByRecordData(eventId, courseId, year, time);
+  const { scope } = await props.searchParams;
+  const data = await getFindByRecordData(
+    eventId,
+    courseId,
+    year,
+    time,
+    scope === "kom" ? "kom" : "full",
+  );
   if (!data) {
     return new ImageResponse(
       (
@@ -58,6 +66,7 @@ export default async function Image(props: Props) {
     finishers,
     courseInfo,
     eventDate,
+    recordScope,
   } = data;
 
   const eventName = event.name || `${event.location} 그란폰도`;
@@ -69,6 +78,7 @@ export default async function Image(props: Props) {
       ? percentileByParticipants.toFixed(1)
       : "-";
   const finisherPct = percentile != null ? percentile.toFixed(1) : "-";
+  const scopeLabel = recordScope === "kom" ? "KOM" : "완주";
 
   // SUIT 폰트 로드 (로컬 파일) - Bold보다 한 단계 두꺼운 Heavy 추가
   const [fontBold, fontExtraBold, fontHeavy] = await Promise.all([
@@ -99,6 +109,12 @@ export default async function Image(props: Props) {
           totalParticipants={totalParticipants}
           finishers={finishers}
           eventDate={eventDate}
+          recordLabel={`${scopeLabel} 기록`}
+          rankLabel={`${scopeLabel} 순위`}
+          participantLabel={
+            recordScope === "kom" ? "KOM 참가자 기준" : "참가자 기준"
+          }
+          finisherLabel={recordScope === "kom" ? "KOM 완주자 기준" : "완주자 기준"}
         />
       </div>
     ),

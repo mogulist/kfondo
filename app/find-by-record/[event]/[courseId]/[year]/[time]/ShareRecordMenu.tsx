@@ -23,6 +23,7 @@ type ShareRecordMenuProps = {
   courseId: string;
   year: string;
   time: string;
+  recordScope: "full" | "kom";
   title: string;
   description: string;
   certificateProps: RecordCertificatePreviewProps;
@@ -33,6 +34,7 @@ export default function ShareRecordMenu({
   courseId,
   year,
   time,
+  recordScope,
   title,
   description,
   certificateProps,
@@ -50,15 +52,31 @@ export default function ShareRecordMenu({
     course_id: courseId,
     year,
     time,
+    record_scope: recordScope,
     is_past_year: isPastYear,
   };
 
   const basePath = `/find-by-record/${eventId}/${courseId}/${year}/${time}`;
   const getShareUrl = () =>
     typeof window !== "undefined"
-      ? `${window.location.origin}${basePath}`
+      ? (() => {
+          const url = new URL(basePath, window.location.origin);
+          if (recordScope === "kom") {
+            url.searchParams.set("scope", "kom");
+          }
+          return url.toString();
+        })()
       : "";
-  const getSaveImageUrl = () => `${getShareUrl()}/certificate-image`;
+  const getSaveImageUrl = () =>
+    typeof window !== "undefined"
+      ? (() => {
+          const url = new URL(`${basePath}/certificate-image`, window.location.origin);
+          if (recordScope === "kom") {
+            url.searchParams.set("scope", "kom");
+          }
+          return url.toString();
+        })()
+      : "";
 
   const isMobile = () =>
     typeof navigator !== "undefined" &&

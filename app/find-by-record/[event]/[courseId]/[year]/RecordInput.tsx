@@ -7,6 +7,8 @@ export type RecordInputProps = {
   onChange: (value: string) => void;
   error?: string;
   onSubmit?: () => void;
+  label?: string;
+  placeholder?: string;
 };
 
 const isValidRecordFormat = (value: string) => {
@@ -34,6 +36,8 @@ const RecordInput: FC<RecordInputProps> = ({
   onChange,
   error,
   onSubmit,
+  label = "기록 입력",
+  placeholder = "예: 05:08:27 또는 05:08:27.53",
 }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let v = e.target.value;
@@ -53,7 +57,7 @@ const RecordInput: FC<RecordInputProps> = ({
       onSubmit={handleFormSubmit}
     >
       <label htmlFor="record-input" className="block text-sm font-medium mb-2">
-        기록 입력
+        {label}
       </label>
       <input
         id="record-input"
@@ -61,7 +65,7 @@ const RecordInput: FC<RecordInputProps> = ({
         type="text"
         inputMode="numeric"
         autoComplete="off"
-        placeholder="예: 05:08:27 또는 05:08:27.53"
+        placeholder={placeholder}
         className="w-full border rounded px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         value={value}
         onChange={handleInputChange}

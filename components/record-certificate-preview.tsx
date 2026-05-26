@@ -16,6 +16,12 @@ export type RecordCertificatePreviewProps = {
   totalParticipants: number;
   finishers: number;
   eventDate: string;
+  recordLabel?: string;
+  rankLabel?: string;
+  participantLabel?: string;
+  finisherLabel?: string;
+  participantBaseLabel?: string;
+  finisherBaseLabel?: string;
 };
 
 export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
@@ -32,6 +38,12 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
     totalParticipants,
     finishers,
     eventDate,
+    recordLabel = "완주 기록",
+    rankLabel = "순위",
+    participantLabel = "참가자 기준",
+    finisherLabel = "완주자 기준",
+    participantBaseLabel = `${totalParticipants.toLocaleString()}명 기준`,
+    finisherBaseLabel = `${finishers.toLocaleString()}명 기준`,
   } = props;
 
   return (
@@ -239,7 +251,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                 display: "flex",
               }}
             >
-              완주 기록
+              {recordLabel}
             </div>
             <div
               style={{
@@ -274,7 +286,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                 display: "flex",
               }}
             >
-              순위
+              {rankLabel}
             </div>
             <div
               style={{
@@ -336,7 +348,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   display: "flex",
                 }}
               >
-                참가자 기준
+                {participantLabel}
               </div>
               <div
                 style={{
@@ -375,7 +387,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   display: "flex",
                 }}
               >
-                {totalParticipants.toLocaleString()}명 기준
+                {participantBaseLabel}
               </div>
             </div>
 
@@ -399,7 +411,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   display: "flex",
                 }}
               >
-                완주자 기준
+                {finisherLabel}
               </div>
               <div
                 style={{
@@ -438,7 +450,7 @@ export function RecordCertificatePreview(props: RecordCertificatePreviewProps) {
                   display: "flex",
                 }}
               >
-                {finishers.toLocaleString()}명 기준
+                {finisherBaseLabel}
               </div>
             </div>
           </div>

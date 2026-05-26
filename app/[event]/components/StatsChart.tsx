@@ -237,7 +237,7 @@ const YearChartsSection = ({
             (c) => c.id === distribution.courseId,
           );
           const statsLine = formatCourseStatsLine(courseMeta);
-          const findByRecordHref = `/find-by-record/${eventId}/${distribution.courseId}/${yearData.year}`;
+          const findByRecordHref = `/find-by-record/${eventId}/${distribution.courseId}/${yearData.year}?scope=${courseScope}`;
 
           const toolbar = (
             <>
@@ -273,6 +273,7 @@ const YearChartsSection = ({
                           event_id: eventId,
                           course_id: distribution.courseId,
                           year: String(yearData.year),
+                          record_scope: courseScope,
                           is_past_year:
                             yearData.year !== new Date().getFullYear(),
                         })

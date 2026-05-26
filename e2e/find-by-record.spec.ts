@@ -93,3 +93,12 @@ test("2024 양양 메디오폰도 02310257 기록은 순위 45", async ({ page }
   );
   await expect(page.getByTestId("finisher-subLabel")).toHaveText("433명 기준");
 });
+
+test("2025 홍천 그란폰도 KOM 기록 조회는 KOM 라벨을 표시한다", async ({
+  page,
+}) => {
+  await page.goto("/find-by-record/hongcheon/granfondo/2025/05253137?scope=kom");
+  await expect(page.getByText("KOM")).toBeVisible();
+  await expect(page.getByTestId("rank-label")).toHaveText("KOM 통합 순위");
+  await expect(page.getByText("KOM 기록 주변")).toBeVisible();
+});
