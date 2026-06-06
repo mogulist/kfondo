@@ -20,8 +20,19 @@ function mapRowToEvent(row: EventWithRelations): Event {
 
   if (row.event_editions) {
     row.event_editions.forEach((edition) => {
+      const COURSE_TYPE_ORDER: Record<string, number> = {
+        granfondo: 0,
+        mediofondo: 1,
+        "challenge-a": 0,
+        "challenge-b": 1,
+        road: 0,
+        mtb: 1,
+        single: 0,
+        rally: 0,
+      };
+
       const courses: RaceCategory[] =
-        edition.courses?.map((course) => ({
+        (edition.courses?.map((course) => ({
           id: course.course_type,
           name: course.name,
           distance: course.distance,
@@ -32,7 +43,10 @@ function mapRowToEvent(row: EventWithRelations): Event {
           rideWithGpsUrl: course.ride_with_gps_url?.trim() || undefined,
           gpxBlobUrl: course.gpx_blob_url?.trim() || undefined,
           hasKom: course.has_kom === true,
-        })) || [];
+        })) || []).sort(
+          (a, b) =>
+            (COURSE_TYPE_ORDER[a.id] ?? 99) - (COURSE_TYPE_ORDER[b.id] ?? 99)
+        );
 
       yearDetails[edition.year] = {
         year: edition.year,
