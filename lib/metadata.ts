@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { getEventById } from "@/lib/db/events";
-import { getCourseNameById } from "./utils";
 
 type GenerateFindRecordMetadataParams = {
   eventId: string;
@@ -22,7 +21,10 @@ export const generateFindRecordMetadata = async ({
     };
   }
 
-  const courseName = getCourseNameById(eventId, year, courseId);
+  const course = event.yearDetails?.[Number(year)]?.courses.find(
+    (c) => c.id === courseId,
+  );
+  const courseName = course?.name ?? courseId;
 
   const title = `${year ? `${year}년 ` : ""}${
     event.location

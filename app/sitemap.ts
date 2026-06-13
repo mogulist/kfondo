@@ -1,24 +1,23 @@
-import { MetadataRoute } from 'next';
-import { events } from '@/events.config';
+import { MetadataRoute } from "next";
+import { getAllEvents } from "@/lib/db/events";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://kfondo.cc';
-  
-  // Static routes
-  const routes = [
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = "https://kfondo.cc";
+
+  const routes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: "daily",
       priority: 1,
     },
   ];
 
-  // Dynamic routes for each event
-  const eventRoutes = events.map((event) => ({
+  const events = await getAllEvents();
+  const eventRoutes: MetadataRoute.Sitemap = events.map((event) => ({
     url: `${baseUrl}/${event.id}`,
     lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
+    changeFrequency: "weekly",
     priority: 0.8,
   }));
 
