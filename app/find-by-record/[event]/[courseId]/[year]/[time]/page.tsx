@@ -140,23 +140,43 @@ const ResultPage = async (props: Props) => {
             <div className="mt-6">{resultMsg}</div>
           ) : (
             <>
-              <div className="my-8 w-full border-t border-muted-foreground/20" />
-              <div className="mb-2 text-center text-sm text-muted-foreground">
-                {scopeRecordLabel} 주변 기록
+              <div className="my-8 flex items-center justify-center gap-3">
+                <span className="h-px flex-1 bg-linear-to-l from-emerald-300/60 to-transparent dark:from-emerald-700/50" />
+                <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+                  {scopeRecordLabel} 주변 기록
+                </span>
+                <span className="h-px flex-1 bg-linear-to-r from-emerald-300/60 to-transparent dark:from-emerald-700/50" />
               </div>
-              <div className="flex flex-col items-center gap-1">
-                {recordsAround.map((rec, idx) => (
-                  <div
-                    key={idx}
-                    className={
-                        rec.isInput
-                        ? "rounded border border-emerald-500 bg-emerald-500/10 px-2 py-1 text-lg font-bold text-emerald-600 dark:text-emerald-400"
-                        : "px-2 py-1 text-sm text-foreground"
-                    }
-                  >
-                    {msecToTimeString(rec.msec)}
-                  </div>
-                ))}
+              <div className="mx-auto w-fit">
+                <ul className="relative flex flex-col">
+                  <span
+                    aria-hidden
+                    className="absolute bottom-2 left-2.5 top-2 w-px -translate-x-1/2 bg-linear-to-b from-emerald-200 via-emerald-300/70 to-emerald-200 dark:from-emerald-900 dark:via-emerald-700/60 dark:to-emerald-900"
+                  />
+                  {recordsAround.map((rec, idx) => (
+                    <li key={idx} className="flex items-center py-1.5">
+                      <span className="relative z-10 flex w-5 shrink-0 justify-center">
+                        <span
+                          aria-hidden
+                          className={
+                            rec.isInput
+                              ? "h-2.5 w-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20"
+                              : "h-1.5 w-1.5 rounded-full bg-emerald-200 dark:bg-emerald-800"
+                          }
+                        />
+                      </span>
+                      <span
+                        className={
+                          rec.isInput
+                            ? "rounded-full border border-emerald-500/60 bg-white px-4 py-1 text-base font-extrabold tabular-nums text-emerald-600 shadow-sm dark:bg-slate-900 dark:text-emerald-400"
+                            : "px-1 py-0.5 text-sm tabular-nums text-muted-foreground"
+                        }
+                      >
+                        {msecToTimeString(rec.msec)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </>
           )}
