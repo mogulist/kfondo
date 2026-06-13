@@ -9,6 +9,8 @@ import {
   type FindByRecordScope,
   msecToTimeString,
 } from "@/lib/find-by-record-data";
+import GenderRankSection from "./GenderRankSection";
+import ResultCard from "./ResultCard";
 import ShareRecordMenu from "./ShareRecordMenu";
 import TrackResultViewed from "./TrackResultViewed";
 
@@ -95,8 +97,6 @@ const ResultPage = async (props: Props) => {
       </div>
     ) : null;
 
-  const hasGenderRankSection = rankMale != null || rankFemale != null;
-
   return (
     <main className="container mx-auto px-0 py-0">
       <TrackResultViewed
@@ -152,16 +152,16 @@ const ResultPage = async (props: Props) => {
           <div className="flex flex-col gap-4 w-full">
             {/* 입력 기록 카드: PC에서는 한 줄 전체, 모바일에서는 첫 번째 카드 */}
             <div className="sm:w-full">
-              <Card main={parsedTime} label={scopeRecordLabel} />
+              <ResultCard main={parsedTime} label={scopeRecordLabel} />
             </div>
             {/* 3개 카드: PC에서는 가로, 모바일에서는 세로 */}
             <div className="flex flex-col sm:flex-row gap-4 w-full">
-              <Card
+              <ResultCard
                 main={`${rank ?? "-"}위`}
                 label={scopeRankLabel}
                 testId="rank"
               />
-              <Card
+              <ResultCard
                 main={`${
                   percentileByParticipants !== null
                     ? percentileByParticipants.toFixed(1)
@@ -171,33 +171,20 @@ const ResultPage = async (props: Props) => {
                 subLabel={`${scopePeoplePrefix}${totalParticipants.toLocaleString()}명 기준`}
                 testId="participant"
               />
-              <Card
+              <ResultCard
                 main={`${percentile !== null ? percentile.toFixed(1) : "-"}%`}
                 label="완주자 기준"
                 subLabel={`${scopePeoplePrefix}${finishers.toLocaleString()}명 기준`}
                 testId="finisher"
               />
             </div>
-            {hasGenderRankSection ? (
-              <div className="flex flex-col sm:flex-row gap-4 w-full">
-                {rankMale != null ? (
-                  <Card
-                    main={`${rankMale}위`}
-                    label="남자 순위"
-                    subLabel={`${scopePeoplePrefix}${finishersMale.toLocaleString()}명 기준`}
-                    testId="rank-male"
-                  />
-                ) : null}
-                {rankFemale != null ? (
-                  <Card
-                    main={`${rankFemale}위`}
-                    label="여자 순위"
-                    subLabel={`${scopePeoplePrefix}${finishersFemale.toLocaleString()}명 기준`}
-                    testId="rank-female"
-                  />
-                ) : null}
-              </div>
-            ) : null}
+            <GenderRankSection
+              rankMale={rankMale}
+              rankFemale={rankFemale}
+              finishersMale={finishersMale}
+              finishersFemale={finishersFemale}
+              scopePeoplePrefix={scopePeoplePrefix}
+            />
           </div>
         </div>
         {resultMsg ? (
@@ -233,47 +220,6 @@ const ResultPage = async (props: Props) => {
     </main>
   );
 };
-
-type CardProps = {
-  main: React.ReactNode;
-  label: string;
-  subLabel?: string;
-  className?: string;
-  testId?: string;
-};
-
-const Card = ({
-  main,
-  label,
-  subLabel,
-  className = "",
-  testId = "",
-}: CardProps) => (
-  <div
-    className={`flex-1 bg-card shadow-md rounded-xl p-5 flex flex-col items-center border border-primary/30 dark:border-primary/40 ${className}`}
-  >
-    <div
-      className="text-3xl font-extrabold text-primary mb-1"
-      data-testid={`${testId}-main`}
-    >
-      {main}
-    </div>
-    <div
-      className="text-base font-medium text-muted-foreground mb-1"
-      data-testid={`${testId}-label`}
-    >
-      {label}
-    </div>
-    {subLabel && (
-      <div
-        className="text-xs text-gray-500 dark:text-gray-400"
-        data-testid={`${testId}-subLabel`}
-      >
-        {subLabel}
-      </div>
-    )}
-  </div>
-);
 
 const generateMetadata = async ({
   params,
