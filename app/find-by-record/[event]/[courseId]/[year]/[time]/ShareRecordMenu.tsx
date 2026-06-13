@@ -102,9 +102,13 @@ export default function ShareRecordMenu({
   return (
     <Popover open={open} onOpenChange={handleShareMenuOpenChange}>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2 shrink-0">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 shrink-0 text-muted-foreground hover:text-foreground"
+          aria-label="공유"
+        >
           <Share2 className="h-4 w-4" />
-          공유
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" sideOffset={8} className="w-56 p-1">

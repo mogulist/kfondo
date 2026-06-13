@@ -97,24 +97,21 @@ const ResultPage = async (props: Props) => {
           { label: "기록으로 찾기", href: backToInputHref },
           { label: "결과" },
         ]}
+        trailing={
+          <ShareRecordMenu
+            eventId={eventId}
+            courseId={courseId}
+            year={year}
+            time={time}
+            recordScope={recordScope}
+            title={`${year}년 ${eventName} 기록 인증`}
+            description={`${scopeRecordLabel} ${parsedTime}, 순위 ${rank ?? "-"}위`}
+          />
+        }
       />
       <main className="container mx-auto px-0 py-0">
         <div className="max-w-full px-4 py-4">
         <div className="mx-auto w-full max-w-2xl">
-          {/* 공유 버튼: 캡처 영역(히어로 패널) 밖, 패널 위 우측 */}
-          <div className="mb-2 flex justify-end">
-            <ShareRecordMenu
-              eventId={eventId}
-              courseId={courseId}
-              year={year}
-              time={time}
-              recordScope={recordScope}
-              title={`${year}년 ${eventName} 기록 인증`}
-              description={`${scopeRecordLabel} ${parsedTime}, 순위 ${rank ?? "-"}위`}
-            />
-          </div>
-
-          {/* 캡처용 히어로 패널 */}
           <RecordResultHero
             year={year}
             eventName={eventName}
