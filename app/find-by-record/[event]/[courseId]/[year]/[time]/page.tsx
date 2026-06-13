@@ -149,8 +149,8 @@ const ResultPage = async (props: Props) => {
                   <div
                     key={idx}
                     className={
-                      rec.isInput
-                        ? "rounded border border-primary bg-primary/10 px-2 py-1 text-lg font-bold text-primary"
+                        rec.isInput
+                        ? "rounded border border-emerald-500 bg-emerald-500/10 px-2 py-1 text-lg font-bold text-emerald-600 dark:text-emerald-400"
                         : "px-2 py-1 text-sm text-foreground"
                     }
                   >
