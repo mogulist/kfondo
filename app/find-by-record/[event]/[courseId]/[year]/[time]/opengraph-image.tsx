@@ -15,7 +15,6 @@ type Props = {
     year: string;
     time: string;
   }>;
-  searchParams: Promise<{ scope?: string }>;
 };
 
 async function loadLocalFont(filename: string) {
@@ -24,16 +23,12 @@ async function loadLocalFont(filename: string) {
   return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
 }
 
+// 메타데이터 이미지 규약(opengraph-image)은 `params`만 받고 `searchParams`는
+// 전달하지 않는다. 따라서 KOM 여부는 쿼리로 알 수 없어 항상 완주(full) 기준으로 그린다.
 export default async function Image(props: Props) {
   const { event: eventId, courseId, year, time } = await props.params;
-  const { scope } = await props.searchParams;
-  const data = await getFindByRecordData(
-    eventId,
-    courseId,
-    year,
-    time,
-    scope === "kom" ? "kom" : "full",
-  );
+  const data = await getFindByRecordData(eventId, courseId, year, time, "full");
+
   if (!data) {
     return new ImageResponse(
       (
@@ -44,15 +39,16 @@ export default async function Image(props: Props) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: "#064e3b",
-            color: "#a7f3d0",
-            fontSize: 32,
+            background: "#ecfdf5",
+            color: "#059669",
+            fontSize: 40,
+            fontWeight: 800,
           }}
         >
-          기록을 찾을 수 없습니다
+          kfondo.cc
         </div>
       ),
-      { ...size }
+      { ...size },
     );
   }
 
@@ -66,7 +62,6 @@ export default async function Image(props: Props) {
     finishers,
     courseInfo,
     eventDate,
-    recordScope,
   } = data;
 
   const eventName = event.name || `${event.location} 그란폰도`;
@@ -78,9 +73,7 @@ export default async function Image(props: Props) {
       ? percentileByParticipants.toFixed(1)
       : "-";
   const finisherPct = percentile != null ? percentile.toFixed(1) : "-";
-  const scopeLabel = recordScope === "kom" ? "KOM" : "완주";
 
-  // SUIT 폰트 로드 (로컬 파일) - Bold보다 한 단계 두꺼운 Heavy 추가
   const [fontBold, fontExtraBold, fontHeavy] = await Promise.all([
     loadLocalFont("SUIT-Bold.otf"),
     loadLocalFont("SUIT-ExtraBold.otf"),
@@ -109,12 +102,12 @@ export default async function Image(props: Props) {
           totalParticipants={totalParticipants}
           finishers={finishers}
           eventDate={eventDate}
-          recordLabel={`${scopeLabel} 기록`}
-          rankLabel={`${scopeLabel} 순위`}
-          participantLabel={
-            recordScope === "kom" ? "KOM 참가자 기준" : "참가자 기준"
-          }
-          finisherLabel={recordScope === "kom" ? "KOM 완주자 기준" : "완주자 기준"}
+          recordLabel="완주 기록"
+          rankLabel="완주 순위"
+          participantLabel="참가자 기준"
+          finisherLabel="완주자 기준"
+          scopeLabel="완주"
+          isKom={false}
         />
       </div>
     ),
@@ -140,6 +133,6 @@ export default async function Image(props: Props) {
           style: "normal" as const,
         },
       ],
-    }
+    },
   );
 }

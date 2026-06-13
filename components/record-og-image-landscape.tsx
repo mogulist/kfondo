@@ -1,7 +1,7 @@
 /**
  * 기록 찾기 OG 이미지 - Landscape (1200×630)
- * SNS 공유용. Figma CleanGridOG_CenterFocus_v3 디자인 참고.
- * Satori 호환: inline style만 사용, 수치는 number.
+ * SNS 링크 미리보기용. 기록 결과 페이지(밝은 히어로)와 동일한 톤.
+ * Satori 호환: inline style만 사용, 수치는 number, 다중 자식 div엔 display:flex.
  */
 export type RecordOGImageLandscapeProps = {
   year: string;
@@ -20,6 +20,8 @@ export type RecordOGImageLandscapeProps = {
   rankLabel?: string;
   participantLabel?: string;
   finisherLabel?: string;
+  scopeLabel?: string;
+  isKom?: boolean;
 };
 
 export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
@@ -40,65 +42,72 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
     rankLabel = "순위",
     participantLabel = "참가자 기준",
     finisherLabel = "완주자 기준",
+    scopeLabel = "완주",
+    isKom = false,
   } = props;
 
   const rankStr = rank != null ? String(rank) : "-";
+
+  const solidPill = (text: string, bg: string) => (
+    <span
+      style={{
+        display: "flex",
+        paddingTop: 7,
+        paddingBottom: 7,
+        paddingLeft: 16,
+        paddingRight: 16,
+        background: bg,
+        color: "#ffffff",
+        borderRadius: 8,
+        fontSize: 20,
+        fontWeight: 800,
+      }}
+    >
+      {text}
+    </span>
+  );
 
   return (
     <div
       style={{
         width: 1200,
         height: 630,
-        background:
-          "linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%)",
+        background: "linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%)",
         position: "relative",
         overflow: "hidden",
         fontFamily: "SUIT, -apple-system, system-ui, sans-serif",
         display: "flex",
         flexDirection: "column",
-        paddingTop: 40,
+        paddingTop: 48,
         paddingBottom: 40,
-        paddingLeft: 60,
-        paddingRight: 60,
+        paddingLeft: 64,
+        paddingRight: 64,
       }}
     >
-      {/* 배경 장식 - div 원 (Satori/브라우저 동일 렌더링) */}
+      {/* 배경 장식 원 (인증 이미지와 동일하게 은은하게) */}
       <div
         style={{
           position: "absolute",
-          top: 315 - 400,
-          left: 600 - 400,
-          width: 800,
-          height: 800,
+          top: -260,
+          right: -240,
+          width: 640,
+          height: 640,
           borderRadius: "50%",
-          background: "#10b981",
-          opacity: 0.08,
+          background: "#34d399",
+          opacity: 0.12,
           display: "flex",
         }}
       />
       <div
         style={{
           position: "absolute",
-          top: 100 - 150,
-          left: 100 - 150,
-          width: 300,
-          height: 300,
+          bottom: -240,
+          left: -220,
+          width: 560,
+          height: 560,
           borderRadius: "50%",
           background: "#34d399",
-          opacity: 0.08,
-          display: "flex",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: 530 - 150,
-          left: 1100 - 150,
-          width: 300,
-          height: 300,
-          borderRadius: "50%",
-          background: "#34d399",
-          opacity: 0.08,
+          opacity: 0.1,
           display: "flex",
         }}
       />
@@ -112,48 +121,31 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
           height: "100%",
         }}
       >
-        {/* 상단: 브랜드 & 이벤트 */}
-        <div style={{ marginBottom: 30, display: "flex", flexDirection: "column" }}>
+        {/* 상단: 날짜 + 제목 + 뱃지 */}
+        <div style={{ display: "flex", flexDirection: "column" }}>
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              marginBottom: 15,
             }}
           >
             <div
               style={{
                 display: "flex",
-                alignItems: "center",
-                gap: 10,
+                fontSize: 48,
+                color: "#0f172a",
+                fontWeight: 900,
+                lineHeight: 1.1,
               }}
             >
-              <svg
-                width={36}
-                height={36}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#10b981"
-                strokeWidth={2.5}
-              >
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-              </svg>
-              <div
-                style={{
-                  color: "#10b981",
-                  fontSize: 28,
-                  fontWeight: 800,
-                  letterSpacing: "0.02em",
-                }}
-              >
-                kfondo.cc
-              </div>
+              {year}년 {eventName}
             </div>
             <div
               style={{
-                fontSize: 20,
-                color: "rgba(255,255,255,0.7)",
+                display: "flex",
+                fontSize: 22,
+                color: "#64748b",
                 fontWeight: 700,
               }}
             >
@@ -161,69 +153,32 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
             </div>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 20,
-              flexWrap: "wrap",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                fontSize: 52,
-                color: "#ffffff",
-                fontWeight: 800,
-                lineHeight: 1.1,
-              }}
-            >
-              {year}년 {eventName}
-            </div>
-            <div style={{ display: "flex", gap: 10 }}>
-              {category && (
+          <div style={{ display: "flex", gap: 10, marginTop: 18 }}>
+            {category && solidPill(category, "#2563eb")}
+            {scopeLabel &&
+              (isKom ? (
                 <span
                   style={{
-                    padding: "8px 18px",
-                    background: "rgba(16, 185, 129, 0.25)",
-                    color: "#6ee7b7",
+                    display: "flex",
+                    paddingTop: 7,
+                    paddingBottom: 7,
+                    paddingLeft: 16,
+                    paddingRight: 16,
+                    background: "#ede9fe",
+                    color: "#6d28d9",
+                    border: "1px solid #c4b5fd",
                     borderRadius: 8,
-                    fontSize: 18,
-                    fontWeight: 700,
+                    fontSize: 20,
+                    fontWeight: 800,
                   }}
                 >
-                  {category}
+                  {scopeLabel}
                 </span>
-              )}
-              {distance && (
-                <span
-                  style={{
-                    padding: "8px 18px",
-                    background: "rgba(16, 185, 129, 0.25)",
-                    color: "#6ee7b7",
-                    borderRadius: 8,
-                    fontSize: 18,
-                    fontWeight: 700,
-                  }}
-                >
-                  {distance}
-                </span>
-              )}
-              {elevation && (
-                <span
-                  style={{
-                    padding: "8px 18px",
-                    background: "rgba(16, 185, 129, 0.25)",
-                    color: "#6ee7b7",
-                    borderRadius: 8,
-                    fontSize: 18,
-                    fontWeight: 700,
-                  }}
-                >
-                  {elevation}
-                </span>
-              )}
-            </div>
+              ) : (
+                solidPill(scopeLabel, "#059669")
+              ))}
+            {distance && solidPill(distance, "#16a34a")}
+            {elevation && solidPill(elevation, "#f97316")}
           </div>
         </div>
 
@@ -232,234 +187,196 @@ export function RecordOGImageLandscape(props: RecordOGImageLandscapeProps) {
           style={{
             flex: 1,
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            marginBottom: 30,
           }}
         >
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              background: "rgba(0, 0, 0, 0.3)",
-              borderRadius: 20,
-              paddingTop: 40,
-              paddingBottom: 40,
-              paddingLeft: 80,
-              paddingRight: 80,
-              border: "2px solid rgba(16, 185, 129, 0.4)",
+              fontSize: 26,
+              color: "#64748b",
+              fontWeight: 700,
+              marginBottom: 8,
             }}
           >
-            <div
+            {recordLabel}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 132,
+              color: "#059669",
+              fontWeight: 900,
+              letterSpacing: "-0.03em",
+              lineHeight: 1,
+            }}
+          >
+            {record}
+          </div>
+        </div>
+
+        {/* 하단: 순위 & 퍼센타일 3종 */}
+        <div style={{ display: "flex", gap: 18 }}>
+          <StatCard label={rankLabel}>
+            <span
               style={{
-                fontSize: 24,
-                color: "rgba(255,255,255,0.7)",
-                marginBottom: 15,
-                fontWeight: 700,
-              }}
-            >
-              {recordLabel}
-            </div>
-            <div
-              style={{
-                fontSize: 110,
-                color: "#10b981",
+                display: "flex",
+                fontSize: 52,
+                color: "#0f172a",
                 fontWeight: 900,
                 letterSpacing: "-0.03em",
                 lineHeight: 1,
               }}
             >
-              {record}
-            </div>
-          </div>
+              {rankStr}
+            </span>
+            <span
+              style={{
+                display: "flex",
+                fontSize: 28,
+                color: "#0f172a",
+                fontWeight: 800,
+              }}
+            >
+              위
+            </span>
+          </StatCard>
+
+          <StatCard label={participantLabel} sub={`${totalParticipants.toLocaleString()}명`}>
+            <span
+              style={{
+                display: "flex",
+                fontSize: 52,
+                color: "#0f172a",
+                fontWeight: 900,
+                letterSpacing: "-0.03em",
+                lineHeight: 1,
+              }}
+            >
+              {participantPct}
+            </span>
+            <span
+              style={{
+                display: "flex",
+                fontSize: 28,
+                color: "#0f172a",
+                fontWeight: 800,
+              }}
+            >
+              %
+            </span>
+          </StatCard>
+
+          <StatCard
+            label={finisherLabel}
+            sub={`${finishers.toLocaleString()}명`}
+            accent
+          >
+            <span
+              style={{
+                display: "flex",
+                fontSize: 52,
+                color: "#059669",
+                fontWeight: 900,
+                letterSpacing: "-0.03em",
+                lineHeight: 1,
+              }}
+            >
+              {finisherPct}
+            </span>
+            <span
+              style={{
+                display: "flex",
+                fontSize: 28,
+                color: "#059669",
+                fontWeight: 800,
+              }}
+            >
+              %
+            </span>
+          </StatCard>
         </div>
 
-        {/* 하단: 순위 & 퍼센타일 */}
-        <div style={{ display: "flex", gap: 20 }}>
+        {/* 하단 브랜드 워드마크 */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: 18,
+          }}
+        >
           <div
             style={{
-              flex: 1,
               display: "flex",
-              flexDirection: "column",
-              background: "rgba(0, 0, 0, 0.3)",
-              borderRadius: 16,
-              paddingTop: 25,
-              paddingBottom: 25,
-              paddingLeft: 30,
-              paddingRight: 30,
-              border: "1px solid rgba(16, 185, 129, 0.3)",
+              fontSize: 22,
+              color: "#059669",
+              fontWeight: 800,
+              letterSpacing: "0.02em",
             }}
           >
-            <div
-              style={{
-                fontSize: 18,
-                color: "rgba(255,255,255,0.7)",
-                marginBottom: 8,
-                fontWeight: 700,
-              }}
-            >
-              {rankLabel}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                gap: 6,
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 56,
-                  color: "#ffffff",
-                  fontWeight: 800,
-                  letterSpacing: "-0.03em",
-                  lineHeight: 1,
-                }}
-              >
-                {rankStr}
-              </span>
-              <span
-                style={{
-                  fontSize: 32,
-                  color: "#ffffff",
-                  fontWeight: 700,
-                }}
-              >
-                위
-              </span>
-            </div>
-          </div>
-
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              background: "rgba(0, 0, 0, 0.3)",
-              borderRadius: 16,
-              paddingTop: 25,
-              paddingBottom: 25,
-              paddingLeft: 30,
-              paddingRight: 30,
-              border: "1px solid rgba(16, 185, 129, 0.3)",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 18,
-                color: "rgba(255,255,255,0.7)",
-                marginBottom: 8,
-                fontWeight: 700,
-              }}
-            >
-              {participantLabel}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                gap: 6,
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 56,
-                  color: "#ffffff",
-                  fontWeight: 800,
-                  letterSpacing: "-0.03em",
-                  lineHeight: 1,
-                }}
-              >
-                {participantPct}
-              </span>
-              <span
-                style={{
-                  fontSize: 32,
-                  color: "#ffffff",
-                  fontWeight: 700,
-                }}
-              >
-                %
-              </span>
-              <span
-                style={{
-                  fontSize: 16,
-                  color: "rgba(255,255,255,0.6)",
-                  fontWeight: 700,
-                  marginLeft: 8,
-                }}
-              >
-                ({totalParticipants.toLocaleString()}명)
-              </span>
-            </div>
-          </div>
-
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              background: "rgba(0, 0, 0, 0.3)",
-              borderRadius: 16,
-              paddingTop: 25,
-              paddingBottom: 25,
-              paddingLeft: 30,
-              paddingRight: 30,
-              border: "1px solid rgba(16, 185, 129, 0.4)",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 18,
-                color: "rgba(255,255,255,0.7)",
-                marginBottom: 8,
-                fontWeight: 700,
-              }}
-            >
-              {finisherLabel}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                gap: 6,
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 56,
-                  color: "#10b981",
-                  fontWeight: 800,
-                  letterSpacing: "-0.03em",
-                  lineHeight: 1,
-                }}
-              >
-                {finisherPct}
-              </span>
-              <span
-                style={{
-                  fontSize: 32,
-                  color: "#10b981",
-                  fontWeight: 700,
-                }}
-              >
-                %
-              </span>
-              <span
-                style={{
-                  fontSize: 16,
-                  color: "rgba(255,255,255,0.6)",
-                  fontWeight: 700,
-                  marginLeft: 8,
-                }}
-              >
-                ({finishers.toLocaleString()}명)
-              </span>
-            </div>
+            kfondo.cc
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function StatCard({
+  label,
+  sub,
+  accent = false,
+  children,
+}: {
+  label: string;
+  sub?: string;
+  accent?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      style={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        background: "#ffffff",
+        borderRadius: 16,
+        paddingTop: 22,
+        paddingBottom: 22,
+        paddingLeft: 28,
+        paddingRight: 28,
+        border: accent ? "1px solid #6ee7b7" : "1px solid #e2e8f0",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          fontSize: 18,
+          color: "#64748b",
+          fontWeight: 700,
+          marginBottom: 10,
+        }}
+      >
+        {label}
+      </div>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
+        {children}
+      </div>
+      {sub ? (
+        <div
+          style={{
+            display: "flex",
+            fontSize: 16,
+            color: "#94a3b8",
+            fontWeight: 700,
+            marginTop: 8,
+          }}
+        >
+          {sub}
+        </div>
+      ) : null}
     </div>
   );
 }

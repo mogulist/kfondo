@@ -170,7 +170,16 @@ export async function getFindByRecordData(
     ];
   }
 
-  const courseInfo = getCourseInfoById(eventId, year, courseId);
+  // 정적 events.config에 없는(Supabase로만 관리되는) 에디션은 DB 코스 정보로 폴백
+  const courseInfo =
+    getCourseInfoById(eventId, year, courseId) ??
+    (courseRow
+      ? {
+          name: courseRow.name,
+          distance: courseRow.distance,
+          elevation: courseRow.elevation ?? 0,
+        }
+      : undefined);
   const eventDate =
     yearDetail.date && /^\d{4}\.\d{1,2}\.\d{1,2}$/.test(yearDetail.date)
       ? (() => {

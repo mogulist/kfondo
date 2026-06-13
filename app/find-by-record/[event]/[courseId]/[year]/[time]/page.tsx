@@ -2,15 +2,13 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import StackNavBar from "@/components/StackNavBar";
-import { Badge } from "@/components/ui/badge";
 import { generateFindRecordMetadata } from "@/lib/metadata";
 import {
   getFindByRecordData,
   type FindByRecordScope,
   msecToTimeString,
 } from "@/lib/find-by-record-data";
-import GenderRankSection from "./GenderRankSection";
-import ResultCard from "./ResultCard";
+import RecordResultHero from "./RecordResultHero";
 import ShareRecordMenu from "./ShareRecordMenu";
 import TrackResultViewed from "./TrackResultViewed";
 
@@ -63,23 +61,6 @@ const ResultPage = async (props: Props) => {
   const scopePeoplePrefix = isKomScope ? "KOM " : "";
   const backToInputHref = `/find-by-record/${eventId}/${courseId}/${year}?scope=${recordScope}`;
   const toFullResultHref = `/find-by-record/${eventId}/${courseId}/${year}/${time}`;
-  const certificateProps = {
-    year,
-    eventName,
-    category: courseInfo?.name ?? "",
-    distance: courseInfo ? `${courseInfo.distance}km` : "",
-    elevation: courseInfo ? `${courseInfo.elevation}m` : "",
-    parsedTime,
-    rankStr: rank != null ? `${rank}` : "-",
-    participantPct:
-      percentileByParticipants != null
-        ? percentileByParticipants.toFixed(1)
-        : "-",
-    finisherPct: percentile != null ? percentile.toFixed(1) : "-",
-    totalParticipants,
-    finishers,
-    eventDate,
-  };
 
   const resultMsg =
     rank === null ? (
@@ -108,11 +89,9 @@ const ResultPage = async (props: Props) => {
       />
       <StackNavBar />
       <div className="max-w-full px-4 py-4">
-        <div className="flex flex-col items-center gap-4 mb-4 w-full max-w-2xl mx-auto">
-          <div className="flex flex-wrap items-center justify-between gap-2 w-full">
-            <div className="text-2xl sm:text-3xl text-muted-foreground font-semibold">
-              {year}년 {event.name || `${event.location} 그란폰도`}
-            </div>
+        <div className="mx-auto w-full max-w-2xl">
+          {/* 공유 버튼: 캡처 영역(히어로 패널) 밖, 패널 위 우측 */}
+          <div className="mb-2 flex justify-end">
             <ShareRecordMenu
               eventId={eventId}
               courseId={courseId}
@@ -121,100 +100,66 @@ const ResultPage = async (props: Props) => {
               recordScope={recordScope}
               title={`${year}년 ${eventName} 기록 인증`}
               description={`${scopeRecordLabel} ${parsedTime}, 순위 ${rank ?? "-"}위`}
-              certificateProps={certificateProps}
             />
           </div>
-          {courseInfo && (
-            <div className="flex flex-wrap gap-2 w-full">
-              <Badge className="bg-blue-600 text-white">
-                {courseInfo.name}
-              </Badge>
-              <Badge
-                className={
-                  isKomScope
-                    ? "border border-violet-500 bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-200"
-                    : "bg-emerald-600 text-white"
-                }
-              >
-                {scopeLabel}
-              </Badge>
-              <Badge className="bg-green-600 text-white">
-                {courseInfo.distance}km
-              </Badge>
-              <Badge className="bg-orange-500 text-white">
-                {courseInfo.elevation}m
-              </Badge>
-            </div>
+
+          {/* 캡처용 히어로 패널 */}
+          <RecordResultHero
+            year={year}
+            eventName={eventName}
+            eventDate={eventDate}
+            parsedTime={parsedTime}
+            scopeRecordLabel={scopeRecordLabel}
+            scopeRankLabel={scopeRankLabel}
+            scopeLabel={scopeLabel}
+            isKomScope={isKomScope}
+            scopePeoplePrefix={scopePeoplePrefix}
+            courseInfo={courseInfo}
+            rank={rank}
+            percentile={percentile}
+            percentileByParticipants={percentileByParticipants}
+            totalParticipants={totalParticipants}
+            finishers={finishers}
+            rankMale={rankMale}
+            rankFemale={rankFemale}
+            finishersMale={finishersMale}
+            finishersFemale={finishersFemale}
+          />
+        </div>
+
+        <div className="mx-auto w-full max-w-2xl">
+          {resultMsg ? (
+            <div className="mt-6">{resultMsg}</div>
+          ) : (
+            <>
+              <div className="my-8 w-full border-t border-muted-foreground/20" />
+              <div className="mb-2 text-center text-sm text-muted-foreground">
+                {scopeRecordLabel} 주변 기록
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                {recordsAround.map((rec, idx) => (
+                  <div
+                    key={idx}
+                    className={
+                      rec.isInput
+                        ? "rounded border border-primary bg-primary/10 px-2 py-1 text-lg font-bold text-primary"
+                        : "px-2 py-1 text-sm text-foreground"
+                    }
+                  >
+                    {msecToTimeString(rec.msec)}
+                  </div>
+                ))}
+              </div>
+            </>
           )}
-        </div>
-        <div className="w-full max-w-2xl mx-auto mb-4">
-          {/* 모바일: 4개 세로, PC: 입력기록 한 줄, 아래 3개 가로 */}
-          <div className="flex flex-col gap-4 w-full">
-            {/* 입력 기록 카드: PC에서는 한 줄 전체, 모바일에서는 첫 번째 카드 */}
-            <div className="sm:w-full">
-              <ResultCard main={parsedTime} label={scopeRecordLabel} />
-            </div>
-            {/* 3개 카드: PC에서는 가로, 모바일에서는 세로 */}
-            <div className="flex flex-col sm:flex-row gap-4 w-full">
-              <ResultCard
-                main={`${rank ?? "-"}위`}
-                label={scopeRankLabel}
-                testId="rank"
-              />
-              <ResultCard
-                main={`${
-                  percentileByParticipants !== null
-                    ? percentileByParticipants.toFixed(1)
-                    : "-"
-                }%`}
-                label="참가자 기준"
-                subLabel={`${scopePeoplePrefix}${totalParticipants.toLocaleString()}명 기준`}
-                testId="participant"
-              />
-              <ResultCard
-                main={`${percentile !== null ? percentile.toFixed(1) : "-"}%`}
-                label="완주자 기준"
-                subLabel={`${scopePeoplePrefix}${finishers.toLocaleString()}명 기준`}
-                testId="finisher"
-              />
-            </div>
-            <GenderRankSection
-              rankMale={rankMale}
-              rankFemale={rankFemale}
-              finishersMale={finishersMale}
-              finishersFemale={finishersFemale}
-              scopePeoplePrefix={scopePeoplePrefix}
-            />
+          <div className="mt-8 text-center">
+            <Link
+              className="text-sm text-primary underline"
+              href={backToInputHref}
+            >
+              다른 기록으로 찾기
+            </Link>
           </div>
-        </div>
-        {resultMsg ? (
-          resultMsg
-        ) : (
-          <>
-            <div className="w-full border-t border-muted-foreground/20 my-8" />
-            <div className="mb-2 text-center text-sm text-muted-foreground">
-              {scopeRecordLabel} 주변 기록
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              {recordsAround.map((rec, idx) => (
-                <div
-                  key={idx}
-                  className={
-                    rec.isInput
-                      ? "font-bold bg-primary/10 border border-primary rounded px-2 py-1 text-primary text-lg"
-                      : "text-sm text-foreground px-2 py-1"
-                  }
-                >
-                  {msecToTimeString(rec.msec)}
-                </div>
-              ))}
-            </div>
-          </>
-        )}
-        <div className="mt-8 text-center">
-          <Link className="text-sm text-primary underline" href={backToInputHref}>
-            다른 기록으로 찾기
-          </Link>
         </div>
       </div>
     </main>
