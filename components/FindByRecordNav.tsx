@@ -18,7 +18,7 @@ export function FindByRecordNav({
   trailing,
 }: Props) {
   return (
-    <div className="border-b bg-background">
+    <div className="bg-background">
       <div className="container mx-auto px-4 h-10 flex items-center gap-2">
         <Link
           href={backHref}

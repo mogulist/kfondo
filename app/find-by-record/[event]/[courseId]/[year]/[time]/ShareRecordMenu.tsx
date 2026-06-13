@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import posthog from "posthog-js";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -98,6 +98,14 @@ export default function ShareRecordMenu({
       posthog.capture("record_share_menu_dismissed", captureProps);
     }
   };
+
+  useEffect(() => {
+    if (!open) return;
+    const closeOnScroll = () => handleShareMenuOpenChange(false);
+    window.addEventListener("scroll", closeOnScroll, { capture: true, passive: true });
+    return () =>
+      window.removeEventListener("scroll", closeOnScroll, { capture: true });
+  }, [open]);
 
   return (
     <Popover open={open} onOpenChange={handleShareMenuOpenChange}>
