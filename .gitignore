@@ -42,3 +42,6 @@ data/
 
 # PostHog wizard report (local notes only)
 posthog-setup-report.md
+
+# Playwright MCP local artifacts
+.playwright-mcp/

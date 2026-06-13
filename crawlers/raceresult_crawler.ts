@@ -29,6 +29,8 @@ type RaceResultRow = {
   start: string;
   kom1Start: string;
   kom1Arrive: string;
+  komLastFinish: string;
+  komSegmentTime: string;
   finish: string;
   kom1: string;
   speed: string;
@@ -45,7 +47,9 @@ type FieldIndices = {
   start: number;
   komStart: number;
   komFinish: number;
+  komLastFinish: number;
   komChip: number;
+  komSegmentTime: number;
   finish: number;
   speed: number;
   result: number;
@@ -88,7 +92,20 @@ function buildFieldIndices(dataFields: string[]): FieldIndices {
   };
   const komStart = dataFields.findIndex((f) => /^Kom\d+start\.TOD$/i.test(f));
   const komFinish = dataFields.findIndex((f) => /^Kom\d+finish\.TOD$/i.test(f));
-  const komChip = dataFields.findIndex((f) => /^Kom\d+\.TOD$/i.test(f));
+  // 가장 큰 번호의 KomN finish 칩 (예: KOM1/KOM2가 모두 있으면 KOM2 finish) — 마지막 KOM 구간 통과 여부/시각
+  const komFinishCandidates = dataFields
+    .map((f, i) => ({ i, m: f.match(/^Kom(\d+)finish\.TOD$/i) }))
+    .filter((x) => x.m);
+  const komLastFinish =
+    komFinishCandidates.length > 0
+      ? komFinishCandidates.sort((a, b) => Number(b.m![1]) - Number(a.m![1]))[0].i
+      : -1;
+  // 완주 판정용 KOM 통과 칩: "Kom1.TOD"처럼 정확히 일치하는 필드가 있으면 사용,
+  // 없으면(예: 그란폰도 - Kom2finish.TOD만 존재) 마지막 KOM finish 칩으로 대체
+  const komChipExact = dataFields.findIndex((f) => /^Kom\d+\.TOD$/i.test(f));
+  const komChip = komChipExact >= 0 ? komChipExact : komLastFinish;
+  // KOM 구간 기록(랭킹 리스트)용 합산 시간 필드: "Kom1", "KOM1&2" 등
+  const komSegmentTime = dataFields.findIndex((f) => /^Kom[\d&]+$/i.test(f));
   const speed = dataFields.indexOf("Finish.SPEED");
 
   return {
@@ -98,7 +115,9 @@ function buildFieldIndices(dataFields: string[]): FieldIndices {
     start: req("Start.TOD", /Format\(\[Start/i),
     komStart,
     komFinish,
+    komLastFinish,
     komChip,
+    komSegmentTime,
     finish: req("Finish.TOD", /Format\(\[Finish/i),
     speed,
     result: req("Finish.CHIP", "Race Time Total"),
@@ -108,9 +127,14 @@ function buildFieldIndices(dataFields: string[]): FieldIndices {
 
 function inferEventFromListName(listName: string): string {
   const lower = listName.toLowerCase();
-  if (lower.includes("medio") || listName.includes("메디오")) return "메디오폰도";
-  if (lower.includes("gran") || listName.includes("그란")) return "그란폰도";
-  return "메디오폰도";
+  const base =
+    lower.includes("medio") || listName.includes("메디오")
+      ? "메디오폰도"
+      : lower.includes("gran") || listName.includes("그란")
+      ? "그란폰도"
+      : "메디오폰도";
+  const isKom = lower.includes("kom");
+  return isKom ? `${base}(kom)` : base;
 }
 
 async function fetchConfig(eventId: string): Promise<{
@@ -118,9 +142,23 @@ async function fetchConfig(eventId: string): Promise<{
   server: string;
   lists: Array<{ Name: string; ID: string }>;
 }> {
-  const url = `https://my.raceresult.com/${eventId}/RRPublish/data/config?lang=en&page=results&v=1`;
-  const response = await axios.get(url);
-  return response.data;
+  try {
+    const url = `https://my.raceresult.com/${eventId}/RRPublish/data/config?lang=en&page=results&v=1`;
+    const response = await axios.get(url);
+    if (response.data?.lists?.length) {
+      return response.data;
+    }
+    throw new Error("RRPublish config returned no lists");
+  } catch {
+    // RRPublish/data/config가 없는 이벤트 — results/config의 TabConfig.Lists로 대체
+    const url = `https://my.raceresult.com/${eventId}/results/config?lang=en`;
+    const response = await axios.get(url);
+    const data = response.data;
+    const lists: Array<{ Name: string; ID: string }> = (
+      data.TabConfig?.Lists || data.Tab?.Config?.Lists || []
+    ).map((l: { Name: string; ID: string }) => ({ Name: l.Name, ID: l.ID }));
+    return { key: data.key, server: data.server, lists };
+  }
 }
 
 function listRequestHeaders(): Record<string, string> {
@@ -232,18 +270,22 @@ function parseListData(
           idx >= 0 && idx < row.length
             ? row[idx]?.toString().trim() || ""
             : "";
+        // RaceResult는 시간 필드의 소수부 구분자로 ","를 쓰는 경우가 있어 "."로 정규화
+        const cellTime = (idx: number) => cell(idx).replace(",", ".");
 
         const bib = cell(indices.bib);
         const lastName = cell(indices.lastName);
         const group = cell(indices.group);
-        const start = cell(indices.start);
-        const kom1Start = cell(indices.komStart);
-        const kom1Arrive = cell(indices.komFinish);
-        const finish = cell(indices.finish);
-        const kom1 = cell(indices.komChip);
+        const start = cellTime(indices.start);
+        const kom1Start = cellTime(indices.komStart);
+        const kom1Arrive = cellTime(indices.komFinish);
+        const komLastFinish = cellTime(indices.komLastFinish);
+        const komSegmentTime = cellTime(indices.komSegmentTime);
+        const finish = cellTime(indices.finish);
+        const kom1 = cellTime(indices.komChip);
         const speed =
           indices.speed >= 0 ? cell(indices.speed) : "";
-        const result = cell(indices.result);
+        const result = cellTime(indices.result);
         const genderField = indices.gender >= 0 ? cell(indices.gender) : "";
 
         if (bib && lastName && bib.match(/^\d+$/)) {
@@ -254,6 +296,8 @@ function parseListData(
             start,
             kom1Start,
             kom1Arrive,
+            komLastFinish,
+            komSegmentTime,
             finish,
             kom1,
             speed,
@@ -286,6 +330,28 @@ function convertToRecord(row: RaceResultRow): Record {
     row.start && row.start !== "" && !row.start.includes("_");
   const hasFinishTime =
     row.finish && row.finish !== "" && !row.finish.includes("_");
+
+  // KOM 구간 랭킹 리스트(예: "그란폰도(kom)") — 구간 합산 시간을 Time으로 기록
+  if (event.endsWith("(kom)")) {
+    const hasSegTime =
+      row.komSegmentTime !== "" && !row.komSegmentTime.includes("_");
+    const hasSegStart =
+      row.kom1Start !== "" && !row.kom1Start.includes("_");
+    const hasSegFinish =
+      row.komLastFinish !== "" && !row.komLastFinish.includes("_");
+
+    return {
+      BIB_NO: row.bib,
+      Gender: gender,
+      Event: event,
+      Time: hasSegTime ? row.komSegmentTime : "",
+      Status: hasSegTime ? "" : hasStartTime ? "DNF" : "DNS",
+      StartTime: hasSegStart ? row.kom1Start : undefined,
+      FinishTime: hasSegFinish ? row.komLastFinish : undefined,
+      Name: row.name,
+    };
+  }
+
   const chipOk =
     row.result && row.result !== "" && !row.result.includes("_");
   // DataFields의 Kom2.TOD(그란) / Kom1.TOD(메디오) — 구간 칩이 있어야 해당 코스 완주로 본다
@@ -293,20 +359,16 @@ function convertToRecord(row: RaceResultRow): Record {
     row.kom1 && row.kom1 !== "" && !row.kom1.includes("_");
   const needsKomForFinish =
     event === "그란폰도" || event === "메디오폰도";
-  const hasTime =
-    chipOk && (!needsKomForFinish || komChipOk);
-
-  let status = "";
-  if (!hasTime) {
-    status = hasStartTime ? "DNF" : "DNS";
-  }
+  // 출발 기록이 없으면 도착/구간 칩 유무와 무관하게 DNS로 본다
+  const completed =
+    hasStartTime && chipOk && (!needsKomForFinish || komChipOk);
 
   return {
     BIB_NO: row.bib,
     Gender: gender,
     Event: event,
-    Time: hasTime ? row.result : "",
-    Status: status,
+    Time: completed ? row.result : "",
+    Status: completed ? "" : hasStartTime ? "DNF" : "DNS",
     StartTime: hasStartTime ? row.start : undefined,
     FinishTime: hasFinishTime ? row.finish : undefined,
     Name: row.name,
@@ -333,31 +395,39 @@ async function scrapeRaceResult(
   scrapeOptions: ScrapeOptions = { useResultsList: false }
 ): Promise<void> {
   const outputFile = resolveOutputFile(outputPath);
-  let records: Record[] = [];
+  // "(kom)" 이벤트(KOM 구간 랭킹)는 별도 *_kom.json 파일에 저장
+  const komOutputFile = outputFile.replace(/\.json$/, "_kom.json");
 
   fs.mkdirSync(path.dirname(outputFile), { recursive: true });
 
-  if (fs.existsSync(outputFile)) {
+  const loadRecords = (file: string): Record[] => {
+    if (!fs.existsSync(file)) return [];
     try {
-      const content = fs.readFileSync(outputFile, "utf-8");
-      if (content) {
-        records = JSON.parse(content) as Record[];
-      }
+      const content = fs.readFileSync(file, "utf-8");
+      return content ? (JSON.parse(content) as Record[]) : [];
     } catch (error) {
       console.warn(
-        `Failed to load existing records from ${outputFile}. Starting fresh.`,
+        `Failed to load existing records from ${file}. Starting fresh.`,
         error
       );
-      records = [];
+      return [];
     }
-  } else {
+  };
+
+  let records = loadRecords(outputFile);
+  let komRecords = loadRecords(komOutputFile);
+
+  if (!fs.existsSync(outputFile)) {
     fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
   }
 
-  const processedKeys = new Set(records.map(recordDedupeKey));
+  const processedKeys = new Set(
+    [...records, ...komRecords].map(recordDedupeKey)
+  );
 
   console.log(`Starting to scrape Race Result event ${eventId}`);
   console.log(`Results will be saved to: ${outputFile}`);
+  console.log(`KOM segment records will be saved to: ${komOutputFile}`);
   console.log(
     `Already processed records: ${processedKeys.size} (will be skipped)`
   );
@@ -461,7 +531,12 @@ async function scrapeRaceResult(
           continue;
         }
 
-        records.push(record);
+        const isKom = record.Event.endsWith("(kom)");
+        if (isKom) {
+          komRecords.push(record);
+        } else {
+          records.push(record);
+        }
         processedKeys.add(k);
         newRecordsCount++;
 
@@ -469,7 +544,10 @@ async function scrapeRaceResult(
           `${record.BIB_NO},${record.Gender},${record.Event},${record.Time},${record.Status}`
         );
 
-        fs.writeFileSync(outputFile, JSON.stringify(records, null, 2));
+        fs.writeFileSync(
+          isKom ? komOutputFile : outputFile,
+          JSON.stringify(isKom ? komRecords : records, null, 2)
+        );
       }
 
       console.log(`Scraping completed! Added ${newRecordsCount} new records.`);
