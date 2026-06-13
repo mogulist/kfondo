@@ -8,6 +8,7 @@ import {
   getFindByRecordData,
   type FindByRecordScope,
   msecToTimeString,
+  msecDiffToLabel,
 } from "@/lib/find-by-record-data";
 import RecordResultHero from "./RecordResultHero";
 import ShareRecordMenu from "./ShareRecordMenu";
@@ -62,6 +63,7 @@ const ResultPage = async (props: Props) => {
   const scopePeoplePrefix = isKomScope ? "KOM " : "";
   const backToInputHref = `/find-by-record/${eventId}/${courseId}/${year}?scope=${recordScope}`;
   const toFullResultHref = `/find-by-record/${eventId}/${courseId}/${year}/${time}`;
+  const inputMsec = recordsAround.find((rec) => rec.isInput)?.msec ?? null;
 
   const resultMsg =
     rank === null ? (
@@ -153,7 +155,15 @@ const ResultPage = async (props: Props) => {
                     aria-hidden
                     className="absolute bottom-2 left-2.5 top-2 w-px -translate-x-1/2 bg-linear-to-b from-emerald-200 via-emerald-300/70 to-emerald-200 dark:from-emerald-900 dark:via-emerald-700/60 dark:to-emerald-900"
                   />
-                  {recordsAround.map((rec, idx) => (
+                  {recordsAround.map((rec, idx) => {
+                    const diffLabel =
+                      rec.isInput
+                        ? "내 기록"
+                        : inputMsec != null
+                          ? msecDiffToLabel(rec.msec - inputMsec)
+                          : null;
+
+                    return (
                     <li key={idx} className="flex items-center py-1.5">
                       <span className="relative z-10 flex w-5 shrink-0 justify-center">
                         <span
@@ -165,29 +175,35 @@ const ResultPage = async (props: Props) => {
                           }
                         />
                       </span>
-                      <span
-                        className={
-                          rec.isInput
-                            ? "rounded-full border border-emerald-500/60 bg-white px-4 py-1 text-base font-extrabold tabular-nums text-emerald-600 shadow-sm dark:bg-slate-900 dark:text-emerald-400"
-                            : "px-1 py-0.5 text-sm tabular-nums text-muted-foreground"
-                        }
-                      >
-                        {msecToTimeString(rec.msec)}
-                      </span>
+                      <div className="flex items-baseline gap-2">
+                        <span
+                          className={
+                            rec.isInput
+                              ? "rounded-full border border-emerald-500/60 bg-white px-4 py-1 text-base font-extrabold tabular-nums text-emerald-600 shadow-sm dark:bg-slate-900 dark:text-emerald-400"
+                              : "px-1 py-0.5 text-sm tabular-nums text-muted-foreground"
+                          }
+                        >
+                          {msecToTimeString(rec.msec)}
+                        </span>
+                        {diffLabel ? (
+                          <span
+                            className={
+                              rec.isInput
+                                ? "text-[11px] font-semibold text-emerald-600 dark:text-emerald-400"
+                                : "text-[11px] font-medium tabular-nums text-muted-foreground"
+                            }
+                          >
+                            {diffLabel}
+                          </span>
+                        ) : null}
+                      </div>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
               </div>
             </>
           )}
-          <div className="mt-8 text-center">
-            <Link
-              className="text-sm text-primary underline"
-              href={backToInputHref}
-            >
-              다른 기록으로 찾기
-            </Link>
-          </div>
         </div>
         </div>
       </main>

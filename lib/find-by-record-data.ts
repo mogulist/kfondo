@@ -56,6 +56,18 @@ export function msecToTimeString(msec: number): string {
   return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}.${ms.toString().padStart(2, "0")}`;
 }
 
+export function msecDiffToLabel(diffMsec: number): string {
+  const abs = Math.abs(diffMsec);
+  const sign = diffMsec >= 0 ? "+" : "-";
+  const h = Math.floor(abs / 3600000);
+  const m = Math.floor((abs % 3600000) / 60000);
+  const s = Math.floor((abs % 60000) / 1000);
+  if (h > 0) {
+    return `${sign}${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  }
+  return `${sign}${m}:${s.toString().padStart(2, "0")}`;
+}
+
 export type FindByRecordData = {
   event: Event;
   recordScope: FindByRecordScope;
