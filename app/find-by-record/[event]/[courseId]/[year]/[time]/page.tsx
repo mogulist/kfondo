@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import StackNavBar from "@/components/StackNavBar";
+import { EventHeader } from "@/components/EventHeader";
+import { FindByRecordNav } from "@/components/FindByRecordNav";
 import { generateFindRecordMetadata } from "@/lib/metadata";
 import {
   getFindByRecordData,
@@ -79,7 +80,7 @@ const ResultPage = async (props: Props) => {
     ) : null;
 
   return (
-    <main className="container mx-auto px-0 py-0">
+    <>
       <TrackResultViewed
         eventId={eventId}
         courseId={courseId}
@@ -87,8 +88,18 @@ const ResultPage = async (props: Props) => {
         time={time}
         recordScope={recordScope}
       />
-      <StackNavBar />
-      <div className="max-w-full px-4 py-4">
+      <EventHeader eventTitle={eventName} />
+      <FindByRecordNav
+        backHref={backToInputHref}
+        backLabel="기록으로 찾기"
+        breadcrumbs={[
+          { label: eventName, href: `/${eventId}` },
+          { label: "기록으로 찾기", href: backToInputHref },
+          { label: "결과" },
+        ]}
+      />
+      <main className="container mx-auto px-0 py-0">
+        <div className="max-w-full px-4 py-4">
         <div className="mx-auto w-full max-w-2xl">
           {/* 공유 버튼: 캡처 영역(히어로 패널) 밖, 패널 위 우측 */}
           <div className="mb-2 flex justify-end">
@@ -161,8 +172,9 @@ const ResultPage = async (props: Props) => {
             </Link>
           </div>
         </div>
-      </div>
-    </main>
+        </div>
+      </main>
+    </>
   );
 };
 

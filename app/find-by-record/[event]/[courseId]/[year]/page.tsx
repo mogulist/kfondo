@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getEventById } from "@/lib/db/events";
-import StackNavBar from "../../../../../components/StackNavBar";
+import { EventHeader } from "@/components/EventHeader";
+import { FindByRecordNav } from "@/components/FindByRecordNav";
 import FindMyRecordSection from "./FindMyRecordSection";
 import { generateFindRecordMetadata } from "@/lib/metadata";
 
@@ -28,16 +29,26 @@ const FindMyRecordPage = async ({ params, searchParams }: Props) => {
   const eventName = event.name || `${event.location} 그란폰도`;
 
   return (
-    <main className="container mx-auto px-0 py-0">
-      <StackNavBar />
-      <FindMyRecordSection
-        event={event}
-        eventName={eventName}
-        courseId={courseId}
-        year={year}
-        initialScope={parseScope(scope)}
+    <>
+      <EventHeader eventTitle={eventName} />
+      <FindByRecordNav
+        backHref={`/${eventId}`}
+        backLabel={eventName}
+        breadcrumbs={[
+          { label: eventName, href: `/${eventId}` },
+          { label: "기록으로 찾기" },
+        ]}
       />
-    </main>
+      <main className="container mx-auto px-0 py-0">
+        <FindMyRecordSection
+          event={event}
+          eventName={eventName}
+          courseId={courseId}
+          year={year}
+          initialScope={parseScope(scope)}
+        />
+      </main>
+    </>
   );
 };
 
