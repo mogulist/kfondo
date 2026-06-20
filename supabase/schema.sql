@@ -37,6 +37,7 @@ CREATE TABLE event_editions (
   kom_records_blob_url TEXT, -- Vercel Blob URL (KOM 원본 기록)
   kom_sorted_records_blob_url TEXT, -- Vercel Blob URL (KOM 정렬 기록)
   comment TEXT,
+  notice TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   UNIQUE(event_id, year) -- 같은 대회가 같은 연도에 두 번 열리지 않음

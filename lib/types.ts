@@ -93,4 +93,5 @@ export type EventYearDetail = {
   sortedRecordsBlobUrl?: string; // Phase 3: Vercel Blob URL (정렬된 기록)
   komRecordsBlobUrl?: string; // KOM 원본 기록 Blob URL
   komSortedRecordsBlobUrl?: string; // KOM 정렬 기록 Blob URL
+  notice?: string; // 사용자 공개 메모 (예: 코스 변경, 악천후 안내 등)
 };

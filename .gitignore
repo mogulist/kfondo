@@ -45,3 +45,6 @@ posthog-setup-report.md
 
 # Playwright MCP local artifacts
 .playwright-mcp/
+
+# Supabase CLI temporary files
+supabase/.temp/

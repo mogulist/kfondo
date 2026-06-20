@@ -45,6 +45,7 @@ const editionSchema = z.object({
   kom_records_blob_url: z.string().optional(),
   kom_sorted_records_blob_url: z.string().optional(),
   comment: z.string().optional(),
+  notice: z.string().optional(),
 });
 
 type EditionFormValues = z.infer<typeof editionSchema>;
@@ -91,6 +92,7 @@ export function EditionFormDialog({
       kom_records_blob_url: "",
       kom_sorted_records_blob_url: "",
       comment: "",
+      notice: "",
     },
   });
   const recordsBlobUrl = form.watch("records_blob_url");
@@ -112,6 +114,7 @@ export function EditionFormDialog({
         kom_sorted_records_blob_url:
           edition.kom_sorted_records_blob_url ?? "",
         comment: edition.comment ?? "",
+        notice: edition.notice ?? "",
       });
       setRecordsFile(null);
       setSortedRecordsFile(null);
@@ -128,6 +131,7 @@ export function EditionFormDialog({
         kom_records_blob_url: "",
         kom_sorted_records_blob_url: "",
         comment: "",
+        notice: "",
       });
       setRecordsFile(null);
       setSortedRecordsFile(null);
@@ -164,6 +168,7 @@ export function EditionFormDialog({
           kom_sorted_records_blob_url:
             values.kom_sorted_records_blob_url || null,
           comment: values.comment || null,
+          notice: values.notice || null,
         };
 
         const { error } = await supabase
@@ -185,6 +190,7 @@ export function EditionFormDialog({
           kom_sorted_records_blob_url:
             values.kom_sorted_records_blob_url || null,
           comment: values.comment || null,
+          notice: values.notice || null,
         };
 
         const { data, error } = await supabase
@@ -612,6 +618,24 @@ export function EditionFormDialog({
                       선택 파일: {komSortedRecordsFile.name}
                     </p>
                   ) : null}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="notice"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>사용자 공지 (공개)</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="악천후로 인해 그란폰도 코스가 취소되고 메디오폰도만 운영됩니다..."
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

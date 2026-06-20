@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Trash2, ExternalLink } from "lucide-react";
+import { Pencil, Trash2, ExternalLink, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -135,6 +135,7 @@ export function EditionsTab({
             <TableHead>상태</TableHead>
             <TableHead>URL</TableHead>
             <TableHead>기록 파일</TableHead>
+            <TableHead>공지</TableHead>
             <TableHead>코멘트</TableHead>
             <TableHead className="w-[100px]">작업</TableHead>
           </TableRow>
@@ -143,7 +144,7 @@ export function EditionsTab({
           {sortedEditions.length === 0 ? (
             <TableRow>
               <TableCell
-                colSpan={7}
+                colSpan={8}
                 className="text-center text-muted-foreground"
               >
                 에디션이 없습니다.
@@ -174,8 +175,15 @@ export function EditionsTab({
                   )}
                 </TableCell>
                 <TableCell>{recordsDisplay(edition)}</TableCell>
-                <TableCell className="max-w-[200px] truncate">
-                  {edition.comment || "-"}
+                <TableCell>
+                  {edition.notice && (
+                    <Check className="h-4 w-4 text-blue-500" />
+                  )}
+                </TableCell>
+                <TableCell>
+                  {edition.comment && (
+                    <Check className="h-4 w-4 text-muted-foreground" />
+                  )}
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">

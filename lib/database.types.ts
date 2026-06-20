@@ -62,6 +62,7 @@ export type Database = {
           status: "upcoming" | "completed" | "ready" | "preparing" | "cancelled";
           url: string | null;
           comment: string | null;
+          notice: string | null;
           created_at: string;
           updated_at: string;
           records_blob_url: string | null;
@@ -77,6 +78,7 @@ export type Database = {
           status?: "upcoming" | "completed" | "ready" | "preparing" | "cancelled";
           url?: string | null;
           comment?: string | null;
+          notice?: string | null;
           created_at?: string;
           updated_at?: string;
           records_blob_url?: string | null;
@@ -92,6 +94,7 @@ export type Database = {
           status?: "upcoming" | "completed" | "ready" | "preparing" | "cancelled";
           url?: string | null;
           comment?: string | null;
+          notice?: string | null;
           created_at?: string;
           updated_at?: string;
           records_blob_url?: string | null;

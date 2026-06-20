@@ -144,7 +144,8 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
         </div>
       </div>
       {yearlyStats.map((yearData) => {
-        const courses = event.yearDetails[yearData.year]?.courses;
+        const yearDetail = event.yearDetails[yearData.year];
+        const courses = yearDetail?.courses;
         return (
           <TabsContent
             key={yearData.year}
@@ -159,6 +160,11 @@ export function EventYearTabs({ event, yearlyStats }: Props) {
               getRaceRecordsState={getRaceRecordsState}
               getKomRaceRecordsState={getKomRaceRecordsState}
             />
+            {yearDetail?.notice && (
+              <div className="mt-6 rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-900 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-200">
+                {yearDetail.notice}
+              </div>
+            )}
           </TabsContent>
         );
       })}
