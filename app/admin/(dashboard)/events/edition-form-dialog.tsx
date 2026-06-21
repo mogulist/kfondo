@@ -315,7 +315,7 @@ export function EditionFormDialog({
           >
             <fieldset
               disabled={isSaving}
-              className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden pr-1"
+              className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-1 pb-1"
             >
             <div className="grid grid-cols-2 gap-4">
               <FormField

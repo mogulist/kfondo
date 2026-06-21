@@ -181,7 +181,7 @@ export function CoursesTab({ eventSlug, editions }: CoursesTabProps) {
       <CourseFormDialog
         open={dialogOpen}
         onOpenChange={handleDialogClose}
-        editions={editions}
+        editions={sortedEditions}
         course={editingCourse}
         onSuccess={async () => {
           await revalidateEventPage(eventSlug);

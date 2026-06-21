@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -73,6 +73,10 @@ export function CourseFormDialog({
   onSuccess,
 }: CourseFormDialogProps) {
   const supabase = createClient();
+  const sortedEditions = useMemo(
+    () => [...editions].sort((a, b) => b.year - a.year),
+    [editions]
+  );
 
   const form = useForm<CourseFormValues>({
     resolver: zodResolver(courseSchema),
@@ -108,9 +112,9 @@ export function CourseFormDialog({
         gpx_blob_url: course.gpx_blob_url ?? "",
         has_kom: course.has_kom === true,
       });
-    } else if (open && editions.length > 0) {
+    } else if (open && sortedEditions.length > 0) {
       form.reset({
-        edition_id: editions[0]?.id ?? "",
+        edition_id: sortedEditions[0]?.id ?? "",
         course_type: "",
         name: "",
         distance: 0,
@@ -123,9 +127,22 @@ export function CourseFormDialog({
         has_kom: false,
       });
     }
-  }, [open, course, editions, form]);
+  }, [open, course, sortedEditions, form]);
 
   async function onSubmit(values: CourseFormValues) {
+    if (
+      hasDuplicateCourse(
+        editions,
+        values.edition_id,
+        values.course_type,
+        values.name,
+        course?.id
+      )
+    ) {
+      toast.error("이 에디션에 동일한 코스 타입과 코스명이 이미 있습니다.");
+      return;
+    }
+
     try {
       if (course) {
         const payload: CourseUpdate = {
@@ -179,12 +196,16 @@ export function CourseFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
-        <DialogHeader>
+      <DialogContent className="flex max-h-[80dvh] max-w-lg flex-col gap-4 overflow-hidden">
+        <DialogHeader className="shrink-0">
           <DialogTitle>{course ? "코스 편집" : "새 코스 추가"}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden"
+          >
+            <fieldset className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-1 pb-1">
             <FormField
               control={form.control}
               name="edition_id"
@@ -202,7 +223,7 @@ export function CourseFormDialog({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {editions.map((ed) => (
+                      {sortedEditions.map((ed) => (
                         <SelectItem key={ed.id} value={ed.id}>
                           {ed.year}년
                         </SelectItem>
@@ -461,8 +482,9 @@ export function CourseFormDialog({
                 )}
               />
             </div>
+            </fieldset>
 
-            <DialogFooter>
+            <DialogFooter className="shrink-0 border-t pt-4">
               <Button
                 type="button"
                 variant="outline"
@@ -481,5 +503,26 @@ export function CourseFormDialog({
         </Form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function hasDuplicateCourse(
+  editions: EventEditionWithCourses[],
+  editionId: string,
+  courseType: string,
+  name: string,
+  excludeCourseId?: string
+): boolean {
+  const edition = editions.find((ed) => ed.id === editionId);
+  if (!edition) return false;
+
+  const normalizedType = courseType.trim();
+  const normalizedName = name.trim();
+
+  return edition.courses.some(
+    (existingCourse) =>
+      existingCourse.id !== excludeCourseId &&
+      existingCourse.course_type.trim() === normalizedType &&
+      existingCourse.name.trim() === normalizedName
   );
 }
