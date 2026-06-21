@@ -302,7 +302,7 @@ export function EditionFormDialog({
         onOpenChange(nextOpen);
       }}
     >
-      <DialogContent className="flex max-h-[80dvh] max-w-lg flex-col gap-4 overflow-hidden">
+      <DialogContent className="flex max-h-[80dvh] min-h-0 max-w-lg flex-col gap-4 overflow-hidden">
         <DialogHeader className="shrink-0">
           <DialogTitle>
             {edition ? "에디션 편집" : "새 에디션 추가"}
@@ -315,8 +315,9 @@ export function EditionFormDialog({
           >
             <fieldset
               disabled={isSaving}
-              className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-1 pb-1"
+              className="min-h-0 flex-1 overflow-hidden border-0 p-0 m-0"
             >
+            <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-1 pb-1">
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -658,6 +659,7 @@ export function EditionFormDialog({
                 </FormItem>
               )}
             />
+            </div>
             </fieldset>
 
             <DialogFooter className="shrink-0 border-t pt-4">

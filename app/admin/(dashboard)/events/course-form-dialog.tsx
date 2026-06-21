@@ -196,7 +196,7 @@ export function CourseFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex max-h-[80dvh] max-w-lg flex-col gap-4 overflow-hidden">
+      <DialogContent className="flex max-h-[80dvh] min-h-0 max-w-lg flex-col gap-4 overflow-hidden">
         <DialogHeader className="shrink-0">
           <DialogTitle>{course ? "코스 편집" : "새 코스 추가"}</DialogTitle>
         </DialogHeader>
@@ -205,7 +205,7 @@ export function CourseFormDialog({
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden"
           >
-            <fieldset className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-1 pb-1">
+            <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-1 pb-1">
             <FormField
               control={form.control}
               name="edition_id"
@@ -482,7 +482,7 @@ export function CourseFormDialog({
                 )}
               />
             </div>
-            </fieldset>
+            </div>
 
             <DialogFooter className="shrink-0 border-t pt-4">
               <Button
