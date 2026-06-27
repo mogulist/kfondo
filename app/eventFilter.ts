@@ -150,7 +150,9 @@ export async function getFilteredEvents(): Promise<HomePageFilteredData> {
         otherEventsTemp.push(event);
         return;
       }
-      const daysSince = today.diff(eventDate, "day");
+      const daysSince = today
+        .startOf("day")
+        .diff(eventDate.startOf("day"), "day");
       const hasRecords = yearDetailHasPublishedRecords(latestDetail);
 
       if (
