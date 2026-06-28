@@ -120,7 +120,7 @@ export function CourseMapClient({ gpxBlobUrl }: CourseMapClientProps) {
                   </span>
                   <span className="inline-flex items-center gap-1.5">
                     <Mountain className="size-3.5 shrink-0" aria-hidden />
-                    <span>{routePoints[highlightedIndex].ele ?? 0} m</span>
+                    <span>{(routePoints[highlightedIndex].ele ?? 0).toFixed(1)} m</span>
                   </span>
                 </p>
               )}

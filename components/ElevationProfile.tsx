@@ -126,7 +126,7 @@ export function ElevationProfile({
               <YAxis
                 dataKey="ele"
                 type="number"
-                tickFormatter={(v) => `${v}`}
+                tickFormatter={(v) => Number(v).toFixed(1)}
                 fontSize={11}
                 width={36}
                 label={{ value: "m", angle: -90, position: "insideLeft" }}
@@ -139,7 +139,7 @@ export function ElevationProfile({
                       className="text-foreground"
                       formatter={(value: unknown) =>
                         typeof value === "number"
-                          ? [`${value} m`, "고도"]
+                          ? [`${value.toFixed(1)} m`, "고도"]
                           : ["—", "고도"]
                       }
                       labelFormatter={(_value, payload) => {
