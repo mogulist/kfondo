@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ["@my-ridings/elevation-profile", "@my-ridings/plan-geometry"],
   typescript: {
     ignoreBuildErrors: true,
   },
